@@ -15,3 +15,24 @@ export const sysAccountService = {
     })
   }
 }
+
+/**
+ * @description [ sys ] 用户相关
+ */
+export const sysUserService = {
+  /**
+   * 获取用户信息
+   */
+  getInfo () {
+    return request({
+      url: 'http://localhost:8000/api/sys/user/info'
+    })
+  },
+  updatePassword (data) {
+    return request({
+      url: '/sys/user/password',
+      method: 'put',
+      data
+    })
+  }
+}

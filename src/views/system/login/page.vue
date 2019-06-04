@@ -5,29 +5,28 @@
         <li v-for="n in 10" :key="n"></li>
       </ul>
     </div>
-    <div
-      class="page-login--layer page-login--layer-time"
-      flex="main:center cross:center">
-      {{time}}
-    </div>
+    <div class="page-login--layer page-login--layer-time" flex="main:center cross:center">{{time}}</div>
     <div class="page-login--layer">
-      <div
-        class="page-login--content"
-        flex="dir:top main:justify cross:center box:justify">
+      <div class="page-login--content" flex="dir:top main:justify cross:center box:justify">
         <div class="page-login--content-header">
           <p class="page-login--content-header-motto">
-            时间是一切财富中最宝贵的财富。 <span>—— 德奥弗拉斯多</span>
+            时间是一切财富中最宝贵的财富。
+            <span>—— 德奥弗拉斯多</span>
           </p>
         </div>
-        <div
-          class="page-login--content-main"
-          flex="dir:top main:center cross:center">
+        <div class="page-login--content-main" flex="dir:top main:center cross:center">
           <!-- logo -->
           <img class="page-login--logo" src="./image/logo@2x.png">
           <!-- 表单 -->
           <div class="page-login--form">
             <el-card shadow="never">
-              <el-form ref="loginForm" label-position="top" :rules="rules" :model="formLogin" size="default">
+              <el-form
+                ref="loginForm"
+                label-position="top"
+                :rules="rules"
+                :model="formLogin"
+                size="default"
+              >
                 <el-form-item prop="username">
                   <el-input type="text" v-model="formLogin.username" placeholder="用户名">
                     <i slot="prepend" class="fa fa-user-circle-o"></i>
@@ -38,27 +37,34 @@
                     <i slot="prepend" class="fa fa-keyboard-o"></i>
                   </el-input>
                 </el-form-item>
-                <el-form-item prop="code">
-                  <el-input type="text" v-model="formLogin.code" placeholder="- - - -">
-                    <template slot="prepend">验证码</template>
+                <el-form-item prop="captcha">
+                  <el-input type="text" v-model="formLogin.captcha" placeholder="验证码">
+                    <!-- <template slot="prepend">验证码</template> -->
                     <template slot="append">
-                      <img class="login-code" src="./image/login-code.png">
+                      <div
+                        class="login-captcha"
+                        :style="{ backgroundImage: `url(${captchaPath})` }"
+                        @click="updateUUID"
+                      />
                     </template>
                   </el-input>
                 </el-form-item>
                 <el-button size="default" @click="submit" type="primary" class="button-login">登录</el-button>
               </el-form>
             </el-card>
-            <p
-              class="page-login--options"
-              flex="main:justify cross:center">
-              <span><d2-icon name="question-circle"/> 忘记密码</span>
+            <p class="page-login--options" flex="main:justify cross:center">
+              <span>
+                <d2-icon name="question-circle"/>忘记密码
+              </span>
               <span>注册用户</span>
             </p>
             <!-- 快速登录按钮 -->
-            <el-button class="page-login--quick" size="default" type="info" @click="dialogVisible = true">
-              快速选择用户（测试功能）
-            </el-button>
+            <el-button
+              class="page-login--quick"
+              size="default"
+              type="info"
+              @click="dialogVisible = true"
+            >快速选择用户（测试功能）</el-button>
           </div>
         </div>
         <div class="page-login--content-footer">
@@ -68,15 +74,14 @@
             <a href="#">条款</a>
           </p>
           <p class="page-login--content-footer-copyright">
-            Copyright <d2-icon name="copyright"/> 2018 D2 Projects 开源组织出品 <a href="https://github.com/FairyEver">@FairyEver</a>
+            Copyright
+            <d2-icon name="copyright"/>2018 D2 Projects 开源组织出品
+            <a href="https://github.com/FairyEver">@FairyEver</a>
           </p>
         </div>
       </div>
     </div>
-    <el-dialog
-      title="快速选择用户"
-      :visible.sync="dialogVisible"
-      width="400px">
+    <el-dialog title="快速选择用户" :visible.sync="dialogVisible" width="400px">
       <el-row :gutter="10" style="margin: -20px 0px -10px 0px;">
         <el-col v-for="(user, index) in users" :key="index" :span="8">
           <div class="page-login--quick-user" @click="handleUserBtnClick(user)">
@@ -90,110 +95,118 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
-import { mapActions } from 'vuex'
-import { debounce } from 'lodash'
-import { getUUID } from '@/common/renren'
-import { sysAccountService } from '@/common/api'
+import dayjs from "dayjs";
+import { mapActions } from "vuex";
+import { debounce } from "lodash";
+import { getUUID } from "@/common/renren";
+import { sysAccountService } from "@/common/api";
 export default {
-  data () {
+  data() {
     return {
       timeInterval: null,
-      time: dayjs().format('HH:mm:ss'),
+      time: dayjs().format("HH:mm:ss"),
       // 快速选择用户
       dialogVisible: false,
       users: [
         {
-          name: '管理员',
-          username: 'admin',
-          password: 'admin'
+          name: "管理员",
+          username: "admin",
+          password: "admin"
         },
         {
-          name: '编辑',
-          username: 'editor',
-          password: 'editor'
+          name: "编辑",
+          username: "editor",
+          password: "editor"
         },
         {
-          name: '用户1',
-          username: 'user1',
-          password: 'user1'
+          name: "用户1",
+          username: "user1",
+          password: "user1"
         }
       ],
       // 表单
       formLogin: {
-        username: 'admin',
-        password: 'colin9969',
-        code: 'v9am'
-      },
-      // 校验
-      rules: {
-        username: [
-          { required: true, message: '请输入用户名', trigger: 'blur' }
-        ],
-        password: [
-          { required: true, message: '请输入密码', trigger: 'blur' }
-        ],
-        code: [
-          { required: true, message: '请输入验证码', trigger: 'blur' }
-        ]
+        username: "admin",
+        password: "colin9969",
+        uuid: "",
+        captcha: ""
       }
+    };
+  },
+  computed: {
+    // 校验
+    rules () {
+      return {
+      username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+      password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+      captcha: [{ required: true, message: "请输入验证码", trigger: "blur" }]
+      }
+    },
+    captchaPath() {
+      return `${process.env.VUE_APP_API}/captcha?uuid=${this.formLogin.uuid}`;
     }
   },
-  mounted () {
-    this.timeInterval = setInterval(() => {
-      this.refreshTime()
-    }, 1000)
+  created() {
+    this.updateUUID();
   },
-  beforeDestroy () {
-    clearInterval(this.timeInterval)
+  mounted() {
+    this.timeInterval = setInterval(() => {
+      this.refreshTime();
+    }, 1000);
+  },
+  beforeDestroy() {
+    clearInterval(this.timeInterval);
   },
   methods: {
-    ...mapActions('d2admin/account', [
-      'login'
-    ]),
+    ...mapActions("d2admin/account", ["login"]),
     /**
      * @description 刷新 uuid
      */
-    updateUUID () {
-      this.formLogin.uuid = getUUID()
+    updateUUID() {
+      this.formLogin.uuid = getUUID();
     },
-    refreshTime () {
-      this.time = dayjs().format('HH:mm:ss')
+    refreshTime() {
+      this.time = dayjs().format("HH:mm:ss");
     },
     /**
      * @description 接收选择一个用户快速登录的事件
      * @param {Object} user 用户信息
      */
-    handleUserBtnClick (user) {
-      this.formLogin.username = user.username
-      this.formLogin.password = user.password
-      this.submit()
+    handleUserBtnClick(user) {
+      this.formLogin.username = user.username;
+      this.formLogin.password = user.password;
+      this.submit();
     },
     /**
      * @description 提交表单
      */
-    submit: debounce(function () {
-      this.$refs.loginForm.validate(valid => {
-        if (!valid) return
-        let userInfo = { username: this.formLogin.username, password: this.formLogin.password }
-        sysAccountService.login(userInfo)
-          .then(async res => {
-            await this.login(res)
-            console.log(res)
-            console.log(this.$route.query.redirect)
-            this.$router.replace(this.$route.query.redirect || '/')
-          })
-          .catch(this.updateUUID)
-      })
-    }, 1000, { 'leading': true, 'trailing': false })
+    submit: debounce(
+      function() {
+        this.$refs.loginForm.validate(valid => {
+          
+          if (!valid) return;
+          sysAccountService
+            .login(this.formLogin)
+            .then(async res => {
+              await this.login(res);
+              console.log('***')
+              console.log(this.formLogin);
+              this.$router.replace(this.$route.query.redirect || "/");
+            })
+            .catch(this.updateUUID);
+        });
+      },
+      1000,
+      { leading: true, trailing: false }
+    )
   }
-}
+};
 </script>
 
 <style lang="scss">
 .page-login {
   @extend %unable-select;
-  $backgroundColor: #F0F2F5;
+  $backgroundColor: #f0f2f5;
   // ---
   background-color: $backgroundColor;
   height: 100%;
@@ -253,13 +266,17 @@ export default {
     .el-input-group__prepend {
       padding: 0px 14px;
     }
-    .login-code {
+    .login-captcha {
+      // https://github.com/d2-projects/d2-admin-renren-security-enterprise/issues/5
+      background-image: linear-gradient(90deg, #C7C7C7 0%, #F9F9F9 100%);
       height: 40px - 2px;
-      display: block;
+      width: 126px;
+      background-size: cover;
+      background-position: center;
       margin: 0px -20px;
       border-top-right-radius: 2px;
       border-bottom-right-radius: 2px;
-    }
+    }    
     // 登陆选项
     .page-login--options {
       margin: 0px;
@@ -335,16 +352,16 @@ export default {
       list-style: none;
       width: 20px;
       height: 20px;
-      background: #FFF;
+      background: #fff;
       animation: animate 25s linear infinite;
       bottom: -200px;
       @keyframes animate {
-        0%{
+        0% {
           transform: translateY(0) rotate(0deg);
           opacity: 1;
           border-radius: 0;
         }
-        100%{
+        100% {
           transform: translateY(-1000px) rotate(720deg);
           opacity: 0;
           border-radius: 50%;

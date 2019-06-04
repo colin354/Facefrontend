@@ -31,7 +31,7 @@ export default {
        */
       async function logout () {
         cookieRemove('token')
-        window.SITE_CONFIG['dynamicMenuRoutesHasAdded'] = false
+        // window.SITE_CONFIG['dynamicMenuRoutesHasAdded'] = false
         // 跳转路由
         router.push({
           name: 'login'
