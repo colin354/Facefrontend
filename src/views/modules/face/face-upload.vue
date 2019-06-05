@@ -12,6 +12,7 @@
       multiple
       :before-upload="beforeUploadHandle"
       :on-success="successHandle"
+      :before-remove="beforeRemove"
       class="text-center"
     >
       <i class="el-icon-upload"/>
@@ -49,7 +50,7 @@ export default {
     },
     // 上传成功
     successHandle (res, file, fileList) {
-      if (res.code !== 0) {
+      if (res.code !== '999999') {
         return this.$message.error(res.msg)
       }
       this.fileList = fileList
@@ -65,6 +66,10 @@ export default {
           }
         })
       }
+    },
+    beforeRemove (file, fileList) {
+      this.url = `${window.SITE_CONFIG['apiURL']}/sys/oss/uplad?token=${cookieGet('token')}`
+      return this.$confirm('sure')
     }
   }
 }

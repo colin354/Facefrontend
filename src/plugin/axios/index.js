@@ -39,7 +39,7 @@ function errorLog (error) {
 // 创建一个 axios 实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_API,
-  timeout: 180000, // 请求超时时间
+  timeout: 180 * 1000, // 请求超时时间
   withCredentials: true
 })
 
@@ -53,6 +53,7 @@ service.interceptors.request.use(config => {
   var defaults = {}
   // 防止缓存，GET请求默认带_t参数
   if (config.method === 'get') {
+    console.log('****')
     config.params = {
       ...config.params,
       ...{ '_t': new Date().getTime() }

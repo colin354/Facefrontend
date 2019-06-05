@@ -1,6 +1,8 @@
 // Element
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+
+import axios from '@/plugin/axios'
 // flex 布局库
 import 'flex.css'
 // 组件
@@ -18,6 +20,7 @@ export default {
     // 设置为 false 以阻止 vue 在启动时生成生产提示
     // https://cn.vuejs.org/v2/api/#productionTip
     Vue.config.productionTip = false
+    Vue.prototype.$axios = axios
     // 当前环境
     Vue.prototype.$env = process.env.NODE_ENV
     // 当前的 baseUrl
