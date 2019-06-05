@@ -29,7 +29,7 @@ const frameIn = [
           title: '抓拍查询',
           auth: true
         },
-        component: _import('demo/page1')
+        component: _import('modules/demo/page1')
       },
       {
         path: 'page2',
@@ -38,7 +38,7 @@ const frameIn = [
           title: '报警查询',
           auth: true
         },
-        component: _import('demo/page2')
+        component: _import('modules/demo/page2')
       },
       {
         path: 'page3',
@@ -47,7 +47,7 @@ const frameIn = [
           title: '轨迹查询',
           auth: true
         },
-        component: _import('demo/page3')
+        component: _import('modules/demo/page3')
       },
       // 系统 前端日志
       {
@@ -73,14 +73,14 @@ const frameIn = [
         hidden: true,
         component: _import('system/function/redirect')
       },
-
+      // 新建人脸库
       {
-        path: 'page-demo',
-        name: 'page-demo',
-        component: _import('demo/page-demo'),
+        path: 'face-list',
+        name: 'face-list',
+        component: _import('modules/face/face'),
         meta: {
           auth: true,
-          title: '新建示例'
+          title: '人脸库'
         }
       }
     ]
