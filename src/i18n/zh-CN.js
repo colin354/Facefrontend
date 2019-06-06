@@ -426,4 +426,9 @@ t.user.validate = {}
 t.user.validate.comfirmPassword = '确认密码与密码输入不一致'
 t.user.face = '人脸头像'
 
+t.face = {}
+t.face.name = '姓名'
+t.face.gender0 = '男'
+t.face.url = '存储地址'
+
 export default t

@@ -20,12 +20,13 @@
       @sort-change="dataListSortChangeHandle"
       style="width: 100%;">
       <el-table-column type="selection" header-align="center" align="center" width="50"/>
-      <el-table-column prop="url" :label="$t('oss.url')" header-align="center" align="center"/>
-      <el-table-column prop="createDate" :label="$t('oss.createDate')" sortable="custom" header-align="center" align="center" width="180"/>
-      <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
-        <!-- <template slot-scope="scope">
+      <el-table-column prop="name" :label="$t('face.name')" sortable="custom" header-align="center" align="center" width="150"/>
+      <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center"/>
+      <el-table-column prop="createDate" :label="$t('oss.createDate')" sortable="custom" header-align="center" align="center"/>
+      <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
+        <template slot-scope="scope">
           <el-button type="text" size="mini" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
-        </template> -->
+        </template>
       </el-table-column>
     </el-table>
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
@@ -42,9 +43,9 @@ export default {
   data () {
     return {
       mixinViewModuleOptions: {
-        getDataListURL: '/sys/oss/page',
+        getDataListURL: '/sys/face/page',
         getDataListIsPage: true,
-        deleteURL: '/sys/oss',
+        deleteURL: '/sys/face',
         deleteIsBatch: true
       },
       dataForm: {},
