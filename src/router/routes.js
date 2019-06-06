@@ -82,6 +82,33 @@ const frameIn = [
           auth: true,
           title: '人脸库'
         }
+      },
+      {
+        path: 'stream-list',
+        name: 'stream-list',
+        component: _import('modules/stream/stream'),
+        meta: {
+          auth: true,
+          title: '流信息模块'
+        }
+      },
+      {
+        path: 'face-match',
+        name: 'face-match',
+        component: _import('modules/face_match/index'),
+        meta: {
+          auth: true,
+          title: '匹配信息模块'
+        }
+      },
+      {
+        path: 'face-search',
+        name: 'face-search',
+        component: _import('modules/face_match/match_search'),
+        meta: {
+          auth: true,
+          title: '查询模块'
+        }
       }
     ]
   }

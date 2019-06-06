@@ -77,6 +77,7 @@
 import { debounce } from "lodash";
 import Upload from "./face-upload";
 import { isEmail, isMobile } from "@/common/validate";
+import { cookieGet } from '@/common/cookie'
 export default {
   data() {
     return {
@@ -164,7 +165,7 @@ export default {
           if (!valid) {
             return false;
           }
-          this.$axios[!this.dataForm.id ? "post" : "put"]("/sys/user", {
+          this.$axios[!this.dataForm.id ? "post" : "put"](`/sys/user?token=${cookieGet('token')}`, {
             ...this.dataForm
           })
             .then(res => {

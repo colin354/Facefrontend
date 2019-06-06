@@ -12,12 +12,27 @@ export default [
   },
   {
     title: '人脸库',
-    icon: 'folder-o',
+    icon: 'hand-scissors-o',
     children: [
       // { path: '/page1', title: '抓拍查询' },
       // { path: '/page2', title: '报警查询' },
       // { path: '/page3', title: '轨迹查询' },
-      { path: '/face-list', title: '脸库列表' }
+      { path: '/face-list', title: '人脸库列表' }
+    ]
+  },
+  {
+    title: '流信息模块',
+    icon: 'gift',
+    children: [
+      { path: '/stream-list', title: '流信息' }
+    ]
+  },
+  {
+    title: '匹配信息模块',
+    icon: 'paper-plane',
+    children: [
+      { path: '/face-match', title: '匹配信息', icon: 'paper-plane' },
+      { path: '/face-search', title: '查询模块' }
     ]
   }
 ]

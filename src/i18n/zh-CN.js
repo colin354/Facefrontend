@@ -431,4 +431,10 @@ t.face.name = '姓名'
 t.face.gender0 = '男'
 t.face.url = '存储地址'
 
+t.stream = {}
+t.stream.id = '流ID'
+t.stream.name = '流名称'
+t.stream.location = '流位置'
+t.stream.url = '流url'
+
 export default t
