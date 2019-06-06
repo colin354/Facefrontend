@@ -424,5 +424,6 @@ t.user.gender2 = '保密'
 t.user.roleIdList = '角色配置'
 t.user.validate = {}
 t.user.validate.comfirmPassword = '确认密码与密码输入不一致'
+t.user.face = '人脸头像'
 
 export default t

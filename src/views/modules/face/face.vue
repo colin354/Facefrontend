@@ -1,9 +1,9 @@
 <template>
   <d2-container>
     <el-form :inline="true" size="mini" :model="dataForm">
-     <el-form-item>
+      <el-form-item>
         <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
-      </el-form-item>      
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="uploadHandle()">上传人脸</el-button>
       </el-form-item>
