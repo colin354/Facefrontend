@@ -28,7 +28,7 @@ export default {
   methods: {
     init () {
       this.visible = true
-      this.url = `${window.SITE_CONFIG['apiURL']}/sys/oss/upload?token=${cookieGet('token')}`
+      this.url = `${window.SITE_CONFIG['apiURL']}/img/upload?token=${cookieGet('token')}`
       this.num = 0
       this.fileList = []
     },
@@ -45,8 +45,9 @@ export default {
       if (res.code !== '999999') {
         return this.$message.error(res.msg)
       }
-      let img_uuid = res.code
-      this.$emit('img_url', img_uuid)
+      // console.log(res.data.imgurl)
+      let img_uuid = res.data.imgurl
+      this.$emit('imgurl', img_uuid)
       this.fileList = fileList
       this.num--
       if (this.num === 0) {

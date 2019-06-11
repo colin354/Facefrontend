@@ -53,7 +53,7 @@
         <el-input v-model="dataForm.mobile" :placeholder="$t('user.mobile')"/>
       </el-form-item>
       <el-form-item :label="$t('user.face')">
-        <upload v-if="uploadVisible" ref="upload" @img_url="imgurl"/>
+        <upload v-if="uploadVisible" ref="upload" @imgurl="imgurl"/>
       </el-form-item>
       <!-- <el-form-item prop="roleIdList" :label="$t('user.roleIdList')" class="role-list">
         <el-select v-model="dataForm.roleIdList" multiple :placeholder="$t('user.roleIdList')">
@@ -91,7 +91,7 @@ export default {
         gender: 0,
         email: "",
         mobile: "",
-        img_url: "",
+        imgurl: "",
         status: 1
       },
     };
@@ -152,33 +152,38 @@ export default {
     init() {
       this.visible = true;
       this.$nextTick(() => {
-        this.$refs.upload.init()
-        this.$refs["dataForm"].resetFields()
-        this.getFaceList().then(() => {
-          if (this.dataForm.id) {
-            this.getInfo()
-          } else if (this.$store.state.d2admin.user.info.superAdmin === 1) {
-            this.deptListTreeSetDefaultHandle()
-          }
+      this.$refs.upload.init()
+      this.$refs["dataForm"].resetFields()
+      this.getFaceList().then(() => {
+        if (this.dataForm.id) {
+          this.getInfo()
+        } 
+          // else if (this.$store.state.d2admin.user.info.superAdmin === 1) {
+          //   this.deptListTreeSetDefaultHandle()
+          // }
         })
       });
     },
     imgurl(img_uuid) {
-      this.dataForm.img_url = img_uuid
+      this.dataForm.imgurl = img_uuid
     },
     // 获取流信息列表
     getFaceList () {
-      return this.$axios.get('/sys/face/page').then(res => {
-        this.facetList = res
+      return this.$axios.get(`/api/face?token=${cookieGet('token')}`).then(res => {
+        this.faceList = res
       }).catch(() => {})
     },
     // 获取信息
     getInfo () {
-      this.$axios.get(`/sys/face/page/${this.dataForm.id}`).then(res => {
-        this.dataForm = {
-          ...this.dataForm,
-          ...res
-        }
+      this.$axios.get(`/api/face/${this.dataForm.id}?token=${cookieGet('token')}`).then(res => {
+      console.log('***111***')
+      // console.log(res)
+      this.dataForm = {
+        ...this.dataForm,
+        ...res
+      }
+      console.log('***222***')
+      console.log(this.dataForm)
       }).catch(() => {})
     },    
     // 表单提交
@@ -188,7 +193,9 @@ export default {
           if (!valid) {
             return false;
           }
-          this.$axios[!this.dataForm.id ? "post" : "put"](`/sys/user?token=${cookieGet('token')}`, {
+          console.log('***333***')
+          console.log(this.dataForm)
+          this.$axios[!this.dataForm.id ? "post" : "put"](`/api/face?token=${cookieGet('token')}`, {
             ...this.dataForm
           })
             .then(res => {

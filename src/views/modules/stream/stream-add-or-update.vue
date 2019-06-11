@@ -74,9 +74,10 @@ export default {
         this.getStreamList().then(() => {
           if (this.dataForm.id) {
             this.getInfo()
-          } else if (this.$store.state.d2admin.user.info.superAdmin === 1) {
-            this.deptListTreeSetDefaultHandle()
-          }
+          } 
+          // else if (this.$store.state.d2admin.user.info.superAdmin === 1) {
+          //   this.deptListTreeSetDefaultHandle()
+          // }
         })
       })
     },
