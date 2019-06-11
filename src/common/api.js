@@ -10,6 +10,7 @@ export const sysAccountService = {
   login (data) {
     return request({
       url: 'http://localhost:8000/api/user/login',
+      // url: 'http://192.17.1.150:8000/api/user/login',
       method: 'post',
       data
     })
@@ -26,6 +27,7 @@ export const sysUserService = {
   getInfo () {
     return request({
       url: 'http://localhost:8000/api/sys/user/info'
+      // url: 'http://192.17.1.150:8000/api/sys/user/info'
     })
   },
   updatePassword (data) {

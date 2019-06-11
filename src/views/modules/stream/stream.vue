@@ -17,12 +17,13 @@
       @sort-change="dataListSortChangeHandle"
       style="width: 100%;">
       <el-table-column type="selection" header-align="center" align="center" width="50"/>
-      <el-table-column prop="name" :label="$t('stream.name')" sortable="custom" header-align="center" align="center" width="150"/>
-      <el-table-column prop="location" :label="$t('stream.location')" header-align="center" align="center"/>
+      <el-table-column prop="streamname" :label="$t('stream.name')" sortable="custom" header-align="center" align="center" width="150"/>
+      <el-table-column prop="streamlocation" :label="$t('stream.location')" header-align="center" align="center"/>
       <el-table-column prop="url" :label="$t('stream.url')" header-align="center" align="center"/>
       <el-table-column prop="createDate" :label="$t('oss.createDate')" sortable="custom" header-align="center" align="center"/>
       <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
         <template slot-scope="scope">
+          <el-button type="text" size="mini" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
           <el-button type="text" size="mini" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
         </template>
       </el-table-column>

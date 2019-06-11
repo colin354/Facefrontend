@@ -59,6 +59,7 @@ export default {
         this.total = this.mixinViewModuleOptions.getDataListIsPage ? res.total : 0
         console.log('---**---')
         console.log(res)
+        console.log(res.list)
       }).catch(() => {
         this.dataList = []
         this.total = 0

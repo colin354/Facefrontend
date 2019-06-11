@@ -25,6 +25,7 @@
       <el-table-column prop="createDate" :label="$t('oss.createDate')" sortable="custom" header-align="center" align="center"/>
       <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
         <template slot-scope="scope">
+          <el-button type="text" size="mini" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
           <el-button type="text" size="mini" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
         </template>
       </el-table-column>
@@ -45,7 +46,7 @@ export default {
       mixinViewModuleOptions: {
         getDataListURL: '/sys/face/page',
         getDataListIsPage: true,
-        deleteURL: '/sys/face',
+        deleteURL: '/sys/face/delete',
         deleteIsBatch: true
       },
       dataForm: {},

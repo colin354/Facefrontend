@@ -6,6 +6,7 @@
     :close-on-press-escape="false"
   >
     <el-form
+      :data="streamList"
       :model="dataForm"
       :rules="dataRule"
       ref="dataForm"
@@ -35,6 +36,7 @@ export default {
   data() {
     return {
       visible: false,
+      streamList: [],
       dataForm: {
         id: "",
         streamname: "",
@@ -68,8 +70,30 @@ export default {
     init() {
       this.visible = true;
       this.$nextTick(() => {
-        this.$refs["dataForm"].resetFields();
-      });
+        this.$refs["dataForm"].resetFields()
+        this.getStreamList().then(() => {
+          if (this.dataForm.id) {
+            this.getInfo()
+          } else if (this.$store.state.d2admin.user.info.superAdmin === 1) {
+            this.deptListTreeSetDefaultHandle()
+          }
+        })
+      })
+    },
+    // 获取流信息列表
+    getStreamList () {
+      return this.$axios.get('/sys/stream/page').then(res => {
+        this.streamtList = res
+      }).catch(() => {})
+    },
+    // 获取信息
+    getInfo () {
+      this.$axios.get(`/sys/stream/page/${this.dataForm.id}`).then(res => {
+        this.dataForm = {
+          ...this.dataForm,
+          ...res
+        }
+      }).catch(() => {})
     },
     // 表单提交
     dataFormSubmitHandle: debounce(
@@ -78,6 +102,8 @@ export default {
           if (!valid) {
             return false;
           }
+          console.log('ttttt')
+          console.log(this.dataForm)
           this.$axios[!this.dataForm.id ? "post" : "put"]("/sys/stream", {
             ...this.dataForm
           })

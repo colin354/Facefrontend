@@ -6,14 +6,15 @@
     :close-on-press-escape="false"
   >
     <el-form
+      :data="faceList"
       :model="dataForm"
       :rules="dataRule"
       ref="dataForm"
       @keyup.enter.native="dataFormSubmitHandle()"
       label-width="120px"
     >
-      <el-form-item prop="username" :label="$t('user.username')">
-        <el-input v-model="dataForm.username" :placeholder="$t('user.username')"/>
+      <el-form-item prop="username" :label="$t('face.name')">
+        <el-input v-model="dataForm.username" :placeholder="$t('face.name')"/>
       </el-form-item>
       <!-- <el-form-item prop="deptName" :label="$t('user.deptName')" class="dept-list">
         <el-popover v-model="deptListVisible" ref="deptListPopover" placement="bottom-start" trigger="click">
@@ -82,7 +83,7 @@ export default {
   data() {
     return {
       visible: false,
-      roleList: [],
+      faceList: [],
       uploadVisible: true,
       dataForm: {
         id: "",
@@ -152,12 +153,34 @@ export default {
       this.visible = true;
       this.$nextTick(() => {
         this.$refs.upload.init()
-        this.$refs["dataForm"].resetFields();
+        this.$refs["dataForm"].resetFields()
+        this.getFaceList().then(() => {
+          if (this.dataForm.id) {
+            this.getInfo()
+          } else if (this.$store.state.d2admin.user.info.superAdmin === 1) {
+            this.deptListTreeSetDefaultHandle()
+          }
+        })
       });
     },
     imgurl(img_uuid) {
       this.dataForm.img_url = img_uuid
     },
+    // 获取流信息列表
+    getFaceList () {
+      return this.$axios.get('/sys/face/page').then(res => {
+        this.facetList = res
+      }).catch(() => {})
+    },
+    // 获取信息
+    getInfo () {
+      this.$axios.get(`/sys/face/page/${this.dataForm.id}`).then(res => {
+        this.dataForm = {
+          ...this.dataForm,
+          ...res
+        }
+      }).catch(() => {})
+    },    
     // 表单提交
     dataFormSubmitHandle: debounce(
       function() {
