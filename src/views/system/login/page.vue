@@ -143,7 +143,7 @@ export default {
       }
     },
     captchaPath() {
-      return `${process.env.VUE_APP_API}/captcha?uuid=${this.formLogin.uuid}`;
+      return `${process.env.VUE_APP_API}/refresh_captcha?uuid=${this.formLogin.uuid}`;
     }
   },
   created() {

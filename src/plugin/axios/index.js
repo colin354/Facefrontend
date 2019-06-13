@@ -50,6 +50,7 @@ service.interceptors.request.use(config => {
   config.headers['Accept-Language'] = cookieGet('language') || 'zh-CN'
   config.headers['Authorization'] = cookieGet('token') || ''
   // 默认参数
+  console.log('****')
   var defaults = {}
   // 防止缓存，GET请求默认带_t参数
   if (config.method === 'get') {
