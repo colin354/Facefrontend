@@ -54,7 +54,7 @@
         <el-input v-model="dataForm.mobile" :placeholder="$t('user.mobile')"/>
       </el-form-item>
       <el-form-item :label="$t('user.face')">
-        <upload v-if="uploadVisible" ref="upload" @imgurl="imgurl"/>
+        <upload v-if="uploadVisible" ref="upload" :dataForm="this.dataForm" @imgurl="imgurl"/>
       </el-form-item>
       <!-- <el-form-item prop="roleIdList" :label="$t('user.roleIdList')" class="role-list">
         <el-select v-model="dataForm.roleIdList" multiple :placeholder="$t('user.roleIdList')">
@@ -185,12 +185,14 @@ export default {
       this.$axios
         .get(`/api/face/${this.dataForm.id}?token=${cookieGet("token")}`)
         .then(res => {
+          console.log("888888")
+          console.log(res.imgurls)
+          let url = res.imgurls
+          this.$refs.upload.getImage(url);
           this.dataForm = {
             ...this.dataForm,
             ...res
           };
-          console.log("***222***");
-          console.log(this.dataForm);
         })
         .catch(() => {});
     },
@@ -214,7 +216,7 @@ export default {
           console.log("***333***");
           console.log(this.dataForm);
           this.$axios[!this.dataForm.id ? "post" : "put"](
-            `/api/face?token=${cookieGet("token")}`,
+            `/api/face?token=${cookieGet("token")}&uuid=${this.dataForm.uuid}`,
             {
               ...this.dataForm
             }
@@ -226,6 +228,9 @@ export default {
                 duration: 500,
                 onClose: () => {
                   this.visible = false;
+                  let nam = "abbb";
+                  this.$refs.upload.init(nam);
+                  console.log("hhh***hhhh")
                   this.$emit("refreshDataList");
                 }
               });

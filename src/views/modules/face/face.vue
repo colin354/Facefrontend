@@ -24,7 +24,7 @@
       style="width: 100%;">
       <el-table-column type="selection" header-align="center" align="center" width="50"/>
       <el-table-column prop="username" :label="$t('face.name')" sortable="custom" header-align="center" align="center" width="150"/>
-      <el-table-column prop="imgurl" :label="$t('face.url')" header-align="center" align="center"/>
+      <el-table-column prop="imgdir" :label="$t('face.url')" header-align="center" align="center"/>
       <el-table-column prop="createDate" :label="$t('oss.createDate')" sortable="custom" header-align="center" align="center"/>
       <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
         <template slot-scope="scope">

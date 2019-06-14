@@ -3,8 +3,9 @@
     <el-upload
       ref="upload"
       :action="url"
-      multiple="true"
+      multiple
       list-type="picture-card"
+      :file-list="fileList"
       :before-upload="beforeUploadHandle"
       :on-success="successHandle"
       :on-remove="handleRemove"
@@ -20,6 +21,11 @@
 <script>
 import { cookieGet } from "@/common/cookie";
 export default {
+  props:{
+    dataForm: {
+      type: Object
+    }
+  },
   data() {
     return {
       dialogImageUrl: "",
@@ -42,9 +48,19 @@ export default {
       this.num = 0;
       this.fileList = [];
     },
+    getImage(url) {
+      console.log('=======1======')
+      console.log(url)
+      this.visible = true;
+      // this.fileList = [{name:'a',url:'http://192.17.1.150:8000/media/37/touxiang1.jpg'},{name:'b',url:''}];
+      this.fileList = url
+    },
     handleRemove(file, fileList) {
+      console.log('=======2======')
+      console.log(file)
+      let id = this.dataForm.id ? this.dataForm.id : ''
       this.$axios
-        .delete(`/img/${file.name}?token=${cookieGet("token")}&uuid=${this.uuid}`)
+        .delete(`/img/${file.name}?token=${cookieGet("token")}&uuid=${this.uuid}&id=${id}`)
         .then(res => {})
         .catch(() => {});
     },
@@ -70,7 +86,8 @@ export default {
         console.log("999999");
         return this.$message.error(res.msg);
       }
-      // console.log(res.data.imgurl)
+      console.log('xxxxx')
+      console.log(fileList)
       let img_uuid = res.data.imgurl;
       this.$emit("imgurl", img_uuid);
       this.fileList = fileList;
