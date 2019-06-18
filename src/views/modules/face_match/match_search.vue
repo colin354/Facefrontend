@@ -1,23 +1,36 @@
 <template>
   <d2-container>
-    <video-player
-      class="video-player-box"
-      ref="videoPlayer"
-      :options="playerOptions"
-      :playsinline="true"
-      customEventName="customstatechangedeventname"
-      @play="onPlayerPlay($event)"
-      @pause="onPlayerPause($event)"
-      @ended="onPlayerEnded($event)"
-      @waiting="onPlayerWaiting($event)"
-      @playing="onPlayerPlaying($event)"
-      @loadeddata="onPlayerLoadeddata($event)"
-      @timeupdate="onPlayerTimeupdate($event)"
-      @canplay="onPlayerCanplay($event)"
-      @canplaythrough="onPlayerCanplaythrough($event)"
-      @statechanged="playerStateChanged($event)"
-      @ready="playerReadied"
-    ></video-player>
+    <SplitPane :min-percent="20" :default-percent="20" split="vertical">
+      <template slot="paneL">
+        <div style="margin: 10px;">左</div>
+      </template>
+      <template slot="paneR">
+            <div style="margin: 10px;">
+              <video-player
+                class="vjs-custom-skin"
+                ref="videoPlayer"
+                :options="playerOptions"
+                :playsinline="true"
+                customEventName="customstatechangedeventname"
+                @play="onPlayerPlay($event)"
+                @pause="onPlayerPause($event)"
+                @ended="onPlayerEnded($event)"
+                @waiting="onPlayerWaiting($event)"
+                @playing="onPlayerPlaying($event)"
+                @loadeddata="onPlayerLoadeddata($event)"
+                @timeupdate="onPlayerTimeupdate($event)"
+                @canplay="onPlayerCanplay($event)"
+                @canplaythrough="onPlayerCanplaythrough($event)"
+                @statechanged="playerStateChanged($event)"
+                @ready="playerReadied"
+              ></video-player>
+            </div>
+            <div style="margin: 10px;">you</div>
+          <!-- <template slot="paneR">
+            <div style="margin: 10px;">右下</div>
+          </template> -->
+      </template>
+    </SplitPane>
   </d2-container>
 </template>
 
@@ -35,6 +48,7 @@ export default {
       playerOptions: {
         // videojs options
         muted: true,
+        fluid: true,
         language: "en",
         playbackRates: [0.7, 1.0, 1.5, 2.0],
         sources: [
@@ -45,7 +59,11 @@ export default {
               "http://localhost/media/stream/hello.mp4"
           }
         ],
-        poster: "@assets/images/logo.jpg"
+        poster: "@assets/images/logo.jpg",
+        controlBar: {
+          timeDivider: true,
+          fullscreenToggle: true
+        }
       }
     };
   },
