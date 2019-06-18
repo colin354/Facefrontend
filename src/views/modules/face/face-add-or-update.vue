@@ -4,6 +4,7 @@
     :title="!dataForm.id ? $t('add') : $t('update')"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
+    :before-close="handleClose"
   >
     <el-form
       :data="faceList"
@@ -53,7 +54,7 @@
         <el-input v-model="dataForm.mobile" :placeholder="$t('user.mobile')"/>
       </el-form-item>
       <el-form-item :label="$t('user.face')">
-        <upload v-if="uploadVisible" ref="upload" @imgurl="imgurl"/>
+        <upload v-if="uploadVisible" ref="upload" :dataForm="this.dataForm" @imgurl="imgurl"/>
       </el-form-item>
       <!-- <el-form-item prop="roleIdList" :label="$t('user.roleIdList')" class="role-list">
         <el-select v-model="dataForm.roleIdList" multiple :placeholder="$t('user.roleIdList')">
@@ -68,7 +69,7 @@
       </el-form-item>-->
     </el-form>
     <template slot="footer">
-      <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
+      <el-button @click="handleClose()">{{ $t('cancel') }}</el-button>
       <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
     </template>
   </el-dialog>
@@ -78,7 +79,8 @@
 import { debounce } from "lodash";
 import Upload from "./face-upload";
 import { isEmail, isMobile } from "@/common/validate";
-import { cookieGet } from '@/common/cookie'
+import { cookieGet } from "@/common/cookie";
+import { getUUID } from "@/common/renren";
 export default {
   data() {
     return {
@@ -92,8 +94,8 @@ export default {
         email: "",
         mobile: "",
         imgurl: "",
-        status: 1
-      },
+        uuid: ""
+      }
     };
   },
   computed: {
@@ -152,40 +154,58 @@ export default {
     init() {
       this.visible = true;
       this.$nextTick(() => {
-      this.$refs.upload.init()
-      this.$refs["dataForm"].resetFields()
-      this.getFaceList().then(() => {
-        if (this.dataForm.id) {
-          this.getInfo()
-        } 
+        let uuid = getUUID();
+        this.dataForm.uuid = uuid;
+        this.$refs.upload.init(uuid);
+        this.$refs["dataForm"].resetFields();
+        this.getFaceList().then(() => {
+          if (this.dataForm.id) {
+            this.getInfo();
+          }
           // else if (this.$store.state.d2admin.user.info.superAdmin === 1) {
           //   this.deptListTreeSetDefaultHandle()
           // }
-        })
+        });
       });
     },
     imgurl(img_uuid) {
-      this.dataForm.imgurl = img_uuid
+      this.dataForm.imgurl = img_uuid;
     },
     // 获取流信息列表
-    getFaceList () {
-      return this.$axios.get(`/api/face?token=${cookieGet('token')}`).then(res => {
-        this.faceList = res
-      }).catch(() => {})
+    getFaceList() {
+      return this.$axios
+        .get(`/api/face?token=${cookieGet("token")}`)
+        .then(res => {
+          this.faceList = res;
+        })
+        .catch(() => {});
     },
     // 获取信息
-    getInfo () {
-      this.$axios.get(`/api/face/${this.dataForm.id}?token=${cookieGet('token')}`).then(res => {
-      console.log('***111***')
-      // console.log(res)
-      this.dataForm = {
-        ...this.dataForm,
-        ...res
-      }
-      console.log('***222***')
-      console.log(this.dataForm)
-      }).catch(() => {})
-    },    
+    getInfo() {
+      this.$axios
+        .get(`/api/face/${this.dataForm.id}?token=${cookieGet("token")}`)
+        .then(res => {
+          console.log("888888")
+          console.log(res.imgurls)
+          let url = res.imgurls
+          this.$refs.upload.getImage(url);
+          this.dataForm = {
+            ...this.dataForm,
+            ...res
+          };
+        })
+        .catch(() => {});
+    },
+    handleClose() {
+      let name = "aaa";
+      this.$refs.upload.init(name);
+      this.visible = false;
+      this.$emit("refreshDataList");
+      this.$axios
+        .delete(`/img?token=${cookieGet("token")}&uuid=${this.dataForm.uuid}`)
+        .then(res => {})
+        .catch(() => {});
+    },
     // 表单提交
     dataFormSubmitHandle: debounce(
       function() {
@@ -193,11 +213,14 @@ export default {
           if (!valid) {
             return false;
           }
-          console.log('***333***')
-          console.log(this.dataForm)
-          this.$axios[!this.dataForm.id ? "post" : "put"](`/api/face?token=${cookieGet('token')}`, {
-            ...this.dataForm
-          })
+          console.log("***333***");
+          console.log(this.dataForm);
+          this.$axios[!this.dataForm.id ? "post" : "put"](
+            `/api/face?token=${cookieGet("token")}&uuid=${this.dataForm.uuid}`,
+            {
+              ...this.dataForm
+            }
+          )
             .then(res => {
               this.$message({
                 message: this.$t("prompt.success"),
@@ -205,6 +228,9 @@ export default {
                 duration: 500,
                 onClose: () => {
                   this.visible = false;
+                  let nam = "abbb";
+                  this.$refs.upload.init(nam);
+                  console.log("hhh***hhhh")
                   this.$emit("refreshDataList");
                 }
               });
@@ -216,7 +242,7 @@ export default {
       { leading: true, trailing: false }
     )
   }
-}
+};
 </script>
 
 <style lang="scss">

@@ -11,9 +11,6 @@
         <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="uploadHandle()">上传人脸</el-button>
-      </el-form-item>
-      <el-form-item>
         <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
       </el-form-item>
     </el-form>
@@ -27,7 +24,7 @@
       style="width: 100%;">
       <el-table-column type="selection" header-align="center" align="center" width="50"/>
       <el-table-column prop="username" :label="$t('face.name')" sortable="custom" header-align="center" align="center" width="150"/>
-      <el-table-column prop="imgurl" :label="$t('face.url')" header-align="center" align="center"/>
+      <el-table-column prop="imgdir" :label="$t('face.url')" header-align="center" align="center"/>
       <el-table-column prop="createDate" :label="$t('oss.createDate')" sortable="custom" header-align="center" align="center"/>
       <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
         <template slot-scope="scope">
@@ -37,7 +34,6 @@
       </el-table-column>
     </el-table>
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
-    <upload v-if="uploadVisible" ref="upload" @refreshDataList="getDataList"/>
     <el-pagination
       slot="footer"
       :current-page="page"
@@ -53,7 +49,6 @@
 
 <script>
 import mixinViewModule from '@/mixins/view-module'
-import Upload from './face-upload'
 import AddOrUpdate from './face-add-or-update'
 import { cookieGet } from '@/common/cookie'
 export default {
@@ -68,21 +63,13 @@ export default {
       },
       dataForm: {
         username: ''
-      },
-      uploadVisible: false
+      }
     }
   },
   components: {
     AddOrUpdate,
-    Upload
   },
   methods: {
-    uploadHandle () {
-      this.uploadVisible = true
-      this.$nextTick(() => {
-        this.$refs.upload.init()
-      })
-    }
   }
 }
 </script>
