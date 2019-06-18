@@ -8,7 +8,7 @@ t.brand.mini = '人人'
 
 t.add = '新增'
 t.delete = '删除'
-t.deleteBatch = '批量删除'
+t.deleteBatch = '删除'
 t.update = '修改'
 t.query = '查询'
 t.export = '导出'

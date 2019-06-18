@@ -11,7 +11,6 @@ export const sysAccountService = {
   login (data) {
     return request({
       // url: 'http://localhost:8000/api/user/login',
-      // url: 'http://192.17.1.150:8000/api/user/login',
       url: `${process.env.VUE_APP_API}/api/user/login`,
       method: 'post',
       data
