@@ -32,6 +32,7 @@
 
 <script>
 import { debounce } from "lodash";
+import { cookieGet } from '@/common/cookie';
 export default {
   data() {
     return {
@@ -71,25 +72,21 @@ export default {
       this.visible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].resetFields()
-        this.getStreamList().then(() => {
           if (this.dataForm.id) {
             this.getInfo()
           } 
-          // else if (this.$store.state.d2admin.user.info.superAdmin === 1) {
-          //   this.deptListTreeSetDefaultHandle()
-          // }
-        })
       })
     },
     // 获取流信息列表
     getStreamList () {
-      return this.$axios.get('/sys/stream/page').then(res => {
+      //return this.$axios.get('/sys/stream/page').then(res => {
+      return this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`).then(res => {
         this.streamtList = res
       }).catch(() => {})
     },
     // 获取信息
     getInfo () {
-      this.$axios.get(`/sys/stream/page/${this.dataForm.id}`).then(res => {
+      this.$axios.get(`/sys/stream/page/${this.dataForm.id}?token=${cookieGet('token')}`).then(res => {
         this.dataForm = {
           ...this.dataForm,
           ...res
@@ -105,7 +102,7 @@ export default {
           }
           console.log('ttttt')
           console.log(this.dataForm)
-          this.$axios[!this.dataForm.id ? "post" : "put"]("/sys/stream", {
+          this.$axios[!this.dataForm.id ? "post" : "put"](`/sys/stream?token=${cookieGet('token')}`, {
             ...this.dataForm
           })
             .then(res => {

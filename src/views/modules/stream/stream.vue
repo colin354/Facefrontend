@@ -9,6 +9,7 @@
       </el-form-item>
     </el-form>
     <el-table
+      class="demo"
       size="mini"
       v-loading="dataListLoading"
       :data="dataList"
@@ -19,30 +20,42 @@
       <el-table-column type="selection" header-align="center" align="center" width="50"/>
       <el-table-column prop="streamname" :label="$t('stream.name')" sortable="custom" header-align="center" align="center" width="150"/>
       <el-table-column prop="streamlocation" :label="$t('stream.location')" header-align="center" align="center"/>
-      <el-table-column prop="url" :label="$t('stream.url')" header-align="center" align="center"/>
+      <el-table-column prop="streamurl" :label="$t('stream.url')" header-align="center" align="center"/>
       <el-table-column prop="createDate" :label="$t('oss.createDate')" sortable="custom" header-align="center" align="center"/>
       <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
         <template slot-scope="scope">
-          <el-button type="text" size="mini" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
-          <el-button type="text" size="mini" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
+          <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
+          <el-button type="danger" size="mini" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
+          <el-button type="primary" size="mini" @click="selectHandle(scope.row.id)">{{ $t('query') }}</el-button>
         </template>
       </el-table-column>
-    </el-table>
+    </el-table> 
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
+    <el-pagination
+      slot="footer"
+      :current-page="page"
+      :page-sizes="[10, 20, 50, 100]"
+      :page-size="limit"
+      :total="total"
+      layout="total, sizes, prev, pager, next, jumper"
+      @size-change="pageSizeChangeHandle"
+      @current-change="pageCurrentChangeHandle">
+    </el-pagination>
   </d2-container>
 </template>
 
 <script>
 import mixinViewModule from '@/mixins/view-module'
 import AddOrUpdate from './stream-add-or-update'
+import { cookieGet } from '@/common/cookie'
 export default {
   mixins: [ mixinViewModule ],
   data () {
     return {
       mixinViewModuleOptions: {
-        getDataListURL: '/sys/stream/page',
+        getDataListURL: `/sys/stream/page?token=${cookieGet('token')}`,
         getDataListIsPage: true,
-        deleteURL: '/sys/stream',
+        deleteURL: `/sys/stream?token=${cookieGet('token')}`,
         deleteIsBatch: true
       },
       dataForm: {}
@@ -55,3 +68,8 @@ export default {
   }
 }
 </script>
+<style>
+  .demo {
+    font-size:15px;
+  }
+</style>
