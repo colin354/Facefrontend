@@ -38,7 +38,7 @@
                   </el-input>
                 </el-form-item>
                 <el-form-item prop="captcha">
-                  <el-input type="text" v-model="formLogin.captcha" placeholder="验证码">
+                  <el-input type="text" v-model="formLogin.captcha" placeholder="验证码" @keyup.enter.native="submit">
                     <!-- <template slot="prepend">验证码</template> -->
                     <template slot="append">
                       <div
@@ -137,13 +137,13 @@ export default {
     // 校验
     rules () {
       return {
-      username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
-      password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-      captcha: [{ required: true, message: "请输入验证码", trigger: "blur" }]
+        username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+        captcha: [{ required: true, message: "请输入验证码", trigger: "blur" }]
       }
     },
     captchaPath() {
-      return `${process.env.VUE_APP_API}/refresh_captcha?uuid=${this.formLogin.uuid}`;
+      return `${process.env.VUE_APP_API}${this.formLogin.uuid.image_url}`;
     }
   },
   created() {
@@ -163,7 +163,15 @@ export default {
      * @description 刷新 uuid
      */
     updateUUID() {
-      this.formLogin.uuid = getUUID();
+        this.$axios.get("/captcha/code")
+            .then(res=> {
+              //console.log(res.image_url);
+              this.formLogin.uuid = res;
+              console.log('********************')
+            })
+            .catch(error =>{
+              console.log(error);
+            })
     },
     refreshTime() {
       this.time = dayjs().format("HH:mm:ss");
@@ -181,23 +189,24 @@ export default {
      * @description 提交表单
      */
     submit: debounce(
-      function() {
-        this.$refs.loginForm.validate(valid => {
-          
-          if (!valid) return;
-          sysAccountService
-            .login(this.formLogin)
-            .then(async res => {
-              await this.login(res);
-              console.log('***')
-              console.log(this.formLogin);
-              this.$router.replace(this.$route.query.redirect || "/");
-            })
-            .catch(this.updateUUID);
-        });
-      },
-      1000,
-      { leading: true, trailing: false }
+            function() {
+              this.$refs.loginForm.validate(valid => {
+
+                if (!valid) return;
+                sysAccountService
+                        .login(this.formLogin)
+                        .then(async res => {
+                          if(res.code == '1') alert(res.msg);
+                          await this.login(res);
+                          //console.log('***')
+                          console.log(this.formLogin);
+                          this.$router.replace(this.$route.query.redirect || "/");
+                        })
+                        .catch(this.updateUUID);
+              });
+            },
+            1000,
+            { leading: true, trailing: false }
     )
   }
 };
@@ -276,7 +285,7 @@ export default {
       margin: 0px -20px;
       border-top-right-radius: 2px;
       border-bottom-right-radius: 2px;
-    }    
+    }
     // 登陆选项
     .page-login--options {
       margin: 0px;

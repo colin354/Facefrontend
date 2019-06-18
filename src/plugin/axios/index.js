@@ -116,6 +116,9 @@ service.interceptors.response.use(
         case '0':
           // [ 示例 ] code === 0 代表没有错误
           return dataAxios.data
+        case '1':
+          // [ 示例 ] code === 0 代表没有错误
+          return dataAxios
         case '999999':
           return dataAxios.data
         case 'xxx':
