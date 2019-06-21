@@ -57,7 +57,7 @@ export default {
         this.dataListLoading = false
         this.dataList = this.mixinViewModuleOptions.getDataListIsPage ? res.list : res
         this.total = this.mixinViewModuleOptions.getDataListIsPage ? res.count : 0
-        console.log("---**---")
+        console.log("affeee")
         console.log(res)
         console.log(res.list)
       }).catch(() => {

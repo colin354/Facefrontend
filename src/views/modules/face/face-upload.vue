@@ -86,8 +86,6 @@ export default {
         console.log("999999");
         return this.$message.error(res.msg);
       }
-      console.log('xxxxx')
-      console.log(fileList)
       let img_uuid = res.data.imgurl;
       this.$emit("imgurl", img_uuid);
       this.fileList = fileList;
