@@ -437,4 +437,7 @@ t.stream.name = '流名称'
 t.stream.location = '流位置'
 t.stream.url = '流url'
 
+t.check = {}
+t.check.broadcast = '播放'
+
 export default t
