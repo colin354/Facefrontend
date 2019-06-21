@@ -1,10 +1,10 @@
 <template>
   <el-row>
-    <el-col :span="8" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0">
+    <el-col :span="5" v-for="(o, index) in imgarr" :key="index" :offset="index > 0 ? 1 : 0">
       <el-card :body-style="{ padding: '0px' }">
-        <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+        <img :src=o.url class="image">
         <div style="padding: 14px;">
-          <span>好吃的汉堡</span>
+          <span>{{o.id}}</span>
           <div class="bottom clearfix">
             <time class="time">{{ currentDate }}</time>
             <el-button type="text" class="button">操作按钮</el-button>
@@ -32,6 +32,7 @@
   }
 
   .image {
+    height: 100%;
     width: 100%;
     display: block;
   }
@@ -49,6 +50,10 @@
 
 <script>
 export default {
+  props: {
+    imgarr: Array,
+    required: true
+  },
   data() {
     return {
       currentDate: new Date()
