@@ -1,6 +1,6 @@
 <template>
   <d2-container>
-    <SplitPane :min-percent="20" :default-percent="30" split="vertical">
+    <SplitPane :min-percent="20" :default-percent="40" split="vertical">
       <template slot="paneL">
         <div style="margin: 10px;">
           <el-table
@@ -43,7 +43,7 @@
               ></video-player>
             </div>
             <div style="margin: 10px;" ref="faceimgs">
-              <faceimg :arr="arr"></faceimg>
+              <faceimg :imgarr="imgarr"></faceimg>
             </div>
           <!-- <template slot="paneR">
             <div style="margin: 10px;">右下</div>
@@ -69,6 +69,7 @@ import spriteThumbnails from 'videojs-sprite-thumbnails'
 // import 'videojs-notations'
 import '@/views/modules/face_match/src/custom-theme.css'
 import faceimg from './face-img'
+import { constants } from 'crypto';
 
 // const plugin = function(list, item) {
 //   markers(this, list, item);
@@ -86,7 +87,7 @@ export default {
   mixins: [ mixinViewModule ],
   data() {
     return {
-      arr: [],
+      imgarr: [],
       mixinViewModuleOptions: {
         getDataListURL: `/api/check?token=${cookieGet('token')}`,
         getDataListIsPage: true,
@@ -109,7 +110,14 @@ export default {
           }
         ],
         poster: "",
-        custum: []
+        custum: [
+          {time: 9.5, text: "this", overlayText: "1", class: "special-blue", imgList:[{id:'1',url:'http://192.17.1.8/media/sample/1.jpg'},{id:'2',url:'http://192.17.1.8/media/sample/2.jpg'}],width:"100%"},
+          {time: 16,  text: "is", overlayText: "2", imgList: [{id:'11',url:'http://192.17.1.8/media/sample/3.jpg'},{id:'22',url:'http://192.17.1.8/media/sample/4.jpg'},{id:'33',url:'http://192.17.1.8/media/sample/5.jpg'}],width:"50%"},
+          {time: 23.6,text: "so", overlayText: "3", imgList:[{id:'111',url:'aaaaa'},{id:'222',url:'bbbbb'}],width:"100%"},
+          {time: 28,  text: "cool", overlayText: "4", overlayA:"aaa",width:"70%"},
+          {time: 29,  text: "nono", overlayText: "8", overlayA:"aaa",width:"70%"},
+          {time: 35,  text: "cooa", overlayText: "5",overlayA:"aaa",width:"40%"}
+        ]
       }
     };
   },
@@ -134,12 +142,19 @@ export default {
     broadcast(id){
       console.log(this.dataList[id])
       this.playerOptions.sources[0].src = this.dataList[id].url
+      /**todo:
+       *  read the proporty from end, to 
+       */
+      //  this.imgarr = [{},{}] 
+      /**
+       * todo: custunm markers 
+       */
       this.playerOptions.custum = [
-          {time: 9.5, text: "this", overlayText: "1", class: "special-blue", overlayA:"aaa",width:"100%"},
-          {time: 16,  text: "is", overlayText: "2", overlayA:"aaa",width:"50%"},
-          {time: 23.6,text: "so", overlayText: "3", overlayA:"aaa",width:"100%"},
-          {time: 28,  text: "cool", overlayText: "4", overlayA:"aaa",width:"70%"},
-          {time: 35,  text: "cooa", overlayText: "5",overlayA:"aaa",width:"40%"}
+          {time: 9.5, text: "this", overlayText: "1", class: "special-blue", imgList: [{},{}]},
+          {time: 16,  text: "is", overlayText: "2", imgList: [{},{},{}]},
+          {time: 23.6,text: "so", overlayText: "3", imgList: [{},{}]},
+          {time: 28,  text: "cool", overlayText: "4", imgList: [{},{},{},{}]},
+          {time: 35,  text: "cooa", overlayText: "5",imgList: [{},{}]}
         ]
       // this.player.markers({
       //   markerStyle: {
@@ -162,20 +177,16 @@ export default {
     // listen event
     onPlayerPlay(player) {
       console.log('player play!', player)
-      console.log(player.markers)
     },
     onPlayerPause(player) {
       console.log('player pause!', player)
     },
+    onPlayerEnded(player) {
+      console.log('player end!', player)
+    },
     // ...player event
     onPlayerTimeupdate(player) {
-      // console.log(player)
-      // player.markers({
-      //   onMarkerReached: function(marker){
-      //     console.log("aaaaa***999")
-      //     console.log(this)
-      //   }
-      // })
+      console.log("hahahahahaha")
     },
     onPlayerLoadeddata(player) {
     },
@@ -184,10 +195,13 @@ export default {
     },
     // or listen state event
     playerStateChanged(playerCurrentState) {
-      console.log('player current update state', playerCurrentState)
+      console.log('111111player current update state', playerCurrentState)
     },
     onPlayerCanplaythrough(player) {
-      console.log('on ply')
+      console.log('11111on ply')
+      if(player.currentTime() < this.playerOptions.custum[0].time) {
+        this.imgarr = []
+      }
     },
     onPlayerCanplay(player) {
       console.log('aaabbaa')
@@ -211,6 +225,11 @@ export default {
       //     return ((event.which === 70) || (event.ctrlKey && event.which === 13));
       //   }
       // }),
+      let aa = this.playerOptions.custum
+      let ab = this
+      this.imgarr = []
+      console.log("readyyyyy***999")
+      console.log(this.playerOptions.custum)
       player.markers({
         markerStyle: {
             'width':'9px',
@@ -219,24 +238,13 @@ export default {
         },
         onMarkerReached: function(marker,index){
           console.log("aaaaa***999")
-          console.log(this)
           console.log(marker)
-          console.log(index)
+          ab.imgarr = marker.imgList
         },
-        markers: [
-          {time: 9.5, text: "this", overlayText: "1", class: "special-blue", overlayA:"aaa",width:"100%"},
-          {time: 16,  text: "is", overlayText: "2", overlayA:"aaa",width:"50%"},
-          {time: 23.6,text: "so", overlayText: "3", overlayA:"aaa",width:"100%"},
-          {time: 28,  text: "cool", overlayText: "4", overlayA:"aaa",width:"70%"},
-          {time: 35,  text: "cooa", overlayText: "5",overlayA:"aaa",width:"40%"}
-        ]
-      })   
-
-      //   onMarkerReached: function(marker){
-      //     console.log("aaaaa***999")
-      //   },
-      //   markers: this.playerOptions.custum
-      // })
+        markers: aa
+      });
+      console.log("aabbncddd0000")
+      console.log(this)
     }
   }
 };
