@@ -438,6 +438,7 @@ t.stream.location = '流位置'
 t.stream.url = '流url'
 
 t.check = {}
+t.check.faceid = '人脸id'
 t.check.broadcast = '播放'
 
 export default t

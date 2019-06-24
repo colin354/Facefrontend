@@ -6,12 +6,12 @@
           <el-card class="box-card">
             <el-form :inline="true" size="mini" :model="dataForm">
               <el-form-item>
-                <el-input v-model="dataForm.username" :placeholder="$t('face.name')" clearable/>
+                <el-input v-model="dataForm.faceid" :placeholder="$t('check.faceid')" clearable/>
               </el-form-item>
               <el-form-item>
                 <el-button @click="getDataList()">{{ $t('query') }}</el-button>
               </el-form-item>          
-            </el-form>         
+            </el-form>
             <el-table
               size="mini"
               v-loading="dataListLoading"
@@ -21,7 +21,7 @@
               @sort-change="dataListSortChangeHandle"
               style="width: 100%;">
               <el-table-column prop="faceid" :label="$t('face.name')" header-align="center" align="center" width="100"/>
-              <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center"/>
+              <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center" width="280"/>
               <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
                 <template slot-scope="scope">
                   <el-button type="text" size="mini" @click="broadcast(scope.row.id)">{{ $t('check.broadcast') }}</el-button>
@@ -156,7 +156,6 @@ export default {
         deleteIsBatch: true
       },
       dataForm: {
-        username: ''
       },
       playerOptions: {
         // videojs options
@@ -293,7 +292,6 @@ export default {
       let aa = this.playerOptions.custum
       let ab = this
       this.imgarr = []
-      console.log("readyyyyy***999")
       console.log(this.playerOptions.custum)
       player.markers({
         markerStyle: {

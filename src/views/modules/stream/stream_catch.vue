@@ -1,25 +1,31 @@
 <template>
   <d2-container>
     <el-row :gutter="20">
-      <el-col :span="8">
+      <el-col :span="16">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
-            <div v-for="o in 5" :key="o" class="text item">
-              {{'列表内容 ' + o }}
+            <div id="map">
+              <div class="amap-wrapper">
+                <el-amap ref="map" vid="amapDemo" :amap-manager="amapManager" :center="center" :zoom="zoom" :plugin="plugin" :events="events" class="amap-demo">
+                </el-amap>
+              </div>
             </div>
           </el-card>
         </div>
       </el-col>
-      <el-col :span="16"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="8">
+        <div class="grid-content bg-purple">
+          <el-card class="box-card">
+            <div v-for="o in 6" :key="o" class="text item">
+              {{'列表内容 ' + o }}
+            </div>
+          </el-card>        
+        </div>
+      </el-col>
     </el-row>
     <el-row :gutter="20">
       <el-col :span="24">
         <div class="grid-content bg-purple">
-          <el-card class="box-card">
-            <div class="inner">
-              <ve-map :data="chartData" v-bind="pubSetting" :settings="chartSettings"></ve-map>
-            </div>
-          </el-card>
         </div>
         </el-col>
     </el-row>    
@@ -27,37 +33,58 @@
 </template>
 
 <script>
-import list from '@/views/modules/stream/_mixin/list'
-import mapOrigin from '@/views/modules/stream/_data/beijing'
+import { AMapManager } from 'vue-amap'
+let amapManager = new AMapManager();
 export default {
-  mixins: [
-    list
-  ],
-  data () {
+  data: function() {
     return {
-      chartSettings: {
-        position: 'province/beijing',
-        mapOrigin
+      amapManager,
+      zoom: 12,
+      center: [116.481485, 39.990464],
+      events: {
+        init: (o) => {
+          console.log(o.getCenter())
+          console.log(this.$refs.map.$$getInstance())
+          o.getCity(result => {
+            console.log(result)
+          })
+        },
+        'moveend': () => {
+        },
+        'zoomchange': () => {
+        },
+        'click': (e) => {
+          alert('map clicked');
+        }
       },
-      chartData: {
-        columns: ['位置', '人口'],
-        rows: [
-          { '位置': '延庆区', '人口': 123 },
-          { '位置': '密云区', '人口': 1223 },
-          { '位置': '平谷区', '人口': 2123 },
-          { '位置': '海淀区', '人口': 4123 }
-        ]
-      }
+      plugin: ['ToolBar', {
+        pName: 'MapType',
+        defaultType: 0,
+        events: {
+          init(o) {
+            console.log(o);
+          }
+        }
+      }]
+    };
+  },
+  methods: {
+    getMap() {
+      // amap vue component
+      console.log(amapManager._componentMap);
+      // gaode map instance
+      console.log(amapManager._map);
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+  .amap-demo {
+    height: 400px;
+  }
   .inner {
-    position: right;
-    width: 480px;
-    height: 480px;
+    position: absolute;
     top: 20px;
     right:  20px;
     bottom: 20px;
