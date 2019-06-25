@@ -93,6 +93,15 @@ const frameIn = [
         }
       },
       {
+        path: 'stream-catch',
+        name: 'stream-catch',
+        component: _import('modules/stream/stream_catch'),
+        meta: {
+          auth: true,
+          title: '流信息模块'
+        }
+      },      
+      {
         path: 'face-match',
         name: 'face-match',
         component: _import('modules/face_match/index'),
@@ -109,7 +118,16 @@ const frameIn = [
           auth: true,
           title: '查询模块'
         }
-      }
+      },
+      {
+        path: 'face-search-by-face',
+        name: 'face-search-by-face',
+        component: _import('modules/face_match/match_search_by_face'),
+        meta: {
+          auth: true,
+          title: '查询模块(人脸)'
+        }
+      }      
     ]
   }
 ]

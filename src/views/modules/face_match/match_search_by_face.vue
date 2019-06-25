@@ -1,57 +1,118 @@
 <template>
   <d2-container>
-    <SplitPane :min-percent="20" :default-percent="40" split="vertical">
-      <template slot="paneL">
-        <div style="margin: 10px;">
-          <el-table
-            size="mini"
-            v-loading="dataListLoading"
-            :data="dataList"
-            border
-            @selection-change="dataListSelectionChangeHandle"
-            @sort-change="dataListSortChangeHandle"
-            style="width: 100%;">
-            <el-table-column prop="faceid" :label="$t('face.name')" header-align="center" align="center" width="100"/>
-            <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center"/>
-            <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
-              <template slot-scope="scope">
-                <el-button type="text" size="mini" @click="broadcast(scope.row.id)">{{ $t('check.broadcast') }}</el-button>
-              </template>
-          </el-table-column>
-          </el-table>
+    <el-row :gutter="20">
+      <el-col :span="8">
+        <div class="grid-content bg-purple">
+          <el-card class="box-card">
+            <el-form :inline="true" size="mini" :model="dataForm">
+              <el-form-item>
+                <el-input v-model="dataForm.faceid" :placeholder="$t('check.faceid')" clearable/>
+              </el-form-item>
+              <el-form-item>
+                <el-button @click="getDataList()">{{ $t('query') }}</el-button>
+              </el-form-item>          
+            </el-form>
+            <el-table
+              size="mini"
+              v-loading="dataListLoading"
+              :data="dataList"
+              border
+              @selection-change="dataListSelectionChangeHandle"
+              @sort-change="dataListSortChangeHandle"
+              style="width: 100%;">
+              <el-table-column prop="faceid" :label="$t('face.name')" header-align="center" align="center" width="100"/>
+              <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center" width="280"/>
+              <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
+                <template slot-scope="scope">
+                  <el-button type="text" size="mini" @click="broadcast(scope.row.id)">{{ $t('check.broadcast') }}</el-button>
+                </template>
+            </el-table-column>
+            </el-table>
+          </el-card>
         </div>
-      </template>
-      <template slot="paneR">
-            <div style="margin: 10px;">
-              <video-player
-                class="vjs-default-skin"
-                ref="videoPlayer"
-                :options="playerOptions"
-                :playsinline="true"
-                customEventName="customstatechangedeventname"
-                @play="onPlayerPlay($event)"
-                @pause="onPlayerPause($event)"
-                @ended="onPlayerEnded($event)"
-                @waiting="onPlayerWaiting($event)"
-                @playing="onPlayerPlaying($event)"
-                @loadeddata="onPlayerLoadeddata($event)"
-                @timeupdate="onPlayerTimeupdate($event)"
-                @canplay="onPlayerCanplay($event)"
-                @canplaythrough="onPlayerCanplaythrough($event)"
-                @statechanged="playerStateChanged($event)"
-                @ready="playerReadied"
-              ></video-player>
+      </el-col>
+      <el-col :span="16">
+        <el-row ::gutter="20">
+          <el-col>
+            <div class="grid-content bg-purple">
+              <el-card class="box-card">
+                <video-player
+                  class="vjs-default-skin"
+                  ref="videoPlayer"
+                  :options="playerOptions"
+                  :playsinline="true"
+                  customEventName="customstatechangedeventname"
+                  @play="onPlayerPlay($event)"
+                  @pause="onPlayerPause($event)"
+                  @ended="onPlayerEnded($event)"
+                  @waiting="onPlayerWaiting($event)"
+                  @playing="onPlayerPlaying($event)"
+                  @loadeddata="onPlayerLoadeddata($event)"
+                  @timeupdate="onPlayerTimeupdate($event)"
+                  @canplay="onPlayerCanplay($event)"
+                  @canplaythrough="onPlayerCanplaythrough($event)"
+                  @statechanged="playerStateChanged($event)"
+                  @ready="playerReadied"
+                ></video-player>                
+              </el-card>
             </div>
-            <div style="margin: 10px;" ref="faceimgs">
-              <faceimg :imgarr="imgarr"></faceimg>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col>
+            <div class="grid-content bg-purple">
+              <el-card class="box-card">
+                <faceimg :imgarr="imgarr"></faceimg>
+              </el-card>
             </div>
-          <!-- <template slot="paneR">
-            <div style="margin: 10px;">右下</div>
-          </template> -->
-      </template>
-    </SplitPane>
+          </el-col>
+        </el-row>   
+      </el-col>
+    </el-row> 
   </d2-container>
 </template>
+
+<style lang="scss" scoped>
+  .inner {
+    position: right;
+    top: 20px;
+    right:  20px;
+    bottom: 20px;
+    left: 20px;
+  }  
+  .text {
+    font-size: 14px;
+  }
+  .item {
+    padding: 18px 0;
+  }
+  .el-row {
+    margin-bottom: 20px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }
+  .bg-purple {
+    background: #d3dce6;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+  }
+  .row-bg {
+    padding: 10px 0;
+    background-color: #f9fafc;
+  }
+</style>
 
 <script>
 import "video.js/dist/video-js.css";
@@ -93,6 +154,8 @@ export default {
         getDataListIsPage: true,
         deleteURL: `/api/check?token=${cookieGet('token')}`,
         deleteIsBatch: true
+      },
+      dataForm: {
       },
       playerOptions: {
         // videojs options
@@ -229,7 +292,6 @@ export default {
       let aa = this.playerOptions.custum
       let ab = this
       this.imgarr = []
-      console.log("readyyyyy***999")
       console.log(this.playerOptions.custum)
       player.markers({
         markerStyle: {

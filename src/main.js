@@ -14,10 +14,29 @@ import menuHeader from '@/menu/header'
 import menuAside from '@/menu/aside'
 import { frameInRoutes } from '@/router/routes'
 import SplitPane from 'vue-splitpane'
+import VCharts from 'v-charts'
+import VueAMap from 'vue-amap'
+import { lazyAMapApiLoaderInstance } from 'vue-amap'
 
 // 核心插件
 Vue.use(d2Admin)
+Vue.use(VCharts)
+Vue.use(VueAMap)
 Vue.component('SplitPane', SplitPane)
+
+VueAMap.initAMapApiLoader({
+  key: 'e8d88ad5fce9142a64cf942e06a961bd',
+  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+  // 默认高德 sdk 版本为 1.4.4
+  v: '1.4.4'
+})
+
+// lazyAMapApiLoaderInstance.load().then(() => {
+//   // your code ...
+//   this.map = new VueAMap.Map('amapContainer', {
+//     center: new VueAMap.LngLat(121.59996, 31.197646)
+//   })
+// })
 
 new Vue({
   router,
