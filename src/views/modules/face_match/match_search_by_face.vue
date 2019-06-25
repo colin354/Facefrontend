@@ -20,11 +20,11 @@
               @selection-change="dataListSelectionChangeHandle"
               @sort-change="dataListSortChangeHandle"
               style="width: 100%;">
-              <el-table-column prop="faceid" :label="$t('face.name')" header-align="center" align="center" width="100"/>
-              <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center" width="280"/>
+              <el-table-column prop="faceid" :label="$t('face.name')" header-align="center" align="center" width="60"/>
+              <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center" width="290"/>
               <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
                 <template slot-scope="scope">
-                  <el-button type="text" size="mini" @click="broadcast(scope.row.id)">{{ $t('check.broadcast') }}</el-button>
+                  <el-button type="text" size="mini" @click="broadcast(scope.row.faceid,scope.row.streamid,scope.row.url)">{{ $t('check.broadcast') }}</el-button>
                 </template>
             </el-table-column>
             </el-table>
@@ -203,9 +203,18 @@ export default {
     }
   }, 
   methods: {
-    broadcast(id){
-      console.log(this.dataList[id])
-      this.playerOptions.sources[0].src = this.dataList[id].url
+    broadcast(fid,sid,url){
+      console.log('******----******')
+      this.playerOptions.sources[0].src = url
+      this.$axios
+      .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:fid,streamid:sid}})
+      .then(res => {
+        console.log('****res***res****')
+        console.log(res)
+        this.playerOptions.custum = res.list
+      })
+      .catch(() => {});
+      // this.playerOptions.sources[0].src = this.dataList[id].url
       /**todo:
        *  read the proporty from end, to 
        */
