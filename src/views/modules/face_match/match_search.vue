@@ -1,7 +1,12 @@
 <template>
   <d2-container>
-    <SplitPane :min-percent="20" :default-percent="40" split="vertical">
+    <SplitPane :min-percent="20" :default-percent="30" split="vertical">
       <template slot="paneL">
+
+      <!--  <el-select placeholder="查询视频">
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>-->
         <div style="margin: 10px;">
           <el-table
             size="mini"
@@ -11,11 +16,11 @@
             @selection-change="dataListSelectionChangeHandle"
             @sort-change="dataListSortChangeHandle"
             style="width: 100%;">
-            <el-table-column prop="faceid" :label="$t('face.name')" header-align="center" align="center" width="100"/>
-            <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center"/>
+            <el-table-column prop="id" :label="$t('stream.name')" header-align="center" align="center" width="100"/>
+            <el-table-column prop="streamurl" :label="$t('stream.url')" header-align="center" align="center"/>
             <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
               <template slot-scope="scope">
-                <el-button type="text" size="mini" @click="broadcast(scope.row.id)">{{ $t('check.broadcast') }}</el-button>
+                <el-button type="text" size="mini" @click="broadcast(scope.row.streamurl)">{{ $t('check.broadcast') }}</el-button>
               </template>
           </el-table-column>
           </el-table>
@@ -43,7 +48,7 @@
               ></video-player>
             </div>
             <div style="margin: 10px;" ref="faceimgs">
-              <faceimg :imgarr="imgarr"></faceimg>
+              <faceimg :arr="arr"></faceimg>
             </div>
           <!-- <template slot="paneR">
             <div style="margin: 10px;">右下</div>
@@ -63,10 +68,12 @@ import 'videojs-hotkeys'
 import "@/views/modules/face_match/src/videojs.markers.css"
 // import markers from 'videojs-markers/dist/videojs-markers'
 import 'videojs-markers'
+import thumbnails from 'videojs-thumbnails'
+import vttThumbnails from 'videojs-vtt-thumbnails'
+import spriteThumbnails from 'videojs-sprite-thumbnails'
 // import 'videojs-notations'
 import '@/views/modules/face_match/src/custom-theme.css'
 import faceimg from './face-img'
-import { constants } from 'crypto';
 
 // const plugin = function(list, item) {
 //   markers(this, list, item);
@@ -84,9 +91,13 @@ export default {
   mixins: [ mixinViewModule ],
   data() {
     return {
-      imgarr: [],
+      //options:[
+        //{value:"1",label:"按人查询流"},
+        //{value:"2",label:"按流查询人"}
+        //],
+      arr: [],
       mixinViewModuleOptions: {
-        getDataListURL: `/api/check?token=${cookieGet('token')}`,
+        getDataListURL: `/sys/stream/page?token=${cookieGet('token')}`,
         getDataListIsPage: true,
         deleteURL: `/api/check?token=${cookieGet('token')}`,
         deleteIsBatch: true
@@ -100,36 +111,16 @@ export default {
         sources: [
           {
             type: "video/mp4",
-            src:
-              // "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
-              "http://10.2.151.139:9999/102.mp4"
-              // "http://localhost/media/stream/102.mp4"
-              //http://localhost
+            src: "http://10.2.151.139:9999/102.mp4"
           }
         ],
         poster: "",
-        custum: [
-          {time: 9.5, text: "this", overlayText: "1", imgList:[{id:'1',url:'http://192.17.1.18/media/sample/1.jpg'},{id:'2',url:'http://192.17.1.18/media/sample/2.jpg'}],width:"100%"},
-          {time: 16,  text: "is", overlayText: "2", imgList: [{id:'11',url:'http://192.17.1.18/media/sample/3.jpg'},{id:'22',url:'http://192.17.1.18/media/sample/4.jpg'},{id:'33',url:'http://192.17.1.18/media/sample/5.jpg'}],width:"50%"},
-          {time: 23.6,text: "so", overlayText: "3", imgList:[{id:'111',url:'aaaaa'},{id:'222',url:'bbbbb'}],width:"100%"},
-          {time: 28,  text: "cool", overlayText: "4", overlayA:"aaa",width:"70%"},
-          {time: 29,  text: "nono", overlayText: "8", overlayA:"aaa",width:"70%"},
-          {time: 35,  text: "cooa", overlayText: "5",overlayA:"aaa",width:"40%"}
-        ]
+        custum: []
       }
     };
   },
   mounted() {
     console.log("this is current player instance object", this.player);
-    // this.player.markers({
-    //   markers: [
-    //     {time: 9.5, text: "this", overlayText: "1", class: "special-blue", arrlist:[{},{}],width:"100%"},
-    //     {time: 16,  text: "is", overlayText: "2", arrlist:[{}], overlayA:"aaa",width:"50%"},
-    //     {time: 23.6,text: "so", overlayText: "3", overlayA:"aaa",width:"100%"},
-    //     {time: 28,  text: "cool", overlayText: "4", overlayA:"aaa",width:"70%"},
-    //     {time: 35,  text: "cooa", overlayText: "5",overlayA:"aaa",width:"40%"}
-    //   ]
-    // })
   },
   computed: {
     player() {
@@ -137,54 +128,35 @@ export default {
     }
   }, 
   methods: {
-    broadcast(id){
-      console.log(this.dataList[id])
-      this.playerOptions.sources[0].src = this.dataList[id].url
-      /**todo:
-       *  read the proporty from end, to 
-       */
-      //  this.imgarr = [{},{}] 
-      /**
-       * todo: custunm markers 
-       */
-      this.playerOptions.custum = [
-          {time: 9.5, text: "this", overlayText: "1", class: "special-blue", imgList: [{},{}]},
-          {time: 16,  text: "is", overlayText: "2", imgList: [{},{},{}]},
-          {time: 23.6,text: "so", overlayText: "3", imgList: [{},{}]},
-          {time: 28,  text: "cool", overlayText: "4", imgList: [{},{},{},{}]},
-          {time: 35,  text: "cooa", overlayText: "5",imgList: [{},{}]}
-        ]
-      // this.player.markers({
-      //   markerStyle: {
-      //       'width':'9px',
-      //       'border-radius': '40%',
-      //       'background-color': 'orange'
-      //   },
-      //   onMarkerReached: function(marker){
-      //     console.log("aaaaa***999")
-      //   },
-      //   markers: [
-      //     {time: 9.5, text: "this", overlayText: "1", class: "special-blue", overlayA:"aaa",width:"100%"},
-      //     {time: 16,  text: "is", overlayText: "2", overlayA:"aaa",width:"50%"},
-      //     {time: 23.6,text: "so", overlayText: "3", overlayA:"aaa",width:"100%"},
-      //     {time: 28,  text: "cool", overlayText: "4", overlayA:"aaa",width:"70%"},
-      //     {time: 35,  text: "cooa", overlayText: "5",overlayA:"aaa",width:"40%"}
-      //   ]
-      // })   
+    broadcast(streamurl){
+      this.playerOptions.sources[0].src = streamurl
+      this.$axios.get(`/api/check/${streamurl}?token=${cookieGet('token')}`)
+            .then(res=> {
+              var i = 0
+              this.playerOptions.custum = []
+              for(i;i<res.count;i++){ 
+                this.playerOptions.custum.push(res.list[i])
+              }
+            })
+            .catch(error =>{
+              console.log(error);
+            }) 
     },
     // listen event
-    onPlayerPlay(player) {
+    onPlayerPlay(player) {  //点击视频上的播放,便开始播放视频
       console.log('player play!', player)
+      console.log(player.markers)
     },
     onPlayerPause(player) {
       console.log('player pause!', player)
-    },
-    onPlayerEnded(player) {
-      console.log('player end!', player)
+      console.log(this.arr)
     },
     // ...player event
     onPlayerTimeupdate(player) {
-      console.log("hahahahahaha")
+      // console.log(player)
+    },
+    onPlayerEnded(player) {
+      // console.log('player pause!', player)
     },
     onPlayerLoadeddata(player) {
     },
@@ -193,13 +165,10 @@ export default {
     },
     // or listen state event
     playerStateChanged(playerCurrentState) {
-      console.log('111111player current update state', playerCurrentState)
+      console.log('player current update state', playerCurrentState)
     },
     onPlayerCanplaythrough(player) {
-      console.log('11111on ply')
-      if(player.currentTime() < this.playerOptions.custum[0].time) {
-        this.imgarr = []
-      }
+      console.log('on ply')
     },
     onPlayerCanplay(player) {
       console.log('aaabbaa')
@@ -212,22 +181,9 @@ export default {
       console.log("the player is readied!!!!!", player);
       // you can use it to do something...
       // player.[methods]
-
-      // player.hotkeys({
-      //   volumeStep: 0.1,
-      //   seekStep: 5,
-      //   enableModifiersForNumbers: false,
-      //   enableMute: true,
-      //   fullscreenKey: function(event, player) {
-      //     // override fullscreen to trigger when pressing the F key or Ctrl+Enter
-      //     return ((event.which === 70) || (event.ctrlKey && event.which === 13));
-      //   }
-      // }),
-      let aa = this.playerOptions.custum
-      let ab = this
-      this.imgarr = []
-      console.log("readyyyyy***999")
-      console.log(this.playerOptions.custum)
+      let acustum = this.playerOptions.custum;
+      let aa = this;
+      this.arr=[]
       player.markers({
         markerStyle: {
             'width':'9px',
@@ -235,14 +191,15 @@ export default {
             'background-color': 'orange'
         },
         onMarkerReached: function(marker,index){
-          console.log("aaaaa***999")
-          console.log(marker)
-          ab.imgarr = marker.imgList
+          //aa = [];
+
+          console.log("aaaaa8888888***999")
+          //console.log(marker.imgList)
+          aa.arr = marker.imgList
+          //console.log(aa.arr)
         },
-        markers: aa
-      });
-      console.log("aabbncddd0000")
-      console.log(this)
+          markers: acustum
+      })   
     }
   }
 };

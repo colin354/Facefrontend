@@ -21,7 +21,7 @@
               @sort-change="dataListSortChangeHandle"
               style="width: 100%;">
               <el-table-column prop="faceid" :label="$t('face.name')" header-align="center" align="center" width="60"/>
-              <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center" width="290"/>
+              <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center" />
               <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
                 <template slot-scope="scope">
                   <el-button type="text" size="mini" @click="broadcast(scope.row.faceid,scope.row.streamid,scope.row.url)">{{ $t('check.broadcast') }}</el-button>
@@ -166,8 +166,8 @@ export default {
             type: "video/mp4",
             src:
               // "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
-              // "http://10.2.151.139:9999/102.mp4"
-              "http://localhost/media/stream/yl.mp4"
+              "http://10.2.151.139:9999/102.mp4"
+              // "http://localhost/media/stream/yl.mp4"
               //http://localhost
           }
         ],
