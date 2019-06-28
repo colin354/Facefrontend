@@ -20,11 +20,11 @@
               @selection-change="dataListSelectionChangeHandle"
               @sort-change="dataListSortChangeHandle"
               style="width: 100%;">
-              <el-table-column prop="faceid" :label="$t('face.name')" header-align="center" align="center" width="100"/>
-              <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center" width="280"/>
+              <el-table-column prop="faceid" :label="$t('face.name')" header-align="center" align="center" width="60"/>
+              <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center" width="290"/>
               <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
                 <template slot-scope="scope">
-                  <el-button type="text" size="mini" @click="broadcast(scope.row.id)">{{ $t('check.broadcast') }}</el-button>
+                  <el-button type="text" size="mini" @click="broadcast(scope.row.faceid,scope.row.streamid,scope.row.url)">{{ $t('check.broadcast') }}</el-button>
                 </template>
             </el-table-column>
             </el-table>
@@ -124,9 +124,6 @@ import 'videojs-hotkeys'
 import "@/views/modules/face_match/src/videojs.markers.css"
 // import markers from 'videojs-markers/dist/videojs-markers'
 import 'videojs-markers'
-import thumbnails from 'videojs-thumbnails'
-import vttThumbnails from 'videojs-vtt-thumbnails'
-import spriteThumbnails from 'videojs-sprite-thumbnails'
 // import 'videojs-notations'
 import '@/views/modules/face_match/src/custom-theme.css'
 import faceimg from './face-img'
@@ -159,6 +156,7 @@ export default {
       },
       playerOptions: {
         // videojs options
+        loop: true,
         muted: true,
         fluid: true,
         language: "en",
@@ -168,8 +166,8 @@ export default {
             type: "video/mp4",
             src:
               // "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
-              "http://10.2.151.139:9999/102.mp4"
-              // "http://localhost/media/stream/102.mp4"
+              // "http://10.2.151.139:9999/102.mp4"
+              "http://localhost/media/stream/yl.mp4"
               //http://localhost
           }
         ],
@@ -203,9 +201,18 @@ export default {
     }
   }, 
   methods: {
-    broadcast(id){
-      console.log(this.dataList[id])
-      this.playerOptions.sources[0].src = this.dataList[id].url
+    broadcast(fid,sid,url){
+      console.log('******----******')
+      this.playerOptions.sources[0].src = url
+      this.$axios
+      .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:fid,streamid:sid}})
+      .then(res => {
+        console.log('****res***res****')
+        console.log(res)
+        this.playerOptions.custum = res.list
+      })
+      .catch(() => {});
+      // this.playerOptions.sources[0].src = this.dataList[id].url
       /**todo:
        *  read the proporty from end, to 
        */

@@ -116,7 +116,7 @@ const frameIn = [
         component: _import('modules/face_match/match_search'),
         meta: {
           auth: true,
-          title: '查询模块'
+          title: '查询模块(流)'
         }
       },
       {

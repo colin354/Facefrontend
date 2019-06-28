@@ -2,7 +2,7 @@
   <el-row>
     <el-col :span="5" v-for="(o, index) in imgarr" :key="index" :offset="index > 0 ? 1 : 0">
       <el-card :body-style="{ padding: '0px' }">
-        <img :src=o.url class="image">
+        <img :src=o.imgurl class="image">
         <div style="padding: 14px;">
           <span>{{o.id}}</span>
           <div class="bottom clearfix">
