@@ -51,8 +51,8 @@ export default {
         on: {
           scroll: e => this.$emit('scroll', e)
         }
-      }, slots),
-      h(d2Source)
+      }, slots)
+      // h(d2Source)
     ])
   },
   methods: {

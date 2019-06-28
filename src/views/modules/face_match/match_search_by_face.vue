@@ -124,9 +124,6 @@ import 'videojs-hotkeys'
 import "@/views/modules/face_match/src/videojs.markers.css"
 // import markers from 'videojs-markers/dist/videojs-markers'
 import 'videojs-markers'
-import thumbnails from 'videojs-thumbnails'
-import vttThumbnails from 'videojs-vtt-thumbnails'
-import spriteThumbnails from 'videojs-sprite-thumbnails'
 // import 'videojs-notations'
 import '@/views/modules/face_match/src/custom-theme.css'
 import faceimg from './face-img'
@@ -159,6 +156,7 @@ export default {
       },
       playerOptions: {
         // videojs options
+        loop: true,
         muted: true,
         fluid: true,
         language: "en",
@@ -168,8 +166,8 @@ export default {
             type: "video/mp4",
             src:
               // "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
-              "http://10.2.151.139:9999/102.mp4"
-              // "http://localhost/media/stream/102.mp4"
+              // "http://10.2.151.139:9999/102.mp4"
+              "http://localhost/media/stream/yl.mp4"
               //http://localhost
           }
         ],
