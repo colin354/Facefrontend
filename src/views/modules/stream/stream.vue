@@ -9,7 +9,6 @@
       </el-form-item>
     </el-form>
     <el-table
-      class="demo"
       size="mini"
       v-loading="dataListLoading"
       :data="dataList"

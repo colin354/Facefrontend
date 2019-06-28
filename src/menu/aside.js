@@ -12,7 +12,7 @@ export default [
   // },
   {
     title: '人脸库',
-    icon: 'fa fa-user-o',
+    icon: 'user-circle-o',
     children: [
       // { path: '/page1', title: '抓拍查询' },
       // { path: '/page2', title: '报警查询' },
