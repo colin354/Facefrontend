@@ -16,7 +16,7 @@
               <el-table-column prop="streamurl" :label="$t('stream.url')" header-align="center" align="center"/>
               <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
                 <template slot-scope="scope">
-                  <el-button type="text" size="mini" @click="broadcast(scope.row.streamurl)">{{ $t('check.broadcast') }}</el-button>
+                  <el-button type="text" size="mini" @click="broadcast(scope.row.id,scope.row.streamurl)">{{ $t('check.broadcast') }}</el-button>
                 </template>
             </el-table-column>
             </el-table>
@@ -128,10 +128,12 @@ export default {
     }
   }, 
   methods: {
-    broadcast(streamurl){
-      console.log(this.data)
+    broadcast(id,streamurl){
+      console.log("11111111111111111111111111111111111111")
+      console.log(id)
+      console.log(streamurl)
       this.playerOptions.sources[0].src = streamurl
-      this.$axios.get(`/api/check?token=${cookieGet('token')}&streamurl=${streamurl}`)
+      this.$axios.get(`/api/check?token=${cookieGet('token')}&streamid=${id}`)
             .then(res=> {
               var i = 0
               this.playerOptions.custum = []
@@ -192,12 +194,9 @@ export default {
             'background-color': 'orange'
         },
         onMarkerReached: function(marker,index){
-          //aa = [];
-
           //console.log("aaaaa8888888***999")
           //console.log(marker.imgList)
           aa.imgarr = marker.imgList
-          //console.log(aa.imgarr)
           console.log("aaaaa8888888***999")
           console.log(aa.imgarr)
         },
