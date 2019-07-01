@@ -32,9 +32,9 @@ export default [
     title: '匹配信息模块',
     icon: 'paper-plane',
     children: [
-      // { path: '/face-match', title: '匹配信息', icon: 'paper-plane' },
       { path: '/face-search', title: '查询模块(流)', icon: 'gg-circle' },
-      { path: '/face-search-by-face', title: '查询模块(人脸)', icon: 'youtube-play' }
+      { path: '/face-match', title: '查询模块(人脸)', icon: 'paper-plane' },
+      { path: '/face-search-by-face', title: '查询模块(位置)', icon: 'youtube-play' }
     ]
   }
 ]

@@ -166,19 +166,18 @@ export default {
             type: "video/mp4",
             src:
               // "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
-              "http://10.2.151.139:9999/102.mp4"
-              // "http://localhost/media/stream/yl.mp4"
+              // "http://10.2.151.139:8888/media/test_video/jack_rose.mp4"
+              "http://localhost/media/stream/hello.mp4"
               //http://localhost
           }
         ],
         poster: "",
         custum: [
-          {time: 9.5, text: "this", overlayText: "1", imgList:[{id:'1',url:'http://192.17.1.18/media/sample/1.jpg'},{id:'2',url:'http://192.17.1.18/media/sample/2.jpg'}],width:"100%"},
-          {time: 16,  text: "is", overlayText: "2", imgList: [{id:'11',url:'http://192.17.1.18/media/sample/3.jpg'},{id:'22',url:'http://192.17.1.18/media/sample/4.jpg'},{id:'33',url:'http://192.17.1.18/media/sample/5.jpg'}],width:"50%"},
-          {time: 23.6,text: "so", overlayText: "3", imgList:[{id:'111',url:'aaaaa'},{id:'222',url:'bbbbb'}],width:"100%"},
-          {time: 28,  text: "cool", overlayText: "4", overlayA:"aaa",width:"70%"},
-          {time: 29,  text: "nono", overlayText: "8", overlayA:"aaa",width:"70%"},
-          {time: 35,  text: "cooa", overlayText: "5",overlayA:"aaa",width:"40%"}
+          {time: 4.54,   text: "jack", overlayText: "1", imgList:[{id:'1',url:'http://192.17.1.18/media/sample/1.jpg'},{id:'2',url:'http://192.17.1.18/media/sample/2.jpg'}],width:"100%"},
+          {time: 4.55,   text: "rose", overlayText: "2", imgList: [{id:'11',url:'http://192.17.1.18/media/sample/3.jpg'},{id:'22',url:'http://192.17.1.18/media/sample/4.jpg'},{id:'33',url:'http://192.17.1.18/media/sample/5.jpg'}],width:"50%"},
+          {time: 300,  text: "so", overlayText: "3", imgList:[{id:'111',url:'aaaaa'},{id:'222',url:'bbbbb'}],width:"100%"},
+          {time: 240,  text: "cool", overlayText: "4", overlayA:"aaa",width:"70%"},
+          {time: 1200,  text: "nono", overlayText: "8", overlayA:"aaa",width:"70%"},
         ]
       }
     };
@@ -203,6 +202,8 @@ export default {
   methods: {
     broadcast(fid,sid,url){
       console.log('******----******')
+      url = `${process.env.VUE_APP_API}/`+url
+      console.log(url)
       this.playerOptions.sources[0].src = url
       this.$axios
       .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:fid,streamid:sid}})

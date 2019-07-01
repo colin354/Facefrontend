@@ -1,60 +1,64 @@
 <template>
   <d2-container>
-    <SplitPane :min-percent="20" :default-percent="30" split="vertical">
-      <template slot="paneL">
-
-      <!--  <el-select placeholder="查询视频">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>-->
-        <div style="margin: 10px;">
-          <el-table
-            size="mini"
-            v-loading="dataListLoading"
-            :data="dataList"
-            border
-            @selection-change="dataListSelectionChangeHandle"
-            @sort-change="dataListSortChangeHandle"
-            style="width: 100%;">
-            <el-table-column prop="id" :label="$t('stream.name')" header-align="center" align="center" width="100"/>
-            <el-table-column prop="streamurl" :label="$t('stream.url')" header-align="center" align="center"/>
-            <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
-              <template slot-scope="scope">
-                <el-button type="text" size="mini" @click="broadcast(scope.row.streamurl)">{{ $t('check.broadcast') }}</el-button>
-              </template>
-          </el-table-column>
-          </el-table>
+    <el-row :gutter="20">
+      <el-col :span="8">
+        <div class="grid-content bg-purple">
+          <el-card class="box-card">
+            <el-table
+              size="mini"
+              v-loading="dataListLoading"
+              :data="dataList"
+              border
+              @selection-change="dataListSelectionChangeHandle"
+              @sort-change="dataListSortChangeHandle"
+              style="width: 100%;">
+              <el-table-column prop="id" :label="$t('stream.name')" header-align="center" align="center" width="100"/>
+              <el-table-column prop="streamurl" :label="$t('stream.url')" header-align="center" align="center"/>
+              <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
+                <template slot-scope="scope">
+                  <el-button type="text" size="mini" @click="broadcast(scope.row.streamurl)">{{ $t('check.broadcast') }}</el-button>
+                </template>
+            </el-table-column>
+            </el-table>
+          </el-card>
         </div>
-      </template>
-      <template slot="paneR">
-            <div style="margin: 10px;">
-              <video-player
-                class="vjs-default-skin"
-                ref="videoPlayer"
-                :options="playerOptions"
-                :playsinline="true"
-                customEventName="customstatechangedeventname"
-                @play="onPlayerPlay($event)"
-                @pause="onPlayerPause($event)"
-                @ended="onPlayerEnded($event)"
-                @waiting="onPlayerWaiting($event)"
-                @playing="onPlayerPlaying($event)"
-                @loadeddata="onPlayerLoadeddata($event)"
-                @timeupdate="onPlayerTimeupdate($event)"
-                @canplay="onPlayerCanplay($event)"
-                @canplaythrough="onPlayerCanplaythrough($event)"
-                @statechanged="playerStateChanged($event)"
-                @ready="playerReadied"
-              ></video-player>
+      </el-col>
+      <el-col :span="16">
+        <el-row ::gutter="20">
+          <el-col>
+            <div class="grid-content bg-purple">
+              <el-card class="box-card">
+                <video-player
+                  class="vjs-default-skin"
+                  ref="videoPlayer"
+                  :options="playerOptions"
+                  :playsinline="true"
+                  customEventName="customstatechangedeventname"
+                  @play="onPlayerPlay($event)"
+                  @pause="onPlayerPause($event)"
+                  @ended="onPlayerEnded($event)"
+                  @waiting="onPlayerWaiting($event)"
+                  @playing="onPlayerPlaying($event)"
+                  @loadeddata="onPlayerLoadeddata($event)"
+                  @timeupdate="onPlayerTimeupdate($event)"
+                  @canplay="onPlayerCanplay($event)"
+                  @canplaythrough="onPlayerCanplaythrough($event)"
+                  @statechanged="playerStateChanged($event)"
+                  @ready="playerReadied"
+                ></video-player>
+              </el-card>
             </div>
-            <div style="margin: 10px;" ref="faceimgs">
-              <faceimg :arr="arr"></faceimg>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col>
+            <div class="grid-content bg-purple">
+              <faceimg :imgarr="imgarr"></faceimg>
             </div>
-          <!-- <template slot="paneR">
-            <div style="margin: 10px;">右下</div>
-          </template> -->
-      </template>
-    </SplitPane>
+        </el-col>
+        </el-row>
+      </el-col>
+    </el-row>
   </d2-container>
 </template>
 
@@ -91,11 +95,7 @@ export default {
   mixins: [ mixinViewModule ],
   data() {
     return {
-      //options:[
-        //{value:"1",label:"按人查询流"},
-        //{value:"2",label:"按流查询人"}
-        //],
-      arr: [],
+      imgarr: [],
       mixinViewModuleOptions: {
         getDataListURL: `/sys/stream/page?token=${cookieGet('token')}`,
         getDataListIsPage: true,
@@ -129,8 +129,9 @@ export default {
   }, 
   methods: {
     broadcast(streamurl){
+      console.log(this.data)
       this.playerOptions.sources[0].src = streamurl
-      this.$axios.get(`/api/check/${streamurl}?token=${cookieGet('token')}`)
+      this.$axios.get(`/api/check?token=${cookieGet('token')}&streamurl=${streamurl}`)
             .then(res=> {
               var i = 0
               this.playerOptions.custum = []
@@ -149,7 +150,7 @@ export default {
     },
     onPlayerPause(player) {
       console.log('player pause!', player)
-      console.log(this.arr)
+      console.log(this.imgarr)
     },
     // ...player event
     onPlayerTimeupdate(player) {
@@ -183,7 +184,7 @@ export default {
       // player.[methods]
       let acustum = this.playerOptions.custum;
       let aa = this;
-      this.arr=[]
+      this.imgarr=[]
       player.markers({
         markerStyle: {
             'width':'9px',
@@ -193,10 +194,12 @@ export default {
         onMarkerReached: function(marker,index){
           //aa = [];
 
-          console.log("aaaaa8888888***999")
+          //console.log("aaaaa8888888***999")
           //console.log(marker.imgList)
-          aa.arr = marker.imgList
-          //console.log(aa.arr)
+          aa.imgarr = marker.imgList
+          //console.log(aa.imgarr)
+          console.log("aaaaa8888888***999")
+          console.log(aa.imgarr)
         },
           markers: acustum
       })   
@@ -204,3 +207,45 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+  .inner {
+    position: right;
+    top: 20px;
+    right:  20px;
+    bottom: 20px;
+    left: 20px;
+  }  
+  .text {
+    font-size: 14px;
+  }
+  .item {
+    padding: 18px 0;
+  }
+  .el-row {
+    margin-bottom: 20px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }
+  .bg-purple {
+    background: #d3dce6;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+  }
+  .row-bg {
+    padding: 10px 0;
+    background-color: #f9fafc;
+  }
+</style>
