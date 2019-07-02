@@ -6,7 +6,7 @@
           <el-card class="box-card">
             <el-form :inline="true" size="mini" :model="dataForm">
               <el-form-item>
-                <el-input v-model="dataForm.faceid" :placeholder="$t('check.faceid')" clearable/>
+                <el-input v-model="dataForm.faceid" :placeholder="$t('check.location')" clearable/>
               </el-form-item>
               <el-form-item>
                 <el-button @click="getDataList()">{{ $t('query') }}</el-button>
@@ -314,7 +314,6 @@ export default {
         },
         markers: aa
       });
-      console.log("aabbncddd0000")
       console.log(this)
     }
   }
