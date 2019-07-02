@@ -15,6 +15,7 @@ export default {
         exportURL: ''             // 导出接口，API地址
       },
       // 默认属性
+      face_url: '',
       dataForm: {},               // 查询条件
       dataList: [],               // 数据列表
       order: '',                  // 排序，asc／desc
@@ -57,10 +58,12 @@ export default {
         this.dataListLoading = false
         this.dataList = this.mixinViewModuleOptions.getDataListIsPage ? res.list : res
         this.total = this.mixinViewModuleOptions.getDataListIsPage ? res.count : 0
+        // this.face_url = 'http://10.2.151.139:8888/media/1/lic.jpg'
         console.log("****affeee****")
         console.log(res.list)
         console.log(res)
       }).catch(() => {
+        // this.face_url = ''
         this.dataList = []
         this.total = 0
         this.dataListLoading = false
