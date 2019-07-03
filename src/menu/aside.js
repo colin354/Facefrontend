@@ -11,7 +11,7 @@ export default [
   //   ]
   // },
   {
-    title: '人脸库',
+    title: '人脸库管理',
     icon: 'user-circle-o',
     children: [
       // { path: '/page1', title: '抓拍查询' },
@@ -24,17 +24,17 @@ export default [
     title: '流信息模块',
     icon: 'gift',
     children: [
-      { path: '/stream-list', title: '流信息', icon: 'magic' },
-      { path: '/stream-catch', title: '抓拍查询', icon: 'university' }
+      { path: '/stream-list', title: '摄像头视频信息', icon: 'magic' },
+      { path: '/stream-catch', title: '摄像头位置预览', icon: 'university' }
     ]
   },
   {
-    title: '匹配信息模块',
+    title: '结构化信息查询',
     icon: 'paper-plane',
     children: [
-      { path: '/face-search', title: '查询模块(流)', icon: 'gg-circle' },
-      { path: '/face-match', title: '查询模块(人脸)', icon: 'paper-plane' },
-      { path: '/face-search-by-face', title: '查询模块(位置)', icon: 'youtube-play' }
+      { path: '/face-search', title: '结构化视频列表', icon: 'gg-circle' },
+      { path: '/face-match', title: '通过人脸查询视频', icon: 'paper-plane' },
+      { path: '/face-search-by-face', title: '通过位置查询视频', icon: 'youtube-play' }
     ]
   }
 ]

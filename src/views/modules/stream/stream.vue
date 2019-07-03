@@ -19,13 +19,20 @@
       <el-table-column type="selection" header-align="center" align="center" width="50"/>
       <el-table-column prop="streamname" :label="$t('stream.name')" sortable="custom" header-align="center" align="center" width="150"/>
       <el-table-column prop="streamlocation" :label="$t('stream.location')" header-align="center" align="center"/>
-      <el-table-column prop="streamurl" :label="$t('stream.url')" header-align="center" align="center"/>
-      <el-table-column prop="createDate" :label="$t('oss.createDate')" sortable="custom" header-align="center" align="center"/>
+      <el-table-column prop="streamtime" :label="$t('stream.time')" header-align="center" align="center"/>
+      <el-table-column prop="streamfps" :label="$t('stream.fps')" header-align="center" align="center"/>
+      <el-table-column prop="streamstatus" :label="$t('stream.status')" sortable="custom" header-align="center" align="center">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.status === 1" size="mini">{{ $t('stream.status1') }}</el-tag>
+          <el-tag v-else size="mini" type="danger">{{ $t('stream.status0') }}</el-tag>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column prop="streamurl" :label="$t('stream.url')" header-align="center" align="center"/> -->
+      <!-- <el-table-column prop="createDate" :label="$t('oss.createDate')" sortable="custom" header-align="center" align="center"/> -->
       <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
           <el-button type="danger" size="mini" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
-          <el-button type="primary" size="mini" @click="selectHandle(scope.row.id)">{{ $t('query') }}</el-button>
         </template>
       </el-table-column>
     </el-table> 

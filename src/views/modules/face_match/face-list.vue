@@ -1,14 +1,15 @@
 <template>
   <el-row>
-    <el-col :span="5" v-for="(o, index) in imgarr" :key="index" :offset="index > 0 ? 1 : 0">
+    <el-col :span="2" v-for="(o, index) in facelist" :key="index" :offset="index > 0 ? 1 : 0">
       <el-card :body-style="{ padding: '0px' }">
-        <img :src=o.imgurl class="image">
-        <div style="padding: 14px;">
+        <div style="padding: 3px;">
           <div class="bottom clearfix">
-            <time class="time">{{ currentDate }}</time>
-            <el-button type="text" class="button">操作按钮</el-button>
+            <span>{{o.userid_id}}</span>
+            <span class="name">{{o.username}}</span>
+            <el-button type="text" class="button" @click="face_check(o.userid_id)">检测</el-button>
           </div>
-        </div>
+        </div>        
+        <img :src=o.imgurl class="image">
       </el-card>
     </el-col>
   </el-row>
@@ -30,10 +31,14 @@
     float: right;
   }
 
+  .name {
+    padding: 0;
+    float: right;
+  }
+
   .image {
     height: 100%;
     width: 100%;
-    display: block;
   }
 
   .clearfix:before,
@@ -50,13 +55,20 @@
 <script>
 export default {
   props: {
-    imgarr: Array,
+    facelist: Array,
     required: true
   },
   data() {
     return {
-      currentDate: new Date()
+
     };
+  },
+  methods: {
+    face_check(id) {
+      console.log('88889999***999988888')
+      console.log(id)
+      this.$emit('getface',id)
+    }
   }
 }
 </script>

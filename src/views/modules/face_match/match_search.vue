@@ -12,8 +12,9 @@
               @selection-change="dataListSelectionChangeHandle"
               @sort-change="dataListSortChangeHandle"
               style="width: 100%;">
-              <el-table-column prop="id" :label="$t('stream.name')" header-align="center" align="center" width="100"/>
-              <el-table-column prop="streamurl" :label="$t('stream.url')" header-align="center" align="center"/>
+              <el-table-column prop="streamname" :label="$t('stream.name')" header-align="center" align="center" width="100"/>
+              <el-table-column prop="streamlocation" :label="$t('stream.location')" header-align="center" align="center"/>
+              <!-- <el-table-column prop="streamfacenum" :label="$t('stream.facenum')" header-align="center" align="center"/> -->
               <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
                 <template slot-scope="scope">
                   <el-button type="text" size="mini" @click="broadcast(scope.row.id,scope.row.streamurl)">{{ $t('check.broadcast') }}</el-button>
@@ -53,7 +54,9 @@
         <el-row :gutter="10">
           <el-col>
             <div class="grid-content bg-purple">
-              <faceimg :imgarr="imgarr"></faceimg>
+              <el-card class="box-card">
+                <faceimg :imgarr="imgarr"></faceimg>
+              </el-card>
             </div>
         </el-col>
         </el-row>

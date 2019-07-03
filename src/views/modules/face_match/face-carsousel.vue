@@ -1,7 +1,11 @@
 <template>
   <el-carousel :interval="4000" type="card" height="150px">
     <el-carousel-item v-for="(item, index) in facelist" :key="index">
-      <img :src="item.imgurl" fit="fill">
+      <el-card :body-style="{ padding: '0px' }">
+        <span>id:{{item.userid_id}}</span>
+        <span class="name">{{item.username}}</span>
+        <img :src="item.imgurl" fit="fill">
+      </el-card>
     </el-carousel-item>
   </el-carousel>
 </template>
@@ -31,6 +35,7 @@ export default {
 
   .el-carousel__item img {
     height: 150px;
+    width: 250px
   }
 
   .el-carousel__item:nth-child(2n) {

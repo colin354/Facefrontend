@@ -435,6 +435,11 @@ t.stream = {}
 t.stream.id = '流ID'
 t.stream.name = '流名称'
 t.stream.location = '流位置'
+t.stream.time = '视频时长'
+t.stream.fps = '视频帧率'
+t.stream.status = '状态'
+t.stream.status0 = '处理中'
+t.stream.status1 = '处理完成'
 t.stream.url = '流url'
 
 t.check = {}
