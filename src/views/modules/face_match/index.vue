@@ -14,8 +14,12 @@
                     <el-button @click="getDataList()">{{ $t('query') }}</el-button>
                   </el-form-item>
                 </el-form>
-                <el-image style="width: 100px; height: 100px" :src="face_url" fit="contain">
-                </el-image>
+                <!-- <el-image style="width: 100px; height: 100px" :src="face_url" fit="contain">
+                  <div slot="placeholder" class="image-slot">
+                    加载中<span class="dot">...</span>
+                  </div>
+                </el-image> -->
+                <facecarsousel :facelist="facelist"></facecarsousel>
               </el-card>
             </div>
           </el-col>
@@ -141,6 +145,7 @@ import 'videojs-markers'
 // import 'videojs-notations'
 import '@/views/modules/face_match/src/custom-theme.css'
 import faceimg from './face-img'
+import facecarsousel from './face-carsousel'
 import { constants } from 'crypto';
 
 // const plugin = function(list, item) {
@@ -154,12 +159,13 @@ export default {
   name: "page3",
   components: {
     videoPlayer,
-    faceimg
+    faceimg,
+    facecarsousel
   },
   mixins: [ mixinViewModule ],
   data() {
     return {
-      face_url: 'face_url',
+      facelist: [],
       imgarr: [],
       mixinViewModuleOptions: {
         getDataListURL: `/api/check?token=${cookieGet('token')}`,

@@ -1,7 +1,7 @@
 <template>
   <d2-container>
     <el-row :gutter="20">
-      <el-col :span="8">
+      <el-col :span="24">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
             <el-form :inline="true" size="mini" :model="dataForm">
@@ -10,8 +10,20 @@
               </el-form-item>
               <el-form-item>
                 <el-button @click="getDataList()">{{ $t('query') }}</el-button>
-              </el-form-item>          
+              </el-form-item>
+              <!-- <el-form-item>
+                
+              </el-form-item> -->
             </el-form>
+            <facelist :facelist="facelist" v-model="dataForm.faceid" @getface="getface"></facelist>
+          </el-card>
+        </div>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20">
+      <el-col :span="8">
+        <div class="grid-content bg-purple">
+          <el-card class="box-card">
             <el-table
               size="mini"
               v-loading="dataListLoading"
@@ -127,6 +139,7 @@ import 'videojs-markers'
 // import 'videojs-notations'
 import '@/views/modules/face_match/src/custom-theme.css'
 import faceimg from './face-img'
+import facelist from './face-list'
 import { constants } from 'crypto';
 
 // const plugin = function(list, item) {
@@ -140,11 +153,13 @@ export default {
   name: "page3",
   components: {
     videoPlayer,
+    facelist,
     faceimg
   },
   mixins: [ mixinViewModule ],
   data() {
     return {
+      facelist: [],
       imgarr: [],
       mixinViewModuleOptions: {
         getDataListURL: `/api/check?token=${cookieGet('token')}`,
@@ -153,6 +168,7 @@ export default {
         deleteIsBatch: true
       },
       dataForm: {
+        faceid: ''
       },
       playerOptions: {
         // videojs options
@@ -200,6 +216,11 @@ export default {
     }
   }, 
   methods: {
+    getface(id){
+      console.log(id)
+      this.dataForm.faceid = id
+      this.getDataList()
+    },
     broadcast(fid,sid,url){
       console.log('******----******')
       url = `${process.env.VUE_APP_API}/`+url
@@ -227,24 +248,7 @@ export default {
           {time: 23.6,text: "so", overlayText: "3", imgList: [{},{}]},
           {time: 28,  text: "cool", overlayText: "4", imgList: [{},{},{},{}]},
           {time: 35,  text: "cooa", overlayText: "5",imgList: [{},{}]}
-        ]
-      // this.player.markers({
-      //   markerStyle: {
-      //       'width':'9px',
-      //       'border-radius': '40%',
-      //       'background-color': 'orange'
-      //   },
-      //   onMarkerReached: function(marker){
-      //     console.log("aaaaa***999")
-      //   },
-      //   markers: [
-      //     {time: 9.5, text: "this", overlayText: "1", class: "special-blue", overlayA:"aaa",width:"100%"},
-      //     {time: 16,  text: "is", overlayText: "2", overlayA:"aaa",width:"50%"},
-      //     {time: 23.6,text: "so", overlayText: "3", overlayA:"aaa",width:"100%"},
-      //     {time: 28,  text: "cool", overlayText: "4", overlayA:"aaa",width:"70%"},
-      //     {time: 35,  text: "cooa", overlayText: "5",overlayA:"aaa",width:"40%"}
-      //   ]
-      // })   
+        ] 
     },
     // listen event
     onPlayerPlay(player) {
@@ -314,7 +318,6 @@ export default {
         },
         markers: aa
       });
-      console.log("aabbncddd0000")
       console.log(this)
     }
   }

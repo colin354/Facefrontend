@@ -80,7 +80,7 @@ const frameIn = [
         component: _import('modules/face/face'),
         meta: {
           auth: true,
-          title: '人脸库'
+          title: '人脸库列表'
         }
       },
       {
@@ -89,7 +89,7 @@ const frameIn = [
         component: _import('modules/stream/stream'),
         meta: {
           auth: true,
-          title: '流信息模块'
+          title: '摄像头视频信息'
         }
       },
       {
@@ -98,7 +98,7 @@ const frameIn = [
         component: _import('modules/stream/stream_catch'),
         meta: {
           auth: true,
-          title: '流信息模块'
+          title: '摄像头位置预览'
         }
       },      
       {
@@ -107,7 +107,7 @@ const frameIn = [
         component: _import('modules/face_match/index'),
         meta: {
           auth: true,
-          title: '匹配信息模块'
+          title: '通过人脸查询视频'
         }
       },
       {
@@ -116,7 +116,7 @@ const frameIn = [
         component: _import('modules/face_match/match_search'),
         meta: {
           auth: true,
-          title: '查询模块(流)'
+          title: ' 结构化视频列表'
         }
       },
       {
@@ -125,7 +125,7 @@ const frameIn = [
         component: _import('modules/face_match/match_search_by_face'),
         meta: {
           auth: true,
-          title: '查询模块(人脸)'
+          title: '通过位置查询视频'
         }
       }      
     ]
