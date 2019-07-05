@@ -40,6 +40,16 @@
                 </template>
             </el-table-column>
             </el-table>
+            <!-- 分页 -->
+            <el-pagination
+              :current-page="page"
+              :page-sizes="[10, 20, 50, 100]"
+              :page-size="limit"
+              :total="total"
+              layout="total, sizes, prev, pager, next, jumper"
+              @size-change="pageSizeChangeHandle"
+              @current-change="pageCurrentChangeHandle">
+            </el-pagination>
           </el-card>
         </div>
       </el-col>
@@ -81,17 +91,6 @@
         </el-row>   
       </el-col>
     </el-row>
-    <!-- 分页 -->
-    <el-pagination
-      slot="footer"
-      :current-page="page"
-      :page-sizes="[10, 20, 50, 100]"
-      :page-size="limit"
-      :total="total"
-      layout="total, sizes, prev, pager, next, jumper"
-      @size-change="pageSizeChangeHandle"
-      @current-change="pageCurrentChangeHandle">
-    </el-pagination> 
   </d2-container>
 </template>
 

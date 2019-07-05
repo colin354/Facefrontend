@@ -1,7 +1,7 @@
 <template>
   <d2-container>
     <el-row :gutter="20">
-      <el-col :span="6">
+      <el-col :span="7">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
             <el-table
@@ -27,7 +27,6 @@
             </el-table-column>
             </el-table>
             <el-pagination
-              slot="footer"
               :current-page="page"
               :page-sizes="[10, 20, 50, 100]"
               :page-size="limit"
@@ -39,7 +38,7 @@
           </el-card>
         </div>
       </el-col>
-      <el-col :span="18">
+      <el-col :span="17">
         <el-row :gutter="20">
           <el-col>
             <div class="grid-content bg-purple">
