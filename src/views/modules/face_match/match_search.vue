@@ -1,6 +1,7 @@
 <template>
   <d2-container>
     <el-row :gutter="20">
+      <!--左侧列表 -->
       <el-col :span="8">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
@@ -18,11 +19,12 @@
                 <template slot-scope="scope">
                   <el-button type="text" size="mini" @click="broadcast(scope.row.id,scope.row.streamurl)">{{ $t('check.broadcast') }}</el-button>
                 </template>
-            </el-table-column>
+              </el-table-column>
             </el-table>
           </el-card>
         </div>
       </el-col>
+      <!--右侧视频及标记点截图 -->
       <el-col :span="16">
         <el-row ::gutter="20">
           <el-col>
@@ -50,15 +52,27 @@
             </div>
           </el-col>
         </el-row>
+
         <el-row :gutter="10">
           <el-col>
             <div class="grid-content bg-purple">
               <faceimg :imgarr="imgarr"></faceimg>
             </div>
-        </el-col>
+          </el-col>
         </el-row>
       </el-col>
     </el-row>
+    <!-- 分页 -->
+    <el-pagination
+      slot="footer"
+      :current-page="page"
+      :page-sizes="[10, 20, 50, 100]"
+      :page-size="limit"
+      :total="total"
+      layout="total, sizes, prev, pager, next, jumper"
+      @size-change="pageSizeChangeHandle"
+      @current-change="pageCurrentChangeHandle">
+    </el-pagination>
   </d2-container>
 </template>
 
@@ -96,7 +110,7 @@ export default {
   data() {
     return {
       imgarr: [],
-      mixinViewModuleOptions: {
+      mixinViewModuleOptions: {//在view-module.js中发送get请求,返回的数据
         getDataListURL: `/sys/stream/page?token=${cookieGet('token')}`,
         getDataListIsPage: true,
         deleteURL: `/api/check?token=${cookieGet('token')}`,
@@ -129,9 +143,6 @@ export default {
   }, 
   methods: {
     broadcast(id,streamurl){
-      console.log("11111111111111111111111111111111111111")
-      console.log(id)
-      console.log(streamurl)
       this.playerOptions.sources[0].src = streamurl
       this.$axios.get(`/api/check?token=${cookieGet('token')}&streamid=${id}`)
             .then(res=> {
@@ -186,7 +197,7 @@ export default {
       // player.[methods]
       let acustum = this.playerOptions.custum;
       let aa = this;
-      this.imgarr=[]
+      this.imgarr=[]  //若不清空,会记录上次的显示的标记点图片
       player.markers({
         markerStyle: {
             'width':'9px',
@@ -194,13 +205,12 @@ export default {
             'background-color': 'orange'
         },
         onMarkerReached: function(marker,index){
-          //console.log("aaaaa8888888***999")
-          //console.log(marker.imgList)
+          // console.log("----marker---")
           aa.imgarr = marker.imgList
-          console.log("aaaaa8888888***999")
-          console.log(aa.imgarr)
+          //console.log("====this.imgarr传给子组件=======")
+          //console.log(aa.imgarr)
         },
-          markers: acustum
+          markers: acustum  //默认标记点信息给markers
       })   
     }
   }

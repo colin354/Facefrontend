@@ -54,12 +54,12 @@ export default {
           }
         }
       ).then(res => {
+        console.log("-----456------")
+        console.log(res)
         this.dataListLoading = false
         this.dataList = this.mixinViewModuleOptions.getDataListIsPage ? res.list : res
         this.total = this.mixinViewModuleOptions.getDataListIsPage ? res.count : 0
-        console.log("****affeee****")
-        console.log(res.list)
-        console.log(res)
+        //人脸库列表界面,发送get请求,返回dataList
       }).catch(() => {
         this.dataList = []
         this.total = 0

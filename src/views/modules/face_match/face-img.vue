@@ -52,7 +52,7 @@
 <script>
 export default {
   props: {
-    imgarr: Array,
+    imgarr: Array,//接收父组件传过来的imgarr
     required: true
   },
   data() {

@@ -68,7 +68,18 @@
           </el-col>
         </el-row>   
       </el-col>
-    </el-row> 
+    </el-row>
+    <!-- 分页 -->
+    <el-pagination
+      slot="footer"
+      :current-page="page"
+      :page-sizes="[10, 20, 50, 100]"
+      :page-size="limit"
+      :total="total"
+      layout="total, sizes, prev, pager, next, jumper"
+      @size-change="pageSizeChangeHandle"
+      @current-change="pageCurrentChangeHandle">
+    </el-pagination> 
   </d2-container>
 </template>
 
@@ -203,7 +214,7 @@ export default {
   methods: {
     broadcast(fid,sid,url){
       console.log('******----******')
-      this.playerOptions.sources[0].src = url
+      this.playerOptions.sources[0].src = "http://10.2.151.139:8888"+url
       this.$axios
       .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:fid,streamid:sid}})
       .then(res => {
@@ -310,6 +321,7 @@ export default {
           console.log("aaaaa***999")
           console.log(marker)
           ab.imgarr = marker.imgList
+          console.log(ab.imgarr)
         },
         markers: aa
       });
