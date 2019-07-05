@@ -23,7 +23,7 @@
       <el-table-column prop="streamfps" :label="$t('stream.fps')" header-align="center" align="center"/>
       <el-table-column prop="streamstatus" :label="$t('stream.status')" sortable="custom" header-align="center" align="center">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 1" size="mini">{{ $t('stream.status1') }}</el-tag>
+          <el-tag v-if="scope.row.streamstatus === `1`" size="mini">{{ $t('stream.status1') }}</el-tag>
           <el-tag v-else size="mini" type="danger">{{ $t('stream.status0') }}</el-tag>
         </template>
       </el-table-column>
