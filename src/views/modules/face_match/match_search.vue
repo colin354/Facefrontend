@@ -26,6 +26,16 @@
                 </template>
             </el-table-column>
             </el-table>
+            <el-pagination
+              slot="footer"
+              :current-page="page"
+              :page-sizes="[10, 20, 50, 100]"
+              :page-size="limit"
+              :total="total"
+              layout="total, sizes, prev, pager, next, jumper"
+              @size-change="pageSizeChangeHandle"
+              @current-change="pageCurrentChangeHandle">
+            </el-pagination>
           </el-card>
         </div>
       </el-col>
@@ -330,7 +340,7 @@ export default {
           console.log("aaaaa8888888***999")
           console.log(aa.imgarr)
         },
-          markers: acustum
+          markers: acustum  //默认标记点信息给markers
       })   
     }
   }

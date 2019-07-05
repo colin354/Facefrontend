@@ -80,7 +80,18 @@
           </el-col>
         </el-row>   
       </el-col>
-    </el-row> 
+    </el-row>
+    <!-- 分页 -->
+    <el-pagination
+      slot="footer"
+      :current-page="page"
+      :page-sizes="[10, 20, 50, 100]"
+      :page-size="limit"
+      :total="total"
+      layout="total, sizes, prev, pager, next, jumper"
+      @size-change="pageSizeChangeHandle"
+      @current-change="pageCurrentChangeHandle">
+    </el-pagination> 
   </d2-container>
 </template>
 
@@ -315,6 +326,7 @@ export default {
           console.log("aaaaa***999")
           console.log(marker)
           ab.imgarr = marker.imgList
+          console.log(ab.imgarr)
         },
         markers: aa
       });
