@@ -40,6 +40,16 @@
                 </template>
             </el-table-column>
             </el-table>
+            <!-- 分页 -->
+            <el-pagination
+              :current-page="page"
+              :page-sizes="[10, 20, 50, 100]"
+              :page-size="limit"
+              :total="total"
+              layout="total, sizes, prev, pager, next, jumper"
+              @size-change="pageSizeChangeHandle"
+              @current-change="pageCurrentChangeHandle">
+            </el-pagination>
           </el-card>
         </div>
       </el-col>
@@ -80,7 +90,7 @@
           </el-col>
         </el-row>   
       </el-col>
-    </el-row> 
+    </el-row>
   </d2-container>
 </template>
 
@@ -315,6 +325,7 @@ export default {
           console.log("aaaaa***999")
           console.log(marker)
           ab.imgarr = marker.imgList
+          console.log(ab.imgarr)
         },
         markers: aa
       });

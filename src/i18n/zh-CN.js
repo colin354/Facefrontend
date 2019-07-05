@@ -430,6 +430,9 @@ t.face = {}
 t.face.name = '姓名'
 t.face.gender0 = '男'
 t.face.url = '存储地址'
+t.face.img = '人脸图像'
+t.face.mobile ='电话'
+t.face.email = '邮箱'
 
 t.stream = {}
 t.stream.id = '流ID'
@@ -440,7 +443,12 @@ t.stream.fps = '视频帧率'
 t.stream.status = '状态'
 t.stream.status0 = '处理中'
 t.stream.status1 = '处理完成'
+t.stream.videoname ='视频名称'
+t.stream.location = '视频位置'
 t.stream.url = '流url'
+t.stream.duration ='视频时长'
+t.stream.frame ='视频帧率'
+t.stream.status ='状态'
 
 t.check = {}
 t.check.faceid = '人脸id'

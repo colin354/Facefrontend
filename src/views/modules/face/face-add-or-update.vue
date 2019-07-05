@@ -171,7 +171,7 @@ export default {
     imgurl(img_uuid) {
       this.dataForm.imgurl = img_uuid;
     },
-    // 获取流信息列表
+    // 获取当前流信息列表
     getFaceList() {
       return this.$axios
         .get(`/api/face?token=${cookieGet("token")}`)
@@ -185,8 +185,6 @@ export default {
       this.$axios
         .get(`/api/face/${this.dataForm.id}?token=${cookieGet("token")}`)
         .then(res => {
-          console.log("888888")
-          console.log(res.imgurls)
           let url = res.imgurls
           this.$refs.upload.getImage(url);
           this.dataForm = {

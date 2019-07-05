@@ -72,9 +72,11 @@ export default {
       this.visible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].resetFields()
-          if (this.dataForm.id) {
-            this.getInfo()
-          } 
+        if (this.dataForm.id) {//若是修改,则走此句
+          this.getInfo()
+         }else{
+          this.dataForm = {}//若是新增,则走此句
+        }
       })
     },
     // 获取流信息列表

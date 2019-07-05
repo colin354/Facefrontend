@@ -1,7 +1,7 @@
 <template>
   <d2-container>
     <el-row :gutter="20">
-      <el-col :span="7">
+      <el-col :span="6">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
             <el-table
@@ -16,7 +16,7 @@
               <el-table-column prop="streamlocation" :label="$t('stream.location')" header-align="center" align="center"/>
               <el-table-column prop="streamstatus" :label="$t('stream.status')" header-align="center" align="center">
                 <template slot-scope="scope">
-                  <el-tag v-if="scope.row.streamstatus === `1`" size="mini">{{ $t('stream.status1') }}</el-tag>
+                  <el-tag v-if="scope.row.status === 1" size="mini">{{ $t('stream.status1') }}</el-tag>
                   <el-tag v-else size="mini" type="danger">{{ $t('stream.status0') }}</el-tag>
                 </template>
               </el-table-column>
@@ -26,43 +26,25 @@
                 </template>
             </el-table-column>
             </el-table>
-            <el-pagination
-              :current-page="page"
-              :page-sizes="[10, 20, 50, 100]"
-              :page-size="limit"
-              :total="total"
-              layout="total, sizes, prev, pager, next, jumper"
-              @size-change="pageSizeChangeHandle"
-              @current-change="pageCurrentChangeHandle">
-            </el-pagination>
           </el-card>
         </div>
       </el-col>
-      <el-col :span="17">
+      <el-col :span="18">
         <el-row :gutter="20">
           <el-col>
             <div class="grid-content bg-purple">
               <el-card class="box-card">
-                <span>播放视频:{{info.streamname}}  视频匹配记录数:</span>
-                <span v-for="(o, index) in info.facematch" :key="index">
-                  {{o.facename}}&nbsp;{{o.facecount}}条
-                </span>
+                <span>播放视频:xxxxxx       </span><spna>视频人脸数:xx</spna>
               </el-card>
             </div>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="5">
+        <el-row :gutter="20">       
+          <el-col :span="20">
             <div class="grid-content bg-purple">
               <el-card class="box-card">
-              </el-card>
-            </div>
-          </el-col>           
-          <el-col :span="14">
-            <div class="grid-content bg-purple">
-              <el-card class="video-box-card">
                 <video-player
-                  class="vjs-custom-skin"
+                  class="vjs-default-skin"
                   ref="videoPlayer"
                   :options="playerOptions"
                   :playsinline="true"
@@ -82,118 +64,25 @@
               </el-card>
             </div>
           </el-col>
-          <el-col :span="5">
+          <el-col :span="4">
             <div class="grid-content bg-purple">
               <el-card class="box-card">
+
+              </el-card>
+            </div>
+          </el-col>           
+        </el-row>
+        <el-row :gutter="10">
+          <el-col>
+            <div class="grid-content bg-purple">
+              <el-card class="box-card">
+                <faceimg :imgarr="imgarr"></faceimg>
               </el-card>
             </div>
           </el-col>
-        </el-row> 
-            
-        <el-row :gutter="20">
-            <el-col :span="5">
-              <div class="grid-content bg-purple">
-                <el-card class="box-card">
-                </el-card>
-              </div>
-            </el-col>
-            <el-col :span="14">
-              <div class="grid-content bg-purple">
-                <el-card class="box-card">
-                  <faceimg :imgarr="imgarr"></faceimg>
-                </el-card>
-              </div>
-            </el-col>
-            <el-col :span="5">
-              <div class="grid-content bg-purple">
-                <el-card class="box-card">
-                </el-card>
-              </div>
-            </el-col>
-        </el-row>        
+        </el-row>
       </el-col>
     </el-row>
-
-  <!-- <el-dialog
-    :visible.sync="visible"
-    :close-on-click-modal="false"
-    :close-on-press-escape="true"
-    :fullscreen="true"
-    custom-class="customclass"
-  >
-    <template slot="title">
-      <el-row :gutter="20">
-        <el-col :span="14" :offset="5">
-          <div class="grid-content bg-purple">
-            <el-card class="box-card">
-              <span>播放视频:xxxxxx       </span><span>视频人脸数:{{matchnum}}</span>
-            </el-card>
-          </div>
-        </el-col>
-      </el-row>
-    </template>
-
-    <el-row :gutter="20">
-      <el-col :span="5">
-        <div class="grid-content bg-purple">
-          <el-card class="box-card">
-          </el-card>
-        </div>
-      </el-col>           
-      <el-col :span="14">
-        <div class="grid-content bg-purple">
-          <el-card class="video-box-card">
-            <video-player
-              class="vjs-custom-skin"
-              ref="videoPlayer"
-              :options="playerOptions"
-              :playsinline="true"
-              customEventName="customstatechangedeventname"
-              @play="onPlayerPlay($event)"
-              @pause="onPlayerPause($event)"
-              @ended="onPlayerEnded($event)"
-              @waiting="onPlayerWaiting($event)"
-              @playing="onPlayerPlaying($event)"
-              @loadeddata="onPlayerLoadeddata($event)"
-              @timeupdate="onPlayerTimeupdate($event)"
-              @canplay="onPlayerCanplay($event)"
-              @canplaythrough="onPlayerCanplaythrough($event)"
-              @statechanged="playerStateChanged($event)"
-              @ready="playerReadied"
-            ></video-player>
-          </el-card>
-        </div>
-      </el-col>
-      <el-col :span="5">
-        <div class="grid-content bg-purple">
-          <el-card class="box-card">
-          </el-card>
-        </div>
-      </el-col>
-    </el-row> 
-        
-    <el-row :gutter="20">
-        <el-col :span="5">
-          <div class="grid-content bg-purple">
-            <el-card class="box-card">
-            </el-card>
-          </div>
-        </el-col>
-        <el-col :span="14">
-          <div class="grid-content bg-purple">
-            <el-card class="box-card">
-              <faceimg :imgarr="imgarr"></faceimg>
-            </el-card>
-          </div>
-        </el-col>
-        <el-col :span="5">
-          <div class="grid-content bg-purple">
-            <el-card class="box-card">
-            </el-card>
-          </div>
-        </el-col>
-    </el-row>
-  </el-dialog> -->
   </d2-container>
 </template>
 
@@ -230,13 +119,7 @@ export default {
   mixins: [ mixinViewModule ],
   data() {
     return {
-      visible: false,
       imgarr: [],
-      matchnum: 0,
-      info: {
-        streamname: 'null',
-        facematch:[]
-      },
       mixinViewModuleOptions: {
         getDataListURL: `/sys/stream/page?token=${cookieGet('token')}`,
         getDataListIsPage: true,
@@ -270,19 +153,21 @@ export default {
   }, 
   methods: {
     broadcast(id,streamurl){
-      this.visible = false
+      console.log("11111111111111111111111111111111111111")
+      console.log(id)
+      console.log(streamurl)
       this.playerOptions.sources[0].src = streamurl
       this.$axios.get(`/api/check?token=${cookieGet('token')}&streamid=${id}`)
-        .then(res=> {
-          console.log('111111111111111122221111111111111111')
-          console.log(res)
-          this.playerOptions.custum = res.list
-          this.matchnum = res.count
-          this.info = res.info
-        })
-        .catch(error =>{
-          console.log(error);
-        }) 
+            .then(res=> {
+              var i = 0
+              this.playerOptions.custum = []
+              for(i;i<res.count;i++){ 
+                this.playerOptions.custum.push(res.list[i])
+              }
+            })
+            .catch(error =>{
+              console.log(error);
+            }) 
     },
     // listen event
     onPlayerPlay(player) {  //点击视频上的播放,便开始播放视频
@@ -339,17 +224,14 @@ export default {
           console.log("aaaaa8888888***999")
           console.log(aa.imgarr)
         },
-          markers: acustum  //默认标记点信息给markers
+          markers: acustum
       })   
     }
   }
 };
 </script>
 
-<style lang="scss" >
-  .customclass {
-    background: #1cb0f5;
-  }
+<style lang="scss" scoped>
   .inner {
     position: right;
     top: 20px;
@@ -389,8 +271,4 @@ export default {
     padding: 10px 0;
     background-color: #f9fafc;
   }
-  .video-box-card {
-    width: 100%;
-    height: 100%;
-  }  
 </style>

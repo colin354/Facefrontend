@@ -8,7 +8,7 @@
             <span class="name">{{o.username}}</span>
             <el-button type="text" class="button" @click="face_check(o.userid_id)">检测</el-button>
           </div>
-        </div>        
+        </div>
         <img :src=o.imgurl class="image">
       </el-card>
     </el-col>
