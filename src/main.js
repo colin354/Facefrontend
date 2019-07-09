@@ -1,5 +1,6 @@
 // Vue
 import Vue from 'vue'
+import Vuetify from 'vuetify'
 import App from './App'
 // 核心插件
 import d2Admin from '@/plugin/d2admin'
@@ -17,11 +18,13 @@ import SplitPane from 'vue-splitpane'
 import VCharts from 'v-charts'
 import VueAMap from 'vue-amap'
 import { lazyAMapApiLoaderInstance } from 'vue-amap'
+import 'vuetify/dist/vuetify.min.css'
 
 // 核心插件
 Vue.use(d2Admin)
 Vue.use(VCharts)
 Vue.use(VueAMap)
+Vue.use(Vuetify)
 Vue.component('SplitPane', SplitPane)
 
 VueAMap.initAMapApiLoader({
