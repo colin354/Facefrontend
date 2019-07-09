@@ -89,28 +89,36 @@
             </div>
           </el-col>
         </el-row> 
-            
+        
         <el-row :gutter="20">
-            <el-col :span="5">
-              <div class="grid-content bg-purple">
-                <el-card class="box-card">
-                </el-card>
-              </div>
-            </el-col>
-            <el-col :span="14">
-              <div class="grid-content bg-purple">
-                <el-card class="box-card">
-                  <faceimg :imgarr="imgarr"></faceimg>
-                </el-card>
-              </div>
-            </el-col>
-            <el-col :span="5">
-              <div class="grid-content bg-purple">
-                <el-card class="box-card">
-                </el-card>
-              </div>
-            </el-col>
-        </el-row>        
+          <el-col>
+            <div class="grid-content bg-purple">
+              <el-card class="box-card">
+                <el-row v-for="(o, index) in info.facematch" :key="index" >
+                  <el-row>
+                    <el-col :span="4">
+                      <img :src=o.faceurl class="faceimage">
+                    </el-col>
+                    <el-col></el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="5">
+                    </el-col>
+                    <el-col>
+                      <el-slider
+                        :step="0.01"
+                        v-model="o.index"
+                        @change="onChange($event)" 
+                        :max=info.streamtime
+                        :marks="marks"
+                        show-input></el-slider>
+                    </el-col>
+                  </el-row>
+                </el-row>
+              </el-card>
+            </div>
+          </el-col>
+        </el-row>
       </el-col>
     </el-row>
 
@@ -207,12 +215,11 @@ import 'videojs-hotkeys'
 import "@/views/modules/face_match/src/videojs.markers.css"
 // import markers from 'videojs-markers/dist/videojs-markers'
 import 'videojs-markers'
-import thumbnails from 'videojs-thumbnails'
-import vttThumbnails from 'videojs-vtt-thumbnails'
 import spriteThumbnails from 'videojs-sprite-thumbnails'
-// import 'videojs-notations'
+import { VueHorizontalTimeline } from 'vue-horizontal-timeline'
 import '@/views/modules/face_match/src/custom-theme.css'
 import faceimg from './face-img'
+import 'vuetify/dist/vuetify.min.css'
 
 // const plugin = function(list, item) {
 //   markers(this, list, item);
@@ -225,11 +232,13 @@ export default {
   name: "page3",
   components: {
     videoPlayer,
-    faceimg
+    faceimg,
+    VueHorizontalTimeline
   },
   mixins: [ mixinViewModule ],
   data() {
     return {
+      marks: [],
       visible: false,
       imgarr: [],
       matchnum: 0,
@@ -269,8 +278,13 @@ export default {
     }
   }, 
   methods: {
+    onChange(event){
+      console.log('---99---99----9999---')
+      console.log(this.info)
+      console.log(event)
+    },
     broadcast(id,streamurl){
-      this.visible = false
+      this.visible = true
       this.playerOptions.sources[0].src = streamurl
       this.$axios.get(`/api/check?token=${cookieGet('token')}&streamid=${id}`)
         .then(res=> {
@@ -279,6 +293,13 @@ export default {
           this.playerOptions.custum = res.list
           this.matchnum = res.count
           this.info = res.info
+          this.marks = {
+            '0.1': '',
+            '0.15': 'abc/aa.jpg',
+            '2.5': 'abc/aa.jpg',
+            '3.6': 'abc/aa.jpg',}
+          console.log(res.info.facematch)
+          console.log(this.marks)
         })
         .catch(error =>{
           console.log(error);
@@ -346,7 +367,7 @@ export default {
 };
 </script>
 
-<style lang="scss" >
+<style lang="scss">
   .customclass {
     background: #1cb0f5;
   }
@@ -389,8 +410,16 @@ export default {
     padding: 10px 0;
     background-color: #f9fafc;
   }
+  .img-box-card {
+    width: 100px
+  }
   .video-box-card {
     width: 100%;
     height: 100%;
-  }  
+  }
+  .faceimage {
+  width: 45%;
+  height: 45%;
+  display: block;
+}
 </style>

@@ -100,7 +100,7 @@ const frameIn = [
           auth: true,
           title: '摄像头位置预览'
         }
-      },      
+      },
       {
         path: 'face-match',
         name: 'face-match',
@@ -127,7 +127,7 @@ const frameIn = [
           auth: true,
           title: '通过位置查询视频'
         }
-      }      
+      }
     ]
   }
 ]
