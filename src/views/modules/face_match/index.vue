@@ -165,6 +165,7 @@ export default {
   mixins: [ mixinViewModule ],
   data() {
     return {
+      id: null, //存放face.vue界面传过来的faceid
       facelist: [],
       imgarr: [],
       mixinViewModuleOptions: {
@@ -203,17 +204,23 @@ export default {
       }
     };
   },
+  created(){      //获取face.vue界面传递过来的faceid,然后get请求参数里
+    this.id = this.$route.params.id;
+    if(this.id)
+    {
+      this.$axios
+      .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:this.id}})
+      .then(res => {
+        console.log('****res***res****')
+        console.log(res)
+        this.dataList = res.list
+        this.facelist = res.imgList //imgList是包含在返回数据里的
+      })
+      .catch(() => {});
+    }
+  },
   mounted() {
     console.log("this is current player instance object", this.player);
-    // this.player.markers({
-    //   markers: [
-    //     {time: 9.5, text: "this", overlayText: "1", class: "special-blue", arrlist:[{},{}],width:"100%"},
-    //     {time: 16,  text: "is", overlayText: "2", arrlist:[{}], overlayA:"aaa",width:"50%"},
-    //     {time: 23.6,text: "so", overlayText: "3", overlayA:"aaa",width:"100%"},
-    //     {time: 28,  text: "cool", overlayText: "4", overlayA:"aaa",width:"70%"},
-    //     {time: 35,  text: "cooa", overlayText: "5",overlayA:"aaa",width:"40%"}
-    //   ]
-    // })
   },
   computed: {
     player() {
@@ -223,7 +230,8 @@ export default {
   methods: {
     broadcast(fid,sid,url){
       console.log('******----******')
-      url = `${process.env.VUE_APP_API}/`+url
+      //url = `${process.env.VUE_APP_API}/`+url
+      url = 'http://10.2.151.139:8888'+url
       console.log(url)
       this.playerOptions.sources[0].src = url
       this.$axios

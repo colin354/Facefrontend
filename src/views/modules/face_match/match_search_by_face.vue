@@ -208,6 +208,7 @@ export default {
       }
     };
   },
+
   mounted() {
     console.log("this is current player instance object", this.player);
     // this.player.markers({
@@ -233,7 +234,8 @@ export default {
     },
     broadcast(fid,sid,url){
       console.log('******----******')
-      url = `${process.env.VUE_APP_API}/`+url
+      //url = `${process.env.VUE_APP_API}/`+url
+      url = 'http://10.2.151.139:8888'+url
       console.log(url)
       this.playerOptions.sources[0].src = url
       this.$axios

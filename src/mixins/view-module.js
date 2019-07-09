@@ -25,7 +25,7 @@ export default {
       total: 0,                   // 总条数
       dataListLoading: false,     // 数据列表，loading状态
       dataListSelections: [],     // 数据列表，多选项
-      addOrUpdateVisible: false   // 新增／更新，弹窗visible状态
+      addOrUpdateVisible: false,  // 新增／更新，弹窗visible状态
     }
     /* eslint-enable */
   },
@@ -55,7 +55,7 @@ export default {
           }
         }
       ).then(res => {
-        console.log("-----456------")
+        console.log("-----456---location---")
         console.log(res)
         this.dataListLoading = false
         this.dataList = this.mixinViewModuleOptions.getDataListIsPage ? res.list : res
@@ -97,6 +97,7 @@ export default {
       this.page = val
       this.getDataList()
     },
+
     // 新增 / 修改
     addOrUpdateHandle (id) {
       this.addOrUpdateVisible = true
