@@ -99,7 +99,9 @@
                     <el-col :span="4">
                       <img :src=o.faceurl class="faceimage">
                     </el-col>
-                    <el-col></el-col>
+                    <el-col>
+                      <img :src=o[index].faceurl class="faceimage">
+                    </el-col>
                   </el-row>
                   <el-row>
                     <el-col :span="5">
@@ -294,10 +296,10 @@ export default {
           this.matchnum = res.count
           this.info = res.info
           this.marks = {
-            '0.1': '',
-            '0.15': 'abc/aa.jpg',
-            '2.5': 'abc/aa.jpg',
-            '3.6': 'abc/aa.jpg',}
+            0.1: '',
+            0.15: '',
+            2.5: 'abc/aa.jpg',
+            3.6: 'abc/aa.jpg',}
           console.log(res.info.facematch)
           console.log(this.marks)
         })
