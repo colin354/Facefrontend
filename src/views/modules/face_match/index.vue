@@ -165,7 +165,7 @@ export default {
   mixins: [ mixinViewModule ],
   data() {
     return {
-      id: [], //存放face.vue界面传过来的faceid
+      id: null, //存放face.vue界面传过来的faceid
       facelist: [],
       imgarr: [],
       mixinViewModuleOptions: {
@@ -204,9 +204,20 @@ export default {
       }
     };
   },
-  created(){      //获取face.vue界面传递过来的faceid,然后将faceid传递给view-module.js中get请求参数里
-    this.id = this.$route.params.id;//获取上个页面传递的id,在下面获取数据的时候先提交id
-    this.getFaceid(this.id)     //调用view-module.js中的函数,发送get请求(getDataList())
+  created(){      //获取face.vue界面传递过来的faceid,然后get请求参数里
+    this.id = this.$route.params.id;
+    if(this.id)
+    {
+      this.$axios
+      .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:this.id}})
+      .then(res => {
+        console.log('****res***res****')
+        console.log(res)
+        this.dataList = res.list
+        this.facelist = res.imgList //imgList是包含在返回数据里的
+      })
+      .catch(() => {});
+    }
   },
   mounted() {
     console.log("this is current player instance object", this.player);

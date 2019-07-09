@@ -85,7 +85,7 @@ export default {
   mixins: [ mixinViewModule ],
   data () {
     return {
-      id: "",//存放faceid,向face-match界面发送待查询人的faceid
+      id: '',//存放faceid,向face-match界面发送待查询人的faceid
       imgs:[{url:"http://192.168.4.14:8000/media/demo/scene1.jpg"},
             {url:"http://192.168.4.14:8000/media/demo/scene2.jpg"},
             {url:"http://192.168.4.14:8000/media/demo/scene3.jpg"}],

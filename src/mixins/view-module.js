@@ -26,7 +26,6 @@ export default {
       dataListLoading: false,     // 数据列表，loading状态
       dataListSelections: [],     // 数据列表，多选项
       addOrUpdateVisible: false,  // 新增／更新，弹窗visible状态
-      faceid: '' ,                //接收人脸界面传递过来的待查询的faceid
     }
     /* eslint-enable */
   },
@@ -52,7 +51,6 @@ export default {
             orderField: this.orderField,
             page: this.mixinViewModuleOptions.getDataListIsPage ? this.page : null,
             limit: this.mixinViewModuleOptions.getDataListIsPage ? this.limit : null,
-            faceid: this.faceid,
             ...this.dataForm
           }
         }
@@ -97,10 +95,6 @@ export default {
     // 分页, 当前页
     pageCurrentChangeHandle (val) {
       this.page = val
-      this.getDataList()
-    },
-    getFaceid (val){  
-      this.faceid = val //将请求的id赋值给faceid
       this.getDataList()
     },
 
