@@ -114,7 +114,7 @@
       </el-col>
     </el-row>
 
-  <!-- <el-dialog
+  <el-dialog
     :visible.sync="visible"
     :close-on-click-modal="false"
     :close-on-press-escape="true"
@@ -193,7 +193,7 @@
           </div>
         </el-col>
     </el-row>
-  </el-dialog> -->
+  </el-dialog>
   </d2-container>
 </template>
 

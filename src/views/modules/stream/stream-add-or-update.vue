@@ -21,7 +21,13 @@
       </el-form-item>
       <el-form-item prop="streamurl" :label="$t('stream.url')">
         <el-input v-model="dataForm.streamurl" :placeholder="$t('stream.url')"/>
-      </el-form-item>      
+      </el-form-item>
+      <el-form-item prop="streamlat" :label="$t('stream.latitude')">
+        <el-input v-model="dataForm.streamlat" :placeholder="$t('stream.latitude')"/>
+      </el-form-item> 
+      <el-form-item prop="streamlon" :label="$t('stream.longtitude')">
+        <el-input v-model="dataForm.streamlon" :placeholder="$t('stream.longtitude')"/>
+      </el-form-item>       
     </el-form>
     <template slot="footer">
       <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
@@ -43,7 +49,9 @@ export default {
         streamname: "",
         streamlocation: "",
         streamurl: "",
-        status: 1
+        status: 1,
+        streamlat:"",
+        streamlon:""
       },
     };
   },
