@@ -94,13 +94,19 @@
           <el-col>
             <div class="grid-content bg-purple">
               <el-card class="box-card">
-                <el-row v-for="(o, index) in info.facematch" :key="index" >
+                <facecompile
+                  v-for="(o, index) in info.facematch" :key="index"
+                  :facemark="o.mark"
+                  :facematch="o"
+                  :streamtime="info.streamtime"
+                  ></facecompile>
+                <!-- <el-row v-for="(o, index) in info.facematch" :key="index" >
                   <el-row>
                     <el-col :span="4">
                       <img :src=o.faceurl class="faceimage">
                     </el-col>
-                    <el-col>
-                      <img :src=o[index].faceurl class="faceimage">
+                    <el-col :span="9">
+                      <img :src="o.facetime[15].imgur ? o.facetime[15].imgur : ''" class="faceimage">
                     </el-col>
                   </el-row>
                   <el-row>
@@ -110,13 +116,13 @@
                       <el-slider
                         :step="0.01"
                         v-model="o.index"
-                        @change="onChange($event)" 
+                        @change="onChange($event)"
                         :max=info.streamtime
                         :marks="marks"
                         show-input></el-slider>
                     </el-col>
                   </el-row>
-                </el-row>
+                </el-row> -->
               </el-card>
             </div>
           </el-col>
@@ -124,7 +130,7 @@
       </el-col>
     </el-row>
 
-  <el-dialog
+  <!-- <el-dialog
     :visible.sync="visible"
     :close-on-click-modal="false"
     :close-on-press-escape="true"
@@ -203,7 +209,7 @@
           </div>
         </el-col>
     </el-row>
-  </el-dialog>
+  </el-dialog> -->
   </d2-container>
 </template>
 
@@ -218,9 +224,10 @@ import "@/views/modules/face_match/src/videojs.markers.css"
 // import markers from 'videojs-markers/dist/videojs-markers'
 import 'videojs-markers'
 import spriteThumbnails from 'videojs-sprite-thumbnails'
-import { VueHorizontalTimeline } from 'vue-horizontal-timeline'
+// import { VueHorizontalTimeline } from 'vue-horizontal-timeline'
 import '@/views/modules/face_match/src/custom-theme.css'
 import faceimg from './face-img'
+import facecompile from './face-compile'
 import 'vuetify/dist/vuetify.min.css'
 
 // const plugin = function(list, item) {
@@ -235,12 +242,11 @@ export default {
   components: {
     videoPlayer,
     faceimg,
-    VueHorizontalTimeline
+    facecompile
   },
   mixins: [ mixinViewModule ],
   data() {
     return {
-      marks: [],
       visible: false,
       imgarr: [],
       matchnum: 0,
@@ -288,6 +294,7 @@ export default {
     broadcast(id,streamurl){
       this.visible = true
       this.playerOptions.sources[0].src = streamurl
+      console.log('**********************')
       this.$axios.get(`/api/check?token=${cookieGet('token')}&streamid=${id}`)
         .then(res=> {
           console.log('111111111111111122221111111111111111')
@@ -295,13 +302,7 @@ export default {
           this.playerOptions.custum = res.list
           this.matchnum = res.count
           this.info = res.info
-          this.marks = {
-            0.1: '',
-            0.15: '',
-            2.5: 'abc/aa.jpg',
-            3.6: 'abc/aa.jpg',}
           console.log(res.info.facematch)
-          console.log(this.marks)
         })
         .catch(error =>{
           console.log(error);
