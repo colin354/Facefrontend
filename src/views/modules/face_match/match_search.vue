@@ -85,6 +85,7 @@
           <el-col :span="5">
             <div class="grid-content bg-purple">
               <el-card class="box-card">
+                <faceimg :imgarr="imgarr"></faceimg>
               </el-card>
             </div>
           </el-col>

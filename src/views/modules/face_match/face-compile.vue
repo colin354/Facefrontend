@@ -26,7 +26,7 @@
           v-model="value"
           @change="onChange($event)"
           :max=streamtime
-          :marks=facematch.mark
+          :marks=facematch.marks
           @input="onInput()"
           show-input></el-slider>
       </el-col>
@@ -72,12 +72,11 @@ export default {
   methods: {
     onChange(event){
       console.log('---99---99----9999---')
-      console.log(this.facematch.mark)
-      console.log('---99---88----9999---')
-      console.log(this.facemark)
+      console.log(this.facematch.marks)
       console.log('--------------------')
+      console.log(this.facematch.marks[0.4])
       console.log(event)
-      this.src = this.facematch.facetime[0].imgur
+      this.src = this.facematch.url[event]
     },
     onInput(){
       console.log('66666666')
