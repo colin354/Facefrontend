@@ -4,9 +4,9 @@
       <el-col :span="4">
         <img :src=facematch.faceurl class="faceimage">
       </el-col>
-      <el-col :span="9">
+      <el-col :span="4"  v-for="(item,index) in src" :key="item.time">
         <div class="block">
-          <el-image :src="src" class="faceimage">
+          <el-image :src="item.imgurl" class="faceimage">
             <div slot="error" class="image-slot">
               <i class="el-icon-picture-outline">点击mark点，查看视频截图图片</i>
             </div>
@@ -26,7 +26,7 @@
           v-model="value"
           @change="onChange($event)"
           :max=streamtime
-          :marks=facematch.marks
+          :marks=facemark
           @input="onInput($event)"
           show-input></el-slider>
       </el-col>
@@ -40,22 +40,21 @@ export default {
     facematch: Object,
     streamtime: Number,
     facemark: Object,
-    // playertime: Number,
     required: true
   },
-  // watch:{
-  //   facematch:{
-  //     handler(val,oldVal){
-  //       this.src = ''
-  //       this.value = 0
-  //     }
-  //   }
-  // },
+  watch:{
+    facematch:{
+      handler(val,oldVal){  //val是改变之后的facematch,oldVal原来的facematch
+        this.src = []   //facematch变化时,src置空
+        this.value = 0
+      }
+    }
+  },
   data() {
     return {
       value:0,
       facematchurl: '',
-      src: '',
+      src: [],
       marks: {
         "0.04":"aaa",
         "1.09":"bbb",
@@ -69,15 +68,32 @@ export default {
   mounted() {
     console.log('mounted')
     this.facematchurl = ''
+    this.src = []
   },
   methods: {
-    onChange(event){
+    onChange(event){  //点击滑动轴,显示时间节点(秒)
       console.log('---99---99----9999---')
-      this.src = this.facematch.url[event]
+      this.src = []
+      for (let i=0;i<this.facematch.facetime.length;i++)
+      {
+        if(event >= this.facematch.facetime[i].time)
+        {
+          if(this.src.length == 5)
+          {
+            this.src.shift()
+            this.src.push(this.facematch.facetime[i])
+          }
+          else
+            this.src.push(this.facematch.facetime[i])
+        }
+        else break
+      }
+      // console.log('66668886666')
+      // this.src = this.facematch.url[event]
     },
     onInput(event){
-      console.log('66668886666')
-      this.src = this.facematch.url[event]
+      // console.log('66668886666')
+      // this.src = this.facematch.url[event]
     }   
   }
 }
