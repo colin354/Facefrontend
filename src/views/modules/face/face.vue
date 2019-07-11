@@ -36,7 +36,7 @@
                 <template slot-scope="scope">
                   <el-button type="text" size="mini" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
                   <el-button type="text" size="mini" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
-                  <el-button type="text" size="mini" @click="getImgs(scope.row.imgurls)">图片</el-button>
+                  <el-button type="text" size="mini" @click="getImgs(scope.row.id,scope.row.imgurls)">图片</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -54,7 +54,7 @@
                     <!-- <el-card :body-style="{ padding: '10px' }" > -->
                       <!--<span>id:{{item.userid_id}}</span>
                       <span class="name">{{item.name}}</span>-->
-                    <img :src="item.url" fit="fill">
+                    <router-link :to="{name:'face-match',params: {id:id}}"><img :src="item.url" fit="fill"></router-link>
                     <!-- </el-card> -->
                 </el-carousel-item>
             </el-carousel>
@@ -85,6 +85,7 @@ export default {
   mixins: [ mixinViewModule ],
   data () {
     return {
+      id: '',//存放faceid,向face-match界面发送待查询人的faceid
       imgs:[{url:"http://192.168.4.14:8000/media/demo/scene1.jpg"},
             {url:"http://192.168.4.14:8000/media/demo/scene2.jpg"},
             {url:"http://192.168.4.14:8000/media/demo/scene3.jpg"}],
@@ -109,15 +110,10 @@ export default {
     AddOrUpdate
   },
   methods: {
-    stopPlay(){ //鼠标移上停止轮播
-      this.mySwiper.stopAutoplay();
-    },
-    play(){ //鼠标移出继续轮播
-      this.mySwiper.startAutoplay();
-    },
-    getImgs(imgurls){
+    getImgs(id,imgurls){
       this.imgs = []
       this.imgs = imgurls
+      this.id = id  //通过图片按钮获得了faceid,传给本组件自定义的id
     }
   }
 }

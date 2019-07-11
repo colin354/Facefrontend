@@ -1,14 +1,8 @@
 <template>
   <el-row>
-    <el-col :span="5" v-for="(o, index) in imgarr" :key="index" :offset="index > 0 ? 1 : 0">
+    <el-col v-for="(o, index) in imgarr" :key="index" :offset="index > 0 ? 1 : 0">
       <el-card :body-style="{ padding: '0px' }">
         <img :src=o.imgurl class="image">
-        <div style="padding: 14px;">
-          <div class="bottom clearfix">
-            <time class="time">{{ currentDate }}</time>
-            <el-button type="text" class="button">操作按钮</el-button>
-          </div>
-        </div>
       </el-card>
     </el-col>
   </el-row>
@@ -56,7 +50,6 @@ export default {
   },
   data() {
     return {
-      currentDate: new Date()
     };
   }
 }

@@ -67,7 +67,6 @@
           <el-col :span="4">
             <div class="grid-content bg-purple">
               <el-card class="box-card">
-
               </el-card>
             </div>
           </el-col>           
