@@ -27,7 +27,7 @@
           @change="onChange($event)"
           :max=streamtime
           :marks=facematch.marks
-          @input="onInput()"
+          @input="onInput($event)"
           show-input></el-slider>
       </el-col>
     </el-row>
@@ -40,6 +40,7 @@ export default {
     facematch: Object,
     streamtime: Number,
     facemark: Object,
+    // playertime: Number,
     required: true
   },
   // watch:{
@@ -72,14 +73,11 @@ export default {
   methods: {
     onChange(event){
       console.log('---99---99----9999---')
-      console.log(this.facematch.marks)
-      console.log('--------------------')
-      console.log(this.facematch.marks[0.4])
-      console.log(event)
       this.src = this.facematch.url[event]
     },
-    onInput(){
-      console.log('66666666')
+    onInput(event){
+      console.log('66668886666')
+      this.src = this.facematch.url[event]
     }   
   }
 }

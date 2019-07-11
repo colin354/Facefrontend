@@ -52,13 +52,13 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="5">
+          <!-- <el-col :span="5">
             <div class="grid-content bg-purple">
               <el-card class="box-card">
               </el-card>
             </div>
-          </el-col>           
-          <el-col :span="14">
+          </el-col>            -->
+          <el-col :span="18">
             <div class="grid-content bg-purple">
               <el-card class="video-box-card">
                 <video-player
@@ -224,7 +224,7 @@ import 'videojs-hotkeys'
 import "@/views/modules/face_match/src/videojs.markers.css"
 // import markers from 'videojs-markers/dist/videojs-markers'
 import 'videojs-markers'
-import spriteThumbnails from 'videojs-sprite-thumbnails'
+// import spriteThumbnails from 'videojs-sprite-thumbnails'
 // import { VueHorizontalTimeline } from 'vue-horizontal-timeline'
 import '@/views/modules/face_match/src/custom-theme.css'
 import faceimg from './face-img'
@@ -249,6 +249,7 @@ export default {
   data() {
     return {
       visible: false,
+      playertime: 0,
       imgarr: [],
       matchnum: 0,
       info: {
@@ -320,7 +321,9 @@ export default {
     },
     // ...player event
     onPlayerTimeupdate(player) {
-      // console.log(player)
+      console.log('pplayer'+player)
+      // console.log(player.currentTime())
+      this.playertime = player.currentTime()
     },
     onPlayerEnded(player) {
       // console.log('player pause!', player)
