@@ -82,7 +82,7 @@
               </el-card>
             </div>
           </el-col>
-          <el-col :span="5">
+          <el-col :span="6">
             <div class="grid-content bg-purple">
               <el-card class="box-card">
                 <faceimg :imgarr="imgarr"></faceimg>
@@ -97,7 +97,7 @@
               <el-card class="box-card">
                 <facecompile
                   v-for="(o, index) in info.facematch" :key="index"
-                  :facemark="o.mark"
+                  :facemark="o.marks"
                   :facematch="o"
                   :streamtime="info.streamtime"
                   ></facecompile>

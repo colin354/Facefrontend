@@ -43,19 +43,20 @@ export default {
     // playertime: Number,
     required: true
   },
-  // watch:{
-  //   facematch:{
-  //     handler(val,oldVal){
-  //       this.src = ''
-  //       this.value = 0
-  //     }
-  //   }
-  // },
+  watch:{
+    facematch:{
+      handler(val,oldVal){
+        this.src = ''
+        this.value = 0
+      }
+    }
+  },
   data() {
     return {
       value:0,
       facematchurl: '',
       src: '',
+      srclist:{},
       marks: {
         "0.04":"aaa",
         "1.09":"bbb",
@@ -78,7 +79,7 @@ export default {
     onInput(event){
       console.log('66668886666')
       this.src = this.facematch.url[event]
-    }   
+    }
   }
 }
 </script>
