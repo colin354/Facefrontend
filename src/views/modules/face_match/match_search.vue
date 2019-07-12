@@ -57,7 +57,7 @@
               <el-card class="box-card">
               </el-card>
             </div>
-          </el-col>            -->
+          </el-col>  -->
           <el-col :span="18">
             <div class="grid-content bg-purple">
               <el-card class="video-box-card">
@@ -101,29 +101,6 @@
                   :facematch="o"
                   :streamtime="info.streamtime"
                   ></facecompile>
-                <!-- <el-row v-for="(o, index) in info.facematch" :key="index" >
-                  <el-row>
-                    <el-col :span="4">
-                      <img :src=o.faceurl class="faceimage">
-                    </el-col>
-                    <el-col :span="9">
-                      <img :src="o.facetime[15].imgur ? o.facetime[15].imgur : ''" class="faceimage">
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col :span="5">
-                    </el-col>
-                    <el-col>
-                      <el-slider
-                        :step="0.01"
-                        v-model="o.index"
-                        @change="onChange($event)"
-                        :max=info.streamtime
-                        :marks="marks"
-                        show-input></el-slider>
-                    </el-col>
-                  </el-row>
-                </el-row> -->
               </el-card>
             </div>
           </el-col>
