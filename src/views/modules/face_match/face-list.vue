@@ -61,14 +61,13 @@ export default {
   },
   data() {
     return {
-
     };
   },
   methods: {
-    face_check(data) {
+    face_check(aa) {
       console.log('88889999***999988888')
-      console.log(data)
-      this.$emit('getLocation',data)
+      console.log(aa)
+      this.$emit('getLocation',aa)
     }
   }
 }
