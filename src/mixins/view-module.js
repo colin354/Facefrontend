@@ -63,6 +63,8 @@ export default {
         this.facelist = res.imgList ? res.imgList : []
         console.log("****affeee****")
         console.log(res.list)
+        console.log("-----facelist-----")
+        console.log(this.facelist)
         console.log(res)
       }).catch(() => {
         // this.face_url = ''

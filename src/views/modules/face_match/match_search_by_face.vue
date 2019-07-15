@@ -1,102 +1,166 @@
 <template>
   <d2-container>
     <el-row :gutter="20">
-      <el-col :span="24">
-        <div class="grid-content bg-purple">
+      <el-col :span="12">
+         <div class="grid-content bg-purple">
           <el-card class="box-card">
-            <el-form :inline="true" size="mini" :model="dataForm">
-              <el-form-item>
-                <el-input v-model="dataForm.faceid" :placeholder="$t('check.faceid')" clearable/>
-              </el-form-item>
-              <el-form-item>
-                <el-button @click="getDataList()">{{ $t('query') }}</el-button>
-              </el-form-item>
-              <!-- <el-form-item>
-                
-              </el-form-item> -->
-            </el-form>
-            <facelist :facelist="facelist" v-model="dataForm.faceid" @getface="getface"></facelist>
+            <div id="map">
+              <div class="amap-wrapper">
+                <el-amap ref="map" vid="amapDemo" :amap-manager="amapManager" :center="center" :zoom="zoom" :plugin="plugin" 
+                class="amap-demo">
+                <el-amap-marker vid="amapDemo" v-for="(item,index) in positions" :position="item"></el-amap-marker>
+                <!-- <el-amap-marker vid="amapDemo" v-for="(item,index) in polyline.path" :key="index" :position="item"></el-amap-marker> -->
+                <el-amap-polyline :editable="polyline.editable"  :path="polyline.path" :events="polyline.events"></el-amap-polyline>
+                </el-amap>
+              </div>
+            </div>
           </el-card>
         </div>
       </el-col>
-    </el-row>
-    <el-row :gutter="20">
-      <el-col :span="8">
-        <div class="grid-content bg-purple">
-          <el-card class="box-card">
-            <el-table
-              size="mini"
-              v-loading="dataListLoading"
-              :data="dataList"
-              border
-              @selection-change="dataListSelectionChangeHandle"
-              @sort-change="dataListSortChangeHandle"
-              style="width: 100%;">
-              <el-table-column prop="faceid" :label="$t('face.name')" header-align="center" align="center" width="60"/>
-              <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center" />
-              <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
-                <template slot-scope="scope">
-                  <el-button type="text" size="mini" @click="broadcast(scope.row.faceid,scope.row.streamid,scope.row.url)">{{ $t('check.broadcast') }}</el-button>
-                </template>
-            </el-table-column>
-            </el-table>
-            <!-- 分页 -->
-            <el-pagination
-              :current-page="page"
-              :page-sizes="[10, 20, 50, 100]"
-              :page-size="limit"
-              :total="total"
-              layout="total, sizes, prev, pager, next, jumper"
-              @size-change="pageSizeChangeHandle"
-              @current-change="pageCurrentChangeHandle">
-            </el-pagination>
-          </el-card>
+      
+      <el-col :span="12">
+         <div class="grid-content bg-purple">
+            <div class="grid-content bg-purple">
+              <el-card class="box-card">
+                <facelist :facelist="facelist" v-model="dataForm.faceid" @getLocation="getLoction"></facelist>
+              </el-card>
+            </div>
         </div>
-      </el-col>
-      <el-col :span="16">
-        <el-row ::gutter="20">
-          <el-col>
-            <div class="grid-content bg-purple">
-              <el-card class="box-card">
-                <video-player
-                  class="vjs-default-skin"
-                  ref="videoPlayer"
-                  :options="playerOptions"
-                  :playsinline="true"
-                  customEventName="customstatechangedeventname"
-                  @play="onPlayerPlay($event)"
-                  @pause="onPlayerPause($event)"
-                  @ended="onPlayerEnded($event)"
-                  @waiting="onPlayerWaiting($event)"
-                  @playing="onPlayerPlaying($event)"
-                  @loadeddata="onPlayerLoadeddata($event)"
-                  @timeupdate="onPlayerTimeupdate($event)"
-                  @canplay="onPlayerCanplay($event)"
-                  @canplaythrough="onPlayerCanplaythrough($event)"
-                  @statechanged="playerStateChanged($event)"
-                  @ready="playerReadied"
-                ></video-player>                
-              </el-card>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col>
-            <div class="grid-content bg-purple">
-              <el-card class="box-card">
-                <faceimg :imgarr="imgarr"></faceimg>
-              </el-card>
-            </div>
-          </el-col>
-        </el-row>   
       </el-col>
     </el-row>
   </d2-container>
 </template>
 
+<script>
+import { AMapManager } from 'vue-amap'
+import { cookieGet } from '@/common/cookie'
+import faceimg from './face-img'
+import facelist from './face-list'
+import { constants } from 'crypto'
+import mixinViewModule from '@/mixins/view-module'
+
+
+let amapManager = new AMapManager();
+export default {
+  name: "page3",
+  components: {
+    facelist,
+    faceimg
+  },
+  mixins: [ mixinViewModule ],
+  data: function() {
+    return {
+      temp:[],
+      zoom: 16,
+      center: [116.479282,39.99856],
+      polyline: {
+        path: [[116.478935,39.997761],[116.478939,39.997825],[116.478912,39.998549],
+	      [116.478998,39.998555],[116.479282,39.99856],[116.479658,39.998528],[116.480151,39.998453],
+	      [116.480784,39.998302],[116.480784,39.998302],[116.481149,39.998184],[116.481573,39.997997],[116.481863,39.997846],
+	      [116.482072,39.997718],[116.482362,39.997718],[116.483633,39.998935],[116.48367,39.998968],[116.484648,39.999861]],
+        events: {
+          init:(o) =>{
+            console.log(o)
+            console.log("----ya try ------")
+            console.log(o.getPath().map(point => [point.lng, point.lat]))
+            this.temp =  o
+            console.log("----ya end ------")
+          },
+          click(e) {
+            //this.center = [e.lnglat.lng,e.lnglat.lat];//点击选择新地址为中心点
+            //alert('click polyline');
+          },
+          end: (e) => {
+            let newPath = e.target.getPath().map(point => [point.lng, point.lat]);
+            console.log("---------66666--------")
+            console.log(e)
+            console.log(newPath);
+          }
+        },
+        editable: false
+      },  
+      facelist: [],
+      mixinViewModuleOptions: {
+        getDataListURL: `/api/check?token=${cookieGet('token')}`,
+        getDataListIsPage: true,
+        deleteURL: `/api/check?token=${cookieGet('token')}`,
+        deleteIsBatch: true
+      },
+      dataForm: {
+        faceid: ''
+      },
+      amapManager,
+      positions: [[116.478935,39.997761],[116.478939,39.997825],[116.478912,39.998549],
+	      [116.478998,39.998555],[116.479282,39.99856],[116.479658,39.998528],[116.480151,39.998453],
+	      [116.480784,39.998302],[116.480784,39.998302],[116.481149,39.998184],[116.481573,39.997997],[116.481863,39.997846],
+        [116.482072,39.997718],[116.482362,39.997718],[116.483633,39.998935],[116.48367,39.998968],[116.484648,39.999861]],
+      location:[],
+      events: {
+        init: (o) => {
+          console.log('555--------')
+          console.log(o.getCenter())
+          console.log('getPath--------')
+          console.log(this.$refs.map.$$getInstance())
+          console.log("----ya try ------")
+          //console.log(this.$refs.map.$$getPath())
+          console.log("----ya end ------")
+          o.getCity(result => {
+            console.log(result)
+          })
+        },
+        'moveend': () => {
+        },
+        'zoomchange': () => {
+        }
+        // 'click': (e) => {
+        //   console.log(e);
+        //   this.center = [e.lnglat.lng,e.lnglat.lat];//点击选择新地址为中心点
+        //   //alert('map clicked');
+        // }
+      },
+      plugin: ['ToolBar', {
+        pName: 'MapType',
+        defaultType: 0,
+        events: {
+          init(o) {
+            console.log("111111111111111111111puligin")
+            
+            console.log(o);
+          }
+        }
+      }]
+    };
+  },
+  methods: {
+    getMap() {
+      // amap vue component
+      console.log(amapManager._componentMap);
+      // gaode map instance
+      console.log(amapManager._map);
+    },
+    getLoction(data){  //接收子组件返回的facelist中locations,是个列表
+      console.log("-------000--------")
+      console.log(data)
+      //console.log(this.facelist[0].locations)
+      console.log("111111111111111111")
+      this.polyline.path = data
+      this.positions = data.map(point => [point.lng, point.lat])
+      console.log("----11111-------")
+      console.log(this.polyline.path)
+      console.log("----ya try ------")
+      console.log(this.positions)
+      console.log("----ya end ------")
+    },
+  }
+}
+</script>
+
 <style lang="scss" scoped>
+  .amap-demo {
+    height: 400px;
+  }
   .inner {
-    position: right;
+    position: absolute;
     top: 20px;
     right:  20px;
     bottom: 20px;
@@ -135,204 +199,3 @@
     background-color: #f9fafc;
   }
 </style>
-
-<script>
-import "video.js/dist/video-js.css";
-import { videoPlayer } from "vue-video-player";
-import { cookieGet } from '@/common/cookie'
-import mixinViewModule from '@/mixins/view-module'
-// import videojs from "video.js"
-import 'videojs-hotkeys'
-import "@/views/modules/face_match/src/videojs.markers.css"
-// import markers from 'videojs-markers/dist/videojs-markers'
-import 'videojs-markers'
-// import 'videojs-notations'
-import '@/views/modules/face_match/src/custom-theme.css'
-import faceimg from './face-img'
-import facelist from './face-list'
-import { constants } from 'crypto';
-
-// const plugin = function(list, item) {
-//   markers(this, list, item);
-// };
-
-// videojs.registerPlugin("markers", markers);
-// videojs.registerPlugin("notations", notations);
-
-export default {
-  name: "page3",
-  components: {
-    videoPlayer,
-    facelist,
-    faceimg
-  },
-  mixins: [ mixinViewModule ],
-  data() {
-    return {
-      facelist: [],
-      imgarr: [],
-      mixinViewModuleOptions: {
-        getDataListURL: `/api/check?token=${cookieGet('token')}`,
-        getDataListIsPage: true,
-        deleteURL: `/api/check?token=${cookieGet('token')}`,
-        deleteIsBatch: true
-      },
-      dataForm: {
-        faceid: ''
-      },
-      playerOptions: {
-        // videojs options
-        loop: true,
-        muted: true,
-        fluid: true,
-        language: "en",
-        playbackRates: [0.7, 1.0, 1.5, 2.0],
-        sources: [
-          {
-            type: "video/mp4",
-            src:
-              // "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
-              // "http://10.2.151.139:8888/media/test_video/jack_rose.mp4"
-              "http://localhost/media/stream/hello.mp4"
-              //http://localhost
-          }
-        ],
-        poster: "",
-        custum: [
-          {time: 4.54,   text: "jack", overlayText: "1", imgList:[{id:'1',url:'http://192.17.1.18/media/sample/1.jpg'},{id:'2',url:'http://192.17.1.18/media/sample/2.jpg'}],width:"100%"},
-          {time: 4.55,   text: "rose", overlayText: "2", imgList: [{id:'11',url:'http://192.17.1.18/media/sample/3.jpg'},{id:'22',url:'http://192.17.1.18/media/sample/4.jpg'},{id:'33',url:'http://192.17.1.18/media/sample/5.jpg'}],width:"50%"},
-          {time: 300,  text: "so", overlayText: "3", imgList:[{id:'111',url:'aaaaa'},{id:'222',url:'bbbbb'}],width:"100%"},
-          {time: 240,  text: "cool", overlayText: "4", overlayA:"aaa",width:"70%"},
-          {time: 1200,  text: "nono", overlayText: "8", overlayA:"aaa",width:"70%"},
-        ]
-      }
-    };
-  },
-
-  mounted() {
-    console.log("this is current player instance object", this.player);
-    // this.player.markers({
-    //   markers: [
-    //     {time: 9.5, text: "this", overlayText: "1", class: "special-blue", arrlist:[{},{}],width:"100%"},
-    //     {time: 16,  text: "is", overlayText: "2", arrlist:[{}], overlayA:"aaa",width:"50%"},
-    //     {time: 23.6,text: "so", overlayText: "3", overlayA:"aaa",width:"100%"},
-    //     {time: 28,  text: "cool", overlayText: "4", overlayA:"aaa",width:"70%"},
-    //     {time: 35,  text: "cooa", overlayText: "5",overlayA:"aaa",width:"40%"}
-    //   ]
-    // })
-  },
-  computed: {
-    player() {
-      return this.$refs.videoPlayer.player;
-    }
-  }, 
-  methods: {
-    getface(id){
-      console.log(id)
-      this.dataForm.faceid = id
-      this.getDataList()
-    },
-    broadcast(fid,sid,url){
-      console.log('******----******')
-      //url = `${process.env.VUE_APP_API}/`+url
-      url = 'http://10.2.151.139:8888'+url
-      console.log(url)
-      this.playerOptions.sources[0].src = url
-      this.$axios
-      .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:fid,streamid:sid}})
-      .then(res => {
-        console.log('****res***res****')
-        console.log(res)
-        this.playerOptions.custum = res.list
-      })
-      .catch(() => {});
-      // this.playerOptions.sources[0].src = this.dataList[id].url
-      /**todo:
-       *  read the proporty from end, to 
-       */
-      //  this.imgarr = [{},{}] 
-      /**
-       * todo: custunm markers 
-       */
-      this.playerOptions.custum = [
-          {time: 9.5, text: "this", overlayText: "1", class: "special-blue", imgList: [{},{}]},
-          {time: 16,  text: "is", overlayText: "2", imgList: [{},{},{}]},
-          {time: 23.6,text: "so", overlayText: "3", imgList: [{},{}]},
-          {time: 28,  text: "cool", overlayText: "4", imgList: [{},{},{},{}]},
-          {time: 35,  text: "cooa", overlayText: "5",imgList: [{},{}]}
-        ] 
-    },
-    // listen event
-    onPlayerPlay(player) {
-      console.log('player play!', player)
-    },
-    onPlayerPause(player) {
-      console.log('player pause!', player)
-    },
-    onPlayerEnded(player) {
-      console.log('player end!', player)
-    },
-    // ...player event
-    onPlayerTimeupdate(player) {
-      console.log("hahahahahaha")
-    },
-    onPlayerLoadeddata(player) {
-    },
-    onPlayerPlaying(player) {
-      console.log('on plyer')
-    },
-    // or listen state event
-    playerStateChanged(playerCurrentState) {
-      console.log('111111player current update state', playerCurrentState)
-    },
-    onPlayerCanplaythrough(player) {
-      console.log('11111on ply')
-      if(player.currentTime() < this.playerOptions.custum[0].time) {
-        this.imgarr = []
-      }
-    },
-    onPlayerCanplay(player) {
-      console.log('aaabbaa')
-    },
-    onPlayerWaiting(player) {
-      console.log('waiting')
-    },
-    // player is ready
-    playerReadied(player) {
-      console.log("the player is readied!!!!!", player);
-      // you can use it to do something...
-      // player.[methods]
-
-      // player.hotkeys({
-      //   volumeStep: 0.1,
-      //   seekStep: 5,
-      //   enableModifiersForNumbers: false,
-      //   enableMute: true,
-      //   fullscreenKey: function(event, player) {
-      //     // override fullscreen to trigger when pressing the F key or Ctrl+Enter
-      //     return ((event.which === 70) || (event.ctrlKey && event.which === 13));
-      //   }
-      // }),
-      let aa = this.playerOptions.custum
-      let ab = this
-      this.imgarr = []
-      console.log(this.playerOptions.custum)
-      player.markers({
-        markerStyle: {
-            'width':'9px',
-            'border-radius': '40%',
-            'background-color': 'orange'
-        },
-        onMarkerReached: function(marker,index){
-          console.log("aaaaa***999")
-          console.log(marker)
-          ab.imgarr = marker.imgList
-          console.log(ab.imgarr)
-        },
-        markers: aa
-      });
-      console.log(this)
-    }
-  }
-};
-</script>
