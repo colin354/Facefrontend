@@ -8,7 +8,8 @@
               <div class="amap-wrapper">
                 <el-amap ref="map" vid="amapDemo" :amap-manager="amapManager" :center="center" :zoom="zoom" :plugin="plugin" 
                 :events="events" class="amap-demo" >
-                <el-amap-marker vid="amapDemo" v-for="(item,index) in positions" :key="item" :position="item"></el-amap-marker>
+                  <el-amap-polyline :editable="polyline.editable"  :path="polyline.path" :events="polyline.events"></el-amap-polyline>
+                  <el-amap-marker vid="amapDemo" v-for="(item,index) in positions" :key="index" :position="item"></el-amap-marker>
                 </el-amap>
               </div>
             </div>
@@ -46,6 +47,19 @@ export default {
       zoom: 12,
       center: [116.34657,39.987299],
       positions: [[116.34657,39.987299],[116.481485, 39.990464]],
+      polyline: {
+        path: [[121.5389385, 31.21515044], [121.5389385, 31.29615044], [121.5273285, 31.21515044]],
+        events: {
+          click(e) {
+            alert('click polyline');
+          },
+          end: (e) => {
+            let newPath = e.target.getPath().map(point => [point.lng, point.lat]);
+            console.log(newPath);
+          }
+        },
+        editable: false
+      },  
       events: {
         init: (o) => {
           console.log('555--------')
@@ -96,7 +110,7 @@ export default {
             lon1 += res.list[i].streamlon
             lat1 += res.list[i].streamlat
             }
-            this.center = [lon1/i , lat1/i]   //打开地图,自动定位到所有位置的加在一起的平均中心点,不至于跑出中国地图
+            //this.center = [lon1/i , lat1/i]   //打开地图,自动定位到所有位置的加在一起的平均中心点,不至于跑出中国地图
           console.log(this.positions)
         })
         .catch(error =>{
