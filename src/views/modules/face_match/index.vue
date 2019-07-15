@@ -80,7 +80,9 @@
           <el-col>
             <div class="grid-content bg-purple">
               <el-card class="box-card">
-                <faceimg :imgarr="imgarr"></faceimg>
+                <div class="imgblock">
+                  <faceimg :imgarr="imgarr"></faceimg>
+                </div>
               </el-card>
             </div>
           </el-col>
@@ -130,6 +132,11 @@
     padding: 10px 0;
     background-color: #f9fafc;
   }
+  .imgblock {
+    width: 15%;
+    height: 15%;
+    display: block;
+  }  
 </style>
 
 <script>

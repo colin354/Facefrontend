@@ -57,7 +57,7 @@
               <el-card class="box-card">
               </el-card>
             </div>
-          </el-col>            -->
+          </el-col>  -->
           <el-col :span="18">
             <div class="grid-content bg-purple">
               <el-card class="video-box-card">
@@ -82,10 +82,12 @@
               </el-card>
             </div>
           </el-col>
-          <el-col :span="5">
+          <el-col :span="6">
             <div class="grid-content bg-purple">
               <el-card class="box-card">
-                <faceimg :imgarr="imgarr"></faceimg>
+                <div class="imgblock">
+                  <faceimg :imgarr="imgarr"></faceimg>
+                </div>
               </el-card>
             </div>
           </el-col>
@@ -97,33 +99,10 @@
               <el-card class="box-card">
                 <facecompile
                   v-for="(o, index) in info.facematch" :key="index"
-                  :facemark="o.mark"
+                  :facemark="o.marks"
                   :facematch="o"
                   :streamtime="info.streamtime"
                   ></facecompile>
-                <!-- <el-row v-for="(o, index) in info.facematch" :key="index" >
-                  <el-row>
-                    <el-col :span="4">
-                      <img :src=o.faceurl class="faceimage">
-                    </el-col>
-                    <el-col :span="9">
-                      <img :src="o.facetime[15].imgur ? o.facetime[15].imgur : ''" class="faceimage">
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col :span="5">
-                    </el-col>
-                    <el-col>
-                      <el-slider
-                        :step="0.01"
-                        v-model="o.index"
-                        @change="onChange($event)"
-                        :max=info.streamtime
-                        :marks="marks"
-                        show-input></el-slider>
-                    </el-col>
-                  </el-row>
-                </el-row> -->
               </el-card>
             </div>
           </el-col>
@@ -184,31 +163,25 @@
       <el-col :span="5">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
+            <faceimg :imgarr="imgarr"></faceimg>
           </el-card>
         </div>
       </el-col>
     </el-row> 
         
     <el-row :gutter="20">
-        <el-col :span="5">
-          <div class="grid-content bg-purple">
-            <el-card class="box-card">
-            </el-card>
-          </div>
-        </el-col>
-        <el-col :span="14">
-          <div class="grid-content bg-purple">
-            <el-card class="box-card">
-              <faceimg :imgarr="imgarr"></faceimg>
-            </el-card>
-          </div>
-        </el-col>
-        <el-col :span="5">
-          <div class="grid-content bg-purple">
-            <el-card class="box-card">
-            </el-card>
-          </div>
-        </el-col>
+      <el-col>
+        <div class="grid-content bg-purple">
+          <el-card class="box-card">
+            <facecompile
+              v-for="(o, index) in info.facematch" :key="index"
+              :facemark="o.marks"
+              :facematch="o"
+              :streamtime="info.streamtime"
+              ></facecompile>
+          </el-card>
+        </div>
+      </el-col>
     </el-row>
   </el-dialog> -->
   </d2-container>
@@ -271,7 +244,7 @@ export default {
         sources: [
           {
             type: "video/mp4",
-            src: "http://10.2.151.139:9999/102.mp4"
+            src: ""
           }
         ],
         poster: "",
@@ -425,8 +398,13 @@ export default {
     height: 100%;
   }
   .faceimage {
-  width: 45%;
-  height: 45%;
-  display: block;
-}
+    width: 45%;
+    height: 45%;
+    display: block;
+  }
+  .imgblock {
+    width: 45%;
+    height: 45%;
+    display: block;
+  }
 </style>

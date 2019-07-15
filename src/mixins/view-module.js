@@ -16,6 +16,7 @@ export default {
       },
       // 默认属性
       facelist: [],
+      imglist: [],
       dataForm: {},               // 查询条件
       dataList: [],               // 数据列表
       order: '',                  // 排序，asc／desc
@@ -55,13 +56,15 @@ export default {
           }
         }
       ).then(res => {
-        console.log("-----456---location---")
-        console.log(res)
         this.dataListLoading = false
         this.dataList = this.mixinViewModuleOptions.getDataListIsPage ? res.list : res
         this.total = this.mixinViewModuleOptions.getDataListIsPage ? res.count : 0
+        this.imgList = this.mixinViewModuleOptions.getDataListIsPage ? res.imgList : []
         this.facelist = res.imgList ? res.imgList : []
         console.log("****affeee****")
+        console.log('111112221111')
+        console.log(this.imgList)
+        console.log('111112221111')
         console.log(res.list)
         console.log(res)
       }).catch(() => {

@@ -1,10 +1,12 @@
 <template>
   <el-row>
-    <el-col v-for="(o, index) in imgarr" :key="index" :offset="index > 0 ? 1 : 0">
-      <el-card :body-style="{ padding: '0px' }">
-        <img :src=o.imgurl class="image">
-      </el-card>
-    </el-col>
+    <el-row v-for="(o, index) in imgarr" :key="index" :offset="index > 0 ? 1 : 0">
+      <el-col>
+        <el-card :body-style="{ padding: '0px' }">
+          <img :src=o.imgurl class="image">
+        </el-card>
+      </el-col>
+    </el-row>
   </el-row>
 
 </template>
@@ -50,6 +52,7 @@ export default {
   },
   data() {
     return {
+
     };
   }
 }
