@@ -1,12 +1,13 @@
 <template>
   <el-row>
-    <el-col :span="2" v-for="(o, index) in facelist" :key="index" :offset="index > 0 ? 1 : 0">
+    <el-col :span="4" v-for="(o, index) in facelist" :key="index" :offset="index > 0 ? 1 : 0">
       <el-card :body-style="{ padding: '0px' }">
         <div style="padding: 3px;">
           <div class="bottom clearfix">
             <span>{{o.userid_id}}</span>
             <span class="name">{{o.username}}</span>
-            <el-button type="text" class="button" @click="face_check(o.userid_id)">检测</el-button>
+            {{o.locations}}
+            <el-button type="text" class="button" @click="face_check(o.locations)">检测</el-button>
           </div>
         </div>
         <img :src=o.imgurl class="image">
@@ -64,10 +65,10 @@ export default {
     };
   },
   methods: {
-    face_check(id) {
+    face_check(data) {
       console.log('88889999***999988888')
-      console.log(id)
-      this.$emit('getface',id)
+      console.log(data)
+      this.$emit('getLocation',data)
     }
   }
 }
