@@ -261,26 +261,17 @@ export default {
     }
   }, 
   methods: {
-    onChange(event){
-      console.log('---99---99----9999---')
-      console.log(this.info)
-      console.log(event)
-    },
     broadcast(id,streamurl){
       this.visible = true
       this.playerOptions.sources[0].src = streamurl
-      console.log('**********************')
       this.$axios.get(`/api/check?token=${cookieGet('token')}&streamid=${id}`)
         .then(res=> {
-          console.log('111111111111111122221111111111111111')
-          console.log(res)
           this.playerOptions.custum = res.list
           this.matchnum = res.count
           this.info = res.info
-          console.log(res.info.facematch)
         })
         .catch(error =>{
-          console.log(error);
+          console.log(error)
         }) 
     },
     // listen event
@@ -337,8 +328,6 @@ export default {
           //console.log("aaaaa8888888***999")
           //console.log(marker.imgList)
           aa.imgarr = marker.imgList
-          console.log("aaaaa8888888***999")
-          console.log(aa.imgarr)
         },
           markers: acustum  //默认标记点信息给markers
       })   

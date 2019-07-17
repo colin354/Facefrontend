@@ -2,13 +2,13 @@
   <d2-container>
     <el-row :gutter="20">
       <el-col :span="12">
-         <div class="grid-content bg-purple">
+        <div class="grid-content bg-purple">
           <el-card class="box-card">
             <div id="map">
               <div class="amap-wrapper">
                 <el-amap ref="map" vid="amapDemo" :amap-manager="amapManager" :center="center" :zoom="zoom" :plugin="plugin" 
                 class="amap-demo">
-                <el-amap-marker vid="amapDemo" v-for="(item,index) in positions" :position="item"></el-amap-marker>
+                <el-amap-marker vid="amapDemo" v-for="(item,index) in positions" :position="item" :key="index"></el-amap-marker>
                 <!-- <el-amap-marker vid="amapDemo" v-for="(item,index) in polyline.path" :key="index" :position="item"></el-amap-marker> -->
                 <el-amap-polyline :editable="polyline.editable"  :path="polyline.path" :events="polyline.events"></el-amap-polyline>
                 </el-amap>
@@ -19,10 +19,10 @@
       </el-col>
       
       <el-col :span="12">
-         <div class="grid-content bg-purple">
+          <div class="grid-content bg-purple">
             <div class="grid-content bg-purple">
               <el-card class="box-card">
-                <facelist :facelist="facelist" v-model="dataForm.faceid" @getLocation="getLoction"></facelist>
+                <facelist :imgList="imgList" v-model="dataForm.faceid" @getLocation="getLoction"></facelist>
               </el-card>
             </div>
         </div>
@@ -39,7 +39,6 @@ import facelist from './face-list'
 import { constants } from 'crypto'
 import mixinViewModule from '@/mixins/view-module'
 
-
 let amapManager = new AMapManager();
 export default {
   name: "page3",
@@ -54,10 +53,7 @@ export default {
       zoom: 16,
       center: [116.479282,39.99856],
       polyline: {
-        path: [[116.478935,39.997761],[116.478939,39.997825],[116.478912,39.998549],
-	      [116.478998,39.998555],[116.479282,39.99856],[116.479658,39.998528],[116.480151,39.998453],
-	      [116.480784,39.998302],[116.480784,39.998302],[116.481149,39.998184],[116.481573,39.997997],[116.481863,39.997846],
-	      [116.482072,39.997718],[116.482362,39.997718],[116.483633,39.998935],[116.48367,39.998968],[116.484648,39.999861]],
+        path: [],
         events: {
           init:(o) =>{
             console.log(o)
@@ -79,7 +75,8 @@ export default {
         },
         editable: false
       },  
-      facelist: [],
+      // facelist: [],
+      imgList: [],
       mixinViewModuleOptions: {
         getDataListURL: `/api/check?token=${cookieGet('token')}`,
         getDataListIsPage: true,
@@ -90,14 +87,11 @@ export default {
         faceid: ''
       },
       amapManager,
-      positions: [[116.478935,39.997761],[116.478939,39.997825],[116.478912,39.998549],
-	      [116.478998,39.998555],[116.479282,39.99856],[116.479658,39.998528],[116.480151,39.998453],
-	      [116.480784,39.998302],[116.480784,39.998302],[116.481149,39.998184],[116.481573,39.997997],[116.481863,39.997846],
-        [116.482072,39.997718],[116.482362,39.997718],[116.483633,39.998935],[116.48367,39.998968],[116.484648,39.999861]],
+      positions: [],
       location:[],
       events: {
         init: (o) => {
-          console.log('555--------')
+          console.log('******555--------')
           console.log(o.getCenter())
           console.log('getPath--------')
           console.log(this.$refs.map.$$getInstance())
@@ -124,7 +118,6 @@ export default {
         events: {
           init(o) {
             console.log("111111111111111111111puligin")
-            
             console.log(o);
           }
         }
@@ -138,13 +131,13 @@ export default {
       // gaode map instance
       console.log(amapManager._map);
     },
-    getLoction(data){  //接收子组件返回的facelist中locations,是个列表
+    getLoction(path_data){  //接收子组件返回的facelist中locations,是个列表
       console.log("-------000--------")
-      console.log(data)
+      console.log(path_data)
       //console.log(this.facelist[0].locations)
       console.log("111111111111111111")
-      this.polyline.path = data
-      this.positions = data.map(point => [point.lng, point.lat])
+      this.polyline.path = path_data
+      this.positions = path_data.map(point => [point.lng, point.lat])
       console.log("----11111-------")
       console.log(this.polyline.path)
       console.log("----ya try ------")
