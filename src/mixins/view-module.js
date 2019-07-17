@@ -60,7 +60,7 @@ export default {
         this.dataList = this.mixinViewModuleOptions.getDataListIsPage ? res.list : res
         this.total = this.mixinViewModuleOptions.getDataListIsPage ? res.count : 0
         this.imgList = this.mixinViewModuleOptions.getDataListIsPage ? res.imgList : []
-        // this.facelist = res.imgList ? res.imgList : []
+        this.facelist = res.imgList ? res.imgList : []
         console.log("****affeee****")
         console.log('111112221111')
         console.log(this.imgList)
