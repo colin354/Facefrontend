@@ -9,8 +9,7 @@
                 <el-amap ref="map" vid="amapDemo" :amap-manager="amapManager" :center="center" :zoom="zoom" :plugin="plugin" 
                 class="amap-demo" :events="events">
                 <el-amap-marker vid="amapDemo" v-for="(item,index) in positions" :position="item" :key="index"></el-amap-marker>
-                <!-- <el-amap-marker vid="amapDemo" v-for="(item,index) in positions" :key="index" :position="item"></el-amap-marker> -->
-                <el-amap-polyline :editable="polyline.editable"  :path="polyline.path" :events="polyline.events" :icon="polyline.icon"></el-amap-polyline>
+                <el-amap-polyline :editable="polyline.editable"  :path="polyline.path" :events="polyline.events"></el-amap-polyline>
                 </el-amap>
               </div>
             </div>
@@ -98,6 +97,7 @@ export default {
           console.log(o)
           console.log(this.$refs.map.$$getInstance())
           o.getCity(result => {
+            console.log("----result---")//界面初始化时并没有打印,界面加载完成后打印
             console.log(result)
           })
         },
@@ -130,24 +130,17 @@ export default {
       // gaode map instance
       console.log(amapManager._map);
     },
-    getLocation(aa){  //接收子组件返回的facelist中locations,是个列表
-      console.log("-------000--------")
+    getLocation(aa){  //接收子组件返回的facelist中locations
+      console.log("-------000---uerid_id-----")
       console.log(aa)
-      // //console.log(this.facelist[0].locations)
-      // console.log("111111111111111111")
-      // this.polyline.path = aa
-      // console.log(this.polyline.path)
       this.positions = []
       this.$axios.get(`/sys/check/location?token=${cookieGet('token')}`,{params:{faceid:aa}}
       ).then(res =>{
         console.log('000-----------9999')
         console.log(res)
-        this.center = res.center
-        console.log(this.center)
-        this.positions = res.location
-        console.log(this.positions)
-        this.polyline.path = res.location
-        console.log(this.polyline.path)
+        this.center = res.center  //当前地图的中心点
+        this.positions = res.location //当前此人所有的经纬度信息,赋值给标记点中的位置
+        this.polyline.path = res.location //当前此人所有的经纬度信息,赋值给折线中的位置
       }).catch(() => {
         console.log("error")
       })

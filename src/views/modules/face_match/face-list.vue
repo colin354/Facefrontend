@@ -65,7 +65,7 @@ export default {
     };
   },
   methods: {
-    face_check(aa) {
+    face_check(aa) {  //将获取到的人脸id返回给父组件
       console.log('88889999***999988888')
       this.$emit('getLocation',aa)
     }
