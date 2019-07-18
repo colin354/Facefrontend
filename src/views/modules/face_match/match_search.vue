@@ -82,10 +82,12 @@
               </el-card>
             </div>
           </el-col>
-          <el-col :span="5">
+          <el-col :span="6">
             <div class="grid-content bg-purple">
-              <el-card class="box-card">
-                <faceimg :imgarr="imgarr"></faceimg>
+              <el-card class="box-card" :body-style="{ padding: '0px' }">
+                <div class="imgblock">
+                  <faceimg :imgarr="imgarr"></faceimg>
+                </div>
               </el-card>
             </div>
           </el-col>
@@ -161,31 +163,25 @@
       <el-col :span="5">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
+            <faceimg :imgarr="imgarr"></faceimg>
           </el-card>
         </div>
       </el-col>
     </el-row> 
         
     <el-row :gutter="20">
-        <el-col :span="5">
-          <div class="grid-content bg-purple">
-            <el-card class="box-card">
-            </el-card>
-          </div>
-        </el-col>
-        <el-col :span="14">
-          <div class="grid-content bg-purple">
-            <el-card class="box-card">
-              <faceimg :imgarr="imgarr"></faceimg>
-            </el-card>
-          </div>
-        </el-col>
-        <el-col :span="5">
-          <div class="grid-content bg-purple">
-            <el-card class="box-card">
-            </el-card>
-          </div>
-        </el-col>
+      <el-col>
+        <div class="grid-content bg-purple">
+          <el-card class="box-card">
+            <facecompile
+              v-for="(o, index) in info.facematch" :key="index"
+              :facemark="o.marks"
+              :facematch="o"
+              :streamtime="info.streamtime"
+              ></facecompile>
+          </el-card>
+        </div>
+      </el-col>
     </el-row>
   </el-dialog> -->
   </d2-container>
@@ -248,7 +244,7 @@ export default {
         sources: [
           {
             type: "video/mp4",
-            src: "http://10.2.151.139:9999/102.mp4"
+            src: ""
           }
         ],
         poster: "",
@@ -338,8 +334,12 @@ export default {
             'background-color': 'orange'
         },
         onMarkerReached: function(marker,index){
+          console.log("-----marker")
+          console.log(marker)
+          console.log(index)
           //console.log("aaaaa8888888***999")
           //console.log(marker.imgList)
+
           aa.imgarr = marker.imgList
           console.log("aaaaa8888888***999")
           console.log(aa.imgarr)
@@ -402,8 +402,13 @@ export default {
     height: 100%;
   }
   .faceimage {
-  width: 45%;
-  height: 45%;
-  display: block;
-}
+    width: 45%;
+    height: 45%;
+    display: block;
+  }
+  .imgblock {
+    width: 45%;
+    height: 45%;
+    display: block;
+  }
 </style>

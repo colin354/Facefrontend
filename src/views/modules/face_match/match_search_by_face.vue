@@ -24,6 +24,19 @@
               </el-card>
             </div>
         </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col>
+            <div class="grid-content bg-purple">
+              <el-card class="box-card">
+                <div class="imgblock">
+                  <faceimg :imgarr="imgarr"></faceimg>
+                </div>
+              </el-card>
+            </div>
+          </el-col>
+        </el-row>   
       </el-col>
     </el-row>
   </d2-container>
@@ -206,4 +219,9 @@ export default {
     padding: 10px 0;
     background-color: #f9fafc;
   }
+  .imgblock {
+    width: 15%;
+    height: 15%;
+    display: block;
+  }  
 </style>

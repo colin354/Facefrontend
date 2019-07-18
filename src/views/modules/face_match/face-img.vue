@@ -1,10 +1,13 @@
 <template>
   <el-row>
-    <el-col v-for="(o, index) in imgarr" :key="index" :offset="index > 0 ? 1 : 0">
-      <el-card :body-style="{ padding: '0px' }">
-        <img :src=o.imgurl class="image">
-      </el-card>
-    </el-col>
+    <el-row v-for="(o, index) in imgarr" :key="index" :offset="index > 0 ? 1 : 0">
+      <el-col :span="24">
+        <el-card :body-style="{ padding: '0px' }">
+          <img :src=o.imgurl class="image">
+          <span style="font-size:12px;">置信度:{{o.threshold}}</span>
+        </el-card>
+      </el-col>
+    </el-row>
   </el-row>
 
 </template>
@@ -50,6 +53,7 @@ export default {
   },
   data() {
     return {
+
     };
   }
 }

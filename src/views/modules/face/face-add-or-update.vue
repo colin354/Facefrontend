@@ -42,9 +42,9 @@
         <el-input v-model="dataForm.realName" :placeholder="$t('user.realName')"/>
       </el-form-item>-->
       <el-form-item prop="gender" :label="$t('user.gender')" size="mini">
-        <el-radio-group v-model="dataForm.gender">
-          <el-radio :label="0">{{ $t('user.gender0') }}</el-radio>
-          <el-radio :label="1">{{ $t('user.gender1') }}</el-radio>
+        <el-radio-group v-model="dataForm.gender">     
+          <el-radio :label="false">{{ $t('user.gender0') }}</el-radio>
+          <el-radio :label="true">{{ $t('user.gender1') }}</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item prop="email" :label="$t('user.email')">

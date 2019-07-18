@@ -37,7 +37,7 @@
                   @sort-change="dataListSortChangeHandle"
                   style="width: 100%;">
                   <el-table-column prop="faceid" :label="$t('face.name')" header-align="center" align="center" width="60"/>
-                  <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center" width="290"/>
+                  <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center" width="270"/>
                   <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
                     <template slot-scope="scope">
                       <el-button type="text" size="mini" @click="broadcast(scope.row.faceid,scope.row.streamid,scope.row.url)">{{ $t('check.broadcast') }}</el-button>
@@ -80,7 +80,9 @@
           <el-col>
             <div class="grid-content bg-purple">
               <el-card class="box-card">
-                <faceimg :imgarr="imgarr"></faceimg>
+                <div class="imgblock">
+                  <faceimg :imgarr="imgarr"></faceimg>
+                </div>
               </el-card>
             </div>
           </el-col>
@@ -130,6 +132,11 @@
     padding: 10px 0;
     background-color: #f9fafc;
   }
+  .imgblock {
+    width: 15%;
+    height: 15%;
+    display: block;
+  }  
 </style>
 
 <script>
@@ -208,8 +215,7 @@ export default {
     this.id = this.$route.params.id;
     if(this.id)
     {
-      this.$axios
-      .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:this.id}})
+      this.$axios.get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:this.id}})
       .then(res => {
         console.log('****res***res****')
         console.log(res)

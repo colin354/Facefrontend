@@ -4,9 +4,10 @@
       <el-col :span="4">
         <img :src=facematch.faceurl class="faceimage">
       </el-col>
-      <el-col :span="4"  v-for="(item,index) in src" :key="item.time">
-        <div class="block">
-          <el-image :src="item.imgurl" class="faceimage">
+      <el-col :span="4"  v-for="item in src" :key="item.time">
+        <div class="imgblock">
+          <span style="font-size:12px;">置信度:{{item.threshold}}</span>
+          <el-image :src="item.imgurl" class="facematchimage">
             <div slot="error" class="image-slot">
               <i class="el-icon-picture-outline">点击mark点，查看视频截图图片</i>
             </div>
@@ -56,9 +57,6 @@ export default {
       facematchurl: '',
       src: [],
       marks: {
-        "0.04":"aaa",
-        "1.09":"bbb",
-        "3.24":"ccc"
       }
     }
   },
@@ -73,6 +71,7 @@ export default {
   methods: {
     onChange(event){  //点击滑动轴,显示时间节点(秒)
       console.log('---99---99----9999---')
+      console.log(this.facematch)
       this.src = []
       for (let i=0;i<this.facematch.facetime.length;i++)
       {
@@ -110,7 +109,18 @@ export default {
     border-radius: 4px;
   }
   .faceimage {
-  width: 45%;
-  height: 45%;
+    width: 50%;
+    height: 50%;
+    display: block;
+  }
+  .facematchimage {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .imgblock {
+    height: 110px;
+    width: 130px;
+
   }
 </style>

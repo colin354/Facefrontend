@@ -18,7 +18,7 @@
               <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
             </el-form-item>
           </el-form>
-          <div class="grid-content bg-purple">          
+          <div class="grid-content bg-purple" >          
             <el-table
               size="mini"
               v-loading="dataListLoading"
@@ -40,15 +40,18 @@
                 </template>
               </el-table-column>
             </el-table>
-          </div>            
+          </div>
         </el-card>
       </el-col>
       <!-- 图片显示右侧 -->
       <el-card class="box-card" :span="12" style="background-color:#F2F6FC ;">
         <span >图片展示</span>
       </el-card>
-      <el-card class="box-card">
-        <el-col >
+      <el-card v-if="id == 0" class="box-card">
+        <facegrid :faceimg="imgList" :faceid="id"></facegrid>
+      </el-card>       
+      <el-card v-else class="box-card">
+        <el-col>
             <el-carousel :interval="4000" type="card" height="400px">
                 <el-carousel-item v-for="(item, index) in imgs" :key="index">
                     <!-- <el-card :body-style="{ padding: '10px' }" > -->
@@ -59,7 +62,7 @@
                 </el-carousel-item>
             </el-carousel>
         </el-col>
-      </el-card>
+      </el-card>     
       <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
     </el-row>
     <!-- 分页 -->
@@ -80,16 +83,17 @@
 import mixinViewModule from '@/mixins/view-module'
 import AddOrUpdate from './face-add-or-update'
 import { cookieGet } from '@/common/cookie'
+import facegrid from './face-grid'
 
 export default {
   mixins: [ mixinViewModule ],
   data () {
+    console.log('11111************111*****')
     return {
-      id: '',//存放faceid,向face-match界面发送待查询人的faceid
-      imgs:[{url:"http://192.168.4.14:8000/media/demo/scene1.jpg"},
-            {url:"http://192.168.4.14:8000/media/demo/scene2.jpg"},
-            {url:"http://192.168.4.14:8000/media/demo/scene3.jpg"}],
-      // imgs:[this.dataList],
+      id: 0,//存放faceid,向face-match界面发送待查询人的faceid
+      imgs:[],
+      imgList:[],
+      // imgs:[this.dataList.imgurls],
       mixinViewModuleOptions: {
         getDataListURL: `/api/face?token=${cookieGet('token')}`,
         getDataListIsPage: true,
@@ -101,12 +105,8 @@ export default {
       },
       }
   },
-  computed:{
-    mySwiper(){
-      return this.$refs.mySwiper.swiper;
-    }
-  },
   components: {
+    facegrid,
     AddOrUpdate
   },
   methods: {
@@ -179,5 +179,4 @@ export default {
   .el-carousel__item:nth-child(2n+1) {
     background-color: #d3dce6;
   }
-
 </style>
