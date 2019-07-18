@@ -66,8 +66,8 @@ export default {
         console.log(this.imgList)
         console.log('111112221111')
         console.log(res.list)
-        // console.log("-----facelist-----")
-        // console.log(this.facelist)
+        console.log("-----facelist-----")
+        console.log(this.facelist)
         console.log(res)
       }).catch(() => {
         // this.face_url = ''

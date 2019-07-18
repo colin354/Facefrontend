@@ -1,7 +1,7 @@
 <template>
   <d2-container>
     <el-row :gutter="20">
-      <el-col :span="13">
+      <el-col>
         <div class="grid-content bg-purple">
           <el-card class="box-card">
             <div id="map">
@@ -16,7 +16,9 @@
           </el-card>
         </div>
       </el-col>
-      <el-col :span="11">
+    </el-row>
+    <el-row>
+      <el-col>
         <div class="grid-content bg-purple">
             <div class="grid-content bg-purple">
               <el-card class="box-card">
@@ -165,7 +167,7 @@ export default {
 
 <style lang="scss" scoped>
   .amap-demo {
-    height: 400px;
+    height: 500px;
   }
   .inner {
     position: absolute;

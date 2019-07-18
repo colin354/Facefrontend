@@ -8,7 +8,7 @@
               <div class="amap-wrapper">
                 <el-amap ref="map" vid="amapDemo" :amap-manager="amapManager" :center="center" :zoom="zoom" :plugin="plugin" 
                 :events="events" class="amap-demo" >
-                <el-amap-marker vid="amapDemo" v-for="(item,index) in positions" :position="item"></el-amap-marker>
+                <el-amap-marker vid="amapDemo" v-for="(item,index) in positions" :position="item" :key="index" :icon="icon"></el-amap-marker>
                 </el-amap>
               </div>
             </div>
@@ -44,6 +44,7 @@ export default {
     return {
       amapManager,
       zoom: 12,
+      icon:``,
       center: [116.34657,39.987299],
       positions: [[116.34657,39.987299],[116.481485, 39.990464]],
       polyline: {
