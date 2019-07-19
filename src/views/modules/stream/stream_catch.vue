@@ -5,12 +5,16 @@
         <div class="grid-content bg-purple">
           <el-card class="box-card">
             <div id="map">
-              <div class="amap-wrapper">
-                <el-amap ref="map" vid="amapDemo" :amap-manager="amapManager" :center="center" :zoom="zoom" :plugin="plugin" 
-                :events="events" class="amap-demo" >
-                <!-- <el-amap-marker vid="amapDemo" v-for="(item,index) in positions" :position="item" :key="index"></el-amap-marker>
-                  <el-amap-polyline :editable="polyline.editable"  :path="polyline.path" :events="polyline.events"></el-amap-polyline>
-                  <el-amap-marker vid="amapDemo" v-for="(item,index) in positions" :key="index" :position="item"></el-amap-marker> -->
+              <div class="amap-page-container">
+                <el-amap vid="amapDemo" 
+                :center="center" 
+                :zoom="zoom" 
+                class="amap-demo"
+                :plugin="plugin" 
+                :events="events"
+                :key = "rounds">
+                <el-amap-marker v-for="marker in markers" :key="marker" :position="marker.position"
+                :events="marker.events"></el-amap-marker>
                 </el-amap>
               </div>
             </div>
@@ -20,63 +24,62 @@
       <el-col :span="8">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
-            <div v-for="o in 6" :key="o" class="text item">
-              {{'列表内容 ' + o }}
-            </div>
+            <el-tree
+              :data="streamlist"
+              :props="defaultProps"
+              accordion
+              @node-click="handleNodeClick">
+            </el-tree>
           </el-card>        
         </div>
       </el-col>
     </el-row>
-    <el-row :gutter="20">
-      <el-col :span="24">
-        <div class="grid-content bg-purple">
-        </div>
-        </el-col>
-    </el-row>    
   </d2-container>
 </template>
 
 <script>
 import { AMapManager } from 'vue-amap'
 import { cookieGet } from '@/common/cookie'
+import mixinViewModule from '@/mixins/view-module'
 
 let amapManager = new AMapManager();
 export default {
+  mixins: [ mixinViewModule ],
   data: function() {
+    let self = this;
     return {
+      rounds:false,
+      datas: [],
+      defaultProps: {
+          children: 'children',
+          label: 'label'
+      },
+      activeNames:['1'],
+      mixinViewModuleOptions: {
+        getDataListURL: `/sys/stream/page?token=${cookieGet('token')}`,
+        getDataListIsPage: true,
+        deleteURL: `/sys/stream?token=${cookieGet('token')}`,
+        deleteIsBatch: true
+      },
+      dataForm:{
+        map_location:'GETLOCATION'
+      },
       amapManager,
-      zoom: 12,
-      icon:``,
+      zoom: 4,
       center: [116.34657,39.987299],
-      positions: [[116.34657,39.987299],[116.481485, 39.990464]],
-      polyline: {
-        path: [[121.5389385, 31.21515044], [121.5389385, 31.29615044], [121.5273285, 31.21515044]],
-        events: {
-          click(e) {
-            alert('click polyline');
-          },
-          end: (e) => {
-            let newPath = e.target.getPath().map(point => [point.lng, point.lat]);
-            console.log(newPath);
-          }
-        },
-        editable: false
-      },  
+      markers:[],
+      basePosition:[],
+      markerRefs:[],
       events: {
-        init: (o) => {
-          console.log(this.$refs.map.$$getInstance())
-          o.getCity(result => {
-            console.log(result)
-          })
-        },
-        'moveend': () => {
-        },
-        'zoomchange': () => {
-        },
-        'click': (e) => {
-          // console.log(e);
-          this.center = [e.lnglat.lng,e.lnglat.lat];//点击选择新地址为中心点
-          //alert('map clicked');
+        init(o) {
+          console.log("地图events--------111--o----")
+          console.log(o)
+          setTimeout(() => {
+            let cluster = new AMap.MarkerClusterer(o, self.markerRefs,{
+              gridSize: 60,
+              renderCluserMarker: self._renderCluserMarker
+            });
+          }, 1000);
         }
       },
       plugin: ['ToolBar', {
@@ -90,34 +93,30 @@ export default {
       }]
     };
   },
-  mounted(){     //本可以共用view-module.js中的get请求,但界面必须手动刷新才能发送get请求,所以在本组件重新写了get请求
-    // this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`,
-    //   {             //注意：view-module.js中的dataList是可以直接在非view-module.js中的函数里打印的,即可以直接使用
-    //     params: {
-    //         page: 1,
-    //         limit: 10  //请求的params中的page、limit写成固定值,是因为后台的请求格式统一共用,将来若有需要,让后台改改改
-    //       }
-    //   })
-    //     .then(res=> {  //返回的res里包含list(摄像头视频的详细字段,如id、streamurl、streamlat、streamlocation等)
-    //                    //和count(当前有多少个摄像头信息)
-    //       console.log('********************')
-    //       console.log(res);
-
-    //       var lon1 = 0
-    //       var lat1 = 0
-    //       this.positions = []      //将来后台经纬度全为有效值的情况下,写成  i < res.length
-    //       for(let i=0; i<7; i++){  //当前写成固定值,由于后台数据有空的经纬度,一旦为空,界面就卡死,所以写成有效的数据
-    //         this.positions.push([res.list[i].streamlon,res.list[i].streamlat])
-    //         lon1 += res.list[i].streamlon
-    //         lat1 += res.list[i].streamlat
-    //         }
-    //         //this.center = [lon1/i , lat1/i]   //打开地图,自动定位到所有位置的加在一起的平均中心点,不至于跑出中国地图
-    //       console.log(this.positions)
-
-    //     })
-    //     .catch(error =>{
-    //       console.log(error);
-    //     })
+  mounted(){
+    let self = this
+    this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`,{params:{map_location:'GETMAP'}})
+      .then(res => {
+        console.log("-----mounted---res.list-")
+        this.basePosition = res.list  //获取当前user_stream表中所有的经纬度信息
+        console.log(res.list)
+        //this.center = res.center
+        for (let i in this.basePosition)
+        {
+          this.markers.push({
+            position:this.basePosition[i],
+            //content: '<div style="text-align:center; background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px;border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
+            events: {
+              init(o) {
+              self.markerRefs.push(o);
+              }
+            }
+          })
+        }  
+      })
+      .catch(() => {
+        console.log("error")
+      })
   },
   methods: {
     getMap() {
@@ -125,7 +124,56 @@ export default {
       console.log(amapManager._componentMap);
       // gaode map instance
       console.log(amapManager._map);
-    }
+    },
+    handleNodeClick(val) {
+      console.log("----点击事件-----00------")
+      console.log(val)
+      let self = this
+      this.markers = []
+      this.markerRefs = []
+      let i = 0
+      for(i in val.streamlng){
+        console.log("for 00099999")
+        this.markers.push({
+          position:val.streamlng[i],
+          events: {
+              init(o) {
+                console.log("init----000999")
+                console.log(o)
+                self.markerRefs.push(o);
+              }
+           }
+        })  
+      }
+      console.log('-----000--this.markers---')
+      console.log(this.markers)
+      this.rounds = !this.rounds
+    },
+    _renderCluserMarker(context) {
+          console.log('----render----里的context')
+          console.log(context)
+          const count = this.markers.length;
+          let factor = Math.pow(context.count/count, 1/18)
+          let div = document.createElement('div');
+          let Hue = 180 - factor* 180;
+          let bgColor = 'hsla('+Hue+',100%,50%,0.7)';
+          let fontColor = 'hsla('+Hue+',100%,20%,1)';
+          let borderColor = 'hsla('+Hue+',100%,40%,1)';
+          let shadowColor = 'hsla('+Hue+',100%,50%,1)';
+          div.style.backgroundColor = bgColor
+          let size = Math.round(30 + Math.pow(context.count/count,1/5) * 20);
+          div.style.width = div.style.height = size+'px';
+          div.style.border = 'solid 1px '+ borderColor;
+          div.style.borderRadius = size/2 + 'px';
+          div.style.boxShadow = '0 0 1px '+ shadowColor;
+          div.innerHTML = context.count;
+          div.style.lineHeight = size+'px';
+          div.style.color = fontColor;
+          div.style.fontSize = '14px';
+          div.style.textAlign = 'center';
+          context.marker.setOffset(new AMap.Pixel(-size/2,-size/2));
+          context.marker.setContent(div)
+        }
   }
 }
 </script>

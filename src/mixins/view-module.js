@@ -15,6 +15,7 @@ export default {
         exportURL: ''             // 导出接口，API地址
       },
       // 默认属性
+      streamlist:[],              //流信息树形结构
       facelist: [],
       imgList: [],
       dataForm: {},               // 查询条件
@@ -61,14 +62,17 @@ export default {
         this.total = this.mixinViewModuleOptions.getDataListIsPage ? res.count : 0
         this.imgList = this.mixinViewModuleOptions.getDataListIsPage ? res.imgList : []
         this.facelist = res.imgList ? res.imgList : []
-        console.log("****affeee****")
-        console.log('----imgList---')
-        console.log(this.imgList)
-        console.log('------res.list---')
-        console.log(res.list)
-        console.log("-----facelist-----")
-        console.log(this.facelist)
-        console.log('----res-----')
+        this.streamlist = res.streamList ? res.streamList : []
+        console.log("0000------streamlist")
+        console.log(this.streamlist)
+        // console.log("****affeee****")
+        // console.log('----imgList---')
+        // console.log(this.imgList)
+        // console.log('------res.list---')
+        // console.log(res.list)
+        // console.log("-----facelist-----")
+        // console.log(this.facelist)
+        // console.log('----res-----')
         console.log(res)
       }).catch(() => {
         // this.face_url = ''
