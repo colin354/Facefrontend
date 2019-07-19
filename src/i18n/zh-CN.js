@@ -456,5 +456,6 @@ t.check = {}
 t.check.faceid = '人脸id'
 t.check.location = '位置信息'
 t.check.broadcast = '播放'
+t.check.threshold = '置信度'
 
 export default t

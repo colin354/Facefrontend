@@ -20,11 +20,11 @@
     <el-row>
       <el-col>
         <div class="grid-content bg-purple">
-            <div class="grid-content bg-purple">
-              <el-card class="box-card">
-                <facelist :facelist="facelist" v-model="dataForm.faceid" @getLocation="getLocation"></facelist>
-              </el-card>
-            </div>
+          <div class="grid-content bg-purple">
+            <el-card class="box-card">
+              <facelist :facelist="facelist" v-model="dataForm.faceid" @getLocation="getLocation"></facelist>
+            </el-card>
+          </div>
         </div>
       </el-col>
     </el-row>

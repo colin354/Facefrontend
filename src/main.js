@@ -25,7 +25,7 @@ Vue.use(d2Admin)
 Vue.use(VCharts)
 Vue.use(VueAMap)
 Vue.use(Vuetify)
-Vue.component('SplitPane', SplitPane)
+// Vue.component('SplitPane', SplitPane)
 
 VueAMap.initAMapApiLoader({
   key: 'e8d88ad5fce9142a64cf942e06a961bd',
@@ -34,12 +34,11 @@ VueAMap.initAMapApiLoader({
   v: '1.4.4'
 })
 
-// lazyAMapApiLoaderInstance.load().then(() => {
-//   // your code ...
-//   this.map = new VueAMap.Map('amapContainer', {
-//     center: new VueAMap.LngLat(121.59996, 31.197646)
-//   })
-// })
+lazyAMapApiLoaderInstance.load().then(() => {
+  // your code ...
+  localStorage.removeItem('_AMap_raster')
+  Vue.use(VueAMap)
+})
 
 new Vue({
   router,

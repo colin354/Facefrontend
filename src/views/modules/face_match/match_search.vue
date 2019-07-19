@@ -1,14 +1,14 @@
 <template>
   <d2-container>
     <el-row :gutter="20">
-      <el-col :span="7">
+      <el-col :span="12">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
             <el-table
               size="mini"
               v-loading="dataListLoading"
               :data="dataList"
-              border
+              
               @selection-change="dataListSelectionChangeHandle"
               @sort-change="dataListSortChangeHandle"
               style="width: 100%;">
@@ -38,7 +38,19 @@
           </el-card>
         </div>
       </el-col>
-      <el-col :span="17">
+      <el-col :span="12">
+        <div class="grid-content bg-purple">
+          <el-card class="box-card">
+            <el-tag type="" effect="light ">结构化视频处理结果统计</el-tag>
+            <el-progress :percentage="50"></el-progress>
+            <el-divider></el-divider>
+            <el-progress :percentage="100" status="success"></el-progress>
+            <el-divider><i class="el-icon-user"></i></el-divider>
+            <el-progress :percentage="100" status="exception"></el-progress>
+          </el-card>
+        </div>
+      </el-col>
+      <!-- <el-col :span="17">
         <el-row :gutter="20">
           <el-col>
             <div class="grid-content bg-purple">
@@ -52,12 +64,6 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <!-- <el-col :span="5">
-            <div class="grid-content bg-purple">
-              <el-card class="box-card">
-              </el-card>
-            </div>
-          </el-col>  -->
           <el-col :span="18">
             <div class="grid-content bg-purple">
               <el-card class="video-box-card">
@@ -84,7 +90,7 @@
           </el-col>
           <el-col :span="6">
             <div class="grid-content bg-purple">
-              <el-card class="box-card">
+              <el-card class="box-card" :body-style="{ padding: '0px' }">
                 <div class="imgblock">
                   <faceimg :imgarr="imgarr"></faceimg>
                 </div>
@@ -107,10 +113,10 @@
             </div>
           </el-col>
         </el-row>
-      </el-col>
+      </el-col> -->
     </el-row>
 
-  <!-- <el-dialog
+  <el-dialog
     :visible.sync="visible"
     :close-on-click-modal="false"
     :close-on-press-escape="true"
@@ -122,7 +128,10 @@
         <el-col :span="14" :offset="5">
           <div class="grid-content bg-purple">
             <el-card class="box-card">
-              <span>播放视频:xxxxxx       </span><span>视频人脸数:{{matchnum}}</span>
+              <span>播放视频:{{info.streamname}}  视频匹配记录数:</span>
+              <span v-for="(o, index) in info.facematch" :key="index">
+                {{o.facename}}&nbsp;{{o.facecount}}条
+              </span>
             </el-card>
           </div>
         </el-col>
@@ -162,8 +171,10 @@
       </el-col>
       <el-col :span="5">
         <div class="grid-content bg-purple">
-          <el-card class="box-card">
-            <faceimg :imgarr="imgarr"></faceimg>
+          <el-card class="box-card" :body-style="{ padding: '0px' }">
+            <div class="imgblock">
+              <faceimg :imgarr="imgarr"></faceimg>
+            </div>
           </el-card>
         </div>
       </el-col>
@@ -183,7 +194,7 @@
         </div>
       </el-col>
     </el-row>
-  </el-dialog> -->
+  </el-dialog>
   </d2-container>
 </template>
 
@@ -253,7 +264,7 @@ export default {
     };
   },
   mounted() {
-    console.log("this is current player instance object", this.player);
+
   },
   computed: {
     player() {
@@ -325,6 +336,9 @@ export default {
             'background-color': 'orange'
         },
         onMarkerReached: function(marker,index){
+          console.log("-----marker")
+          console.log(marker)
+          console.log(index)
           //console.log("aaaaa8888888***999")
           //console.log(marker.imgList)
           aa.imgarr = marker.imgList
@@ -338,7 +352,7 @@ export default {
 
 <style lang="scss">
   .customclass {
-    background: #1cb0f5;
+    background: #0d2663;
   }
   .inner {
     position: right;
@@ -392,8 +406,8 @@ export default {
     display: block;
   }
   .imgblock {
-    width: 45%;
-    height: 45%;
+    width: 40%;
+    height: 40%;
     display: block;
   }
 </style>

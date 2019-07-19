@@ -37,7 +37,7 @@
                   @sort-change="dataListSortChangeHandle"
                   style="width: 100%;">
                   <el-table-column prop="faceid" :label="$t('face.name')" header-align="center" align="center" width="60"/>
-                  <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center" width="290"/>
+                  <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center" width="270"/>
                   <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
                     <template slot-scope="scope">
                       <el-button type="text" size="mini" @click="broadcast(scope.row.faceid,scope.row.streamid,scope.row.url)">{{ $t('check.broadcast') }}</el-button>
@@ -147,20 +147,12 @@ import mixinViewModule from '@/mixins/view-module'
 // import videojs from "video.js"
 import 'videojs-hotkeys'
 import "@/views/modules/face_match/src/videojs.markers.css"
-// import markers from 'videojs-markers/dist/videojs-markers'
 import 'videojs-markers'
-// import 'videojs-notations'
 import '@/views/modules/face_match/src/custom-theme.css'
 import faceimg from './face-img'
 import facecarsousel from './face-carsousel'
 import { constants } from 'crypto';
-
-// const plugin = function(list, item) {
-//   markers(this, list, item);
-// };
-
 // videojs.registerPlugin("markers", markers);
-// videojs.registerPlugin("notations", notations);
 
 export default {
   name: "page3",
@@ -193,11 +185,7 @@ export default {
         sources: [
           {
             type: "video/mp4",
-            src:
-              // "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
-              // "http://10.2.151.139:8888/media/test_video/jack_rose.mp4"
-              "http://localhost/media/stream/hello.mp4"
-              //http://localhost
+            src: ""
           }
         ],
         poster: "",
@@ -215,8 +203,7 @@ export default {
     this.id = this.$route.params.id;
     if(this.id)
     {
-      this.$axios
-      .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:this.id}})
+      this.$axios.get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:this.id}})
       .then(res => {
         console.log('****res***res****')
         console.log(res)
@@ -236,16 +223,12 @@ export default {
   }, 
   methods: {
     broadcast(fid,sid,url){
-      console.log('******----******')
       //url = `${process.env.VUE_APP_API}/`+url
       url = 'http://10.2.151.139:8888'+url
-      console.log(url)
       this.playerOptions.sources[0].src = url
       this.$axios
       .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:fid,streamid:sid}})
       .then(res => {
-        console.log('****res***res****')
-        console.log(res)
         this.playerOptions.custum = res.list
       })
       .catch(() => {});

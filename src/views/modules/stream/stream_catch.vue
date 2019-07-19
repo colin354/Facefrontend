@@ -8,7 +8,9 @@
               <div class="amap-wrapper">
                 <el-amap ref="map" vid="amapDemo" :amap-manager="amapManager" :center="center" :zoom="zoom" :plugin="plugin" 
                 :events="events" class="amap-demo" >
-                <el-amap-marker vid="amapDemo" v-for="(item,index) in positions" :position="item" :key="index" :icon="icon"></el-amap-marker>
+                <!-- <el-amap-marker vid="amapDemo" v-for="(item,index) in positions" :position="item" :key="index"></el-amap-marker>
+                  <el-amap-polyline :editable="polyline.editable"  :path="polyline.path" :events="polyline.events"></el-amap-polyline>
+                  <el-amap-marker vid="amapDemo" v-for="(item,index) in positions" :key="index" :position="item"></el-amap-marker> -->
                 </el-amap>
               </div>
             </div>
@@ -62,8 +64,6 @@ export default {
       },  
       events: {
         init: (o) => {
-          console.log('555--------')
-          console.log(o.getCenter())
           console.log(this.$refs.map.$$getInstance())
           o.getCity(result => {
             console.log(result)
@@ -91,21 +91,33 @@ export default {
     };
   },
   mounted(){     //本可以共用view-module.js中的get请求,但界面必须手动刷新才能发送get请求,所以在本组件重新写了get请求
-    this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`,
-      {             //注意：view-module.js中的dataList是可以直接在非view-module.js中的函数里打印的,即可以直接使用
-        params: {
-            page: 1,
-            limit: 10  //请求的params中的page、limit写成固定值,是因为后台的请求格式统一共用,将来若有需要,让后台改改改
-          }
-      })
-        .then(res=> {  //返回的res里包含list(摄像头视频的详细字段,如id、streamurl、streamlat、streamlocation等)
-                       //和count(当前有多少个摄像头信息)
-          console.log('********************')
-          console.log(res);
-        })
-        .catch(error =>{
-          console.log(error);
-        })
+    // this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`,
+    //   {             //注意：view-module.js中的dataList是可以直接在非view-module.js中的函数里打印的,即可以直接使用
+    //     params: {
+    //         page: 1,
+    //         limit: 10  //请求的params中的page、limit写成固定值,是因为后台的请求格式统一共用,将来若有需要,让后台改改改
+    //       }
+    //   })
+    //     .then(res=> {  //返回的res里包含list(摄像头视频的详细字段,如id、streamurl、streamlat、streamlocation等)
+    //                    //和count(当前有多少个摄像头信息)
+    //       console.log('********************')
+    //       console.log(res);
+
+    //       var lon1 = 0
+    //       var lat1 = 0
+    //       this.positions = []      //将来后台经纬度全为有效值的情况下,写成  i < res.length
+    //       for(let i=0; i<7; i++){  //当前写成固定值,由于后台数据有空的经纬度,一旦为空,界面就卡死,所以写成有效的数据
+    //         this.positions.push([res.list[i].streamlon,res.list[i].streamlat])
+    //         lon1 += res.list[i].streamlon
+    //         lat1 += res.list[i].streamlat
+    //         }
+    //         //this.center = [lon1/i , lat1/i]   //打开地图,自动定位到所有位置的加在一起的平均中心点,不至于跑出中国地图
+    //       console.log(this.positions)
+
+    //     })
+    //     .catch(error =>{
+    //       console.log(error);
+    //     })
   },
   methods: {
     getMap() {

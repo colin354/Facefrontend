@@ -15,6 +15,7 @@
             </div>
           </el-image>
         </div>
+        <span style="font-size:12px;">{{$t('check.threshold')}}:{{item.threshold}}</span>
       </el-col>
     </el-row>
     <el-row :gutter="20">
@@ -27,7 +28,7 @@
           @change="onChange($event)"
           :max=streamtime
           :marks=facemark
-          @input="onInput($event)"
+          tooltip-class="slider"
           show-input></el-slider>
       </el-col>
     </el-row>
@@ -68,9 +69,7 @@ export default {
     this.src = []
   },
   methods: {
-    onChange(event){  //点击滑动轴,显示时间节点(秒)
-      console.log('---99---99----9999---')
-      console.log(this.facematch)
+    onChange(event) {  //点击滑动轴,显示时间节点(秒)
       this.src = []
       for (let i=0;i<this.facematch.facetime.length;i++)
       {
@@ -86,13 +85,7 @@ export default {
         }
         else break
       }
-      // console.log('66668886666')
-      // this.src = this.facematch.url[event]
-    },
-    onInput(event){
-      // console.log('66668886666')
-      // this.src = this.facematch.url[event]
-    }   
+    }
   }
 }
 </script>
@@ -120,6 +113,8 @@ export default {
   .imgblock {
     height: 110px;
     width: 130px;
-
+  }
+  .slider {
+    color: #fff000
   }
 </style>

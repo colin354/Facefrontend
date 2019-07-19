@@ -62,12 +62,13 @@ export default {
         this.imgList = this.mixinViewModuleOptions.getDataListIsPage ? res.imgList : []
         this.facelist = res.imgList ? res.imgList : []
         console.log("****affeee****")
-        console.log('111112221111')
+        console.log('----imgList---')
         console.log(this.imgList)
-        console.log('111112221111')
+        console.log('------res.list---')
         console.log(res.list)
         console.log("-----facelist-----")
         console.log(this.facelist)
+        console.log('----res-----')
         console.log(res)
       }).catch(() => {
         // this.face_url = ''
