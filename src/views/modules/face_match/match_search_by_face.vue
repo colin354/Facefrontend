@@ -26,17 +26,6 @@
         </div>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col>
-            <div class="grid-content bg-purple">
-              <el-card class="box-card">
-                <div class="imgblock">
-                  <faceimg :imgarr="imgarr"></faceimg>
-                </div>
-              </el-card>
-            </div>
-          </el-col>
-        </el-row>   
       </el-col>
     </el-row>
   </d2-container>

@@ -244,7 +244,7 @@ export default {
         sources: [
           {
             type: "video/mp4",
-            src: ""
+            src: "http://10.2.151.139:9999/102.mp4"
           }
         ],
         poster: "",
