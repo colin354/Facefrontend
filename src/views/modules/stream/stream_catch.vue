@@ -6,15 +6,11 @@
           <el-card class="box-card">
             <div id="map">
               <div class="amap-page-container">
-                <el-amap vid="amapDemo" 
-                :center="center" 
-                :zoom="zoom" 
-                class="amap-demo"
-                :plugin="plugin" 
-                :events="events"
-                :key = "rounds">
-                <el-amap-marker v-for="marker in markers" :position="marker.position"
-                :events="marker.events"></el-amap-marker>
+                <el-amap ref="map" vid="amapDemo" :amap-manager="amapManager" 
+                :center="center" :zoom="zoom" :plugin="plugin"  :key="reflash" :events="events_map" 
+                class="amap-demo">
+                <el-amap-marker v-for="(item, index) in positions" :position="item" :events="events" 
+                vid="amapDemo" :key ="index"></el-amap-marker>
                 </el-amap>
               </div>
             </div>
@@ -48,38 +44,48 @@ export default {
   data: function() {
     let self = this;
     return {
-      rounds:false,
-      datas: [],
-      defaultProps: {
-          children: 'children',
-          label: 'label'
-      },
-      activeNames:['1'],
+      reflash:false,
       mixinViewModuleOptions: {
         getDataListURL: `/sys/stream/page?token=${cookieGet('token')}`,
         getDataListIsPage: true,
-        deleteURL: `/sys/stream?token=${cookieGet('token')}`,
+        deleteURL: `/sys/stream/page?token=${cookieGet('token')}`,
         deleteIsBatch: true
       },
+      markerRefs:[],
+      amapManager,
+      defaultProps: {},
+      zoom: 4,
+      center: [116.34657,39.987299],
+      positions: [],
       dataForm:{
         map_location:'GETLOCATION'
       },
-      amapManager,
-      zoom: 4,
-      center: [116.34657,39.987299],
-      markers:[],
-      basePosition:[],
-      markerRefs:[],
-      events: {
-        init(o) {
-          console.log("地图events--------111--o----")
-          console.log(o)
+      events_map:{
+        init:(o)=>{
           setTimeout(() => {
+            console.log("map events!!!!!")
+            console.log(self.markerRefs);
             let cluster = new AMap.MarkerClusterer(o, self.markerRefs,{
-              gridSize: 60,
+              gridSize: 80,
               renderCluserMarker: self._renderCluserMarker
             });
+            console.log(cluster);
           }, 1000);
+        }
+      },
+      events: {
+        init: (o) => {
+          console.log(o)
+          console.log('-------marker events-')
+          this.markerRefs.push(o)
+        },
+        'moveend': () => {
+        },
+        'zoomchange': () => {
+        },
+        'click': (e) => {
+          // console.log(e);
+          this.center = [e.lnglat.lng,e.lnglat.lat];//点击选择新地址为中心点
         }
       },
       plugin: ['ToolBar', {
@@ -93,66 +99,29 @@ export default {
       }]
     };
   },
-  mounted(){
-    let self = this
+  mounted(){     //本可以共用view-module.js中的get请求,但界面必须手动刷新才能发送get请求,所以在本组件重新写了get请求
     this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`,{params:{map_location:'GETMAP'}})
       .then(res => {
         console.log("-----mounted---res.list-")
-        this.basePosition = res.list  //获取当前user_stream表中所有的经纬度信息
-        console.log(res.list)
-        //this.center = res.center
-        for (let i in this.basePosition)
-        {
-          this.markers.push({
-            position:this.basePosition[i],
-            //content: '<div style="text-align:center; background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px;border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
-            events: {
-              init(o) {
-              self.markerRefs.push(o);
-              }
-            }
-          })
-        }  
+        this.positions = res.list  //获取当前user_stream表中所有的经纬度信息
+        console.log(res.list) 
       })
       .catch(() => {
         console.log("error")
       })
   },
   methods: {
-    getMap() {
-      // amap vue component
-      console.log(amapManager._componentMap);
-      // gaode map instance
-      console.log(amapManager._map);
-    },
     handleNodeClick(val) {
       console.log("----点击事件-----00------")
       console.log(val)
-      let self = this
-      this.markers = []
       this.markerRefs = []
-      let i = 0
-      for(i in val.streamlng){
-        console.log("for 00099999")
-        this.markers.push({
-          position:val.streamlng[i],
-          events: {
-              init(o) {
-                console.log("init----000999")
-                console.log(o)
-                self.markerRefs.push(o);
-              }
-           }
-        })  
-      }
-      console.log('-----000--this.markers---')
-      console.log(this.markers)
-      this.rounds = !this.rounds
+      this.positions = val.streamlng
+      console.log("----点击事件-----marker对象-")
+      this.reflash = !this.reflash
     },
     _renderCluserMarker(context) {
-          console.log('----render----里的context')
-          console.log(context)
-          const count = this.markers.length;
+          const count = this.positions.length;
+
           let factor = Math.pow(context.count/count, 1/18)
           let div = document.createElement('div');
           let Hue = 180 - factor* 180;
@@ -173,7 +142,13 @@ export default {
           div.style.textAlign = 'center';
           context.marker.setOffset(new AMap.Pixel(-size/2,-size/2));
           context.marker.setContent(div)
-        }
+        },
+    getMap() {
+      // amap vue component
+      console.log(amapManager._componentMap);
+      // gaode map instance
+      console.log(amapManager._map);
+    }
   }
 }
 </script>
@@ -188,7 +163,7 @@ export default {
     right:  20px;
     bottom: 20px;
     left: 20px;
-  }  
+  }
   .text {
     font-size: 14px;
   }
