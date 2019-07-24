@@ -88,9 +88,9 @@ import { videoPlayer } from "vue-video-player";
 import 'videojs-hotkeys'
 import "@/views/modules/face_match/src/videojs.markers.css"
 import 'videojs-markers'
-import thumbnails from 'videojs-thumbnails'
-import vttThumbnails from 'videojs-vtt-thumbnails'
-import spriteThumbnails from 'videojs-sprite-thumbnails'
+// import thumbnails from 'videojs-thumbnails'
+// import vttThumbnails from 'videojs-vtt-thumbnails'
+// import spriteThumbnails from 'videojs-sprite-thumbnails'
 import '@/views/modules/face_match/src/custom-theme.css'
 import mixinViewModule from '@/mixins/view-module'
 import AddOrUpdate from './stream-add-or-update'
@@ -115,7 +115,7 @@ export default {
         sources: [
           {
             type: "video/mp4",
-            src: "http://10.2.151.139:9999/102.mp4"
+            src: ""
           }
         ],
         poster: "",
