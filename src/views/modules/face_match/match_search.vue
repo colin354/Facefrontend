@@ -8,7 +8,6 @@
               size="mini"
               v-loading="dataListLoading"
               :data="dataList"
-              
               @selection-change="dataListSelectionChangeHandle"
               @sort-change="dataListSortChangeHandle"
               style="width: 100%;">
@@ -20,6 +19,7 @@
                   <el-tag v-else size="mini" type="danger">{{ $t('stream.status0') }}</el-tag>
                 </template>
               </el-table-column>
+              <el-table-column prop="check_match" :label="$t('stream.check_match')" header-align="center" align="center"/>
               <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
                 <template slot-scope="scope">
                   <el-button type="text" size="mini" @click="broadcast(scope.row.id,scope.row.streamurl)">{{ $t('check.broadcast') }}</el-button>
@@ -41,12 +41,15 @@
       <el-col :span="12">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
-            <el-tag type="" effect="light ">结构化视频处理结果统计</el-tag>
-            <el-progress :percentage="50"></el-progress>
             <el-divider></el-divider>
-            <el-progress :percentage="100" status="success"></el-progress>
+            <el-tag type="" effect="light">结构化视频处理结果进度</el-tag>
+            <el-progress :percentage="check_info.check_percentage"></el-progress>
+            <el-divider><i class="el-icon-data-analysis"></i></el-divider>
+              <span>视频总数: {{check_info.videonum}}</span>
             <el-divider><i class="el-icon-user"></i></el-divider>
-            <el-progress :percentage="100" status="exception"></el-progress>
+              <span>已处理视频数: {{check_info.finishmatch}}</span>
+            <el-divider><i class="el-icon-s-check"></i></el-divider>
+              <span>匹配记录数: {{check_info.check_num}}</span>
           </el-card>
         </div>
       </el-col>
@@ -236,6 +239,7 @@ export default {
       playertime: 0,
       imgarr: [],
       matchnum: 0,
+      video_per: 0,
       info: {
         streamname: 'null',
         facematch:[]
@@ -255,7 +259,7 @@ export default {
         sources: [
           {
             type: "video/mp4",
-            src: "http://10.2.151.139:9999/102.mp4"
+            src: ""
           }
         ],
         poster: "",
@@ -264,7 +268,7 @@ export default {
     };
   },
   mounted() {
-
+    console.log('777777777')
   },
   computed: {
     player() {
@@ -336,11 +340,6 @@ export default {
             'background-color': 'orange'
         },
         onMarkerReached: function(marker,index){
-          console.log("-----marker")
-          console.log(marker)
-          console.log(index)
-          //console.log("aaaaa8888888***999")
-          //console.log(marker.imgList)
           aa.imgarr = marker.imgList
         },
           markers: acustum  //默认标记点信息给markers

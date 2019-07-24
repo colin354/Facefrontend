@@ -49,7 +49,7 @@ export default {
         streamname: "",
         streamlocation: "",
         streamurl: "",
-        status: 1,
+        streamstatus: "0",
         streamlat:"",
         streamlon:""
       },
@@ -82,8 +82,10 @@ export default {
         this.$refs["dataForm"].resetFields()
         if (this.dataForm.id) {//若是修改,则走此句
           this.getInfo()
-         }else{
-          this.dataForm = {}//若是新增,则走此句
+        }else{
+          this.dataForm = {
+            streamstatus:"0"
+          }//若是新增,则走此句
         }
       })
     },

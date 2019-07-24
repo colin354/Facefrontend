@@ -451,6 +451,7 @@ t.stream.url = '流url'
 t.stream.duration ='视频时长'
 t.stream.frame ='视频帧率'
 t.stream.status ='状态'
+t.stream.check_match = '匹配记录数'
 
 t.check = {}
 t.check.faceid = '人脸id'

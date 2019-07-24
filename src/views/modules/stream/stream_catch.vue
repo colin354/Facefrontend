@@ -13,7 +13,7 @@
                 :plugin="plugin" 
                 :events="events"
                 :key = "rounds">
-                <el-amap-marker v-for="marker in markers" :key="marker" :position="marker.position"
+                <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position"
                 :events="marker.events"></el-amap-marker>
                 </el-amap>
               </div>
