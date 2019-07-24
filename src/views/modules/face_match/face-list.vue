@@ -2,14 +2,15 @@
   <el-row>
     <el-col :span="2" v-for="(o, index) in facelist" :key="index" :offset="index > 0 ? 1 : 0">
       <el-card :body-style="{ padding: '0px' }">
-        <div style="padding: 3px;">
+        <div style="padding: 0px;">
+          <img :src=o.imgurl class="image">
           <div class="bottom clearfix">
-            <span>{{o.userid_id}}</span>
+            <!-- <span>{{o.userid_id}}</span> -->
+            <el-button type="text" class="button" @click="face_check(o.userid_id)">查询轨迹</el-button>
             <span class="name">{{o.username}}</span>
-            <el-button type="text" class="button" @click="face_check(o.userid_id)">检测</el-button>
+            <!-- <el-button type="text" class="button" @click="face_check(o.userid_id)">检测</el-button> -->
           </div>
         </div>
-        <img :src=o.imgurl class="image">
       </el-card>
     </el-col>
   </el-row>
@@ -33,7 +34,7 @@
 
   .name {
     padding: 0;
-    float: right;
+    float: left;
   }
 
   .image {
@@ -60,14 +61,13 @@ export default {
   },
   data() {
     return {
-
+      //temp:[]
     };
   },
   methods: {
-    face_check(id) {
+    face_check(aa) {  //将获取到的人脸id返回给父组件
       console.log('88889999***999988888')
-      console.log(id)
-      this.$emit('getface',id)
+      this.$emit('getLocation',aa)
     }
   }
 }

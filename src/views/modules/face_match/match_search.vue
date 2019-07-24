@@ -1,14 +1,13 @@
 <template>
   <d2-container>
     <el-row :gutter="20">
-      <el-col :span="7">
+      <el-col :span="12">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
             <el-table
               size="mini"
               v-loading="dataListLoading"
               :data="dataList"
-              border
               @selection-change="dataListSelectionChangeHandle"
               @sort-change="dataListSortChangeHandle"
               style="width: 100%;">
@@ -20,6 +19,7 @@
                   <el-tag v-else size="mini" type="danger">{{ $t('stream.status0') }}</el-tag>
                 </template>
               </el-table-column>
+              <el-table-column prop="check_match" :label="$t('stream.check_match')" header-align="center" align="center"/>
               <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
                 <template slot-scope="scope">
                   <el-button type="text" size="mini" @click="broadcast(scope.row.id,scope.row.streamurl)">{{ $t('check.broadcast') }}</el-button>
@@ -38,7 +38,22 @@
           </el-card>
         </div>
       </el-col>
-      <el-col :span="17">
+      <el-col :span="12">
+        <div class="grid-content bg-purple">
+          <el-card class="box-card">
+            <el-divider></el-divider>
+            <el-tag type="" effect="light">结构化视频处理结果进度</el-tag>
+            <el-progress :percentage="check_info.check_percentage"></el-progress>
+            <el-divider><i class="el-icon-data-analysis"></i></el-divider>
+              <span>视频总数: {{check_info.videonum}}</span>
+            <el-divider><i class="el-icon-user"></i></el-divider>
+              <span>已处理视频数: {{check_info.finishmatch}}</span>
+            <el-divider><i class="el-icon-s-check"></i></el-divider>
+              <span>匹配记录数: {{check_info.check_num}}</span>
+          </el-card>
+        </div>
+      </el-col>
+      <!-- <el-col :span="17">
         <el-row :gutter="20">
           <el-col>
             <div class="grid-content bg-purple">
@@ -52,12 +67,6 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <!-- <el-col :span="5">
-            <div class="grid-content bg-purple">
-              <el-card class="box-card">
-              </el-card>
-            </div>
-          </el-col>  -->
           <el-col :span="18">
             <div class="grid-content bg-purple">
               <el-card class="video-box-card">
@@ -84,7 +93,7 @@
           </el-col>
           <el-col :span="6">
             <div class="grid-content bg-purple">
-              <el-card class="box-card">
+              <el-card class="box-card" :body-style="{ padding: '0px' }">
                 <div class="imgblock">
                   <faceimg :imgarr="imgarr"></faceimg>
                 </div>
@@ -107,10 +116,10 @@
             </div>
           </el-col>
         </el-row>
-      </el-col>
+      </el-col> -->
     </el-row>
 
-  <!-- <el-dialog
+  <el-dialog
     :visible.sync="visible"
     :close-on-click-modal="false"
     :close-on-press-escape="true"
@@ -122,7 +131,10 @@
         <el-col :span="14" :offset="5">
           <div class="grid-content bg-purple">
             <el-card class="box-card">
-              <span>播放视频:xxxxxx       </span><span>视频人脸数:{{matchnum}}</span>
+              <span>播放视频:{{info.streamname}}  视频匹配记录数:</span>
+              <span v-for="(o, index) in info.facematch" :key="index">
+                {{o.facename}}&nbsp;{{o.facecount}}条
+              </span>
             </el-card>
           </div>
         </el-col>
@@ -162,8 +174,10 @@
       </el-col>
       <el-col :span="5">
         <div class="grid-content bg-purple">
-          <el-card class="box-card">
-            <faceimg :imgarr="imgarr"></faceimg>
+          <el-card class="box-card" :body-style="{ padding: '0px' }">
+            <div class="imgblock">
+              <faceimg :imgarr="imgarr"></faceimg>
+            </div>
           </el-card>
         </div>
       </el-col>
@@ -183,7 +197,7 @@
         </div>
       </el-col>
     </el-row>
-  </el-dialog> -->
+  </el-dialog>
   </d2-container>
 </template>
 
@@ -225,6 +239,7 @@ export default {
       playertime: 0,
       imgarr: [],
       matchnum: 0,
+      video_per: 0,
       info: {
         streamname: 'null',
         facematch:[]
@@ -253,7 +268,7 @@ export default {
     };
   },
   mounted() {
-    console.log("this is current player instance object", this.player);
+    console.log('777777777')
   },
   computed: {
     player() {
@@ -261,26 +276,17 @@ export default {
     }
   }, 
   methods: {
-    onChange(event){
-      console.log('---99---99----9999---')
-      console.log(this.info)
-      console.log(event)
-    },
     broadcast(id,streamurl){
       this.visible = true
       this.playerOptions.sources[0].src = streamurl
-      console.log('**********************')
       this.$axios.get(`/api/check?token=${cookieGet('token')}&streamid=${id}`)
         .then(res=> {
-          console.log('111111111111111122221111111111111111')
-          console.log(res)
           this.playerOptions.custum = res.list
           this.matchnum = res.count
           this.info = res.info
-          console.log(res.info.facematch)
         })
         .catch(error =>{
-          console.log(error);
+          console.log(error)
         }) 
     },
     // listen event
@@ -334,11 +340,7 @@ export default {
             'background-color': 'orange'
         },
         onMarkerReached: function(marker,index){
-          //console.log("aaaaa8888888***999")
-          //console.log(marker.imgList)
           aa.imgarr = marker.imgList
-          console.log("aaaaa8888888***999")
-          console.log(aa.imgarr)
         },
           markers: acustum  //默认标记点信息给markers
       })   
@@ -349,7 +351,7 @@ export default {
 
 <style lang="scss">
   .customclass {
-    background: #1cb0f5;
+    background: #0d2663;
   }
   .inner {
     position: right;
@@ -403,8 +405,8 @@ export default {
     display: block;
   }
   .imgblock {
-    width: 45%;
-    height: 45%;
+    width: 40%;
+    height: 40%;
     display: block;
   }
 </style>

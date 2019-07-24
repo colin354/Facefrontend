@@ -1,9 +1,10 @@
 <template>
   <el-row>
     <el-row v-for="(o, index) in imgarr" :key="index" :offset="index > 0 ? 1 : 0">
-      <el-col>
+      <el-col :span="24">
         <el-card :body-style="{ padding: '0px' }">
           <img :src=o.imgurl class="image">
+          <span style="font-size:12px;">{{$t('check.threshold')}}:{{o.threshold}}</span>
         </el-card>
       </el-col>
     </el-row>
