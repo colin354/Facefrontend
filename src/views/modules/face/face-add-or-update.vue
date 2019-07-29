@@ -17,30 +17,6 @@
       <el-form-item prop="username" :label="$t('face.name')">
         <el-input v-model="dataForm.username" :placeholder="$t('face.name')"/>
       </el-form-item>
-      <!-- <el-form-item prop="deptName" :label="$t('user.deptName')" class="dept-list">
-        <el-popover v-model="deptListVisible" ref="deptListPopover" placement="bottom-start" trigger="click">
-          <el-tree
-            :data="deptList"
-            :props="{ label: 'name', children: 'children' }"
-            node-key="id"
-            ref="deptListTree"
-            :highlight-current="true"
-            :expand-on-click-node="false"
-            accordion
-            @current-change="deptListTreeCurrentChangeHandle">
-          </el-tree>
-        </el-popover>
-        <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" :placeholder="$t('user.deptName')"/>
-      </el-form-item>-->
-      <!-- <el-form-item prop="password" :label="$t('user.password')" :class="{ 'is-required': !dataForm.id }">
-        <el-input v-model="dataForm.password" type="password" :placeholder="$t('user.password')"/>
-      </el-form-item>
-      <el-form-item prop="comfirmPassword" :label="$t('user.comfirmPassword')" :class="{ 'is-required': !dataForm.id }">
-        <el-input v-model="dataForm.comfirmPassword" type="password" :placeholder="$t('user.comfirmPassword')"/>
-      </el-form-item>
-      <el-form-item prop="realName" :label="$t('user.realName')">
-        <el-input v-model="dataForm.realName" :placeholder="$t('user.realName')"/>
-      </el-form-item>-->
       <el-form-item prop="gender" :label="$t('user.gender')" size="mini">
         <el-radio-group v-model="dataForm.gender">     
           <el-radio :label="false">{{ $t('user.gender0') }}</el-radio>
@@ -56,17 +32,6 @@
       <el-form-item :label="$t('user.face')">
         <upload v-if="uploadVisible" ref="upload" :dataForm="this.dataForm" @imgurl="imgurl"/>
       </el-form-item>
-      <!-- <el-form-item prop="roleIdList" :label="$t('user.roleIdList')" class="role-list">
-        <el-select v-model="dataForm.roleIdList" multiple :placeholder="$t('user.roleIdList')">
-          <el-option v-for="role in roleList" :key="role.id" :label="role.name" :value="role.id"/>
-        </el-select>
-      </el-form-item>
-      <el-form-item prop="status" :label="$t('user.status')" size="mini">
-        <el-radio-group v-model="dataForm.status">
-          <el-radio :label="0">{{ $t('user.status0') }}</el-radio>
-          <el-radio :label="1">{{ $t('user.status1') }}</el-radio>
-        </el-radio-group>
-      </el-form-item>-->
     </el-form>
     <template slot="footer">
       <el-button @click="handleClose()">{{ $t('cancel') }}</el-button>
@@ -162,9 +127,6 @@ export default {
           if (this.dataForm.id) {
             this.getInfo();
           }
-          // else if (this.$store.state.d2admin.user.info.superAdmin === 1) {
-          //   this.deptListTreeSetDefaultHandle()
-          // }
         });
       });
     },
@@ -211,8 +173,6 @@ export default {
           if (!valid) {
             return false;
           }
-          console.log("***333***");
-          console.log(this.dataForm);
           this.$axios[!this.dataForm.id ? "post" : "put"](
             `/api/face?token=${cookieGet("token")}&uuid=${this.dataForm.uuid}`,
             {
@@ -228,7 +188,6 @@ export default {
                   this.visible = false;
                   let nam = "abbb";
                   this.$refs.upload.init(nam);
-                  console.log("hhh***hhhh")
                   this.$emit("refreshDataList");
                 }
               });

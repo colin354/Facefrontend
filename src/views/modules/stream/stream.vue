@@ -127,7 +127,7 @@ export default {
     AddOrUpdate,
     videoPlayer
   },
-   mounted() {
+  mounted() {
     console.log("this is current player instance object", this.player);
   },
   computed: {

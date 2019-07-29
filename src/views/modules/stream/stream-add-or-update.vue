@@ -65,13 +65,27 @@ export default {
             trigger: "blur"
           }
         ],
-        streamurl: [
+        streamlocation: [
           {
             required: true,
             message: this.$t("validate.required"),
             trigger: "blur"
           }
         ],        
+        streamlon: [
+          {
+            required: true,
+            message: this.$t("validate.required"),
+            trigger: "blur"
+          }
+        ],
+        streamlat: [
+          {
+            required: true,
+            message: this.$t("validate.required"),
+            trigger: "blur"
+          }
+        ]
       }
     }
   },
