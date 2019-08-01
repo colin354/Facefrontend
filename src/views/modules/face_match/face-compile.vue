@@ -37,15 +37,18 @@
 
 <script>
 export default {
-  props: {
-    facematch: Object,
-    streamtime: Number,
-    facemark: Object,
+  props: {  //接收父组件传递过来的数据
+    facematch: Object,  
+    streamtime: Number, //进度条的总长度
+    facemark: Object,//带有时间节点的断点信息
     required: true
   },
   watch:{
     facematch:{
       handler(val,oldVal){  //val是改变之后的facematch,oldVal原来的facematch
+        console.log("---facematch中的handler-----")
+        console.log(val)
+        console.log(oldVal)
         this.src = []   //facematch变化时,src置空
         this.value = 0
       }
@@ -70,14 +73,16 @@ export default {
   },
   methods: {
     onChange(event) {  //点击滑动轴,显示时间节点(秒)
-      this.src = []
-      for (let i=0;i<this.facematch.facetime.length;i++)
+      this.src = []    //event获取用户点击当前滑动轴的时间节点,是一个数字
+      console.log("-----点击滑动轴------")
+      console.log(event)
+      for (let i=0; i < this.facematch.facetime.length; i++)
       {
         if(event >= this.facematch.facetime[i].time)
         {
           if(this.src.length == 5)
           {
-            this.src.shift()
+            this.src.shift()  //去掉数组的第一个元素,使数组中始终保持最多5个元素
             this.src.push(this.facematch.facetime[i])
           }
           else

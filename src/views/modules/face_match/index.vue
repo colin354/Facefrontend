@@ -6,9 +6,10 @@
           <el-col>
             <div class="grid-content bg-purple">
               <el-card class="box-card">
-                <el-form :inline="true" size="mini" :model="dataForm">
+                <el-form :inline="true" size="mini" :model="dataForm" @submit.native.prevent>
                   <el-form-item>
-                    <el-input v-model="dataForm.faceid" :placeholder="$t('check.faceid')" clearable/>
+                    <el-input v-model.number="dataForm.faceid" :placeholder="$t('check.faceid')" 
+                    @keyup.enter.native="getDataList()" clearable/>
                   </el-form-item>
                   <el-form-item>
                     <el-button @click="getDataList()">{{ $t('query') }}</el-button>
@@ -24,6 +25,7 @@
             </div>
           </el-col>
         </el-row>
+
         <el-row :gutter="20">
           <el-col>
             <div class="grid-content bg-purple">
@@ -44,6 +46,15 @@
                     </template>
                 </el-table-column>
                 </el-table>
+              <el-pagination
+                :current-page="page"
+                :page-sizes="[10, 20, 50, 100]"
+                :page-size="limit"
+                :total="total"
+                layout="total, sizes, prev, pager, next, jumper"
+                @size-change="pageSizeChangeHandle"
+                @current-change="pageCurrentChangeHandle">
+              </el-pagination>
               </el-card>
             </div>
           </el-col>
@@ -151,7 +162,7 @@ import 'videojs-markers'
 import '@/views/modules/face_match/src/custom-theme.css'
 import faceimg from './face-img'
 import facecarsousel from './face-carsousel'
-import { constants } from 'crypto';
+import { constants } from 'crypto'
 // videojs.registerPlugin("markers", markers);
 
 export default {
@@ -163,8 +174,9 @@ export default {
   },
   mixins: [ mixinViewModule ],
   data() {
+    let id = this.$route.params.id;//存放face.vue界面传过来的faceid
     return {
-      id: null, //存放face.vue界面传过来的faceid
+      // id: null, //存放face.vue界面传过来的faceid
       facelist: [],
       imgarr: [],
       mixinViewModuleOptions: {
@@ -174,6 +186,7 @@ export default {
         deleteIsBatch: true
       },
       dataForm: {
+        faceid:id
       },
       playerOptions: {
         // videojs options
@@ -199,19 +212,8 @@ export default {
       }
     };
   },
-  created(){      //获取face.vue界面传递过来的faceid,然后get请求参数里
-    this.id = this.$route.params.id;
-    if(this.id)
-    {
-      this.$axios.get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:this.id}})
-      .then(res => {
-        console.log('****res***res****')
-        console.log(res)
-        this.dataList = res.list
-        this.facelist = res.imgList //imgList是包含在返回数据里的
-      })
-      .catch(() => {});
-    }
+  created(){ 
+    console.log("this is created!!")    
   },
   mounted() {
     console.log("this is current player instance object", this.player);
@@ -229,6 +231,8 @@ export default {
       this.$axios
       .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:fid,streamid:sid}})
       .then(res => {
+        console.log('播放---res')
+        console.log(res)
         this.playerOptions.custum = res.list
       })
       .catch(() => {});
@@ -247,23 +251,7 @@ export default {
           {time: 28,  text: "cool", overlayText: "4", imgList: [{},{},{},{}]},
           {time: 35,  text: "cooa", overlayText: "5",imgList: [{},{}]}
         ]
-      // this.player.markers({
-      //   markerStyle: {
-      //       'width':'9px',
-      //       'border-radius': '40%',
-      //       'background-color': 'orange'
-      //   },
-      //   onMarkerReached: function(marker){
-      //     console.log("aaaaa***999")
-      //   },
-      //   markers: [
-      //     {time: 9.5, text: "this", overlayText: "1", class: "special-blue", overlayA:"aaa",width:"100%"},
-      //     {time: 16,  text: "is", overlayText: "2", overlayA:"aaa",width:"50%"},
-      //     {time: 23.6,text: "so", overlayText: "3", overlayA:"aaa",width:"100%"},
-      //     {time: 28,  text: "cool", overlayText: "4", overlayA:"aaa",width:"70%"},
-      //     {time: 35,  text: "cooa", overlayText: "5",overlayA:"aaa",width:"40%"}
-      //   ]
-      // })   
+
     },
     // listen event
     onPlayerPlay(player) {
@@ -303,19 +291,6 @@ export default {
     // player is ready
     playerReadied(player) {
       console.log("the player is readied!!!!!", player);
-      // you can use it to do something...
-      // player.[methods]
-
-      // player.hotkeys({
-      //   volumeStep: 0.1,
-      //   seekStep: 5,
-      //   enableModifiersForNumbers: false,
-      //   enableMute: true,
-      //   fullscreenKey: function(event, player) {
-      //     // override fullscreen to trigger when pressing the F key or Ctrl+Enter
-      //     return ((event.which === 70) || (event.ctrlKey && event.which === 13));
-      //   }
-      // }),
       let aa = this.playerOptions.custum
       let ab = this
       this.imgarr = []
@@ -328,6 +303,7 @@ export default {
         },
         onMarkerReached: function(marker,index){
           console.log("aaaaa***999")
+          console.log(index)
           console.log(marker)
           ab.imgarr = marker.imgList
         },

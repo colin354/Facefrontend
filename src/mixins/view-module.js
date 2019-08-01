@@ -65,10 +65,11 @@ export default {
         this.check_info = this.mixinViewModuleOptions.getDataListIsPage ? res.check_info : []
         this.facelist = res.imgList ? res.imgList : []
         this.streamlist = res.streamList ? res.streamList : []
-        console.log("0000------streamlist")
+        console.log("0000------res.faceList")
+        console.log(res)
+        console.log("---")
         console.log(res.check_info)
         console.log(this.streamlist)
-        console.log(res)
       }).catch(() => {
         // this.face_url = ''
         this.dataList = []

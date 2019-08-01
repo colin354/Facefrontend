@@ -100,6 +100,9 @@ import { mapActions } from "vuex";
 import { debounce } from "lodash";
 import { getUUID } from "@/common/renren";
 import { sysAccountService } from "@/common/api";
+import { errorCreate} from "@/plugin/axios/index";
+
+
 export default {
   data() {
     return {
@@ -196,7 +199,7 @@ export default {
                 sysAccountService
                         .login(this.formLogin)
                         .then(async res => {
-                          if(res.code == '1') alert(res.msg);
+                          if(res.code == '1') errorCreate(res.msg);
                           await this.login(res);
                           //console.log('***')
                           console.log(this.formLogin);

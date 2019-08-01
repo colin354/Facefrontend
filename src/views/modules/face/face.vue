@@ -4,9 +4,9 @@
       <!-- 左侧列表展示 -->
       <el-col :span="12">
         <el-card class="box-card">
-          <el-form :inline="true" size="mini" :model="dataForm">
+          <el-form :inline="true" size="mini" :model="dataForm" @submit.native.prevent>
             <el-form-item>
-              <el-input v-model="dataForm.username" :placeholder="$t('face.name')" clearable/>
+              <el-input v-model="dataForm.username" :placeholder="$t('face.name')" @keyup.enter.native="getDataList()"clearable/>
             </el-form-item>
             <el-form-item>
               <el-button @click="getDataList()">{{ $t('query') }}</el-button>

@@ -53,70 +53,6 @@
           </el-card>
         </div>
       </el-col>
-      <!-- <el-col :span="17">
-        <el-row :gutter="20">
-          <el-col>
-            <div class="grid-content bg-purple">
-              <el-card class="box-card">
-                <span>播放视频:{{info.streamname}}  视频匹配记录数:</span>
-                <span v-for="(o, index) in info.facematch" :key="index">
-                  {{o.facename}}&nbsp;{{o.facecount}}条
-                </span>
-              </el-card>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="18">
-            <div class="grid-content bg-purple">
-              <el-card class="video-box-card">
-                <video-player
-                  class="vjs-custom-skin"
-                  ref="videoPlayer"
-                  :options="playerOptions"
-                  :playsinline="true"
-                  customEventName="customstatechangedeventname"
-                  @play="onPlayerPlay($event)"
-                  @pause="onPlayerPause($event)"
-                  @ended="onPlayerEnded($event)"
-                  @waiting="onPlayerWaiting($event)"
-                  @playing="onPlayerPlaying($event)"
-                  @loadeddata="onPlayerLoadeddata($event)"
-                  @timeupdate="onPlayerTimeupdate($event)"
-                  @canplay="onPlayerCanplay($event)"
-                  @canplaythrough="onPlayerCanplaythrough($event)"
-                  @statechanged="playerStateChanged($event)"
-                  @ready="playerReadied"
-                ></video-player>
-              </el-card>
-            </div>
-          </el-col>
-          <el-col :span="6">
-            <div class="grid-content bg-purple">
-              <el-card class="box-card" :body-style="{ padding: '0px' }">
-                <div class="imgblock">
-                  <faceimg :imgarr="imgarr"></faceimg>
-                </div>
-              </el-card>
-            </div>
-          </el-col>
-        </el-row> 
-        
-        <el-row :gutter="20">
-          <el-col>
-            <div class="grid-content bg-purple">
-              <el-card class="box-card">
-                <facecompile
-                  v-for="(o, index) in info.facematch" :key="index"
-                  :facemark="o.marks"
-                  :facematch="o"
-                  :streamtime="info.streamtime"
-                  ></facecompile>
-              </el-card>
-            </div>
-          </el-col>
-        </el-row>
-      </el-col> -->
     </el-row>
 
   <el-dialog
@@ -217,6 +153,7 @@ import '@/views/modules/face_match/src/custom-theme.css'
 import faceimg from './face-img'
 import facecompile from './face-compile'
 import 'vuetify/dist/vuetify.min.css'
+import { timeout } from 'q';
 
 // const plugin = function(list, item) {
 //   markers(this, list, item);
@@ -281,6 +218,8 @@ export default {
       this.playerOptions.sources[0].src = streamurl
       this.$axios.get(`/api/check?token=${cookieGet('token')}&streamid=${id}`)
         .then(res=> {
+          console.log('00000------播放')
+          console.log(res)
           this.playerOptions.custum = res.list
           this.matchnum = res.count
           this.info = res.info
