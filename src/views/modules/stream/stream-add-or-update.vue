@@ -71,7 +71,14 @@ export default {
             message: this.$t("validate.required"),
             trigger: "blur"
           }
-        ],        
+        ],
+        streamurl: [
+          {
+            required: true,
+            message: this.$t("validate.required"),
+            trigger: "blur"
+          }
+        ],      
         streamlon: [
           {
             required: true,

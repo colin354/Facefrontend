@@ -286,6 +286,7 @@ export default {
           this.info = res.info
         })
         .catch(error =>{
+          console.log('yingyingyingyingying')
           console.log(error)
         }) 
     },

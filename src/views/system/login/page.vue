@@ -16,7 +16,7 @@
         </div>
         <div class="page-login--content-main" flex="dir:top main:center cross:center">
           <!-- logo -->
-          <img class="page-login--logo" src="./image/logo@2x.png">
+          <img class="page-login--logo" src="./image/logo@smarco.png">
           <!-- 表单 -->
           <div class="page-login--form">
             <el-card shadow="never">
@@ -52,19 +52,19 @@
                 <el-button size="default" @click="submit" type="primary" class="button-login">登录</el-button>
               </el-form>
             </el-card>
-            <p class="page-login--options" flex="main:justify cross:center">
+            <!-- <p class="page-login--options" flex="main:justify cross:center">
               <span>
                 <d2-icon name="question-circle"/>忘记密码
               </span>
               <span>注册用户</span>
-            </p>
+            </p> -->
             <!-- 快速登录按钮 -->
-            <el-button
+            <!-- <el-button
               class="page-login--quick"
               size="default"
               type="info"
               @click="dialogVisible = true"
-            >快速选择用户（测试功能）</el-button>
+            >快速选择用户（测试功能）</el-button> -->
           </div>
         </div>
         <div class="page-login--content-footer">
@@ -189,24 +189,26 @@ export default {
      * @description 提交表单
      */
     submit: debounce(
-            function() {
-              this.$refs.loginForm.validate(valid => {
-
-                if (!valid) return;
-                sysAccountService
-                        .login(this.formLogin)
-                        .then(async res => {
-                          if(res.code == '1') alert(res.msg);
-                          await this.login(res);
-                          //console.log('***')
-                          console.log(this.formLogin);
-                          this.$router.replace(this.$route.query.redirect || "/");
-                        })
-                        .catch(this.updateUUID);
-              });
-            },
-            1000,
-            { leading: true, trailing: false }
+      function() {
+        this.$refs.loginForm.validate(valid => {
+          if (!valid) return;
+          sysAccountService
+                  .login(this.formLogin)
+                  .then(async res => {
+                    if(res.code == '1') 
+                    alert(res.msg);
+                    this.formLogin.captcha = ""
+                    this.updateUUID()
+                    await this.login(res);
+                    //console.log('***')
+                    console.log(this.formLogin);
+                    this.$router.replace(this.$route.query.redirect || "/");
+                  })
+                  .catch(this.updateUUID);
+        });
+      },
+      1000,
+      { leading: true, trailing: false }
     )
   }
 };

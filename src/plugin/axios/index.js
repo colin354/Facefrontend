@@ -39,7 +39,7 @@ function errorLog (error) {
 // 创建一个 axios 实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_API,
-  timeout: 180 * 1000, // 请求超时时间
+  timeout: 180 * 10000, // 请求超时时间
   withCredentials: true
 })
 
@@ -75,8 +75,6 @@ service.interceptors.request.use(config => {
       config.data = qs.stringify(config.data)
     }
   }
-  console.log('-----')
-  console.log(config)
   return config
 }, error => {
   return Promise.reject(error)

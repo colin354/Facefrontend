@@ -25,7 +25,7 @@
               <el-table-column prop="streamlocation" :label="$t('stream.location')" header-align="center" align="center" width="80"/>
               <el-table-column prop="streamtime" :label="$t('stream.duration')" header-align="center" align="center" width="80"/>
               <el-table-column prop="streamfps" :label="$t('stream.frame')" header-align="center" align="center" width="80"/>
-              <el-table-column prop="streamstatus" :label="$t('stream.status')" sortable="custom" header-align="center" align="center" width="80"/>
+              <!-- <el-table-column prop="streamstatus" :label="$t('stream.status')" sortable="custom" header-align="center" align="center" width="80"/> -->
               <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
                 <template slot-scope="scope">
                   <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>

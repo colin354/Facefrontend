@@ -29,3 +29,11 @@ export function isPhone (s) {
 export function isURL (s) {
   return /^http[s]?:\/\/.*/.test(s)
 }
+
+/**
+ * 用户名
+ * @param {*} s
+ */
+export function isUsername (s) {
+  return /^[A-Za-z0-9_\u4e00-\u9fa5]{1,6}$/.test(s)
+}

@@ -43,7 +43,7 @@
 <script>
 import { debounce } from "lodash";
 import Upload from "./face-upload";
-import { isEmail, isMobile } from "@/common/validate";
+import { isEmail, isMobile, isUsername} from "@/common/validate";
 import { cookieGet } from "@/common/cookie";
 import { getUUID } from "@/common/renren";
 export default {
@@ -85,13 +85,24 @@ export default {
         }
         callback();
       };
+      var validateUsername = (rule, value, callback) => {
+        if (!isUsername(value)) {
+          return callback(
+            new Error(
+              this.$t("validate.format", { attr: this.$t("user.username") })
+            )
+          );
+        }
+        callback();
+      };
       return {
         username: [
           {
             required: true,
             message: this.$t("validate.required"),
             trigger: "blur"
-          }
+          },
+          { validator: validateUsername, trigger: "blur" }
         ],
         email: [
           {
