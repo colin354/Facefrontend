@@ -125,7 +125,6 @@ export default {
           if (!valid) {
             return false;
           }
-          console.log('ttttt')
           console.log(this.dataForm)
           this.$axios[!this.dataForm.id ? "post" : "put"](`/sys/stream?token=${cookieGet('token')}`, {
             ...this.dataForm

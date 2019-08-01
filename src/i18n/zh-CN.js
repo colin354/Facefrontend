@@ -454,7 +454,7 @@ t.stream.status ='状态'
 t.stream.check_match = '匹配记录数'
 
 t.check = {}
-t.check.faceid = '人脸id（只允许输入数字）'
+t.check.faceid = '人脸id（请输入数字）'
 t.check.location = '位置信息'
 t.check.broadcast = '播放'
 t.check.threshold = '置信度'

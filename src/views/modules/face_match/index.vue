@@ -232,7 +232,6 @@ export default {
       .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:fid,streamid:sid}})
       .then(res => {
         console.log('播放---res')
-        console.log(res)
         this.playerOptions.custum = res.list
       })
       .catch(() => {});

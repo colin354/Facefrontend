@@ -201,7 +201,6 @@ export default {
                         .then(async res => {
                           if(res.code == '1') errorCreate(res.msg);
                           await this.login(res);
-                          //console.log('***')
                           console.log(this.formLogin);
                           this.$router.replace(this.$route.query.redirect || "/");
                         })
