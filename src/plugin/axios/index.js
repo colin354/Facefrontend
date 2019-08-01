@@ -7,7 +7,7 @@ import { isPlainObject } from 'lodash'
 import qs from 'qs'
 
 // 创建一个错误
-function errorCreate (msg) {
+export function errorCreate (msg) {
   const error = new Error(msg)
   errorLog(error)
   throw error
@@ -80,7 +80,7 @@ service.interceptors.request.use(config => {
   return Promise.reject(error)
 })
 
-// // 请求拦截器
+// 请求拦截器
 // service.interceptors.request.use(
 //   config => {
 //     // 在请求发送之前做一些处理
@@ -125,7 +125,7 @@ service.interceptors.response.use(
           break
         default:
           // 不是正确的 code
-          errorCreate(`${dataAxios.msg}: ${response.config.url}`)
+          errorCreate(`${dataAxios.msg}`)
           break
       }
     }

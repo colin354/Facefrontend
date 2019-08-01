@@ -100,6 +100,9 @@ import { mapActions } from "vuex";
 import { debounce } from "lodash";
 import { getUUID } from "@/common/renren";
 import { sysAccountService } from "@/common/api";
+import { errorCreate} from "@/plugin/axios/index";
+
+
 export default {
   data() {
     return {
@@ -189,26 +192,23 @@ export default {
      * @description 提交表单
      */
     submit: debounce(
-      function() {
-        this.$refs.loginForm.validate(valid => {
-          if (!valid) return;
-          sysAccountService
-                  .login(this.formLogin)
-                  .then(async res => {
-                    if(res.code == '1') 
-                    alert(res.msg);
-                    this.formLogin.captcha = ""
-                    this.updateUUID()
-                    await this.login(res);
-                    //console.log('***')
-                    console.log(this.formLogin);
-                    this.$router.replace(this.$route.query.redirect || "/");
-                  })
-                  .catch(this.updateUUID);
-        });
-      },
-      1000,
-      { leading: true, trailing: false }
+            function() {
+              this.$refs.loginForm.validate(valid => {
+
+                if (!valid) return;
+                sysAccountService
+                        .login(this.formLogin)
+                        .then(async res => {
+                          if(res.code == '1') errorCreate(res.msg);
+                          await this.login(res);
+                          console.log(this.formLogin);
+                          this.$router.replace(this.$route.query.redirect || "/");
+                        })
+                        .catch(this.updateUUID);
+              });
+            },
+            1000,
+            { leading: true, trailing: false }
     )
   }
 };

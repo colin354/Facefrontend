@@ -78,21 +78,14 @@ export default {
             message: this.$t("validate.required"),
             trigger: "blur"
           }
-        ],      
-        streamlon: [
-          {
-            required: true,
-            message: this.$t("validate.required"),
-            trigger: "blur"
-          }
         ],
-        streamlat: [
+        streamlocation: [
           {
             required: true,
             message: this.$t("validate.required"),
             trigger: "blur"
           }
-        ]
+        ],         
       }
     }
   },
@@ -114,12 +107,18 @@ export default {
     getStreamList () {
       //return this.$axios.get('/sys/stream/page').then(res => {
       return this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`).then(res => {
+        console.log('-----getStreamList-----')
+        console.log(res)
         this.streamtList = res
       }).catch(() => {})
     },
     // 获取信息
     getInfo () {
-      this.$axios.get(`/sys/stream/page/${this.dataForm.id}?token=${cookieGet('token')}`).then(res => {
+      this.$axios.get(`/sys/stream/page/${this.dataForm.id}?token=${cookieGet('token')}`)
+      .then(res => 
+        {
+        console.log('----000----修改时获取')
+        console.log(res)
         this.dataForm = {
           ...this.dataForm,
           ...res
@@ -133,7 +132,6 @@ export default {
           if (!valid) {
             return false;
           }
-          console.log('ttttt')
           console.log(this.dataForm)
           this.$axios[!this.dataForm.id ? "post" : "put"](`/sys/stream?token=${cookieGet('token')}`, {
             ...this.dataForm

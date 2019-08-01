@@ -6,9 +6,10 @@
           <el-col>
             <div class="grid-content bg-purple">
               <el-card class="box-card">
-                <el-form :inline="true" size="mini" :model="dataForm">
+                <el-form :inline="true" size="mini" :model="dataForm" @submit.native.prevent>
                   <el-form-item>
-                    <el-input v-model="dataForm.faceid" :placeholder="$t('check.faceid')" clearable/>
+                    <el-input v-model.number="dataForm.faceid" :placeholder="$t('check.faceid')" 
+                    @keyup.enter.native="getDataList()" clearable/>
                   </el-form-item>
                   <el-form-item>
                     <el-button @click="getDataList()">{{ $t('query') }}</el-button>
@@ -161,7 +162,7 @@ import 'videojs-markers'
 import '@/views/modules/face_match/src/custom-theme.css'
 import faceimg from './face-img'
 import facecarsousel from './face-carsousel'
-import { constants } from 'crypto';
+import { constants } from 'crypto'
 // videojs.registerPlugin("markers", markers);
 
 export default {
@@ -212,7 +213,7 @@ export default {
     };
   },
   created(){ 
-    console.log("this is created!!")     
+    console.log("this is created!!")    
   },
   mounted() {
     console.log("this is current player instance object", this.player);
@@ -231,7 +232,6 @@ export default {
       .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:fid,streamid:sid}})
       .then(res => {
         console.log('播放---res')
-        console.log(res)
         this.playerOptions.custum = res.list
       })
       .catch(() => {});
