@@ -4,7 +4,7 @@
       <el-card :body-style="{ padding: '0px' }">
         <span>id:{{item.userid_id}}</span>
         <span class="name">{{item.username}}</span>
-        <img :src="item.imgurl" fit="fill">
+        <img :src="item.imgurl">
       </el-card>
     </el-carousel-item>
   </el-carousel>

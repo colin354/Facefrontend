@@ -58,7 +58,7 @@
                   <!--<span>id:{{item.userid_id}}</span>
                   <span class="name">{{item.name}}</span>-->
                   <router-link :to="{name:'face-match',params: {id:id}}">
-                    <el-img :src="item.url"></el-img>
+                    <img :src="item.url">
                   </router-link>
                 </el-card>
             </el-carousel-item>
