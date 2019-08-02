@@ -50,20 +50,20 @@
       </el-card>
       <el-card v-if="id == 0" class="box-card">
         <facegrid :faceimg="imgList" :faceid="id"></facegrid>
-      </el-card>       
+      </el-card>
       <el-card v-else class="box-card">
-        <el-col>
-            <el-carousel :interval="4000" type="card" height="400px">
-                <el-carousel-item v-for="(item, index) in imgs" :key="index">
-                    <!-- <el-card :body-style="{ padding: '10px' }" > -->
-                      <!--<span>id:{{item.userid_id}}</span>
-                      <span class="name">{{item.name}}</span>-->
-                    <router-link :to="{name:'face-match',params: {id:id}}"><img :src="item.url" fit="fill"></router-link>
-                    <!-- </el-card> -->
-                </el-carousel-item>
-            </el-carousel>
-        </el-col>
-      </el-card>     
+          <el-carousel :interval="4000" type="card" height="400px" >
+            <el-carousel-item v-for="(item, index) in imgs" :key="index">
+                <el-card :body-style="{ padding: '10px' }">
+                  <!--<span>id:{{item.userid_id}}</span>
+                  <span class="name">{{item.name}}</span>-->
+                  <router-link :to="{name:'face-match',params: {id:id}}">
+                    <el-img :src="item.url"></el-img>
+                  </router-link>
+                </el-card>
+            </el-carousel-item>
+          </el-carousel>
+      </el-card>   
       <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
     </el-row>
     <!-- 分页 -->

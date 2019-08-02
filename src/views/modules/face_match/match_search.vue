@@ -218,8 +218,6 @@ export default {
       this.playerOptions.sources[0].src = streamurl
       this.$axios.get(`/api/check?token=${cookieGet('token')}&streamid=${id}`)
         .then(res=> {
-          console.log('00000------播放')
-          console.log(res)
           this.playerOptions.custum = res.list
           this.matchnum = res.count
           this.info = res.info
