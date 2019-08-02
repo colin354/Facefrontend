@@ -41,8 +41,9 @@
       <el-col :span="12">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
-            <el-divider></el-divider>
+            <!-- <el-divider></el-divider> -->
             <el-tag type="" effect="light">结构化视频处理结果进度</el-tag>
+            <el-button type="danger" @click="deleteRequest()" class="btn" size="mini">{{ $t('deleteBatch') }}</el-button>
             <el-progress :percentage="check_info.check_percentage"></el-progress>
             <el-divider><i class="el-icon-data-analysis"></i></el-divider>
               <span>视频总数: {{check_info.videonum}}</span>
@@ -213,6 +214,20 @@ export default {
     }
   }, 
   methods: {
+    deleteRequest(){
+      this.$axios.delete(`/api/check?token=${cookieGet('token')}`)
+      .then(res =>{
+        this.$message({
+                message: this.$t("prompt.success"),
+                type: "success",
+                duration: 500,
+                })
+        this.getDataList()
+            })
+      .catch(error =>{
+          console.log(error)
+      }) 
+    },
     broadcast(id,streamurl){
       this.visible = true
       this.playerOptions.sources[0].src = streamurl
@@ -347,5 +362,8 @@ export default {
     width: 40%;
     height: 40%;
     display: block;
+  }
+  .btn {
+    float:right;
   }
 </style>

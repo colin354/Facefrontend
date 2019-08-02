@@ -127,6 +127,12 @@ service.interceptors.response.use(
           break
         default:
           // 不是正确的 code
+          //return this.$message("无效的facid")
+          // Message({
+          //   message: `${dataAxios.msg}`,
+          //   type: 'success',
+          //   duration: 5 * 1000
+          // })
           errorCreate(`${dataAxios.msg}`)
           break
       }
