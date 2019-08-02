@@ -22,7 +22,16 @@
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
             <el-card class="box-card">
-              <facelist :facelist="facelist" v-model="dataForm.faceid" @getLocation="getLocation"></facelist>
+              <facelist :facelist="facelist.slice((page-1)*7,page*7)" v-model="dataForm.faceid" @getLocation="getLocation"></facelist>
+              <el-pagination
+              :current-page="page"
+              :page-sizes="[7]"
+              :page-size="7"
+              :total="facelist.length"
+              layout="total, sizes, prev, pager, next, jumper"
+              @size-change="pageChangeHandle"
+              @current-change="pCurrentChangeHandle">
+            </el-pagination>
             </el-card>
           </div>
         </div>
@@ -126,6 +135,13 @@ export default {
     };
   },
   methods: {
+    // 分页, 每页条数
+    pageChangeHandle (val) {
+    },
+    // 分页, 当前页
+    pCurrentChangeHandle (val) {
+      this.page = val
+    },
     getMap() {
       // amap vue component
       console.log(amapManager._componentMap);

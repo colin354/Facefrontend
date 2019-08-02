@@ -33,12 +33,12 @@
                 <el-table
                   size="mini"
                   v-loading="dataListLoading"
-                  :data="dataList"
+                  :data="dataList.slice((page-1)*limit,page*limit)"
                   border
                   @selection-change="dataListSelectionChangeHandle"
                   @sort-change="dataListSortChangeHandle"
                   style="width: 100%;">
-                  <el-table-column prop="faceid" :label="$t('face.name')" header-align="center" align="center" width="60"/>
+                  <el-table-column prop="facename" :label="$t('face.name')" header-align="center" align="center" width="60"/>
                   <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center" width="270"/>
                   <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
                     <template slot-scope="scope">
@@ -46,15 +46,6 @@
                     </template>
                 </el-table-column>
                 </el-table>
-              <el-pagination
-                :current-page="page"
-                :page-sizes="[10, 20, 50, 100]"
-                :page-size="limit"
-                :total="total"
-                layout="total, sizes, prev, pager, next, jumper"
-                @size-change="pageSizeChangeHandle"
-                @current-change="pageCurrentChangeHandle">
-              </el-pagination>
               </el-card>
             </div>
           </el-col>
@@ -97,9 +88,18 @@
               </el-card>
             </div>
           </el-col>
-        </el-row>   
+        </el-row> 
       </el-col>
-    </el-row> 
+    </el-row>
+    <el-pagination
+      :current-page="page"
+      :page-sizes="[10, 20, 50, 100]"
+      :page-size="limit"
+      :total="total"
+      layout="total, sizes, prev, pager, next, jumper"
+      @size-change="pageChangeHandle"
+      @current-change="pCurrentChangeHandle">
+    </el-pagination>   
   </d2-container>
 </template>
 
@@ -224,6 +224,13 @@ export default {
     }
   }, 
   methods: {
+    // 分页, 每页条数
+    pageChangeHandle (val) {
+    },
+    // 分页, 当前页
+    pCurrentChangeHandle (val) {
+      this.page = val
+    },
     broadcast(fid,sid,url){
       //url = `${process.env.VUE_APP_API}/`+url
       url = 'http://10.2.151.139:8888'+url
