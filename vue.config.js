@@ -34,6 +34,9 @@ module.exports = {
      * https://cli.vuejs.org/zh/guide/html-and-static-assets.html#preload
      * 而且预渲染时生成的 prefetch 标签是 modern 版本的，低版本浏览器是不需要的
      */
+	config.externals({
+		'AMap': 'AMap'
+	})
     config.plugins
       .delete('prefetch')
       .delete('preload')

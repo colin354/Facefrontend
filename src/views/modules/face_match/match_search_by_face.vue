@@ -1,5 +1,56 @@
 <template>
   <d2-container>
+    <el-row>
+      <el-col>
+        <div class="grid-content bg-purple">
+          <div class="grid-content bg-purple">
+            <el-card class="box-card">
+               <span>数据类型&nbsp;&nbsp;</span>
+               <el-select v-model="value">
+                 <el-option v-for="option in options" :key="option.value" :label="option.label">
+                 </el-option>
+               </el-select>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>起始时间&nbsp;&nbsp;</span>
+                <el-date-picker
+                    v-model="value3"
+                    type="datetime"
+                    placeholder="选择日期时间"
+                    default-time="12:00:00">
+                </el-date-picker>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>终止时间&nbsp;&nbsp;</span>
+                <el-date-picker
+                  v-model="value3"
+                  type="datetime"
+                  placeholder="选择日期时间"
+                  default-time="12:00:00">
+                </el-date-picker>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <el-button type="primary" size="mini">查询</el-button>
+                  <div>
+                    <!-- <input id="input-1a" type="file" class="file" data-show-preview="false">&nbsp;&nbsp;&nbsp;&nbsp; -->
+                    <el-upload
+                      class="upload-demo"
+                      action="https://jsonplaceholder.typicode.com/posts/"
+                      :on-preview="handlePreview"
+                      :on-remove="handleRemove"
+                      :before-remove="beforeRemove"
+                      multiple
+                      :limit="3"
+                      :on-exceed="handleExceed"
+                      :file-list="fileList">
+                      <el-button size="small" type="primary">批量导入本地人脸/车牌图片</el-button>
+                      <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1MB</div> -->
+                    </el-upload>
+                    <el-button slot="trigger" size="small" type="primary">地图轨迹</el-button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <el-button slot="trigger" size="small" type="primary">文本轨迹</el-button>
+                  </div>
+            </el-card>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
     <el-row :gutter="20">
       <el-col>
         <div class="grid-content bg-purple">
@@ -14,26 +65,6 @@
               </div>
             </div>
           </el-card>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col>
-        <div class="grid-content bg-purple">
-          <div class="grid-content bg-purple">
-            <el-card class="box-card">
-              <facelist :facelist="facelist.slice((page-1)*7,page*7)" v-model="dataForm.faceid" @getLocation="getLocation"></facelist>
-              <el-pagination
-              :current-page="page"
-              :page-sizes="[7]"
-              :page-size="7"
-              :total="facelist.length"
-              layout="total, sizes, prev, pager, next, jumper"
-              @size-change="pageChangeHandle"
-              @current-change="pCurrentChangeHandle">
-            </el-pagination>
-            </el-card>
-          </div>
         </div>
       </el-col>
     </el-row>
@@ -58,6 +89,49 @@ export default {
   mixins: [ mixinViewModule ],
   data: function() {
     return {
+      //上传文件
+      fileList: [{
+          name: 'food.jpg',
+          url: '',
+        }, {
+          name: 'food666.jpg',
+          url: '',
+        }],
+      //日期选项
+      pickerOptions: {
+          disabledDate(time) {
+            return time.getTime() > Date.now();
+          },
+          shortcuts: [{
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date());
+            }
+          }, {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', date);
+            }
+          }, {
+            text: '一周前',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', date);
+            }
+          }]
+        },
+        value1: '',
+        value2: '',
+        value3: '',
+      //下拉框选项
+      selectedA:'数据类型',
+      options:[
+        {value:'选项1',label:'车辆'},
+        {value:'选项2',label:'人脸'}
+      ],
       temp:[],
       zoom: 16,                       //地图显示的缩放级别
       center: [116.479282,39.99856],  //地图的默认中心点
@@ -134,6 +208,7 @@ export default {
       }]
     };
   },
+
   methods: {
     // 分页, 每页条数
     pageChangeHandle (val) {
@@ -182,6 +257,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .el-dropdown-link {
+      cursor: pointer;
+      color: #409EFF;
+    }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
   .amap-demo {
     height: 500px;
   }

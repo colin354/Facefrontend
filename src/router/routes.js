@@ -127,6 +127,15 @@ const frameIn = [
           auth: true,
           title: '通过位置查询视频'
         }
+      },
+      {
+        path: 'multiline',
+        name: 'multiline',
+        component: _import('modules/face_match/multiline'),
+        meta: {
+          auth: true,
+          title: '轨迹线'
+        }
       }
     ]
   }

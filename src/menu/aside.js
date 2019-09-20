@@ -34,7 +34,8 @@ export default [
     children: [
       { path: '/face-search', title: '结构化视频列表', icon: 'gg-circle' },
       { path: '/face-match', title: '通过人脸查询视频', icon: 'newspaper-o' },
-      { path: '/face-search-by-face', title: '通过位置查询视频', icon: 'yelp' }
+      { path: '/face-search-by-face', title: '通过位置查询视频', icon: 'yelp' },
+      { path: '/multiline', title: '轨迹线', icon: 'yelp' }
     ]
   }
 ]
