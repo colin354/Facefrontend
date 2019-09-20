@@ -129,7 +129,7 @@ const frameIn = [
         }
       },
       {
-        path: 'multiline',
+        path: 'multiline',//添加了与通过位置查询视频一样的界面
         name: 'multiline',
         component: _import('modules/face_match/multiline'),
         meta: {

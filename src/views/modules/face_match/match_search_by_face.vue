@@ -30,7 +30,7 @@
                 <el-button type="primary" size="mini">查询</el-button>
                   <div>
                     <!-- <input id="input-1a" type="file" class="file" data-show-preview="false">&nbsp;&nbsp;&nbsp;&nbsp; -->
-                    <el-upload
+                    <!-- <el-upload
                       class="upload-demo"
                       action="https://jsonplaceholder.typicode.com/posts/"
                       :on-preview="handlePreview"
@@ -40,9 +40,9 @@
                       :limit="3"
                       :on-exceed="handleExceed"
                       :file-list="fileList">
-                      <el-button size="small" type="primary">批量导入本地人脸/车牌图片</el-button>
+                      <el-button size="small" type="primary">批量导入本地人脸/车牌图片</el-button> -->
                       <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1MB</div> -->
-                    </el-upload>
+                    <!-- </el-upload> -->
                     <el-button slot="trigger" size="small" type="primary">地图轨迹</el-button>&nbsp;&nbsp;&nbsp;&nbsp;
                     <el-button slot="trigger" size="small" type="primary">文本轨迹</el-button>
                   </div>

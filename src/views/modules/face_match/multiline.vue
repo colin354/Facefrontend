@@ -140,6 +140,7 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
                 console.log("thisDate:",this.startDate);
                 this.initPage();
             },
+            // getGPSData与getDurationGPSData,暂时没用到
             getGPSData(){
                 this.$http.get("api/contrail/trackLocations",{params:{iccid: this.iccid,date:this.startTime}}).then(result => {
                     let code = result.data.code;

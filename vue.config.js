@@ -36,7 +36,7 @@ module.exports = {
      */
 	config.externals({
 		'AMap': 'AMap'
-	})
+	})//该句为防止使用AMap出错
     config.plugins
       .delete('prefetch')
       .delete('preload')

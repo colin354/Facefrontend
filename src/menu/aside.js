@@ -2,7 +2,7 @@
 export default [
   { path: '/index', title: '首页', icon: 'home' },
   // {
-  //   title: '人像卡口',
+  //   //title: '人像卡口',
   //   icon: 'folder-o',
   //   children: [
   //     { path: '/page1', title: '抓拍查询' },
