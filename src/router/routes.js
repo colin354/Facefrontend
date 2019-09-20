@@ -102,6 +102,15 @@ const frameIn = [
         }
       },
       {
+        path: 'camera',
+        name: 'camera',
+        component: _import('modules/stream/camera'),
+        meta: {
+          auth: true,
+          title: '实时摄像头预览'
+        }
+      },      
+      {
         path: 'face-match',
         name: 'face-match',
         component: _import('modules/face_match/index'),

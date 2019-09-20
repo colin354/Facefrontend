@@ -1,15 +1,15 @@
 <template>
-  <d2-container>
+    <d2-container>
     <el-row>
-      <el-col>
+        <el-col>
         <div class="grid-content bg-purple">
             <div class="grid-content bg-purple" >
                 <el-card class="box-card">
                 <span>数据类型&nbsp;&nbsp;</span>
-                 <el-select v-model="value">
-                   <el-option v-for="option in options" :key="option.value" :label="option.label">
-                   </el-option>
-                   </el-select>
+                <el-select v-model="value">
+                    <el-option v-for="option in options" :key="option.value" :label="option.label" :value="option.value">
+                    </el-option>
+                </el-select>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span>起始时间&nbsp;&nbsp;</span>
                     <el-date-picker
@@ -122,6 +122,7 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
                     {value:'选项1',label:'车辆'},
                     {value:'选项2',label:'人脸'}
                 ],
+                value:'',
                 iccid:'',
                 startTime:'',
                 paths:[//依次是起点,途中经过点,终点
