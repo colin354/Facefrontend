@@ -1,7 +1,7 @@
 <template>
   <d2-container>
     <el-row :gutter="20">
-      <el-col :span="16">
+      <el-col :span="18">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
             <div id="map">
@@ -17,7 +17,7 @@
           </el-card>
         </div>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="6">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
             <el-tree

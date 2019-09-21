@@ -1,5 +1,6 @@
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const VueFilenameInjector = require('./tools/vue-filename-injector')
+const webpack = require('webpack')
 
 // 拼接路径
 const resolve = dir => require('path').join(__dirname, dir)
@@ -12,6 +13,15 @@ process.env.VUE_APP_BUILD_TIME = require('dayjs')().format('YYYY-M-D HH:mm:ss')
 let publicPath = '/'
 
 module.exports = {
+  configureWebpack: {
+    plugins: [
+      new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery:"jquery",
+        "windows.jQuery":"jquery"
+      })
+    ]
+    },
   publicPath, // 根据你的实际情况更改这里
   assetsDir: 'static',
   lintOnSave: false,
@@ -34,9 +44,10 @@ module.exports = {
      * https://cli.vuejs.org/zh/guide/html-and-static-assets.html#preload
      * 而且预渲染时生成的 prefetch 标签是 modern 版本的，低版本浏览器是不需要的
      */
-	config.externals({
-		'AMap': 'AMap'
-	})//该句为防止使用AMap出错
+    config.externals({
+      'AMap': 'AMap'
+    })
+    //该句为防止使用AMap出错
     config.plugins
       .delete('prefetch')
       .delete('preload')

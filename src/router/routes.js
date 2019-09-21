@@ -109,7 +109,16 @@ const frameIn = [
           auth: true,
           title: '实时摄像头预览'
         }
-      },      
+      },
+      {
+        path: 'liveview',
+        name: 'liveview',
+        component: _import('modules/stream/liveview'),
+        meta: {
+          auth: true,
+          title: '实时视频显示'
+        }
+      },
       {
         path: 'face-match',
         name: 'face-match',
