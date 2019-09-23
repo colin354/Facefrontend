@@ -9,22 +9,22 @@ import store from '@/store/index'
 // 多国语
 import i18n from '@/i18n'
 
-import 'jquery'
-import 'jquery-ui'
+// import 'jquery'
+// import 'jquery-ui'
 /* import ampleadmin */
-import './assets/material/bootstrap/dist/css/bootstrap.min.css'
-import './assets/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css'
-import './assets/material/css/animate.css'
-import './assets/material/css/style.css'
-import './assets/material/css/colors/default.css'
-// import './assets/material/css/colors/megna-dark.css'
-import './assets/plugins/bower_components/jquery/dist/jquery.min'
-import './assets/material/bootstrap/dist/js/bootstrap.min'
-import './assets/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min'
-import './assets/material/js/jquery.slimscroll'
-import './assets/material/js/waves'
-import './assets/material/js/custom.min'
-import './assets/plugins/bower_components/styleswitcher/jQuery.style.switcher'
+// import './assets/material/bootstrap/dist/css/bootstrap.min.css'
+// import './assets/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css'
+// import './assets/material/css/animate.css'
+// import './assets/material/css/style.css'
+// import './assets/material/css/colors/default.css'
+// // import './assets/material/css/colors/megna-dark.css'
+// import './assets/plugins/bower_components/jquery/dist/jquery.min'
+// import './assets/material/bootstrap/dist/js/bootstrap.min'
+// import './assets/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min'
+// import './assets/material/js/jquery.slimscroll'
+// import './assets/material/js/waves'
+// import './assets/material/js/custom.min'
+// import './assets/plugins/bower_components/styleswitcher/jQuery.style.switcher'
 // 菜单和路由设置
 import router from './router'
 import menuHeader from '@/menu/header'
@@ -34,11 +34,13 @@ import SplitPane from 'vue-splitpane'
 import VCharts from 'v-charts'
 import VueAMap from 'vue-amap'
 import { lazyAMapApiLoaderInstance } from 'vue-amap'
-import 'vuetify/dist/vuetify.min.css'
+// import 'vuetify/dist/vuetify.min.css'
 const bus = new Vue()
 
 import event from '@/components/views/js/event'
 import axios from '@/plugin/axios/http'
+
+
 Vue.prototype.EVENT = event
 Vue.prototype.$http = axios
 Vue.prototype.$http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'

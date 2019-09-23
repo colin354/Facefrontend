@@ -116,7 +116,7 @@ const frameIn = [
         component: _import('modules/stream/liveview'),
         meta: {
           auth: true,
-          title: '实时视频显示'
+          title: '实时摄像头监控'
         }
       },
       {

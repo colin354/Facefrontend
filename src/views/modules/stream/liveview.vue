@@ -1,6 +1,5 @@
 <template>
-<div>
-    <div id="page-wrapper"  >
+<d2-container>
         <!-- Video -->
         <div class="row">
             <!-- Device tree -->
@@ -10,7 +9,7 @@
                     <el-input
                         placeholder="输入关键字进行过滤"
                         v-model="filterText">
-                    </el-input>
+                    </el-input>                   
                     <el-tree
                         :data="data"
                         accordion
@@ -25,6 +24,9 @@
                             <span style="padding-left: 4px;">{{data.label}}</span>
                         </span>
                     </el-tree>
+                    <div class="container-fluid">
+                        <button class="right-side-toggle waves-effect waves-light btn-info btn-circle pull-right m-l-20"><i class="ti-settings text-white"></i></button>
+                    </div> 
                 </div>
             </div>
 
@@ -66,11 +68,27 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
+</d2-container>
 </template>
 
 <script>
+import 'jquery'
+import 'jquery-ui'
+// import '@/assets/material/bootstrap/dist/css/bootstrap.min.css'
+// import '@/assets/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css'
+// import '@/assets/material/css/animate.css'
+// import '@/assets/material/css/style.css'
+// import '@/assets/material/css/colors/default.css'
+// import '@/assets/material/css/colors/megna-dark.css'
+
+import '@/assets/plugins/bower_components/jquery/dist/jquery.min'
+import '@/assets/material/bootstrap/dist/js/bootstrap.min'
+import '@/assets/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min'
+import '@/assets/material/js/jquery.slimscroll'
+import '@/assets/material/js/waves'
+import '@/assets/material/js/custom.min'
+import '@/assets/plugins/bower_components/styleswitcher/jQuery.style.switcher'
+
 import '@/assets/material/js/custom.min.js'
 import '@/assets/adapter.js'
 import '@/assets/h5splayer.js'
@@ -161,7 +179,6 @@ export default {
 
                 /* ===== Service Panel JS ===== */
                 var fxhdr = $('.fxhdr');
-                console.log('11111111')
                 console.log(fxhdr);
 
                 if (body.hasClass("fix-header")) {
@@ -326,32 +343,32 @@ export default {
         },
         //数字仓机
         NumberDevice() {
-		    let _this =this;
-		    var root = process.env.VUE_APP_API_ROOT;
-		    var wsroot = process.env.VUE_APP_WS_HOST_ROOT;
-		    if (root == undefined){
-		        root = window.location.protocol + '//' + window.location.host + window.location.pathname;
-		    }
-		    if (wsroot == undefined)
-		    {
-		        wsroot = window.location.host;
-		    }
+            let _this =this;
+            var root = process.env.VUE_APP_API_ROOT;
+            var wsroot = process.env.VUE_APP_WS_HOST_ROOT;
+            if (root == undefined){
+                root = window.location.protocol + '//' + window.location.host + window.location.pathname;
+            }
+            if (wsroot == undefined)
+            {
+                wsroot = window.location.host;
+            }
 		   //url
-		   var url = root + "/api/v1/GetGbDevice?session="+ this.$store.state.token;
+            var url = root + "/api/v1/GetGbDevice?session="+ this.$store.state.token;
 			  //重组
-			  this.$http.get(url).then(result=>{
-				  if(result.status == 200){
-					  var srcData = [];
-					  var data=result.data;
-					  for(var i = 0; i < data.dev.length; i++){
-						  var item=data.dev[i];
-						  var srclevel=[];
-						  srclevel["strToken"]=item.strToken;
-						  srclevel["strName"]=item.strName;
-						  this.NumberSrc(srclevel,srcData);
-					  }
-				  }
-			  })
+            this.$http.get(url).then(result=>{
+                if(result.status == 200){
+                    var srcData = [];
+                    var data=result.data;
+                    for(var i = 0; i < data.dev.length; i++){
+                        var item=data.dev[i];
+                        var srclevel=[];
+                        srclevel["strToken"]=item.strToken;
+                        srclevel["strName"]=item.strName;
+                        this.NumberSrc(srclevel,srcData);
+                    }
+                }
+            })
 		},
         NumberSrc(srclevel, srcData) {
 
@@ -380,15 +397,15 @@ export default {
                         var item = data.src[i];
                         // 主副流
                         var node=[{
-                          token : item['strToken'],
-                          streamprofile : "main",
-                          label :this.$t('message.live.mainstream'),
-                          iconclass : 'mdi mdi-playlist-play fa-fw'
+                            token : item['strToken'],
+                            streamprofile : "main",
+                            label :this.$t('message.live.mainstream'),
+                            iconclass : 'mdi mdi-playlist-play fa-fw'
                         },{
-                          token : item['strToken'],
-                          streamprofile : "sub",
-                          label :this.$t('message.live.substream'),
-                          iconclass : 'mdi mdi-playlist-play fa-fw'
+                            token : item['strToken'],
+                            streamprofile : "sub",
+                            label :this.$t('message.live.substream'),
+                            iconclass : 'mdi mdi-playlist-play fa-fw'
                         }]
                         var newItem ={
                                 token : item['strToken'],
@@ -402,7 +419,7 @@ export default {
                         if(item['nType'] == 'H5_CLOUD')
                             newItem['iconclass'] = 'mdi mdi-cloud-upload fa-fw';
 
-                       srcGroup.children.push(newItem);
+                        srcGroup.children.push(newItem);
                     }
                     this.data.push(srcGroup);
                 }
@@ -468,8 +485,7 @@ export default {
                     console.log("========  updateUIExitFullScreen");
                     this.updateUIExitFullScreen();
                 } else {
-                     console.log('panelFullScreen3');
-
+                    console.log('panelFullScreen3');
                     if (elem.requestFullscreen) {
                         elem.requestFullscreen();
                     } else if (elem.webkitRequestFullscreen) {
@@ -553,6 +569,13 @@ export default {
     },
 }
 </script>
+
+<style scoped src="@/assets/material/bootstrap/dist/css/bootstrap.min.css"></style>
+<style scoped src="@/assets/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css"></style>
+<style scoped src="@/assets/material/css/animate.css"></style>
+<style scoped src="@/assets/material/css/style.css"></style>
+<style scoped src="@/assets/material/css/colors/default.css"></style>
+<style scoped src="@/assets/material/css/colors/megna-dark.css"></style>
 
 <style scoped>
 .zdg{

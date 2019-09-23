@@ -67,20 +67,20 @@ export default {
                 videoid: 'video1',
                 protocol: window.location.protocol, //http: or https:
                 host: wsroot, //localhost:8080
-                rootpath: '/', // '/'
+                rootpath: '/', // '/' 
                 token: token,
                 hlsver: 'v1', //v1 is for ts, v2 is for fmp4
                 session: 'c1782caf-b670-42d8-ba90-2244d0b0ee83' //session got from login
             };
 
-            // this.h5handler = new H5sPlayerWS(conf);
-            this.h5handler = new H5sPlayerRTC(conf);
+            this.h5handler = new H5sPlayerWS(conf);
+            // this.h5handler = new H5sPlayerRTC(conf);
 
             this.h5handler.connect();
         },
         CloseVideo(event)
         {
-          this.h5handler.disconnect();
+            this.h5handler.disconnect();
         }
     }
 }

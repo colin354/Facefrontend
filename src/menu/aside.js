@@ -27,7 +27,7 @@ export default [
       { path: '/stream-list', title: '摄像头视频信息', icon: 'magic' },
       { path: '/stream-catch', title: '摄像头位置预览', icon: 'university' },
       { path: '/camera', title: '实时摄像头预览', icon: 'play' },
-      { path: '/liveview', title: '实时摄像头预览', icon: 'play' }
+      { path: '/liveview', title: '实时摄像头监控', icon: 'camera' }
     ]
   },
   {
