@@ -562,10 +562,10 @@ export default {
     },
     //模糊查询
     watch: {
-      filterText(val) {
-        console.log("filter",val);
-        this.$refs.tree.filter(val);
-      }
+        filterText(val) {
+            console.log("filter",val);
+            this.$refs.tree.filter(val);
+        }
     },
 }
 </script>
