@@ -459,4 +459,13 @@ t.check.location = '位置信息'
 t.check.broadcast = '播放'
 t.check.threshold = '置信度'
 
+t.message.live = {}
+t.message.live.camera = '摄像机'
+t.message.live.liveview = '实时视频'
+t.message.live.device = '视频源'
+t.message.live.setting = '设置'
+t.message.live.protocol = '协议'
+t.message.live.mainstream = '主码流'
+t.message.live.substream = '子码流'
+
 export default t

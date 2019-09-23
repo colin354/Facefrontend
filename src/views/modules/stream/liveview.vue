@@ -47,11 +47,7 @@
                     <button type="button" class="btn btn-default layoutfull waves-effect" @click="panelFullScreen($event)"> </button>
                 </div>
             </div>
-
-
-
         </div><!-- Video -->
-
         <div class="right-sidebar">
             <div class="slimscrollright">
                 <div class="rpanel-title"> {{$t("message.live.setting")}} <span><i class="ti-close right-side-toggle"></i></span> </div>
@@ -81,6 +77,7 @@ import '@/assets/h5splayer.js'
 import {H5siOS,H5sPlayerCreate} from '@/assets/h5splayerhelper.js'
 import qs from 'qs'
 import Vue from 'vue'
+import VueI18n from 'vue-i18n'
 import 'patternfly-bootstrap-treeview/dist/bootstrap-treeview.min.css'
 import 'patternfly-bootstrap-treeview/dist/bootstrap-treeview.min.js'
 import Liveplayer from '@/components/widgets/liveplayer'
@@ -124,7 +121,6 @@ export default {
     methods: {
         //树形节点点击
         handleNodeClick(data, checked, indeterminate){
-            console.log('000000000')
             console.log(data.token);
             console.log(data.streamprofile);
             let _this =this;
@@ -257,9 +253,6 @@ export default {
             }
 		   //url
 		var url = root + "/api/v1/GetDevice?session="+ this.$store.state.token;
-            console.log('*******111***********')
-            console.log(url)
-            console.log(wsroot)
 			  //重组
             this.$http.get(url).then(result=>{
                 if(result.status == 200){
@@ -289,8 +282,7 @@ export default {
             }
 
             var url = root + "/api/v1/GetDeviceSrc?token="+ srclevel.strToken + "&session=" + this.$store.state.token;
-            console.log('2222222')
-            console.log(url)
+
             this.$http.get(url).then(result => {
                 if (result.status == 200)
                 {
@@ -302,15 +294,15 @@ export default {
                         var item = data.src[i];
                         // 主副流
                         var node=[{
-                          token : item['strToken'],
-                          streamprofile : "main",
-                          label :this.$t('message.live.mainstream'),
-                          iconclass : 'mdi mdi-playlist-play fa-fw'
+                            token : item['strToken'],
+                            streamprofile : "main",
+                            label :this.$t('message.live.mainstream'),
+                            iconclass : 'mdi mdi-playlist-play fa-fw'
                         },{
-                          token : item['strToken'],
-                          streamprofile : "sub",
-                          label :this.$t('message.live.substream'),
-                          iconclass : 'mdi mdi-playlist-play fa-fw'
+                            token : item['strToken'],
+                            streamprofile : "sub",
+                            label :this.$t('message.live.substream'),
+                            iconclass : 'mdi mdi-playlist-play fa-fw'
                         }]
                         var newItem ={
                                 token : item['strToken'],
@@ -324,7 +316,7 @@ export default {
                         if(item['nType'] == 'H5_CLOUD')
                             newItem['iconclass'] = 'mdi mdi-cloud-upload fa-fw';
 
-                       srcGroup.children.push(newItem);
+                        srcGroup.children.push(newItem);
                     }
                     this.data.push(srcGroup);
                 }
@@ -346,8 +338,6 @@ export default {
 		    }
 		   //url
 		   var url = root + "/api/v1/GetGbDevice?session="+ this.$store.state.token;
-            console.log('3333333')
-            console.log(url)
 			  //重组
 			  this.$http.get(url).then(result=>{
 				  if(result.status == 200){
