@@ -139,7 +139,7 @@ export default {
             let conf = {
                 videoid: this.h5videoid,
                 protocol: window.location.protocol, //http: or https:
-                host: wsroot, //localhost:8080
+                host: wsroot, //192.168.4.14:8000
 	        streamprofile: streamprofile, // {string} - stream profile, main/sub or other predefine transcoding profile
                 rootpath: '/', // '/'
                 token: token,

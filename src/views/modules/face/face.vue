@@ -29,15 +29,15 @@
               @sort-change="dataListSortChangeHandle"
               style="width: 100%;">
               <el-table-column type="selection" header-align="center" align="center" width="50"/>
-              <el-table-column prop="username" :label="$t('face.name')" sortable="custom" header-align="center" align="center" width="90"/>
-              <el-table-column prop="mobile" :label="$t('face.mobile')" header-align="center" align="center" width="100"/>
-              <el-table-column prop="email" :label="$t('face.email')" sortable width="150" header-align="center" align="center"/>
-              <el-table-column prop="createDate" :label="$t('oss.createDate')" sortable="custom" header-align="center" align="center"/>
+              <el-table-column prop="username" :label="$t('face.name')" header-align="center" align="center" width="80"/>
+              <el-table-column prop="mobile" :label="$t('face.mobile')" header-align="center" align="center" width="150"/>
+              <el-table-column prop="email" :label="$t('face.email')"  header-align="center" align="center" width="150"/>
+              <!-- <el-table-column prop="createDate" :label="$t('oss.createDate')"  header-align="center" align="center" width="145"/> -->
               <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
                 <template slot-scope="scope">
-                  <el-button type="text" size="mini" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
-                  <el-button type="text" size="mini" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
-                  <el-button type="text" size="mini" @click="getImgs(scope.row.id,scope.row.imgurls)">图片</el-button>
+                  <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)" icon="el-icon-edit" circle></el-button>
+                  <el-button type="primary" size="mini" @click="deleteHandle(scope.row.id)" icon="el-icon-delete" circle></el-button>
+                  <el-button type="primary" size="mini" @click="getImgs(scope.row.id,scope.row.imgurls)" icon="el-icon-picture-outline-round" circle></el-button>
                 </template>
               </el-table-column>
             </el-table>

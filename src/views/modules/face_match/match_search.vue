@@ -80,10 +80,13 @@
 
     <el-row :gutter="20">
       <el-col :span="5">
-        <div class="grid-content bg-purple">
-          <el-card class="box-card">
+        <!-- <div class="grid-content bg-purple">-->
+          <el-card class="box-card" :body-style="{ padding: '0px' }"> 
+            <!-- <div class="imgblock"> -->
+              <personIdentification :personList="personList"></personIdentification>
+            <!-- </div> -->
           </el-card>
-        </div>
+        <!-- </div> -->
       </el-col>           
       <el-col :span="14">
         <div class="grid-content bg-purple">
@@ -113,7 +116,7 @@
         <div class="grid-content bg-purple">
           <el-card class="box-card" :body-style="{ padding: '0px' }">
             <div class="imgblock">
-              <faceimg :imgarr="imgarr"></faceimg>
+              <faceimg  :imgarr="imgarr"></faceimg>
             </div>
           </el-card>
         </div>
@@ -152,6 +155,7 @@ import 'videojs-markers'
 // import { VueHorizontalTimeline } from 'vue-horizontal-timeline'
 import '@/views/modules/face_match/src/custom-theme.css'
 import faceimg from './face-img'
+import personIdentification from './persion-identification'
 import facecompile from './face-compile'
 import 'vuetify/dist/vuetify.min.css'
 import { timeout } from 'q';
@@ -168,11 +172,13 @@ export default {
   components: {
     videoPlayer,
     faceimg,
-    facecompile
+    facecompile,
+    personIdentification
   },
   mixins: [ mixinViewModule ],
   data() {
     return {
+      personList:[],
       visible: false,
       playertime: 0,
       imgarr: [],
@@ -233,6 +239,19 @@ export default {
       this.playerOptions.sources[0].src = streamurl
       this.$axios.get(`/api/check?token=${cookieGet('token')}&streamid=${id}`)
         .then(res=> {
+          this.personList = []
+          console.log("-------0------9090--------------------11111111111")
+          console.log(res)
+          console.log(res.list_reid)
+          for(var i=0; i<res.list_reid.length; i++){
+            console.log("-------person----------")
+            console.log(res.list_reid[i])
+            this.personList[i] = res.list_reid[i]
+            // console.log(this.personList[i])
+            console.log("------person-----------")
+          }
+          console.log(this.personList)
+          console.log("这这这这这这这这这这这这这")
           this.playerOptions.custum = res.list
           this.matchnum = res.count
           this.info = res.info
@@ -293,6 +312,9 @@ export default {
             'background-color': 'orange'
         },
         onMarkerReached: function(marker,index){
+          console.log("-------marker--------")
+          console.log(marker)
+          console.log(marker.imgList)
           aa.imgarr = marker.imgList
         },
           markers: acustum  //默认标记点信息给markers
@@ -347,6 +369,9 @@ export default {
   }
   .img-box-card {
     width: 100px
+  }
+  .box-card-person {
+    height: 300px;
   }
   .video-box-card {
     width: 100%;

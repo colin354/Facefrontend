@@ -1,10 +1,10 @@
 <template>
   <d2-container>
-    <el-row :gutter="20">   
+    <el-row :gutter="20">
       <el-col :span="18">
-        <div class="grid-content bg-purple" height="500" width="500">           
+        <div class="grid-content bg-purple" height="500" width="500">
           <v-liveplayer ref="myvideo" h5id='1' ></v-liveplayer>
-        </div> 
+        </div>
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
@@ -28,8 +28,13 @@ import Liveplayer from '@/components/videoplayer/liveplayer';
     components: {
       'v-liveplayer': Liveplayer
     },
+    mounted(){
+      this.PlayVideo()
+    },
     methods: {
       PlayVideo() {
+        console.log("---0---------------------0000")
+        console.log(this.$refs.myvideo)
         this.$refs.myvideo.PlayVideo("token111");
       },
       PlayVideo1() {
@@ -38,6 +43,6 @@ import Liveplayer from '@/components/videoplayer/liveplayer';
       CloseVideo() {
         this.$refs.myvideo.CloseVideo("token1");
       },
-    },     
+    },
   }
 </script>

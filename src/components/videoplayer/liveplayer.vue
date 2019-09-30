@@ -53,8 +53,8 @@ export default {
             }
             this.currtoken = token;
             console.log("play ", token);
-            var root = "http://10.2.151.139:8080/";
-            var wsroot = "10.2.151.139:8080";
+            var root = "http://10.2.155.139:8080/";
+            var wsroot = "10.2.155.139:8080";
             console.log("wsroot ", wsroot);
             if (root == undefined){
                 root = window.location.protocol + '//' + window.location.host + window.location.pathname;

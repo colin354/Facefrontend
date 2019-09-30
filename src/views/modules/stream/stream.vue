@@ -20,17 +20,17 @@
               @selection-change="dataListSelectionChangeHandle"
               @sort-change="dataListSortChangeHandle"
               style="width: 100%;">
-              <el-table-column type="selection" header-align="center" align="center" width="45"/>
-              <el-table-column prop="streamname" :label="$t('stream.videoname')" header-align="center" align="center" width="90"/>
-              <el-table-column prop="streamlocation" :label="$t('stream.location')" header-align="center" align="center" width="80"/>
-              <el-table-column prop="streamtime" :label="$t('stream.duration')" header-align="center" align="center" width="80"/>
-              <el-table-column prop="streamfps" :label="$t('stream.frame')" header-align="center" align="center" width="80"/>
+              <el-table-column type="selection" header-align="center" align="center" width="40"/>
+              <el-table-column prop="streamname" :label="$t('stream.videoname')" header-align="center" align="center" width="130"/>
+              <el-table-column prop="streamlocation" :label="$t('stream.location')" header-align="center" align="center" width="150"/>
+              <el-table-column prop="streamtime" :label="$t('stream.duration')" header-align="center" align="center" width="50"/>
+              <!-- <el-table-column prop="streamfps" :label="$t('stream.frame')" header-align="center" align="center" width="80"/> -->
               <!-- <el-table-column prop="streamstatus" :label="$t('stream.status')" sortable="custom" header-align="center" align="center" width="80"/> -->
               <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
                 <template slot-scope="scope">
-                  <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
-                  <el-button type="danger" size="mini" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
-                  <el-button type="primary" size="mini" @click="broadcast(scope.row.streamurl)">{{ $t('check.broadcast') }}</el-button>
+                  <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)" icon="el-icon-edit" circle></el-button>
+                  <el-button type="primary" size="mini" @click="deleteHandle(scope.row.id)" icon="el-icon-delete" circle></el-button>                  
+                  <el-button type="primary" size="mini" @click="broadcast(scope.row.streamurl,scope.row.streamlocation,scope.row.streamname)" icon="el-icon-video-play" circle></el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -38,8 +38,10 @@
         </div>
       </el-col>
       <!-- 右侧视频 -->
-      <el-card class="box-card" :span="12" style="background-color:#F2F6FC ;">
-        <span >视频展示</span>
+      <el-card class="box-card" :span="12" style="background-color:#F2F6FC;">
+        <span style="font-size:16px;">{{video_name}}</span>
+        <!-- <div v-if="!video_name" style="font-size:16px;">{{this.dataList[0].streamlocation + ' - ' +this.dataList[0].streamname}}</div>
+        <div v-else style="font-size:16px;">{{video_name}} </div> -->
       </el-card>
       <!-- <el-card class="box-card" :span="12" height="500" width="500"> -->
       <el-card class="box-card">
@@ -115,12 +117,13 @@ export default {
         sources: [
           {
             type: "video/mp4",
-            src: ""
+            src: "http://10.2.155.139:8888/media/test_video/jwc.mp4"
           }
         ],
         poster: "",
-        custum: []
-      }
+        custum: [],
+      },
+      video_name: "城市学院-1-20190925092718-17.0"
     }
   },
   components: {
@@ -129,6 +132,8 @@ export default {
   },
   mounted() {
     console.log("this is current player instance object", this.player);
+    console.log("-----------------------1111111111111")
+    console.log(this.dataList)
   },
   computed: {
     player() {
@@ -136,8 +141,13 @@ export default {
     }
   }, 
   methods: {
-    broadcast(streamurl){
+    broadcast(streamurl,streamlocation,streamname){
       this.playerOptions.sources[0].src = streamurl
+      console.log("----我要的数据-------")
+      // console.log(id_rec)
+      console.log(this.dataList)
+      // console.log(this.dataList[id_rec].streamlocation+'——'+this.dataList[id_rec].streamname)
+      this.video_name = streamlocation+'-'+streamname
     },
     // listen event
     onPlayerPlay(player) {  //点击视频上的播放,便开始播放视频

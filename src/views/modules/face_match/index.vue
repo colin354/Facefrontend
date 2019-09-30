@@ -1,7 +1,7 @@
 <template>
   <d2-container>
     <el-row :gutter="20">
-      <el-col :span="8">
+      <el-col :span="6">
         <el-row :gutter="20">
           <el-col>
             <div class="grid-content bg-purple">
@@ -38,11 +38,11 @@
                   @selection-change="dataListSelectionChangeHandle"
                   @sort-change="dataListSortChangeHandle"
                   style="width: 100%;">
-                  <el-table-column prop="facename" :label="$t('face.name')" header-align="center" align="center" width="60"/>
-                  <el-table-column prop="url" :label="$t('face.url')" header-align="center" align="center" width="270"/>
+                  <el-table-column prop="facename" :label="$t('face.name')" header-align="center" align="center" width="50"/>
+                  <el-table-column prop="streamname" :label="$t('stream.videoname')" header-align="center" align="center" width="160"/>
                   <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
                     <template slot-scope="scope">
-                      <el-button type="text" size="mini" @click="broadcast(scope.row.faceid,scope.row.streamid,scope.row.url)">{{ $t('check.broadcast') }}</el-button>
+                      <el-button type="primary" size="mini" @click="broadcast(scope.row.faceid,scope.row.streamid,scope.row.url)" icon="el-icon-video-play" circle></el-button>
                     </template>
                 </el-table-column>
                 </el-table>
@@ -51,8 +51,8 @@
           </el-col>
         </el-row>
       </el-col>
-      <el-col :span="16">
-        <el-row ::gutter="20">
+      <el-col :span="18">
+        <el-row ::gutter="15">
           <el-col>
             <div class="grid-content bg-purple">
               <el-card class="box-card">
@@ -78,7 +78,7 @@
             </div>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row :gutter="18">
           <el-col>
             <div class="grid-content bg-purple">
               <el-card class="box-card">
@@ -213,7 +213,8 @@ export default {
     };
   },
   created(){ 
-    console.log("this is created!!")    
+    console.log("this is created!!--------------------facelist") 
+    console.log(this.facelist)  
   },
   mounted() {
     console.log("this is current player instance object", this.player);
@@ -232,8 +233,10 @@ export default {
       this.page = val
     },
     broadcast(fid,sid,url){
+      console.log('----这是我要的数据----')
+      console.log(this.dataList) 
       //url = `${process.env.VUE_APP_API}/`+url
-      url = 'http://10.2.151.139:8888'+url
+      url = 'http://10.2.155.139:8888'+url
       this.playerOptions.sources[0].src = url
       this.$axios
       .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:fid,streamid:sid}})

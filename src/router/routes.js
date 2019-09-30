@@ -89,7 +89,7 @@ const frameIn = [
         component: _import('modules/stream/stream'),
         meta: {
           auth: true,
-          title: '摄像头视频信息'
+          title: '历史监控查询'
         }
       },
       {
@@ -98,7 +98,7 @@ const frameIn = [
         component: _import('modules/stream/stream_catch'),
         meta: {
           auth: true,
-          title: '摄像头位置预览'
+          title: '监控布控显示'
         }
       },
       {
@@ -110,13 +110,22 @@ const frameIn = [
           title: '实时摄像头预览'
         }
       },
+      // {
+      //   path: 'liveview',
+      //   name: 'liveview',
+      //   component: _import('modules/stream/liveview'),
+      //   meta: {
+      //     auth: true,
+      //     title: '实时监控管理'
+      //   }
+      // },
       {
-        path: 'liveview',
-        name: 'liveview',
-        component: _import('modules/stream/liveview'),
+        path: 'real-video',
+        name: 'real-video',
+        component: _import('modules/stream/real-video'),
         meta: {
           auth: true,
-          title: '实时摄像头监控'
+          title: '实时监控管理'
         }
       },
       {
@@ -125,7 +134,7 @@ const frameIn = [
         component: _import('modules/face_match/index'),
         meta: {
           auth: true,
-          title: '通过人脸查询视频'
+          title: '人像轨迹搜索'
         }
       },
       {
@@ -134,25 +143,25 @@ const frameIn = [
         component: _import('modules/face_match/match_search'),
         meta: {
           auth: true,
-          title: ' 结构化视频列表'
+          title: ' 结构化监控查询'
         }
       },
-      {
-        path: 'face-search-by-face',
-        name: 'face-search-by-face',
-        component: _import('modules/face_match/match_search_by_face'),
-        meta: {
-          auth: true,
-          title: '通过位置查询视频'
-        }
-      },
+      // {
+      //   path: 'face-search-by-face',
+      //   name: 'face-search-by-face',
+      //   component: _import('modules/face_match/match_search_by_face'),
+      //   meta: {
+      //     auth: true,
+      //     title: '通过位置查询视频'
+      //   }
+      // },
       {
         path: 'multiline',//添加了与通过位置查询视频一样的界面
         name: 'multiline',
         component: _import('modules/face_match/multiline'),
         meta: {
           auth: true,
-          title: '轨迹线'
+          title: '地图轨迹融合'
         }
       }
     ]

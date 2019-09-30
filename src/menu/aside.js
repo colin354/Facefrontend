@@ -11,7 +11,7 @@ export default [
   //   ]
   // },
   {
-    title: '人脸库管理',
+    title: '人像库管理',
     icon: 'user-circle-o',
     children: [
       // { path: '/page1', title: '抓拍查询' },
@@ -21,23 +21,26 @@ export default [
     ]
   },
   {
-    title: '流信息模块',
+    title: '监控管理',
     icon: 'gift',
     children: [
-      { path: '/stream-list', title: '摄像头视频信息', icon: 'magic' },
-      { path: '/stream-catch', title: '摄像头位置预览', icon: 'university' },
-      { path: '/camera', title: '实时摄像头预览', icon: 'play' },
-      { path: '/liveview', title: '实时摄像头监控', icon: 'camera' }
+      { path: '/stream-catch', title: '监控布控显示', icon: 'university' },
+      // { path: '/liveview', title: '实时监控管理', icon: 'camera' },  //先暂时隐藏掉
+      { path: '/stream-list', title: '历史监控查询', icon: 'magic' },
+      { path: '/real-video', title: '实时监控管理', icon: 'camera' },
+      // { path: '/camera', title: '实时摄像头预览', icon: 'play' },
+      { path: '/face-search', title: '结构化监控查询', icon: 'gg-circle' },
     ]
   },
   {
-    title: '结构化信息查询',
+    title: '轨迹搜索',
     icon: 'paper-plane',
     children: [
-      { path: '/face-search', title: '结构化视频列表', icon: 'gg-circle' },
-      { path: '/face-match', title: '通过人脸查询视频', icon: 'newspaper-o' },
-      { path: '/face-search-by-face', title: '通过位置查询视频', icon: 'yelp' },
-      { path: '/multiline', title: '轨迹线', icon: 'yelp' }
+      // { path: '/face-search', title: '结构化监控查询', icon: 'gg-circle' },
+      // { path: '/face-match', title: '通过人脸查询视频', icon: 'newspaper-o' },
+      { path: '/multiline', title: '地图轨迹融合', icon: 'yelp' },
+      { path: '/face-match', title: '人像轨迹搜索', icon: 'newspaper-o' },
+      // { path: '/face-search-by-face', title: '通过位置查询视频', icon: 'yelp' },
     ]
   }
 ]

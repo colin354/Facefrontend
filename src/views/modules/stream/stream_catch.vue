@@ -155,7 +155,7 @@ export default {
 
 <style lang="scss" scoped>
   .amap-demo {
-    height: 400px;
+    height: 600px;
   }
   .inner {
     position: absolute;

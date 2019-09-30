@@ -105,24 +105,24 @@ export default {
         'v-liveplayer': Liveplayer
     },  
     data() {
-            return {
-                //过滤文字
-                filterText:"",
-                rows: 3,
-                cols: 3,
-                selectCol: 1,
-                selectRow: 1,
-                proto: this.$store.state.rtc,
-                contentHeight: '',
-                contentWidth: '',
-                data:[],
-                defaultProps: {
-                    children: 'children',
-                    label: 'label',
-                    token:"token",
-                    iconclass:"iconclass"
-                },
-            };
+        return {
+            //过滤文字
+            filterText:"",
+            rows: 3,
+            cols: 3,
+            selectCol: 1,
+            selectRow: 1,
+            proto: this.$store.state.rtc,
+            contentHeight: '',
+            contentWidth: '',
+            data:[],
+            defaultProps: {
+                children: 'children',
+                label: 'label',
+                token:"token",
+                iconclass:"iconclass"
+            },
+        };
     },
     computed:{
         count(){
@@ -268,8 +268,8 @@ export default {
             {
                 wsroot = window.location.host;
             }
-		   //url
-		var url = root + "/api/v1/GetDevice?session="+ this.$store.state.token;
+		    //url
+		    var url = root + "/api/v1/GetDevice?session="+ this.$store.state.token;
 			  //重组
             this.$http.get(url).then(result=>{
                 if(result.status == 200){
@@ -562,10 +562,10 @@ export default {
     },
     //模糊查询
     watch: {
-      filterText(val) {
-        console.log("filter",val);
-        this.$refs.tree.filter(val);
-      }
+        filterText(val) {
+            console.log("filter",val);
+            this.$refs.tree.filter(val);
+        }
     },
 }
 </script>
