@@ -468,4 +468,10 @@ t.message.live.protocol = '协议'
 t.message.live.mainstream = '主码流'
 t.message.live.substream = '子码流'
 
+t.person ={}
+t.person.name = '姓名'
+t.person.picture = '图片'
+t.person.color = '颜色'
+t.person.rgb = 'rgb'
+
 export default t

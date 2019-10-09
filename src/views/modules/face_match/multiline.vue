@@ -1,67 +1,84 @@
 <template>
     <d2-container>
-    <el-row>
-        <el-col>
-        <div class="grid-content bg-purple">
-            <div class="grid-content bg-purple" >
-                <el-card class="box-card">
-                <span>数据类型&nbsp;&nbsp;</span>
-                <el-select v-model="value">
-                    <el-option v-for="option in options" :key="option.value" :label="option.label" :value="option.value">
-                    </el-option>
-                </el-select>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span>起始时间&nbsp;&nbsp;</span>
-                    <el-date-picker
-                        v-model="value2"
-                        type="datetime"
-                        placeholder="选择日期时间"
-                        default-time="12:00:00">
-                    </el-date-picker>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span>终止时间&nbsp;&nbsp;</span>
-                    <el-date-picker
-                        v-model="value3"
-                        type="datetime"
-                        placeholder="选择日期时间"
-                        default-time="12:00:00">
-                    </el-date-picker>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <el-button type="primary" @click="findTrackData" size="mini">查询</el-button>
-                    <!-- <div>
-                        <!-- <input id="input-1a" type="file" class="file" data-show-preview="false">&nbsp;&nbsp;&nbsp;&nbsp; -->
-                        <!-- <el-upload
-                        class="upload-demo"
-                        action="https://jsonplaceholder.typicode.com/posts/"
-                        :on-preview="handlePreview"
-                        :on-remove="handleRemove"
-                        :before-remove="beforeRemove"
-                        multiple
-                        :limit="3"
-                        :on-exceed="handleExceed"
-                        :file-list="fileList">
-                        <el-button size="small" type="primary">批量导入本地人脸/车牌图片</el-button> -->
-                        <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1MB</div> -->
-                        <!-- </el-upload>
-                        <el-button slot="trigger" size="small" type="primary">地图轨迹</el-button>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <el-button slot="trigger" size="small" type="primary">文本轨迹</el-button>
-                    </div>  -->
+      <el-row :gutter="18">
+        <el-col :span="18">
+          <el-row :gutter="20">
+            <el-col>
+              <div class="grid-content bg-purple">
+                <div class="grid-content bg-purple" >
+                    <el-card class="box-card">
+                        <span>数据类型&nbsp;&nbsp;</span>
+                        <el-select v-model="value">
+                            <el-option v-for="option in options" :key="option.value" :label="option.label" :value="option.value">
+                            </el-option>
+                        </el-select>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span>起止时间&nbsp;&nbsp;</span>
+                        <el-date-picker
+                            v-model="value1"
+                            type="datetimerange"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期">
+                          </el-date-picker>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <el-button type="primary" @click="findTrackData" size="mini">查询</el-button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <el-button type="primary" @click="createTrackMap" size="mini" v-if="showA">地图轨迹</el-button>
+                    </el-card>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+           
+          <el-row :gutter="18">
+            <el-col>
+              <div class="grid-content bg-purple">
+                <el-card class="box-card-hei">
+                  <div class="amap-page-container">
+                    <!-- {{this.temp}} -->
+                      <div id="amap-show" class="amap-demo"></div>
+                  </div>
                 </el-card>
+              </div>
+            </el-col>
+          </el-row>
+        </el-col>
+
+       <el-col :span="6">
+         <el-row :gutter="15">
+           <el-col>
+            <div class="grid-content bg-purple">
+              <el-card class="box-card">
+                <el-table
+                  size="mini"
+                  :data="dataList"
+                  border
+                  style="width: 100%;">
+                  <el-table-column prop="facename" :label="$t('person.name')" header-align="center" align="center" width="80"/>
+                  
+                  <el-table-column prop="faceimgurl" :label="$t('person.picture')" header-align="center" align="center" width="140">
+                    <template  slot-scope="scope">
+                      <img :src="scope.row.faceimgurl" width="70" height="70">
+                    </template>
+                  </el-table-column>
+
+                  <el-table-column prop="color" :label="$t('person.color')" fixed="right" header-align="center" align="center"> 
+                    <template  slot-scope="scope">
+                      <el-color-picker v-model="scope.row.color"></el-color-picker>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </el-card>
             </div>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row :gutter="20">
-      <el-col>
-        <div class="grid-content bg-purple">
-          <!-- <el-card class="box-card"> -->
-            <div class="amap-page-container">
-                <div id="amap-show" class="amap-demo" style="height: 600px;"></div>
-            </div>
-          <!-- </el-card> -->
-        </div>
-      </el-col>
-    </el-row>
+           </el-col>
+         </el-row>
+       </el-col> 
+      </el-row>
+
+
+
+
   </d2-container>
 </template>
 
@@ -77,45 +94,39 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
 // import carUrl from '../../assets/images/carame.png'
     export default {
         name: "track-show",
+        // mixins: [ mixinViewModule ],
         data () {
             return {
-                //上传文件
-                fileList: [{
-                    name: 'food.jpg',
-                    url: '',
-                    }, {
-                    name: 'food666.jpg',
-                    url: '',
-                    }],
+                showA:false,
                 //日期选项
                 pickerOptions: {
-                    disabledDate(time) {
-                        return time.getTime() > Date.now();
-                    },
-                    shortcuts: [{
-                        text: '今天',
-                        onClick(picker) {
-                        picker.$emit('pick', new Date());
-                        }
-                    }, {
-                        text: '昨天',
-                        onClick(picker) {
-                        const date = new Date();
-                        date.setTime(date.getTime() - 3600 * 1000 * 24);
-                        picker.$emit('pick', date);
-                        }
-                    }, {
-                        text: '一周前',
-                        onClick(picker) {
-                        const date = new Date();
-                        date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-                        picker.$emit('pick', date);
-                        }
-                    }]
-                    },
+                  shortcuts: [{
+                    text: '最近一周',
+                    onClick(picker) {
+                      const end = new Date();
+                      const start = new Date();
+                      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                      picker.$emit('pick', [start, end]);
+                    }
+                  }, {
+                    text: '最近一个月',
+                    onClick(picker) {
+                      const end = new Date();
+                      const start = new Date();
+                      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                      picker.$emit('pick', [start, end]);
+                    }
+                  }, {
+                    text: '最近三个月',
+                    onClick(picker) {
+                      const end = new Date();
+                      const start = new Date();
+                      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                      picker.$emit('pick', [start, end]);
+                    }
+                  }]
+                },
                 value1: '',
-                value2: '',
-                value3: '',
                 //下拉框选项
                 selectedA:'数据类型',
                 options:[
@@ -125,67 +136,70 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
                 value:'',
                 paths:[],
                 temp:{},
+                dataList:[]
             }
         },
         created() {
             let self = this
             this.initMap();
             console.log("------我的弧度-------")
+            this.initPage();
         },
         methods:{  
             initMap(){
                 lazyAMapApiLoaderInstance.load().then(() => {
                     this.map = new AMap.Map('amap-show', {
-                            // center: [114.037939,22.627198],//自带
-                            // center: [120.09465,33.313217],  //盐城
-                            center: [120.094163,33.313109],
-                            zoom: 18
-                        }
-                    )
+                        // center: [114.037939,22.627198],//自带
+                        // center: [120.09465,33.313217],  //盐城
+                        center: [120.094163,33.313109],
+                        zoom: 18
+                    })
                 });
             },
-            findTrackData(){
-                this.getDurationGPSData();
-                console.log("1111111111111")
+            createTrackMap(){
                 this.initPage();
-                console.log("2222222222222222222222")
+                // this.initPage();
+            },
+            findTrackData(){
+                this.showA = true
+                this.getDurationGPSData(); //发送get请求
             },
             //点击“查询”,发送get请求           
             getDurationGPSData(){
                 this.$axios.get("sys/check").then(res=> {
                     console.log("------------res-----")
                     console.log(res)
-                    this.temp = res.list 
-                    console.log(this.temp)
-                    // for(var i=0;i<res.list.length;i++){
-                    //     this.paths[i] = this.temp[i].location
-                    // }
-                    // console.log(this.paths)                   
+                    console.log("------------res-----")
+                    this.temp = []
+                    this.dataList = []
+                    this.temp = res.list
+                    this.dataList = res.list
+                    console.log(this.temp)                  
                     console.log('可以正常打印不-------')
                 }).catch(error =>{
                     console.log(error)
                 }) 
             },
-            getColor() {  //随机取不同的颜色
-                //北京地铁线的颜色
-                // var str0 = ["#a3308","#005195","#008998","#ae005f","#ba8b00","#c94d00","#009974","#C2C2C2","#CD00CD","#CD6600",
-                //             "#8fd400","#0095c3","#f5d312","#b6985e","#682145","#a192b4","#8F8F8F","#98F5FF","#8B1A1A","#545454",
-                //             "#4876FF","#8B0000","#8B6508","#8B8386","#B03060","#BCEE68","#C1CDCD","#CD8C95","#DEB887","#EE30A7"]
-                // // return str0[Math.floor(Math.random()*str0.length)]//从已有的颜色数组中随机选择,但容易不同轨迹是同一种颜色
-                // if(m < str0.length){
-                //   return str0[m]
-                // }else{
-                //   return str0[Math.floor(Math.random()*str0.length)]
-                // }
-                //随机函数获取的颜色
-                var str="#";
-                var arr=["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"];
-                for(var i=0;i<6;i++){
-                    var num=parseInt(Math.random()*16);
-                    str+=arr[num];
-                }
-                return str;
-            },
+            // getColor() {  //随机取不同的颜色
+            //     //北京地铁线的颜色
+            //     // var str0 = ["#a3308","#005195","#008998","#ae005f","#ba8b00","#c94d00","#009974","#C2C2C2","#CD00CD","#CD6600",
+            //     //             "#8fd400","#0095c3","#f5d312","#b6985e","#682145","#a192b4","#8F8F8F","#98F5FF","#8B1A1A","#545454",
+            //     //             "#4876FF","#8B0000","#8B6508","#8B8386","#B03060","#BCEE68","#C1CDCD","#CD8C95","#DEB887","#EE30A7"]
+            //     // // return str0[Math.floor(Math.random()*str0.length)]//从已有的颜色数组中随机选择,但容易不同轨迹是同一种颜色
+            //     // if(m < str0.length){
+            //     //   return str0[m]
+            //     // }else{
+            //     //   return str0[Math.floor(Math.random()*str0.length)]
+            //     // }
+            //     //随机函数获取的颜色
+            //     var str="#";
+            //     var arr=["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"];
+            //     for(var i=0;i<6;i++){
+            //         var num=parseInt(Math.random()*16);
+            //         str+=arr[num];
+            //     }
+            //     return str;
+            // },
             //画多条轨迹
             initPage(){
                 this.map = new AMap.Map('amap-show', {
@@ -198,14 +212,10 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
                             return;
                         }
                         for(var i=0 ; i<this.temp.length; i++){
-                            var tempColor = this.getColor()  //同一个i值即同一个faceid,同一个人,用同一种颜色;不同的i值用不同的颜色
                             console.log("------外层for----")
-                            console.log(this.temp[i].faceid)
-                            console.log(this.temp[i])                           
                             console.log(this.temp[i].location)
-                            console.log("-------------hahahhahahahh")
-                            // var temp_path = [this.temp[i]['location'][0], this.temp[i]['location'][1]]
-                            // console.log("temp_path"+temp_path)
+                            console.log(this.temp[i].color)
+                            var tempColor = this.temp[i].color  //同一个i值即同一个faceid,同一个人,用同一种颜色;不同的i值用不同的颜色
                             var bezierCurve = new AMap.BezierCurve({
                                 path: this.temp[i].location,
                                 showDir: true,
@@ -231,13 +241,7 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
                             bezierCurve.setMap(this.map)
                             // 缩放地图到合适的视野级别
                             this.map.setFitView([ bezierCurve ])
-                            //}
-                            // for(var j = 0 ; j < (this.temp[i].location.length) ; j++){
-                            //     console.log("------内层内层内层内层-------")
-                            //     console.log(this.temp[i].location[j])
-                            //     for(var k = 0; k <(this.temp[i].location[j].length); k++){
-                            //         console.log(this.temp[i].location[j][k])                             
-                            // }   
+
                         }                                                       
                     })
                 )
@@ -247,6 +251,9 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
 </script>
 
 <style lang="scss" scoped>
+  .box-card-hei{
+    height: 585px;
+  }
   .el-dropdown-link {
       cursor: pointer;
       color: #409EFF;
@@ -255,7 +262,7 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
     font-size: 12px;
   }
   .amap-demo {
-    height: 500px;
+    height: 525px;
   }
   .inner {
     position: absolute;

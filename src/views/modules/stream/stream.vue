@@ -123,7 +123,7 @@ export default {
         poster: "",
         custum: [],
       },
-      video_name: "城市学院-1-20190925092718-17.0"
+      video_name: "北京市海淀区北四环中路269号-1-20190925092718-17.0"
     }
   },
   components: {

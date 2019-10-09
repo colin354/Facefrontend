@@ -16,12 +16,13 @@
       :visible.sync="visible"
       :close-on-click-modal="false"
       :close-on-press-escape="true"
-      :fullscreen="true"
+      :fullscreen="false"
       custom-class="customclass"
     >
-    <el-row :gutter="20">
-      <el-col :span="18">
+    <el-row :gutter="24">
+      <el-col :span="24">
           <el-button @click="PlayVideo">Play Video</el-button>
+          &nbsp;&nbsp;&nbsp;&nbsp;
           <div class="grid-content bg-purple" height="400" width="400">
             <v-liveplayer ref="myvideo" h5id='1' ></v-liveplayer>
           </div>
