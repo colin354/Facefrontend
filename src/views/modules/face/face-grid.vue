@@ -1,11 +1,11 @@
 <template>
   <v-layout row>
-    <v-flex xs15 sm8 offset-sm2>
+    <v-flex xs15 sm7 offset-sm2>
         <v-container fluid grid-list-xs>
           <v-layout row wrap>
             <v-flex v-for="(item, index) in faceimg" :key="index" xs3>
               <router-link :to="{name:'face-match',params: {id:item.userid_id}}">
-                <img :src=item.imgurl class="image" alt="lorem" width="100%" height="100%">
+                <img :src=item.imgurl  alt="lorem" width="100%" height="100%">
               </router-link>
             </v-flex>
           </v-layout>
