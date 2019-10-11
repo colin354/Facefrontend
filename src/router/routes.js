@@ -146,6 +146,15 @@ const frameIn = [
           title: ' 结构化监控查询'
         }
       },
+      {
+        path: 'face-websocket',
+        name: 'face-websocket',
+        component: _import('modules/face_match/face_websocket'),
+        meta: {
+          auth: true,
+          title: 'websocket测试'
+        }
+      },
       // {
       //   path: 'face-search-by-face',
       //   name: 'face-search-by-face',
