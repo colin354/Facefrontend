@@ -80,9 +80,20 @@ const frameIn = [
         component: _import('modules/face/face'),
         meta: {
           auth: true,
-          title: '人脸库列表'
+          title: '人脸库管理'
         }
       },
+
+      {
+        path: 'camera',
+        name: 'camera',
+        component: _import('modules/face/camera'),
+        meta: {
+          auth: true,
+          title: '摄像头管理'
+        }
+      },
+
       {
         path: 'stream-list',
         name: 'stream-list',
@@ -101,15 +112,15 @@ const frameIn = [
           title: '监控布控显示'
         }
       },
-      {
-        path: 'camera',
-        name: 'camera',
-        component: _import('modules/stream/camera'),
-        meta: {
-          auth: true,
-          title: '实时摄像头预览'
-        }
-      },
+      // {
+      //   path: 'camera',
+      //   name: 'camera',
+      //   component: _import('modules/stream/camera'),
+      //   meta: {
+      //     auth: true,
+      //     title: '实时摄像头预览'
+      //   }
+      // },
       // {
       //   path: 'liveview',
       //   name: 'liveview',

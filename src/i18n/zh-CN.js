@@ -474,4 +474,9 @@ t.person.picture = '图片'
 t.person.color = '颜色'
 t.person.rgb = 'rgb'
 
+t.camera ={}
+t.camera.name ='摄像头名称'
+t.camera.location = '位置'
+t.camera.lat = '纬度'
+t.camera.lon = '经度'
 export default t
