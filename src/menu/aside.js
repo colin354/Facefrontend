@@ -31,6 +31,7 @@ export default [
       { path: '/real-video', title: '实时监控管理', icon: 'camera' },
       // { path: '/camera', title: '实时摄像头预览', icon: 'play' },
       { path: '/face-search', title: '结构化监控查询', icon: 'gg-circle' },
+      { path: '/face-websocket', title: 'websocket测试', icon: 'gg-circle' }
     ]
   },
   {
