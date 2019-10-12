@@ -3,7 +3,7 @@
     <el-row>
       <div class="grid-content bg-purple">
           <el-button type="primary" @click="initSocket">建立websocket连接</el-button>
-          <el-button type="primary" @click="webSocketOnMessage">发送消息</el-button>
+          <el-button type="primary" @click="webSocketSend">发送消息</el-button>
           <el-button type="primary" @click="webSocketOnClose">关闭</el-button>
       </div>
     </el-row>
@@ -35,12 +35,16 @@ export default {
     webSocketOnMessage(res) {
       // res就是后台实时传过来的数据
       console.log(res);
-      //给后台发送数据
+      const obj = JSON.parse(res.data)
+      console.log(obj.message)
+      console.log(obj.command)
+    },
+    webSocketSend(Data) {
+    //数据发送
       let message = {
-        "message": "hahahahh"
+        "message": "hello world"
       }
-      
-      this.webSocket.send(JSON.stringify(message));
+      this.webSocket.send(JSON.stringify(message));    
     },
     // 关闭连接
     webSocketOnClose() {
