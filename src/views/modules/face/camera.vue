@@ -126,7 +126,6 @@ import AddOrUpdate from './camera-add-or-update'
 import { cookieGet } from '@/common/cookie'
 import facegrid from './face-grid'
 import { debounce } from "lodash";
-
 export default {
   mixins: [ mixinViewModule ],
   data () {
@@ -316,12 +315,10 @@ export default {
     line-height: 200px;
     margin: 0;
   }
-
   .el-carousel__item img {
     height: 400px;
     width: 400px
   }
-
   .el-carousel__item:nth-child(2n) {
     background-color: #99a9bf;
   }
