@@ -11,13 +11,14 @@ export default [
   //   ]
   // },
   {
-    title: '人像库管理',
+    title: '管理',
     icon: 'user-circle-o',
     children: [
       // { path: '/page1', title: '抓拍查询' },
       // { path: '/page2', title: '报警查询' },
       // { path: '/page3', title: '轨迹查询' },
-      { path: '/face-list', title: '人脸库列表', icon: 'transgender-alt' }
+      { path: '/face-list', title: '人脸库管理', icon: 'transgender-alt' },
+      { path: '/camera', title: '摄像头管理', icon: 'yelp' }
     ]
   },
   {

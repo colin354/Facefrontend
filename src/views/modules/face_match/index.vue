@@ -13,15 +13,9 @@
                   </el-form-item>
                   <el-form-item>
                     <el-button @click="getDatas()">{{ $t('query')}}</el-button>
-
                     <el-button @click="getDurationGPSData()" v-if="showA">地图轨迹</el-button>
                   </el-form-item>
                 </el-form>
-                <!-- <el-image style="width: 100px; height: 100px" :src="face_url" fit="contain">
-                  <div slot="placeholder" class="image-slot">
-                    加载中<span class="dot">...</span>
-                  </div>
-                </el-image> -->
                 <facecarsousel :facelist="facelist"></facecarsousel>
               </el-card>
             </div>
@@ -57,13 +51,11 @@
         <div class="grid-content bg-purple">
             <el-card class="box-card-hei">
               <div class="amap-page-container">
-                <!-- {{this.temp}} -->
                   <div id="amap-show" class="amap-demo"></div>
               </div>
             </el-card>
          </div>
       </el-col>
-
     </el-row>
 
     <el-pagination
@@ -82,36 +74,31 @@
       :close-on-press-escape="true"
       :fullscreen="false"
       custom-class="customclass"
-      :append-to-body="true"
     >
-      <el-col>
-        <el-row>
-          <el-col>
-            <div class="grid-content bg-purple">
-              <!-- <el-card class="box-card"> -->
-                <video-player
-                  class="vjs-default-skin"
-                  ref="videoPlayer"
-                  :options="playerOptions"
-                  :playsinline="true"
-                  customEventName="customstatechangedeventname"
-                  @play="onPlayerPlay($event)"
-                  @pause="onPlayerPause($event)"
-                  @ended="onPlayerEnded($event)"
-                  @waiting="onPlayerWaiting($event)"
-                  @playing="onPlayerPlaying($event)"
-                  @loadeddata="onPlayerLoadeddata($event)"
-                  @timeupdate="onPlayerTimeupdate($event)"
-                  @canplay="onPlayerCanplay($event)"
-                  @canplaythrough="onPlayerCanplaythrough($event)"
-                  @statechanged="playerStateChanged($event)"
-                  @ready="playerReadied"
-                ></video-player>                
-              <!-- </el-card> -->
-            </div>
-          </el-col>
-        </el-row>
-      </el-col>
+      <el-row>
+        <el-col  :span="24">
+          <div class="grid-content bg-purple">
+            <video-player
+              class="vjs-default-skin"
+              ref="videoPlayer"
+              :options="playerOptions"
+              :playsinline="true"
+              customEventName="customstatechangedeventname"
+              @play="onPlayerPlay($event)"
+              @pause="onPlayerPause($event)"
+              @ended="onPlayerEnded($event)"
+              @waiting="onPlayerWaiting($event)"
+              @playing="onPlayerPlaying($event)"
+              @loadeddata="onPlayerLoadeddata($event)"
+              @timeupdate="onPlayerTimeupdate($event)"
+              @canplay="onPlayerCanplay($event)"
+              @canplaythrough="onPlayerCanplaythrough($event)"
+              @statechanged="playerStateChanged($event)"
+              @ready="playerReadied"
+            ></video-player>                
+          </div>
+        </el-col>
+      </el-row>
     </el-dialog>   
   </d2-container>
 </template>
@@ -144,6 +131,7 @@ export default {
   data() {
     let id = this.$route.params.id;//存放face.vue界面传过来的faceid
     return {
+      total:'',
       showA: false,
       temp:[],
       getLocations:[],
@@ -217,6 +205,7 @@ export default {
       .then(res=> {
         console.log("---0000000000------------+++++++++")
         console.log(res)
+        this.total = res.count
         this.dataList = res.list
         this.getLocations = res.location
         this.facelist = res.imgList
@@ -293,22 +282,6 @@ export default {
         this.playerOptions.custum = res.list
       })
       .catch(() => {});
-      // this.playerOptions.sources[0].src = this.dataList[id].url
-      /**todo:
-       *  read the proporty from end, to 
-       */
-      //  this.imgarr = [{},{}] 
-      /**
-       * todo: custunm markers 
-       */
-      // this.playerOptions.custum = [
-      //     {time: 9.5, text: "this", overlayText: "1", class: "special-blue", imgList: [{},{}]},
-      //     {time: 16,  text: "is", overlayText: "2", imgList: [{},{},{}]},
-      //     {time: 23.6,text: "so", overlayText: "3", imgList: [{},{}]},
-      //     {time: 28,  text: "cool", overlayText: "4", imgList: [{},{},{},{}]},
-      //     {time: 35,  text: "cooa", overlayText: "5",imgList: [{},{}]}
-      //   ]
-
     },
     // listen event
     onPlayerPlay(player) {
@@ -372,6 +345,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .customclass{
+    // background: #0d2663;
+    width: 100%;
+  }
   .amap-demo {
     height: 615px;
   }

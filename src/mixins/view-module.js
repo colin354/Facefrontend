@@ -66,7 +66,7 @@ export default {
         this.facelist = res.imgList ? res.imgList : []
         this.streamlist = res.streamList ? res.streamList : []
         console.log("0000------res.faceList")
-        console.log(res)
+        console.log(this.dataList)
         console.log("---")
         console.log(res.check_info)
         console.log(this.streamlist)
@@ -111,6 +111,7 @@ export default {
         this.$refs.addOrUpdate.dataForm.id = id
         this.$refs.addOrUpdate.init()
       })
+
     },
     // 删除
     deleteHandle (id) {
