@@ -76,7 +76,7 @@
       custom-class="customclass"
     >
       <el-row>
-        <el-col  :span="24">
+        <el-col :span="24">
           <div class="grid-content bg-purple">
             <video-player
               class="vjs-default-skin"

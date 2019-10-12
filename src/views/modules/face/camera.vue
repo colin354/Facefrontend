@@ -37,7 +37,7 @@
                 <template slot-scope="scope">
                   <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)" icon="el-icon-edit" circle></el-button>
                   <el-button type="primary" size="mini" @click="addVideo(scope.row.id)">测试用添加视频</el-button>
-                  <el-button type="primary" size="mini" @click="queryVideo(scope.row.id)">摄像头视频</el-button>
+                  <el-button type="primary" size="mini" @click="queryVideo(scope.row.id,scope.row.cameraName,scope.row.cameraLocation)">摄像头视频</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -52,15 +52,16 @@
       title="添加视频"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
+      custom-class="customclass"
     >
-    <el-form
-      :data="videoList"
-      :model="videoForm"
-      :rules="dataRule"
-      ref="videoForm"
-      @keyup.enter.native="videoFormSubmitHandle()"
-      label-width="120px"
-    >
+      <el-form
+        :data="videoList"
+        :model="videoForm"
+        :rules="dataRule"
+        ref="videoForm"
+        @keyup.enter.native="videoFormSubmitHandle()"
+        label-width="120px"
+      >
       <el-form-item prop="streamUrl" label="视频流URL">
         <el-input v-model="videoForm.streamUrl" placeholder="视频流URL"/>
       </el-form-item>
@@ -74,7 +75,7 @@
           </el-date-picker>
         </div>
       </el-form-item>
-    </el-form>
+      </el-form>
       <template slot="footer">
         <el-button @click="video_visible = false">{{ $t('cancel') }}</el-button>
         <el-button type="primary" @click="videoFormSubmitHandle()">{{ $t('confirm') }}</el-button>
@@ -88,22 +89,46 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
     >
-      <el-table 
-        size="mini"
-        :data="videoList"
-        border
-        @selection-change="dataListSelectionChangeHandle"
-        @sort-change="dataListSortChangeHandle"
-        style="width: 100%;"
-      >  
-        <el-table-column prop="startTime" label="开始时间" header-align="center" align="center" width="150"></el-table-column>
-        <el-table-column prop="streamUrl" label="视频链接地址"  header-align="center" align="center" width="330"></el-table-column>
-        <!-- <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
-          <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)" icon="el-icon-video-play" circle></el-button>
-          </template>
-        </el-table-column> -->
-      </el-table>
+      <el-row> 
+        <el-button type="primary" style="font-size:14px;">摄像头名称</el-button>
+        <span style="font-size:16px;">&nbsp;&nbsp;{{tempName}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <el-button type="primary" style="font-size:14px;">摄像头位置</el-button>
+        <span style="font-size:16px;">&nbsp;&nbsp;{{tempLocation}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <el-button type="primary" style="font-size:14px;">日期时间</el-button>
+        &nbsp;&nbsp;<el-select @change="videoPlayerChange()" v-model="streamURL" placeholder="请选择">
+          <el-option
+            v-for="item in videoList"
+            :key="item.id"
+            :label="item.startTime"
+            :value="item.streamUrl">
+          </el-option>
+        </el-select>
+      </el-row> 
+      <el-row>
+        <el-col :span="24">
+          <div class="grid-content bg-purple">
+            <video-player
+              class="vjs-default-skin"
+              ref="videoPlayer"
+              :options="playerOptions"
+              :playsinline="true"
+              customEventName="customstatechangedeventname"
+              @play="onPlayerPlay($event)"
+              @pause="onPlayerPause($event)"
+              @ended="onPlayerEnded($event)"
+              @waiting="onPlayerWaiting($event)"
+              @playing="onPlayerPlaying($event)"
+              @loadeddata="onPlayerLoadeddata($event)"
+              @timeupdate="onPlayerTimeupdate($event)"
+              @canplay="onPlayerCanplay($event)"
+              @canplaythrough="onPlayerCanplaythrough($event)"
+              @statechanged="playerStateChanged($event)"
+              @ready="playerReadied"
+            ></video-player>                
+          </div>
+        </el-col>
+      </el-row>
+
     </el-dialog>
 
     <!-- 分页 -->
@@ -122,10 +147,17 @@
 
 <script>
 import mixinViewModule from '@/mixins/view-module'
-import AddOrUpdate from './camera-add-or-update'
 import { cookieGet } from '@/common/cookie'
+import AddOrUpdate from './camera-add-or-update'
 import facegrid from './face-grid'
-import { debounce } from "lodash";
+import { debounce } from "lodash"
+import "video.js/dist/video-js.css"
+import { videoPlayer } from "vue-video-player"
+import 'videojs-hotkeys'
+import "@/views/modules/face_match/src/videojs.markers.css"
+import 'videojs-markers'
+import '@/views/modules/face_match/src/custom-theme.css'
+
 export default {
   mixins: [ mixinViewModule ],
   data () {
@@ -134,38 +166,37 @@ export default {
       video_visible: false,
       // videoDataList:[],
       videoList: [],
+      tempName: '',
+      tempLocation: '',
       pickerOptions: {
-          shortcuts: [{
-            text: '今天',
-            onClick(picker) {
-              picker.$emit('pick', new Date());
-            }
-          }, {
-            text: '昨天',
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit('pick', date);
-            }
-          }, {
-            text: '一周前',
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', date);
-            }
-          }]
+        shortcuts: [{
+          text: '今天',
+          onClick(picker) {
+            picker.$emit('pick', new Date());
+          }
+        }, {
+          text: '昨天',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() - 3600 * 1000 * 24);
+            picker.$emit('pick', date);
+          }
+        }, {
+          text: '一周前',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', date);
+          }
+        }]
       },
-      // id: 0,//存放faceid,向face-match界面发送待查询人的faceid
-      // imgs:[],
-      // imgList:[],
-      // // imgs:[this.dataList.imgurls],
       mixinViewModuleOptions: {
         getDataListURL: `/sys/cameras?token=${cookieGet('token')}`,
         getDataListIsPage: true,
         deleteURL: `/sys/cameras?token=${cookieGet('token')}`,
         deleteIsBatch: true
       },
+      streamURL: '',
       dataForm: {
         cameraName: ''
       },
@@ -174,12 +205,29 @@ export default {
         streamUrl: "",
         startTime: "",
         streamStatus: "0",
+      },
+      playerOptions: {
+        // videojs options
+        loop: true,
+        muted: true,
+        fluid: true,
+        language: "en",
+        playbackRates: [0.7, 1.0, 1.5, 2.0],
+        sources: [
+          {
+            type: "video/mp4",
+            src: ""
+          }
+        ],
+        poster: "",
+        custum: []
       }
     }
   },
   components: {
     facegrid,
     AddOrUpdate,
+    videoPlayer
   },
   computed:{
     dataRule(){
@@ -199,6 +247,9 @@ export default {
           }
         ],        
       }
+    },
+    player() {
+      return this.$refs.videoPlayer.player;
     }
   },
   methods: {
@@ -209,16 +260,28 @@ export default {
         })
         .catch(_ => {});
     },
+
+    //测试用添加视频按钮
     addVideo(id){
       this.videoForm.cameraId = id
       this.video_visible = true
       this.$nextTick(() =>{
-        this.$refs["videoForm"].resetFields(); //每一次
+        this.$refs["videoForm"].resetFields(); 
       })
     },
-    queryVideo(id){ //查询摄像头对应的视频列表
+
+    //查询摄像头对应的视频列表
+    queryVideo(id,name,location){ 
       this.query_visible = true
+      this.videoList =[]
+      this.streamURL = ''//model绑定streamURL
+      this.playerOptions.sources[0].src = ''
       console.log("-----get请求下的查询")
+      console.log(id)
+      this.tempName = name
+      this.tempLocation = location
+      console.log(name)
+      console.log(location)
       if(id){
         this.$axios.get(`/sys/camerastream?token=${cookieGet('token')}`,{params:{cameraId:id}})
         .then(res =>{
@@ -231,12 +294,23 @@ export default {
         })
       }
     },
-    changeDate(dateA) { //去掉时间选择器中自带的T和Z
+
+    //选择时间后,自动播放
+    videoPlayerChange(){
+      console.log("--change--change--change")
+      console.log(this.streamURL)
+      this.playerOptions.sources[0].src = this.streamURL
+    },
+
+    //去掉时间选择器中自带的T和Z
+    changeDate(dateA) { 
       var dateee = new Date(dateA).toJSON();
       var date = new Date(+new Date(dateee)+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
       return date;
     },
-    videoFormSubmitHandle(){
+
+    //添加视频弹窗,点击确认按钮发送post请求
+    videoFormSubmitHandle(){ 
       this.videoForm.startTime = this.changeDate(this.videoForm.startTime)
       this.$refs['videoForm'].validate(valid => {
         if(!valid) { return false ; }
@@ -263,12 +337,52 @@ export default {
       { leading: true, trailing: false}
       })
       this.video_visible = false
-    }//这是videoFormSubmitHandle()函数的结尾
+    },//这是videoFormSubmitHandle()函数的结尾
+
+    // listen event
+    onPlayerPlay(player) {
+      console.log('player play!', player)
+    },
+    onPlayerPause(player) {
+      console.log('player pause!', player)
+    },
+    onPlayerEnded(player) {
+      console.log('player end!', player)
+    },
+    // ...player event
+    onPlayerTimeupdate(player) {
+      console.log("hahahahahaha")
+    },
+    onPlayerLoadeddata(player) {
+    },
+    onPlayerPlaying(player) {
+      console.log('on player')
+    },
+    // or listen state event
+    playerStateChanged(playerCurrentState) {
+      console.log('111111player current update state', playerCurrentState)
+    },
+    onPlayerCanplaythrough(player) {
+      console.log('11111on ply')
+    },
+    onPlayerCanplay(player) {
+      console.log('aaabbaa')
+    },
+    onPlayerWaiting(player) {
+      console.log('waiting')
+    },
+    playerReadied(player){
+      console.log("the player is readied!!!!!", player);
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+  .customclass{
+    color: #228fbd;
+    width: 100%;
+  }
   .inner {
     position: right;
     top: 20px;
@@ -322,8 +436,12 @@ export default {
   .el-carousel__item:nth-child(2n) {
     background-color: #99a9bf;
   }
-  
   .el-carousel__item:nth-child(2n+1) {
     background-color: #d3dce6;
+  }
+  .imgblock {
+    width: 15%;
+    height: 15%;
+    display: block;
   }
 </style>
