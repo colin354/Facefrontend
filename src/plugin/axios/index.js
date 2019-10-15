@@ -59,6 +59,7 @@ service.interceptors.request.use(config => {
       ...config.params,
       ...{ '_t': new Date().getTime() }
     }
+    console.log(config.params)
   }
   if (isPlainObject(config.params)) {
     config.params = {

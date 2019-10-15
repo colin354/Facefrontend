@@ -68,7 +68,7 @@ export default {
         console.log("0000------res.faceList")
         console.log(this.dataList)
         console.log("---")
-        console.log(res.check_info)
+        // console.log(res.check_info)
         console.log(this.streamlist)
       }).catch(() => {
         // this.face_url = ''

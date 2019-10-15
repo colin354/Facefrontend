@@ -166,6 +166,15 @@ const frameIn = [
           title: 'websocket测试'
         }
       },
+      {
+        path: 'test-realTime',
+        name:'test-realTime',
+        component: _import('modules/face_match/test-realTime'),
+        meta: {
+          auth: true,
+          title: 'test-realTime'
+        }
+      },
       // {
       //   path: 'face-search-by-face',
       //   name: 'face-search-by-face',

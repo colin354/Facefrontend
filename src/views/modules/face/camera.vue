@@ -52,7 +52,6 @@
       title="添加视频"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
-      custom-class="customclass"
     >
       <el-form
         :data="videoList"
@@ -95,7 +94,7 @@
         <el-button type="primary" style="font-size:14px;">摄像头位置</el-button>
         <span style="font-size:16px;">&nbsp;&nbsp;{{tempLocation}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
         <el-button type="primary" style="font-size:14px;">日期时间</el-button>
-        &nbsp;&nbsp;<el-select @change="videoPlayerChange()" v-model="streamURL" placeholder="请选择">
+        &nbsp;&nbsp;<el-select @change="videoPlayerChange()" v-model="videoList.streamUrl" placeholder="请选择">
           <el-option
             v-for="item in videoList"
             :key="item.id"
@@ -162,9 +161,14 @@ export default {
   mixins: [ mixinViewModule ],
   data () {
     return {
+      mixinViewModuleOptions: {
+        getDataListURL: `/sys/cameras?token=${cookieGet('token')}`,
+        getDataListIsPage: true,
+        deleteURL: `/sys/cameras?token=${cookieGet('token')}`,
+        deleteIsBatch: true
+      },
       query_visible:false,
       video_visible: false,
-      // videoDataList:[],
       videoList: [],
       tempName: '',
       tempLocation: '',
@@ -190,13 +194,6 @@ export default {
           }
         }]
       },
-      mixinViewModuleOptions: {
-        getDataListURL: `/sys/cameras?token=${cookieGet('token')}`,
-        getDataListIsPage: true,
-        deleteURL: `/sys/cameras?token=${cookieGet('token')}`,
-        deleteIsBatch: true
-      },
-      streamURL: '',
       dataForm: {
         cameraName: ''
       },
@@ -274,14 +271,10 @@ export default {
     queryVideo(id,name,location){ 
       this.query_visible = true
       this.videoList =[]
-      this.streamURL = ''//model绑定streamURL
-      this.playerOptions.sources[0].src = ''
-      console.log("-----get请求下的查询")
-      console.log(id)
+      this.videoList.streamUrl = ''
+      this.playerOptions.sources[0].src = '' //再次打开弹窗时,不会显示上次的信息
       this.tempName = name
       this.tempLocation = location
-      console.log(name)
-      console.log(location)
       if(id){
         this.$axios.get(`/sys/camerastream?token=${cookieGet('token')}`,{params:{cameraId:id}})
         .then(res =>{
@@ -298,8 +291,8 @@ export default {
     //选择时间后,自动播放
     videoPlayerChange(){
       console.log("--change--change--change")
-      console.log(this.streamURL)
-      this.playerOptions.sources[0].src = this.streamURL
+      console.log(this.videoList.streamUrl)
+      this.playerOptions.sources[0].src = this.videoList.streamUrl
     },
 
     //去掉时间选择器中自带的T和Z
@@ -380,7 +373,7 @@ export default {
 
 <style lang="scss" scoped>
   .customclass{
-    color: #228fbd;
+    // color: #228fbd;
     width: 100%;
   }
   .inner {

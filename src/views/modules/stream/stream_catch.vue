@@ -103,6 +103,7 @@ export default {
     this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`,{params:{map_location:'GETMAP'}})
       .then(res => {
         console.log("-----mounted---res.list-")
+        console.log(res)
         this.positions = res.list  //获取当前user_stream表中所有的经纬度信息
         console.log(res.list) 
       })

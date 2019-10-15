@@ -131,7 +131,7 @@ export default {
   data() {
     let id = this.$route.params.id;//存放face.vue界面传过来的faceid
     return {
-      total:'',
+      total: 0,
       showA: false,
       temp:[],
       getLocations:[],

@@ -1,151 +1,154 @@
 <template>
-  <div class="amap-page-container">
-    <el-card>
-      <el-amap
-        vid="amapDemo"  
-        :center="center"
-        :zoom="zoom"  
-        class="amap-demo" style="height: 700px;">
-        <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position" :events="marker.events" :icon="icon">
-        </el-amap-marker>
-        <!-- <el-amap-info-window v-if="window" :position="window.position" :visible="window.visible" :content="window.content">
-        </el-amap-info-window>         -->
-      </el-amap>
-    </el-card>
-    <el-dialog
-      :visible.sync="visible"
-      :close-on-click-modal="false"
-      :close-on-press-escape="true"
-      :fullscreen="false"
-      custom-class="customclass"
-    >
-    <el-row :gutter="24">
-      <el-col :span="24">
-          <el-button @click="PlayVideo">Play Video</el-button>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          <div class="grid-content bg-purple" height="200" width="200">
-            <v-liveplayer ref="myvideo" h5id='1' ></v-liveplayer>
+  <d2-container>
+    <div style="width:100%; height:99%;float:left;background-color:#F2F6FC;margin:2px;">
+        <!--左半边-->
+        <div style="width:22%; height:100%;float:left;padding:3px;border:2px solid 	#FFFFFF">
+          <el-tree
+            :data="streamList"
+            :props="defaultProps"
+            accordion
+            @node-click="handleNodeClick"
+            class="bg">
+          </el-tree>       
+        </div>
+        <!--right----右半-->
+        <div class="right-side" style="width:78%; height:100%;float:left;background-color:#F2F6FC;padding:3px;border:2px solid #FFFFFF">
+
+          <div class="one-row-first" style="height:55%; width:60%;float:left;background-color:#F2F6FC;padding:3px;border:2px solid #FFFFFF">
+              <v-liveplayer ref="myvideo" h5id='1' ></v-liveplayer>
           </div>
-      </el-col>
-    </el-row>      
-   </el-dialog>
-  </div>
-    
+
+          <div class="one-row-second" style="height:55%; width:40%;float:left;background-color:#F2F6FC;padding:3px;border:2px solid #FFFFFF">
+              <p>人像抓拍记录</p>
+              <el-image
+                v-for="(item,index) in url" :key="index" 
+                style="width: 100px; height: 100px; padding:1px;"
+                :src="item"
+                :fit="fit"></el-image>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <p>车牌抓拍记录</p>
+              <el-image
+                v-for="(item,index) in url" :key="index" 
+                style="width: 50px; height: 50px; padding:1px;"
+                :src="item"
+                :fit="fit"></el-image> 
+          </div>
+
+          <div class="two-row-first" style="height:45%; width:60%;float:left;padding:3px;background-color:#F2F6FC;border:2px solid #FFFFFF">
+              <p>人像匹配列表</p>
+              <el-image
+                style="width: 100px; height: 100px; padding:1px;"
+                src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+                :fit="fit"></el-image>
+              <el-image
+                style="width: 100px; height: 100px; padding:1px;"
+                src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+                :fit="fit"></el-image>
+
+          </div>
+
+          <div class="two-row-second" style="height:45%; width:40%;float:left;background-color:#F2F6FC;padding:3px;border:2px solid	#FFFFFF">
+              <p>车牌匹配列表</p>
+              <el-image
+                style="width: 100px; height: 100px; padding:1px;"
+                src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+                :fit="fit"></el-image>
+          </div>
+
+        </div>
+    </div>
+
+  </d2-container>
 </template>
- 
+
 <script>
+import { cookieGet } from '@/common/cookie'
+// import mixinViewModule from '@/mixins/view-module'
 import Liveplayer from '@/components/videoplayer/liveplayer';
-import { lazyAMapApiLoaderInstance } from 'vue-amap';
-import { AMapManager } from 'vue-amap'
 import '@/assets/h5splayer.js'
 import {H5siOS,H5sPlayerCreate} from '@/assets/h5splayerhelper.js'
 
-let amapManager = new AMapManager()
 export default {
-    name: "real-video",
-    components: {
-        'v-liveplayer': Liveplayer
-    }, 
-    data ()  {
-      // let self = this
-      return {
-        visible: false,
-        zoom: 18,
-        center: [120.09465,33.313217],
-        markers: [],
-        windows: [],
-        window: '',
-        icon:'',
-        rows: 3,
-        cols: 3,
-        selectCol: 1,
-        selectRow: 1,
-        proto: this.$store.state.rtc,
-        contentHeight: '',
-        contentWidth: '',
-        data:[],
-      };
-    },
-    computed:{
-      count(){
-          return this.$store.state.rtc;
-      }
-    },
-    mounted() {
-      this.getIcon()  //获得摄像头图标
-      this.getWindow() //弹出窗口
-      // this.PlayVideo()
-    },
-    methods:{
+  // mixins: [ mixinViewModule ],
+  components: {
+    'v-liveplayer': Liveplayer
+  }, 
+  data(){
+    return{
+      // mixinViewModuleOptions: {
+      //   getDataListURL: `/sys/stream/page?token=${cookieGet('token')}`,
+      //   getDataListIsPage: true,
+      //   deleteURL: `/sys/stream?token=${cookieGet('token')}`,
+      //   deleteIsBatch: true
+      // },
+      url:[
+        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+        ],
+      streamList:[],
+      defaultProps: {}, 
+      dataForm:{
+        map_location:'GETLOCATION'
+      },  
+    }
+  },
+  mounted(){     //本可以共用view-module.js中的get请求,但界面必须手动刷新才能发送get请求,所以在本组件重新写了get请求
+     this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`,{params:{map_location:'GETLOCATION'}})
+      .then(res => {
+        console.log("-----mounted---res.list-")
+        console.log(res)
+        this.streamList = res.streamList
+        console.log(res.list) 
+      })
+      .catch(() => {
+        console.log("error")
+      })
+  },
+  computed:{
+    count(){
+        return this.$store.state.rtc;
+        console.log("streamlist----")
+        console.log(this.streamlist)
+    }
+  },
+  methods:{
       PlayVideo() {
         console.log("---0---------------------0000")
         console.log(this.$refs.myvideo)
         this.$refs.myvideo.PlayVideo("token111");
       },
-      //设置摄像头图标,所有值都是原始值
-      getIcon(){
-        // 创建一个 Icon
-        var startIcon = new AMap.Icon({
-            // 图标尺寸
-            size: new AMap.Size(25, 34),
-            // 图标的取图地址
-            image: 'http://10.2.155.139:8888/media/fxq_test/camera_0.png',//此处修改摄像头图标
-            // 图标所用图片大小
-            imageSize: new AMap.Size(25, 25),
-            // 图标取图偏移量
-            imageOffset: new AMap.Pixel(-1, -1)
-        });
-        this.icon = startIcon
+      handleNodeClick(val) {
+        console.log("----点击事件-----00------")
+        console.log(val)
+        console.log("val中详细内容")
+        // console.log(val.children[0].label)
+        // console.log(val.children[1].label)
+        this.PlayVideo()
+        // this.markerRefs = []
+        // this.positions = val.streamlng
+        // console.log("----点击事件-----marker对象-")
+        // this.reflash = !this.reflash
       },
-
-      //弹出窗口所在位置及内容
-      getWindow(){
-        // this.visible = true  
-        let markers = [];
-        let windows = [];
-
-        let num = 2;
-        let self = this;
-
-        for (let i = 0 ; i < num ; i ++) {
-          markers.push({
-            position: [120.09465,33.313217 + i * 0.001],
-            events: {
-              click() {
-                self.visible = true
-                self.windows.forEach(window => {
-                  // self.visible = false;
-                });
-
-                self.window = self.windows[i];
-                self.$nextTick(() => {
-                  // self.visible = true;
-                });
-              }
-            }
-          });
-
-          // windows.push({
-          //   position: [120.09465,33.313217 + i * 0.001],
-          //   content:          
-          //    `<div class="grid-content bg-purple" height="500" width="500">
-          //       <v-liveplayer ref="myvideo" h5id='1' ></v-liveplayer>
-          //     </div>`,
-          //   visible: false
-          // });
-        }
-        this.markers = markers;
-        // this.windows = windows;
-      },
+      
     }
 }
 </script>
-<style lang="scss" scoped>
-  .amap-demo {
-    height: 300px;
-  }
 
-  .prompt {
+<style lang="scss" scoped>
+.bg{
+  background-color:#F2F6FC;
+}
+.all{
+    margin:0 auto;
+    width: 760px;
+}
+.prompt {
     background: white;
     width: 100px;
     height: 30px;
