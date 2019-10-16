@@ -7,7 +7,7 @@
           <el-form :inline="true" size="mini" :model="dataForm" @submit.native.prevent>
             <el-form-item>
               <el-input v-model="dataForm.username" :placeholder="$t('face.name')" 
-              @keyup.enter.native="getDataList()"clearable/>
+              @keyup.enter.native="getDataList()" clearable/>
             </el-form-item>
             <el-form-item>
               <el-button @click="getDataList()">{{ $t('query') }}</el-button>
@@ -18,6 +18,9 @@
             <el-form-item>
               <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
             </el-form-item>
+            <el-form-item>
+              <el-button type="info" @click="exportExcel()">{{ $t('export') }}</el-button>
+            </el-form-item>            
           </el-form>
           <div class="grid-content bg-purple" >          
             <el-table
@@ -107,6 +110,9 @@ export default {
       this.imgs = []
       this.imgs = imgurls
       this.id = id  //通过图片按钮获得了faceid,传给本组件自定义的id
+    },
+    exportExcel(){
+
     }
   }
 }

@@ -83,7 +83,15 @@ const frameIn = [
           title: '人脸库管理'
         }
       },
-
+      {
+        path: 'user',
+        name: 'user',
+        component: _import('modules/face/user'),
+        meta: {
+          auth: true,
+          title: '用户管理'
+        }
+      },
       {
         path: 'camera',
         name: 'camera',
@@ -93,7 +101,6 @@ const frameIn = [
           title: '摄像头管理'
         }
       },
-
       {
         path: 'stream-list',
         name: 'stream-list',
@@ -168,7 +175,7 @@ const frameIn = [
       },
       {
         path: 'test-realTime',
-        name:'test-realTime',
+        name: 'test-realTime',
         component: _import('modules/face_match/test-realTime'),
         meta: {
           auth: true,
@@ -192,7 +199,79 @@ const frameIn = [
           auth: true,
           title: '地图轨迹融合'
         }
-      }
+      },
+      {
+        path: 'sys-log-login',
+        name: 'sys-log-login',
+        component: _import('modules/sys/log-login'),
+        meta: {
+          auth: true,
+          title: '登录日志'
+        }
+      },
+      {
+        path: 'sys-log-operation',
+        name: 'sys-log-operation',
+        component: _import('modules/sys/log-operation'),
+        meta: {
+          auth: true,
+          title: '操作日志'
+        }
+      },
+      {
+        path: 'sys-log-error',
+        name: 'sys-log-error',
+        component: _import('modules/sys/log-error'),
+        meta: {
+          auth: true,
+          title: '异常日志'
+        }
+      },
+      {
+        path: 'early-warning',
+        name: 'early-warning',
+        component: _import('modules/face/early-warning'),
+        meta: {
+          auth: true,
+          title: '预警事件管理'
+        }
+      },
+      {
+        path: 'watermark',
+        name: 'watermark',
+        component: _import('modules/face/watermark'),
+        meta: {
+          auth: true,
+          title: '水印设置'
+        }
+      },
+      {
+        path: 'sensitive-database',
+        name: 'sensitive-database',
+        component: _import('modules/sys/sensitive-database'),
+        meta: {
+          auth: true,
+          title: '敏感数据库管理'
+        }
+      },
+      {
+        path: 'whitelist-database',
+        name: 'whitelist-database',
+        component: _import('modules/sys/whitelist-database'),
+        meta: {
+          auth: true,
+          title: '白名单数据库管理'
+        }
+      },
+      {
+        path: 'realTime',
+        name: 'realTime',
+        component: _import('modules/research-center/realTime'),
+        meta: {
+          auth: true,
+          title: '人车情报研判中心'
+        }
+      },
     ]
   }
 ]
