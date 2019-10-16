@@ -151,7 +151,8 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
                     this.map = new AMap.Map('amap-show', {
                         // center: [114.037939,22.627198],//自带
                         // center: [120.09465,33.313217],  //盐城
-                        center: [120.094163,33.313109],
+                        // center: [120.094163,33.313109],//汇文公馆
+                        center:[120.095913,33.302156],
                         zoom: 18
                     })
                 });
@@ -203,7 +204,7 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
             //画多条轨迹
             initPage(){
                 this.map = new AMap.Map('amap-show', {
-                                center: [120.094163,33.313109],
+                                center: [120.095913,33.302156],
                                 zoom: 18
                             },
                     AMapUI.loadUI(['misc/PathSimplifier'], (PathSimplifier) => {

@@ -1,5 +1,6 @@
 <template>
   <d2-container>
+    <!--
     <el-row :gutter="20">
       <el-col :span="12">
         <div class="grid-content bg-purple">
@@ -41,8 +42,8 @@
       <el-col :span="12">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
-            <!-- <el-divider></el-divider> -->
-            <el-tag type="" effect="light">结构化视频处理结果进度</el-tag>
+            <el-divider></el-divider> 
+             <el-tag type="" effect="light">结构化视频处理结果进度</el-tag>
             <el-button type="danger" @click="deleteRequest()" class="btn" size="mini">{{ $t('deleteBatch') }}</el-button>
             <el-progress :percentage="check_info.check_percentage"></el-progress>
             <el-divider><i class="el-icon-data-analysis"></i></el-divider>
@@ -52,7 +53,7 @@
             <el-divider><i class="el-icon-s-check"></i></el-divider>
               <span>匹配记录数: {{check_info.check_num}}</span>
           </el-card>
-        </div>
+        </div> 
       </el-col>
     </el-row>
 
@@ -62,8 +63,8 @@
     :close-on-press-escape="true"
     :fullscreen="true"
     custom-class="customclass"
-  >
-    <template slot="title">
+  > 
+     <template slot="title">
       <el-row :gutter="20">
         <el-col :span="14" :offset="5">
           <div class="grid-content bg-purple">
@@ -80,13 +81,13 @@
 
     <el-row :gutter="20">
       <el-col :span="5">
-        <!-- <div class="grid-content bg-purple">-->
+        <div class="grid-content bg-purple">
           <el-card class="box-card" :body-style="{ padding: '0px' }"> 
-            <!-- <div class="imgblock"> -->
+            <div class="imgblock">
               <personIdentification :personList="personList"></personIdentification>
-            <!-- </div> -->
+            </div>
           </el-card>
-        <!-- </div> -->
+        </div>
       </el-col>           
       <el-col :span="14">
         <div class="grid-content bg-purple">
@@ -121,7 +122,7 @@
           </el-card>
         </div>
       </el-col>
-    </el-row> 
+    </el-row>  
         
     <el-row :gutter="20">
       <el-col>
@@ -137,7 +138,83 @@
         </div>
       </el-col>
     </el-row>
-  </el-dialog>
+  </el-dialog>-->
+  <div style="width:100%; height:99%; float:left; background-color:#F2F6FC; margin:2px;">
+      <!--左侧树形结构-->
+      <div style="width:22%; height:100%;float:left;padding:3px;border:2px solid 	#FFFFFF">       
+        <el-tree
+            :data="streamList"
+            :props="defaultProps"
+            accordion
+            @node-click="handleNodeClick"
+            class="bg">
+        </el-tree>
+      </div>
+      
+      <!--右侧整块-->
+      <div style="width:78%; height:100%;float:left;padding:3px;border:2px solid 	#FFFFFF">
+
+        <el-row :gutter="20">
+          <el-col :span="5">
+            <div class="grid-content bg-purple">
+              <!-- <el-card class="box-card" :body-style="{ padding: '0px' }">  -->
+                <div class="imgblock">
+                  <personIdentification :personList="personList"></personIdentification>
+                </div>
+              <!-- </el-card> -->
+            </div>
+          </el-col> 
+
+          <el-col :span="14">
+            <div class="grid-content bg-purple">
+                <video-player
+                  class="vjs-custom-skin"
+                  ref="videoPlayer"
+                  :options="playerOptions"
+                  :playsinline="true"
+                  customEventName="customstatechangedeventname"
+                  @play="onPlayerPlay($event)"
+                  @pause="onPlayerPause($event)"
+                  @ended="onPlayerEnded($event)"
+                  @waiting="onPlayerWaiting($event)"
+                  @playing="onPlayerPlaying($event)"
+                  @loadeddata="onPlayerLoadeddata($event)"
+                  @timeupdate="onPlayerTimeupdate($event)"
+                  @canplay="onPlayerCanplay($event)"
+                  @canplaythrough="onPlayerCanplaythrough($event)"
+                  @statechanged="playerStateChanged($event)"
+                  @ready="playerReadied"
+                ></video-player>
+            </div>
+          </el-col>
+          <el-col :span="5">
+            <div class="grid-content bg-purple">
+              <el-card class="box-card" :body-style="{ padding: '0px' }">
+                <div class="imgblock">
+                  <faceimg  :imgarr="imgarr"></faceimg>
+                </div>
+              </el-card>
+            </div>
+          </el-col>
+        </el-row>  
+        
+        <el-row :gutter="20">
+          <el-col>
+            <div class="grid-content bg-purple">
+              <el-card class="box-card">
+                <facecompile
+                  v-for="(o, index) in info.facematch" :key="index"
+                  :facemark="o.marks"
+                  :facematch="o"
+                  :streamtime="info.streamtime"
+                  ></facecompile>
+              </el-card>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+
+  </div>     
   </d2-container>
 </template>
 
@@ -178,6 +255,8 @@ export default {
   mixins: [ mixinViewModule ],
   data() {
     return {
+      streamList:[],
+      defaultProps: {id:''}, 
       personList:[],
       visible: false,
       playertime: 0,
@@ -203,7 +282,7 @@ export default {
         sources: [
           {
             type: "video/mp4",
-            src: ""
+            src: "http://10.2.155.139:8888/media/test_video/jwc.mp4"
           }
         ],
         poster: "",
@@ -213,6 +292,7 @@ export default {
   },
   mounted() {
     console.log('777777777')
+    this.getStreamList()
   },
   computed: {
     player() {
@@ -220,6 +300,53 @@ export default {
     }
   }, 
   methods: {
+    getStreamList(){
+      this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`,{params:{map_location:'GETLOCATION'}})
+        .then(res => {
+          console.log("-----mounted---res.list-")
+          console.log(res)
+          this.streamList = res.streamList
+          console.log("----streamList")
+          console.log(this.streamList) 
+        })
+        .catch(() => {
+          console.log("error")
+        })
+    },
+    handleNodeClick(val) {
+        this.personList = []
+        this.info.facematch = []
+        var tempId = val.id  //只有单个id时才进行赋值
+        console.log(val.streamUrl)
+        this.playerOptions.sources[0].src = val.streamUrl
+        if(tempId){
+          this.getForPhoto(tempId)
+        }
+    },
+    getForPhoto(id){
+      this.$axios.get(`/api/check?token=${cookieGet('token')}&streamid=${id}`)
+        .then(res=> {
+          this.personList = []
+          console.log("-------0------9090--------------------11111111111")
+          console.log(res)
+          console.log(res.list_reid)
+          for(var i=0; i<res.list_reid.length; i++){
+            console.log("-------person----------")
+            console.log(res.list_reid[i])
+            this.personList[i] = res.list_reid[i]
+            console.log("------person-----------")
+          }
+          console.log(this.personList)
+          console.log("这这这这这这这这这这这这这")
+          this.playerOptions.custum = res.list
+          this.matchnum = res.count
+          this.info = res.info
+        })
+        .catch(error =>{
+          console.log('yingyingyingyingying')
+          console.log(error)
+        }) 
+    },
     deleteRequest(){
       this.$axios.delete(`/api/check?token=${cookieGet('token')}`)
       .then(res =>{
@@ -234,6 +361,7 @@ export default {
           console.log(error)
       }) 
     },
+
     broadcast(id,streamurl){
       this.visible = true
       this.playerOptions.sources[0].src = streamurl
@@ -247,7 +375,6 @@ export default {
             console.log("-------person----------")
             console.log(res.list_reid[i])
             this.personList[i] = res.list_reid[i]
-            // console.log(this.personList[i])
             console.log("------person-----------")
           }
           console.log(this.personList)
@@ -263,7 +390,7 @@ export default {
     },
     // listen event
     onPlayerPlay(player) {  //点击视频上的播放,便开始播放视频
-      console.log('player play!', player)
+      console.log('player play播放播放-----!', player)
       console.log(player.markers)
     },
     onPlayerPause(player) {
@@ -325,6 +452,14 @@ export default {
 </script>
 
 <style lang="scss">
+  .video-class{
+    width:60%; 
+    height:58%;
+    // float:left;padding:3px;border:2px solid	#FFFFFF
+  }
+  .bg{
+    background-color:#F2F6FC;
+  }
   .customclass {
     background: #0d2663;
   }

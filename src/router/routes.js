@@ -121,15 +121,15 @@ const frameIn = [
       //     title: '实时摄像头预览'
       //   }
       // },
-      // {
-      //   path: 'liveview',
-      //   name: 'liveview',
-      //   component: _import('modules/stream/liveview'),
-      //   meta: {
-      //     auth: true,
-      //     title: '实时监控管理'
-      //   }
-      // },
+      {
+        path: 'liveview',
+        name: 'liveview',
+        component: _import('modules/stream/liveview'),
+        meta: {
+          auth: true,
+          title: '实时监控管理'
+        }
+      },
       {
         path: 'real-video',
         name: 'real-video',
@@ -157,24 +157,24 @@ const frameIn = [
           title: ' 结构化监控查询'
         }
       },
-      {
-        path: 'face-websocket',
-        name: 'face-websocket',
-        component: _import('modules/face_match/face_websocket'),
-        meta: {
-          auth: true,
-          title: 'websocket测试'
-        }
-      },
-      {
-        path: 'test-realTime',
-        name:'test-realTime',
-        component: _import('modules/face_match/test-realTime'),
-        meta: {
-          auth: true,
-          title: 'test-realTime'
-        }
-      },
+      // {
+      //   path: 'face-websocket',
+      //   name: 'face-websocket',
+      //   component: _import('modules/face_match/face_websocket'),
+      //   meta: {
+      //     auth: true,
+      //     title: 'websocket测试'
+      //   }
+      // },
+      // {
+      //   path: 'test-realTime',
+      //   name:'test-realTime',
+      //   component: _import('modules/face_match/test-realTime'),
+      //   meta: {
+      //     auth: true,
+      //     title: 'test-realTime'
+      //   }
+      // },
       // {
       //   path: 'face-search-by-face',
       //   name: 'face-search-by-face',

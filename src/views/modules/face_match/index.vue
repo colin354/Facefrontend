@@ -192,7 +192,8 @@ export default {
       lazyAMapApiLoaderInstance.load().then(() => {
           this.map = new AMap.Map('amap-show', {
 
-              center: [120.094163,33.313109],
+              // center: [120.094163,33.313109],//汇文公馆
+              center:[120.095913,33.302156],
               zoom: 18
           })
       });
@@ -222,7 +223,8 @@ export default {
     getDurationGPSData(){//再画出同一个人的多条轨迹   
     //画出一个人的轨迹
     this.map = new AMap.Map('amap-show', {
-                    center: [120.094163,33.313109],
+                    // center: [120.094163,33.313109],  //汇文公馆
+                    center:[120.095913,33.302156],
                     zoom: 18
                 },
         AMapUI.loadUI(['misc/PathSimplifier'], (PathSimplifier) => {
