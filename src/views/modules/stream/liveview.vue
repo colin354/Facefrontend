@@ -108,8 +108,8 @@ export default {
         return {
             //过滤文字
             filterText:"",
-            rows: 3,
-            cols: 3,
+            rows: 2,
+            cols: 2,
             selectCol: 1,
             selectRow: 1,
             proto: this.$store.state.rtc,

@@ -1,158 +1,80 @@
 <template>
   <d2-container>
-    <!--
-    <el-row :gutter="20">
-      <el-col :span="12">
-        <div class="grid-content bg-purple">
-          <el-card class="box-card">
-            <el-table
-              size="mini"
-              v-loading="dataListLoading"
-              :data="dataList"
-              @selection-change="dataListSelectionChangeHandle"
-              @sort-change="dataListSortChangeHandle"
-              style="width: 100%;">
-              <el-table-column prop="streamname" :label="$t('stream.name')" header-align="center" align="center" width="100"/>
-              <el-table-column prop="streamlocation" :label="$t('stream.location')" header-align="center" align="center"/>
-              <el-table-column prop="streamstatus" :label="$t('stream.status')" header-align="center" align="center">
-                <template slot-scope="scope">
-                  <el-tag v-if="scope.row.streamstatus === `1`" size="mini">{{ $t('stream.status1') }}</el-tag>
-                  <el-tag v-else size="mini" type="danger">{{ $t('stream.status0') }}</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column prop="check_match" :label="$t('stream.check_match')" header-align="center" align="center"/>
-              <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
-                <template slot-scope="scope">
-                  <el-button type="text" size="mini" @click="broadcast(scope.row.id,scope.row.streamurl)">{{ $t('check.broadcast') }}</el-button>
-                </template>
-            </el-table-column>
-            </el-table>
-            <el-pagination
-              :current-page="page"
-              :page-sizes="[10, 20, 50, 100]"
-              :page-size="limit"
-              :total="total"
-              layout="total, sizes, prev, pager, next, jumper"
-              @size-change="pageSizeChangeHandle"
-              @current-change="pageCurrentChangeHandle">
-            </el-pagination>
-          </el-card>
-        </div>
-      </el-col>
-      <el-col :span="12">
-        <div class="grid-content bg-purple">
-          <el-card class="box-card">
-            <el-divider></el-divider> 
-             <el-tag type="" effect="light">结构化视频处理结果进度</el-tag>
-            <el-button type="danger" @click="deleteRequest()" class="btn" size="mini">{{ $t('deleteBatch') }}</el-button>
-            <el-progress :percentage="check_info.check_percentage"></el-progress>
-            <el-divider><i class="el-icon-data-analysis"></i></el-divider>
-              <span>视频总数: {{check_info.videonum}}</span>
-            <el-divider><i class="el-icon-user"></i></el-divider>
-              <span>已处理视频数: {{check_info.finishmatch}}</span>
-            <el-divider><i class="el-icon-s-check"></i></el-divider>
-              <span>匹配记录数: {{check_info.check_num}}</span>
-          </el-card>
-        </div> 
-      </el-col>
-    </el-row>
-
-  <el-dialog
-    :visible.sync="visible"
-    :close-on-click-modal="false"
-    :close-on-press-escape="true"
-    :fullscreen="true"
-    custom-class="customclass"
-  > 
-     <template slot="title">
-      <el-row :gutter="20">
-        <el-col :span="14" :offset="5">
-          <div class="grid-content bg-purple">
-            <el-card class="box-card">
-              <span>播放视频:{{info.streamname}}  视频匹配记录数:</span>
-              <span v-for="(o, index) in info.facematch" :key="index">
-                {{o.facename}}&nbsp;{{o.facecount}}条
-              </span>
-            </el-card>
-          </div>
-        </el-col>
+<el-row :gutter="20">
+  <el-col :span="6">
+    <div class="grid-content bg-purple">
+      <el-tree
+        :data="streamList"
+        :props="defaultProps"
+        accordion
+        @node-click="handleNodeClick"
+        class="bg">
+      </el-tree>
+    </div>
+  </el-col>
+  <el-col :span="13">
+      <el-row >
+      <div class="grid-content bg-purple">
+          <video-player
+            class="vjs-custom-skin"
+            ref="videoPlayer"
+            :options="playerOptions"
+            :playsinline="true"
+            customEventName="customstatechangedeventname"
+            @play="onPlayerPlay($event)"
+            @pause="onPlayerPause($event)"
+            @ended="onPlayerEnded($event)"
+            @waiting="onPlayerWaiting($event)"
+            @playing="onPlayerPlaying($event)"
+            @loadeddata="onPlayerLoadeddata($event)"
+            @timeupdate="onPlayerTimeupdate($event)"
+            @canplay="onPlayerCanplay($event)"
+            @canplaythrough="onPlayerCanplaythrough($event)"
+            @statechanged="playerStateChanged($event)"
+            @ready="playerReadied"
+          ></video-player>
+      </div>
       </el-row>
-    </template>
 
-    <el-row :gutter="20">
-      <el-col :span="5">
-        <div class="grid-content bg-purple">
-          <el-card class="box-card" :body-style="{ padding: '0px' }"> 
-            <div class="imgblock">
-              <personIdentification :personList="personList"></personIdentification>
-            </div>
-          </el-card>
+      <el-row>
+        <div class="grid-content bg-purple">  
+          <facecompile
+            v-for="(o, index) in info.facematch" :key="index"
+            :facemark="o.marks"
+            :facematch="o"
+            :streamtime="info.streamtime"
+            ></facecompile>
         </div>
-      </el-col>           
-      <el-col :span="14">
-        <div class="grid-content bg-purple">
-          <el-card class="video-box-card">
-            <video-player
-              class="vjs-custom-skin"
-              ref="videoPlayer"
-              :options="playerOptions"
-              :playsinline="true"
-              customEventName="customstatechangedeventname"
-              @play="onPlayerPlay($event)"
-              @pause="onPlayerPause($event)"
-              @ended="onPlayerEnded($event)"
-              @waiting="onPlayerWaiting($event)"
-              @playing="onPlayerPlaying($event)"
-              @loadeddata="onPlayerLoadeddata($event)"
-              @timeupdate="onPlayerTimeupdate($event)"
-              @canplay="onPlayerCanplay($event)"
-              @canplaythrough="onPlayerCanplaythrough($event)"
-              @statechanged="playerStateChanged($event)"
-              @ready="playerReadied"
-            ></video-player>
-          </el-card>
+      </el-row>
+  </el-col>
+  <el-col :span="5">
+    <el-row> 
+      <div class="grid-content bg-purple">
+        <div class="imgblock">
+          <personIdentification :personList="personList"></personIdentification>
         </div>
-      </el-col>
-      <el-col :span="5">
-        <div class="grid-content bg-purple">
-          <el-card class="box-card" :body-style="{ padding: '0px' }">
-            <div class="imgblock">
-              <faceimg  :imgarr="imgarr"></faceimg>
-            </div>
-          </el-card>
-        </div>
-      </el-col>
-    </el-row>  
-        
-    <el-row :gutter="20">
-      <el-col>
-        <div class="grid-content bg-purple">
-          <el-card class="box-card">
-            <facecompile
-              v-for="(o, index) in info.facematch" :key="index"
-              :facemark="o.marks"
-              :facematch="o"
-              :streamtime="info.streamtime"
-              ></facecompile>
-          </el-card>
-        </div>
-      </el-col>
+      </div>
     </el-row>
-  </el-dialog>-->
-  <div style="width:100%; height:99%; float:left; background-color:#F2F6FC; margin:2px;">
-      <!--左侧树形结构-->
-      <div style="width:20%; height:100%;float:left;padding:3px;border:2px solid 	#FFFFFF">       
-        <el-tree
+
+    <el-row>
+      <div class="grid-content bg-purple">
+        <el-card class="box-card" :body-style="{ padding: '0px' }">
+          <div class="imgblock">
+            <faceimg  :imgarr="imgarr"></faceimg>
+          </div>
+        </el-card>
+      </div>
+    </el-row>    
+  </el-col>
+</el-row>
+        <!-- 
+          <el-tree
             :data="streamList"
             :props="defaultProps"
             accordion
             @node-click="handleNodeClick"
             class="bg">
         </el-tree>
-      </div>
-      
-      <!--右侧整块-->
-      <div style="width:80%; height:100%;float:left;padding:3px;border:2px solid 	#FFFFFF">
 
         <el-row :gutter="20">
           <el-col :span="18">
@@ -180,7 +102,6 @@
             </el-row>
 
             <el-row :gutter="10">
-                <!-- <div class="grid-content bg-purple"> -->
                 <div style="width:100%; height:20%;float:left;padding:3px;border:2px solid 	#FFFF00">  
                     <facecompile
                       v-for="(o, index) in info.facematch" :key="index"
@@ -211,10 +132,8 @@
             </div>
             </el-row>
           </el-col>
-        </el-row>  
-      </div>
-
-  </div>     
+        </el-row>   -->
+  
   </d2-container>
 </template>
 
@@ -282,7 +201,8 @@ export default {
         sources: [
           {
             type: "video/mp4",
-            src: "http://10.2.155.139:8888/media/test_video/jwc.mp4"
+            //src: "http://10.2.155.139:8888/media/test_video/jwc.mp4"
+            src: "http://10.2.155.139:8888/record_media/token111/2019-10-18TZ08/11-07-50/token111-d23eb70a-eff5-4ffb-a8ce-da7c0a684e8d.mp4"
           }
         ],
         poster: "",
@@ -450,7 +370,24 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scop>
+  .el-col {
+    border-radius: 4px;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }
+  .bg-purple {
+    background: #d3dce6;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+  }
+
   .video-class{
     width:60%; 
     height:58%;

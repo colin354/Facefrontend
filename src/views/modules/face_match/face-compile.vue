@@ -1,6 +1,6 @@
 <template>
-  <el-row :gutter="20">
-    <el-row :gutter="20">
+  <el-row :gutter="0">
+    <el-row :gutter="13">
       <el-col :span="4">
         <img :src=facematch.faceurl class="faceimage">
       </el-col>
@@ -18,10 +18,11 @@
         <span style="font-size:12px;">{{$t('check.threshold')}}:{{item.threshold}}</span>
       </el-col>
     </el-row>
-    <el-row :gutter="20">
-      <el-col :span="5">
+    <el-row :gutter="0">
+      <el-col :span="4">
+        <span>haha</span>
       </el-col>
-      <el-col>
+      <el-col :span="20">
         <el-slider
           :step="0.01"
           v-model="value"
@@ -95,7 +96,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scop>
+<style lang="scss">
   .el-row {
     margin-bottom: 20px;
     &:last-child {

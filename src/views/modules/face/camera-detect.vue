@@ -12,12 +12,6 @@
             <el-form-item>
               <el-button @click="getDataList()">{{ $t('query') }}</el-button>
             </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
-            </el-form-item>
           </el-form>
           <div class="grid-content bg-purple" >          
             <el-table
@@ -38,7 +32,7 @@
                   <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)" icon="el-icon-edit" circle></el-button>
                   <el-button type="primary" size="mini" @click="addVideo(scope.row.id)">测试用添加视频</el-button>
                   <el-button type="primary" size="mini" @click="queryVideo(scope.row.id,scope.row.cameraName,scope.row.cameraLocation)">摄像头视频</el-button>
-                  <el-button type="primary" size="mini" @click="startRecord(scope.row.id,scope.row.cameraName,scope.row.cameraLocation)">录制视频</el-button>
+                  <el-button type="primary" size="mini" @click="startRecord(scope.row.id,scope.row.cameraName,scope.row.cameraLocation)">上传视频到数据库</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -268,7 +262,16 @@ export default {
       })
     },
     startRecord(id,name,location){ 
-
+      if(id){
+        this.$axios.post(`/sys/camerarecord?token=${cookieGet('token')}`,{cameraId:id})
+        .then(res =>{
+        console.log('000-----------9999')
+        console.log(res)
+        })
+        .catch(() => {
+        console.log("error")
+        })
+      }      
     },
     //查询摄像头对应的视频列表
     queryVideo(id,name,location){ 

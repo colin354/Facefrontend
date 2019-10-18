@@ -82,7 +82,8 @@ export default {
       //   deleteIsBatch: true
       // },
       url:[
-        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+        "http://10.2.155.139:8888/media/image/10/000063_0.jpg",
+        "http://10.2.155.139:8888/media/image/10/000063_11.jpg",
         "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
         "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
         "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
@@ -92,8 +93,10 @@ export default {
         "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
         ],
       car_url:[
-        '/img/card1.jpg',
-        '/img/card1.jpg',
+        "http://10.2.155.139:8888/media/card_image/card1.jpg",
+        "http://10.2.155.139:8888/media/card_image/card2.jpg",
+        "http://10.2.155.139:8888/media/card_image/card3.jpg",
+        "http://10.2.155.139:8888/media/card_image/card4.jpg"
       ],
       streamList:[],
       defaultProps: {}, 

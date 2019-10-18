@@ -314,7 +314,8 @@ export default {
                 return;
             }
             let _this =this;
-            var root = process.env.API_ROOT;
+            //var root = process.env.API_ROOT;
+            var root = process.env.VUE_APP_API_ROOT;
             if (root == undefined){
                 root = window.location.protocol + '//' + window.location.host + window.location.pathname;
             }
@@ -323,12 +324,12 @@ export default {
             console.log("record cmd", record);
 
             var url = root + "/api/v1/ManualRecordStart?" + record  + "&session="+ this.$store.state.token;
-
+            console.log("urlurlurl",url)
             this.$http.get(url).then(result => {
                 console.log(result);
                 if (result.status == 200)
                 {
-                    this.$Notice.info({
+                    this.$notify({
                         title: "Manual Start Record successfully"
                     })
                 }
@@ -346,7 +347,8 @@ export default {
                 return;
             }
             let _this =this;
-            var root = process.env.API_ROOT;
+            //var root = process.env.API_ROOT;
+            var root = process.env.VUE_APP_API_ROOT;
             if (root == undefined){
                 root = window.location.protocol + '//' + window.location.host + window.location.pathname;
             }
@@ -360,8 +362,16 @@ export default {
                 console.log(result);
                 if (result.status == 200)
                 {
-                    this.$Notice.info({
+                    this.$notify({
                         title: "Manual Stop Record successfully"
+                    })
+                    this.$axios.post(`/sys/camerarecord?token=${cookieGet('token')}`)
+                    .then(res =>{
+                        console.log('000-----------9999')
+                        console.log(res)
+                    })
+                    .catch(() => {
+                        console.log("7777777777777777777777777")
                     })
                 }
             }).catch(error => {

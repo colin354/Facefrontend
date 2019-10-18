@@ -28,11 +28,10 @@
           </div>
       </el-col>
     </el-row>      
-   </el-dialog>
+  </el-dialog>
   </div>
-    
 </template>
- 
+
 <script>
 import Liveplayer from '@/components/videoplayer/liveplayer';
 import { lazyAMapApiLoaderInstance } from 'vue-amap';

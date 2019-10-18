@@ -86,7 +86,7 @@ const frameIn = [
       {
         path: 'user',
         name: 'user',
-        component: _import('modules/face/user'),
+        component: _import('modules/sys/user'),
         meta: {
           auth: true,
           title: '用户管理'
@@ -119,24 +119,15 @@ const frameIn = [
           title: '监控布控显示'
         }
       },
-      // {
-      //   path: 'camera',
-      //   name: 'camera',
-      //   component: _import('modules/stream/camera'),
-      //   meta: {
-      //     auth: true,
-      //     title: '实时摄像头预览'
-      //   }
-      // },
-      // {
-      //   path: 'liveview',
-      //   name: 'liveview',
-      //   component: _import('modules/stream/liveview'),
-      //   meta: {
-      //     auth: true,
-      //     title: '实时监控管理'
-      //   }
-      // },
+      {
+        path: 'liveview',
+        name: 'liveview',
+        component: _import('modules/stream/liveview'),
+        meta: {
+          auth: true,
+          title: '实时监控管理'
+        }
+      },
       {
         path: 'real-video',
         name: 'real-video',
@@ -156,8 +147,8 @@ const frameIn = [
         }
       },
       {
-        path: 'face-search',
-        name: 'face-search',
+        path: 'match_search',
+        name: 'match_search',
         component: _import('modules/face_match/match_search'),
         meta: {
           auth: true,
@@ -165,23 +156,32 @@ const frameIn = [
         }
       },
       {
-        path: 'face-websocket',
-        name: 'face-websocket',
-        component: _import('modules/face_match/face_websocket'),
+        path: 'structured_video',
+        name: 'structured_video',
+        component: _import('modules/face_match/structured_video'),
         meta: {
           auth: true,
-          title: 'websocket测试'
+          title: ' 视频结构化展示'
         }
-      },
-      {
-        path: 'test-realTime',
-        name: 'test-realTime',
-        component: _import('modules/face_match/test-realTime'),
-        meta: {
-          auth: true,
-          title: 'test-realTime'
-        }
-      },
+      },      
+      // {
+      //   path: 'face-websocket',
+      //   name: 'face-websocket',
+      //   component: _import('modules/face_match/face_websocket'),
+      //   meta: {
+      //     auth: true,
+      //     title: 'websocket测试'
+      //   }
+      // },
+      // {
+      //   path: 'test-realTime',
+      //   name:'test-realTime',
+      //   component: _import('modules/face_match/test-realTime'),
+      //   meta: {
+      //     auth: true,
+      //     title: 'test-realTime'
+      //   }
+      // },
       // {
       //   path: 'face-search-by-face',
       //   name: 'face-search-by-face',
@@ -192,7 +192,7 @@ const frameIn = [
       //   }
       // },
       {
-        path: 'multiline',//添加了与通过位置查询视频一样的界面
+        path: 'multiline', //添加了与通过位置查询视频一样的界面
         name: 'multiline',
         component: _import('modules/face_match/multiline'),
         meta: {
@@ -272,6 +272,15 @@ const frameIn = [
           title: '人车情报研判中心'
         }
       },
+      {
+        path: 'camera-detect',
+        name: 'camera-detect',
+        component: _import('modules/face/camera-detect'),
+        meta: {
+          auth: true,
+          title: '摄像头管理'
+        }
+      }      
     ]
   }
 ]
