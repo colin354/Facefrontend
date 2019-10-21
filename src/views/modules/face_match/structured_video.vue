@@ -2,15 +2,21 @@
   <d2-container>
 <el-row :gutter="20">
   <el-col :span="6">
-    <div class="grid-content bg-purple">
-      <el-tree
-        :data="streamList"
-        :props="defaultProps"
-        accordion
-        @node-click="handleNodeClick"
-        class="bg">
-      </el-tree>
-    </div>
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>视频列表</span>
+        <el-button style="float: right; padding: 3px 0" type="text">过滤</el-button>
+      </div>
+      <el-row>
+          <el-tree
+            :data="streamList"
+            :props="defaultProps"
+            accordion
+            @node-click="handleNodeClick"
+            >
+          </el-tree>
+      </el-row>
+    </el-card>
   </el-col>
   <el-col :span="13">
       <el-row >
@@ -37,32 +43,32 @@
       </el-row>
 
       <el-row>
-        <div class="grid-content bg-purple">  
-          <facecompile
+
+          <!-- <facecompile
             v-for="(o, index) in info.facematch" :key="index"
             :facemark="o.marks"
             :facematch="o"
             :streamtime="info.streamtime"
-            ></facecompile>
-        </div>
+            ></facecompile> -->
+            <!-- <facecollapse :mach_info="info"></facecollapse> -->
+          <el-collapse v-model="activeNames" @change="handleChange" accordion>
+            <el-collapse-item v-for="(o, index) in info.facematch" :key="index" :title="o.facename" :name="o.key" >
+              <facecompile :facemark="o.marks" :facematch="o" :streamtime="info.streamtime"></facecompile>
+            </el-collapse-item>
+          </el-collapse>
+
       </el-row>
   </el-col>
   <el-col :span="5">
     <el-row> 
       <div class="grid-content bg-purple">
-        <div class="imgblock">
-          <personIdentification :personList="personList"></personIdentification>
-        </div>
+        <personIdentification :personList="personList"></personIdentification>
       </div>
     </el-row>
 
     <el-row>
       <div class="grid-content bg-purple">
-        <el-card class="box-card" :body-style="{ padding: '0px' }">
-          <div class="imgblock">
-            <faceimg  :imgarr="imgarr"></faceimg>
-          </div>
-        </el-card>
+        <faceimg :imgarr="imgarr"></faceimg>
       </div>
     </el-row>    
   </el-col>
@@ -142,26 +148,16 @@ import "video.js/dist/video-js.css";
 import { videoPlayer } from "vue-video-player";
 import { cookieGet } from '@/common/cookie'
 import mixinViewModule from '@/mixins/view-module'
-// import videojs from "video.js"
 import 'videojs-hotkeys'
 import "@/views/modules/face_match/src/videojs.markers.css"
-// import markers from 'videojs-markers/dist/videojs-markers'
 import 'videojs-markers'
-// import spriteThumbnails from 'videojs-sprite-thumbnails'
-// import { VueHorizontalTimeline } from 'vue-horizontal-timeline'
 import '@/views/modules/face_match/src/custom-theme.css'
 import faceimg from './face-img'
 import personIdentification from './persion-identification'
 import facecompile from './face-compile'
+import facecollapse from './face-collapse'
 import 'vuetify/dist/vuetify.min.css'
 import { timeout } from 'q';
-
-// const plugin = function(list, item) {
-//   markers(this, list, item);
-// };
-
-// videojs.registerPlugin("markers", markers);
-// videojs.registerPlugin("notations", notations);
 
 export default {
   name: "page3",
@@ -169,11 +165,13 @@ export default {
     videoPlayer,
     faceimg,
     facecompile,
+    facecollapse,
     personIdentification
   },
   mixins: [ mixinViewModule ],
   data() {
     return {
+      activeNames: ['1'],
       streamList:[],
       defaultProps: {id:''}, 
       personList:[],
@@ -220,14 +218,13 @@ export default {
     }
   }, 
   methods: {
+    handleChange(val) {
+      console.log(val);
+    },    
     getStreamList(){
       this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`,{params:{map_location:'GETLOCATION'}})
         .then(res => {
-          console.log("-----mounted---res.list-")
-          console.log(res)
           this.streamList = res.streamList
-          console.log("----streamList")
-          console.log(this.streamList) 
         })
         .catch(() => {
           console.log("error")
@@ -237,7 +234,8 @@ export default {
         this.personList = []
         this.info.facematch = []
         var tempId = val.id  //只有单个id时才进行赋值
-        console.log(val.streamUrl)
+        console.log("uuuuuuuuuuu")
+        console.log(val)
         this.playerOptions.sources[0].src = val.streamUrl
         if(tempId){
           this.getForPhoto(tempId)
@@ -247,9 +245,7 @@ export default {
       this.$axios.get(`/api/check?token=${cookieGet('token')}&streamid=${id}`)
         .then(res=> {
           this.personList = []
-          console.log("-------0------9090--------------------11111111111")
-          console.log(res)
-          console.log(res.list_reid)
+          
           for(var i=0; i<res.list_reid.length; i++){
             console.log("-------person----------")
             console.log(res.list_reid[i])
@@ -260,6 +256,9 @@ export default {
           this.playerOptions.custum = res.list
           this.matchnum = res.count
           this.info = res.info
+          console.log("-----uuuuuuuuuuu-----")
+          console.log(this.info)
+          console.log("-----uuuuu11uuuuuu-----")
         })
         .catch(error =>{
           console.log('yingyingyingyingying')

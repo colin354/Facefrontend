@@ -19,8 +19,8 @@
       </el-col>
     </el-row>
     <el-row :gutter="0">
-      <el-col :span="4">
-        <span>haha</span>
+      <el-col :span="3">
+        <span>匹配次数:{{facematch.facecount}}</span>
       </el-col>
       <el-col :span="20">
         <el-slider
@@ -107,8 +107,8 @@ export default {
     border-radius: 4px;
   }
   .faceimage {
-    width: 50%;
-    height: 50%;
+    width: 60%;
+    height: 60%;
     display: block;
   }
   .facematchimage {

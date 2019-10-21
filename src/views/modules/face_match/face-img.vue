@@ -1,18 +1,21 @@
 <template>
+<el-card class="box-card">
+  <div slot="header" class="clearfix">
+    <span>人脸检测结果</span>
+    <el-button style="float: right; padding: 3px 0" type="text">刷新</el-button>
+  </div>
   <el-row>
     <el-row v-for="(o, index) in imgarr" :key="index" :offset="index > 0 ? 1 : 0">
       <el-col :span="24">
-        <el-card :body-style="{ padding: '0px' }">
-          <img :src=o.imgurl class="image">
+          <img :src=o.imgurl class="faceimage">
           <span style="font-size:12px;">{{$t('check.threshold')}}:{{o.threshold}}</span>
-        </el-card>
       </el-col>
     </el-row>
   </el-row>
-
+</el-card>
 </template>
 
-<style>
+<style >
   .time {
     font-size: 13px;
     color: #999;
@@ -28,9 +31,9 @@
     float: right;
   }
 
-  .image {
-    height: 100%;
-    width: 100%;
+  .faceimage {
+    height: 40%;
+    width: 40%;
     display: block;
   }
 

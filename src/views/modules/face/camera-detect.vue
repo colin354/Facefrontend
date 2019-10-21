@@ -265,8 +265,11 @@ export default {
       if(id){
         this.$axios.post(`/sys/camerarecord?token=${cookieGet('token')}`,{cameraId:id})
         .then(res =>{
-        console.log('000-----------9999')
-        console.log(res)
+          this.$message({
+            message: "提交成功",
+            type: "success",
+            duration: 500,
+          }) 
         })
         .catch(() => {
         console.log("error")

@@ -1,6 +1,6 @@
 <template>
   <d2-container>
-    <!--
+    
     <el-row :gutter="20">
       <el-col :span="12">
         <div class="grid-content bg-purple">
@@ -43,7 +43,7 @@
         <div class="grid-content bg-purple">
           <el-card class="box-card">
             <el-divider></el-divider> 
-             <el-tag type="" effect="light">结构化视频处理结果进度</el-tag>
+              <el-tag type="" effect="light">结构化视频处理结果进度</el-tag>
             <el-button type="danger" @click="deleteRequest()" class="btn" size="mini">{{ $t('deleteBatch') }}</el-button>
             <el-progress :percentage="check_info.check_percentage"></el-progress>
             <el-divider><i class="el-icon-data-analysis"></i></el-divider>
@@ -138,9 +138,9 @@
         </div>
       </el-col>
     </el-row>
-  </el-dialog>-->
-  <div style="width:100%; height:99%; float:left; background-color:#F2F6FC; margin:2px;">
-      <!--左侧树形结构-->
+  </el-dialog>
+  <!-- <div style="width:100%; height:99%; float:left; background-color:#F2F6FC; margin:2px;">
+
       <div style="width:20%; height:100%;float:left;padding:3px;border:2px solid 	#FFFFFF">       
         <el-tree
             :data="streamList"
@@ -151,7 +151,7 @@
         </el-tree>
       </div>
       
-      <!--右侧整块-->
+
       <div style="width:80%; height:100%;float:left;padding:3px;border:2px solid 	#FFFFFF">
 
         <el-row :gutter="20">
@@ -214,7 +214,7 @@
         </el-row>  
       </div>
 
-  </div>     
+  </div>      -->
   </d2-container>
 </template>
 
