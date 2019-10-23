@@ -111,7 +111,6 @@ export default {
         this.$refs.addOrUpdate.dataForm.id = id
         this.$refs.addOrUpdate.init()
       })
-
     },
     // 删除
     deleteHandle (id) {

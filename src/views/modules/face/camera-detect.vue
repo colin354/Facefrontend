@@ -11,6 +11,8 @@
             </el-form-item>
             <el-form-item>
               <el-button @click="getDataList()">{{ $t('query') }}</el-button>
+              <el-button :type="button_type" @click="startDetect()">{{button_text}}</el-button>
+              <el-button type="danger" @click="stopDetect()">停止检测</el-button>
             </el-form-item>
           </el-form>
           <div class="grid-content bg-purple" >          
@@ -156,6 +158,9 @@ export default {
   mixins: [ mixinViewModule ],
   data () {
     return {
+      detect_state: '',
+      button_type: '',
+      button_text: '',
       mixinViewModuleOptions: {
         getDataListURL: `/sys/cameras?token=${cookieGet('token')}`,
         getDataListIsPage: true,
@@ -244,7 +249,23 @@ export default {
       return this.$refs.videoPlayer.player;
     }
   },
+  mounted() {
+    this.getState()
+  },
   methods: {
+    getState() {
+      this.$axios.get(`/sys/detect_ctl?token=${cookieGet('token')}`)
+      .then(res =>{
+      console.log('000-----11111------9999')
+      console.log(res.detect_state)
+      this.detect_state = res.detect_state
+      this.button_type = this.detect_state == 1 ? "success" : "primary"
+      this.button_text = this.detect_state == 1 ? "检测运行中" : "开始检测"
+      })
+      .catch(() => {
+      console.log("error")
+      })   
+    },
     handleClose(done) {
       this.$confirm('确认关闭？')
         .then(_ => {
@@ -252,7 +273,32 @@ export default {
         })
         .catch(_ => {});
     },
-
+    startDetect(val){
+      this.$axios.post(`/sys/detect_ctl?token=${cookieGet('token')}`,{detect_state:1})
+      .then(res =>{
+        this.$message({
+          message: "提交成功",
+          type: "success",
+          duration: 500,
+        })
+        this.getState()
+      })
+      .catch(() => {
+      })      
+    },
+    stopDetect(val){
+      this.$axios.post(`/sys/detect_ctl?token=${cookieGet('token')}`,{detect_state:0})
+      .then(res =>{
+        this.$message({
+          message: "提交成功",
+          type: "success",
+          duration: 500,
+        })
+        this.getState()
+      })
+      .catch(() => {
+      })      
+    },    
     //测试用添加视频按钮
     addVideo(id){
       this.videoForm.cameraId = id

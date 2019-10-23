@@ -60,13 +60,20 @@ export default [
     ]
   },
   {
+    title: '预警管理',
+    icon: 'bell-o',
+    children: [
+      { path: '/early-warning', title: '预警事件管理', icon: 'bell' },
+      { path: '/warning-query', title: '预警事件查询', icon: 'share-alt-square' }
+    ]
+  },
+  {
     title: '系统管理',
     icon: 'gear',
     children: [
       { path: '/user', title: '用户管理', icon: 'user' },
       { path: '/face-list', title: '人脸库管理', icon: 'address-card' },
       { path: '/camera', title: '摄像头管理', icon: 'video-camera' },
-      { path: '/early-warning', title: '预警事件管理', icon: 'bell' },
       { path: '/watermark', title: '水印设置', icon: 'bookmark' }
     ]
   },
@@ -85,6 +92,14 @@ export default [
     children: [
       { path: '/sensitive-database', title: '敏感数据库管理', icon: 'cube' },
       { path: '/whitelist-database', title: '白名单数据库管理', icon: 'cubes' }
+    ]
+  },
+  {
+    title: '大数据分析平台',
+    icon: 'linode',
+    children: [
+      { path: '/wea-analyse', title: '社区水电气分析', icon: 'tint' },
+      { path: '/camera-analyse', title: '摄像头数据分析', icon: 'file-video-o' }
     ]
   }
 ]

@@ -230,12 +230,21 @@ const frameIn = [
       {
         path: 'early-warning',
         name: 'early-warning',
-        component: _import('modules/face/early-warning'),
+        component: _import('modules/warning/early-warning'),
         meta: {
           auth: true,
           title: '预警事件管理'
         }
       },
+      {
+        path: 'warning-query',
+        name: 'warning-query',
+        component: _import('modules/warning/warning-query'),
+        meta: {
+          auth: true,
+          title: '预警事件查询'
+        }
+      },      
       {
         path: 'watermark',
         name: 'watermark',
@@ -280,7 +289,25 @@ const frameIn = [
           auth: true,
           title: '摄像头管理'
         }
-      }      
+      },
+      {
+        path: 'wea-analyse',
+        name: 'wea-analyse',
+        component: _import('modules/dataanalyse/wea-analyse'),
+        meta: {
+          auth: true,
+          title: '社区水电气分析'
+        }
+      },
+      {
+        path: 'camera-analyse',
+        name: 'camera-analyse',
+        component: _import('modules/dataanalyse/camera-analyse'),
+        meta: {
+          auth: true,
+          title: '摄像头数据分析'
+        }
+      }
     ]
   }
 ]
