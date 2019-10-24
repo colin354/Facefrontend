@@ -168,7 +168,6 @@ export default {
     facecollapse,
     personIdentification
   },
-  mixins: [ mixinViewModule ],
   data() {
     return {
       activeNames: ['1'],
@@ -183,12 +182,6 @@ export default {
       info: {
         streamname: 'null',
         facematch:[]
-      },
-      mixinViewModuleOptions: {
-        getDataListURL: `/sys/stream/page?token=${cookieGet('token')}`,
-        getDataListIsPage: true,
-        deleteURL: `/api/check?token=${cookieGet('token')}`,
-        deleteIsBatch: true
       },
       playerOptions: {
         // videojs options
@@ -222,9 +215,11 @@ export default {
       console.log(val);
     },    
     getStreamList(){
-      this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`,{params:{map_location:'GETLOCATION'}})
+      this.$axios.get(`/api/videoStruct/page?token=${cookieGet('token')}`,{params:{map_location:'GETLOCATION'}})
         .then(res => {
           this.streamList = res.streamList
+          console.log('666666666666')
+          console.log(res)
         })
         .catch(() => {
           console.log("error")
@@ -236,8 +231,8 @@ export default {
         var tempId = val.id  //只有单个id时才进行赋值
         console.log("uuuuuuuuuuu")
         console.log(val)
-        this.playerOptions.sources[0].src = val.streamUrl
         if(tempId){
+          this.playerOptions.sources[0].src = val.streamUrl
           this.getForPhoto(tempId)
         }
     },

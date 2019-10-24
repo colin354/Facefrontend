@@ -1,7 +1,67 @@
 <template>
   <d2-container>
-    <div style="width:100%; height:99%;float:left;background-color:#F2F6FC;margin:2px;">
-        <!--左半边-->
+
+<el-row :gutter="20">
+  <el-col :span="5">
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>摄像头列表</span>
+        <el-button style="float: right; padding: 3px 0" type="text">过滤</el-button>
+      </div>
+      <el-row>
+          <el-tree
+            :data="streamList"
+            :props="defaultProps"
+            accordion
+            @node-click="handleNodeClick">
+          </el-tree>  
+      </el-row>
+    </el-card>
+  </el-col>
+  <el-col :span="13">
+      <el-row>
+        <div class="grid-content bg-purple">
+          <v-liveplayer ref="myvideo" h5id='1' ></v-liveplayer>
+        </div>
+      </el-row>
+
+      <el-row>
+        <div class="grid-content bg-purple">
+        </div>
+      </el-row>
+  </el-col>
+  <el-col :span="6">
+    <el-row> 
+      <div class="grid-content bg-purple">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>人脸检测别结果</span>
+            <el-button style="float: right; padding: 3px 0" type="text">刷新</el-button>
+          </div>
+          <el-row>
+
+          </el-row>
+        </el-card>        
+      </div>
+    </el-row>
+
+    <el-row>
+      <div class="grid-content bg-purple">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>车牌检测别结果</span>
+            <el-button style="float: right; padding: 3px 0" type="text">刷新</el-button>
+          </div>
+          <el-row>
+
+          </el-row>
+        </el-card>           
+      </div>
+    </el-row>    
+  </el-col>
+</el-row>
+
+    <!-- <div style="width:100%; height:99%;float:left;background-color:#F2F6FC;margin:2px;">
         <div style="width:22%; height:100%;float:left;padding:3px;border:2px solid 	#FFFFFF">
           <el-tree
             :data="streamList"
@@ -11,13 +71,10 @@
             class="bg">
           </el-tree>       
         </div>
-        <!--right----右半-->
         <div class="right-side" style="width:78%; height:100%;float:left;background-color:#F2F6FC;padding:3px;border:2px solid #FFFFFF">
-
           <div class="one-row-first" style="height:55%; width:60%;float:left;background-color:#F2F6FC;padding:3px;border:2px solid #FFFFFF">
               <v-liveplayer ref="myvideo" h5id='1' ></v-liveplayer>
           </div>
-
           <div class="one-row-second" style="height:55%; width:40%;float:left;background-color:#F2F6FC;padding:3px;border:2px solid #FFFFFF">
               <p>人像抓拍记录</p>
               <el-image
@@ -44,7 +101,6 @@
                 style="width: 100px; height: 100px; padding:1px;"
                 src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
                 :fit="fit"></el-image>
-
           </div>
 
           <div class="two-row-second" style="height:45%; width:40%;float:left;background-color:#F2F6FC;padding:3px;border:2px solid	#FFFFFF">
@@ -56,7 +112,7 @@
           </div>
 
         </div>
-    </div>
+    </div> -->
 
   </d2-container>
 </template>
@@ -111,7 +167,6 @@ export default {
         console.log("-----mounted---res.list-")
         console.log(res)
         this.streamList = res.streamList
-        console.log(res.list) 
       })
       .catch(() => {
         console.log("error")
@@ -125,18 +180,21 @@ export default {
     }
   },
   methods:{
-      PlayVideo() {
+      PlayVideo(token) {
         console.log("---0---------------------0000")
         console.log(this.$refs.myvideo)
-        this.$refs.myvideo.PlayVideo("token111");
+        this.$refs.myvideo.PlayVideo(token);
       },
       handleNodeClick(val) {
         console.log("----点击事件-----00------")
         console.log(val)
         console.log("val中详细内容")
+        var tempId = val.id
+        if(tempId){
+          this.PlayVideo(val.token)
+        }
         // console.log(val.children[0].label)
         // console.log(val.children[1].label)
-        this.PlayVideo()
         // this.markerRefs = []
         // this.positions = val.streamlng
         // console.log("----点击事件-----marker对象-")
