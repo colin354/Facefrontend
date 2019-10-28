@@ -282,6 +282,15 @@ const frameIn = [
         }
       },
       {
+        path: 'testws',
+        name: 'testws',
+        component: _import('modules/research-center/testws'),
+        meta: {
+          auth: true,
+          title: '测试websocket'
+        }
+      },
+      {
         path: 'camera-detect',
         name: 'camera-detect',
         component: _import('modules/face/camera-detect'),

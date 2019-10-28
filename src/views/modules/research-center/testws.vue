@@ -6,7 +6,6 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>摄像头列表</span>
-        <el-button style="float: right; padding: 3px 0" type="text">过滤</el-button>
       </div>
       <el-row>
           <el-tree
@@ -27,6 +26,10 @@
 
       <el-row>
         <div class="grid-content bg-purple">
+            <!-- <el-button type="primary" @click="initSocket">建立websocket连接</el-button>
+            <el-button type="primary" @click="webSocketOnMessage">发送消息</el-button>
+            <el-button type="primary" @click="webSocketOnClose">关闭</el-button> -->
+          <p>{{ ws_data.text }}</p>
         </div>
       </el-row>
   </el-col>
@@ -39,7 +42,11 @@
             <el-button style="float: right; padding: 3px 0" type="text">筛选</el-button>
           </div>
           <el-row>
-
+            <el-image
+              style="width: 100px; height: 100px"
+              :src="ws_data.imgurl"
+              :fit="fit">
+            </el-image>
           </el-row>
         </el-card>        
       </div>
@@ -60,60 +67,6 @@
     </el-row>    
   </el-col>
 </el-row>
-
-    <!-- <div style="width:100%; height:99%;float:left;background-color:#F2F6FC;margin:2px;">
-        <div style="width:22%; height:100%;float:left;padding:3px;border:2px solid 	#FFFFFF">
-          <el-tree
-            :data="streamList"
-            :props="defaultProps"
-            accordion
-            @node-click="handleNodeClick"
-            class="bg">
-          </el-tree>       
-        </div>
-        <div class="right-side" style="width:78%; height:100%;float:left;background-color:#F2F6FC;padding:3px;border:2px solid #FFFFFF">
-          <div class="one-row-first" style="height:55%; width:60%;float:left;background-color:#F2F6FC;padding:3px;border:2px solid #FFFFFF">
-              <v-liveplayer ref="myvideo" h5id='1' ></v-liveplayer>
-          </div>
-          <div class="one-row-second" style="height:55%; width:40%;float:left;background-color:#F2F6FC;padding:3px;border:2px solid #FFFFFF">
-              <p>人像抓拍记录</p>
-              <el-image
-                v-for="(item,index) in url" :key="index" 
-                style="width: 100px; height: 100px; padding:1px;"
-                :src="item"
-                :fit="fit"></el-image>
-              &nbsp;&nbsp;&nbsp;&nbsp;
-              <p>车牌抓拍记录</p>
-              <el-image
-                v-for="(item,index) in car_url" :key="index" 
-                style="width: 50px; height: 50px; padding:1px;"
-                :src="item"
-                :fit="fit"></el-image> 
-          </div>
-
-          <div class="two-row-first" style="height:45%; width:60%;float:left;padding:3px;background-color:#F2F6FC;border:2px solid #FFFFFF">
-              <p>人像匹配列表</p>
-              <el-image
-                style="width: 100px; height: 100px; padding:1px;"
-                src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-                :fit="fit"></el-image>
-              <el-image
-                style="width: 100px; height: 100px; padding:1px;"
-                src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-                :fit="fit"></el-image>
-          </div>
-
-          <div class="two-row-second" style="height:45%; width:40%;float:left;background-color:#F2F6FC;padding:3px;border:2px solid	#FFFFFF">
-              <p>车牌匹配列表</p>
-              <el-image
-                style="width: 100px; height: 100px; padding:1px;"
-                src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-                :fit="fit"></el-image>
-          </div>
-
-        </div>
-    </div> -->
-
   </d2-container>
 </template>
 
@@ -131,37 +84,21 @@ export default {
   }, 
   data(){
     return{
-      // mixinViewModuleOptions: {
-      //   getDataListURL: `/sys/stream/page?token=${cookieGet('token')}`,
-      //   getDataListIsPage: true,
-      //   deleteURL: `/sys/stream?token=${cookieGet('token')}`,
-      //   deleteIsBatch: true
-      // },
-      url:[
-        "http://10.2.155.139:8888/media/image/10/000063_0.jpg",
-        "http://10.2.155.139:8888/media/image/10/000063_11.jpg",
-        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-        ],
-      car_url:[
-        "http://10.2.155.139:8888/media/card_image/card1.jpg",
-        "http://10.2.155.139:8888/media/card_image/card2.jpg",
-        "http://10.2.155.139:8888/media/card_image/card3.jpg",
-        "http://10.2.155.139:8888/media/card_image/card4.jpg"
-      ],
+      webSocket: null,
+      url: 'ws://10.2.155.139:9988/ws/chat/',
       streamList:[],
       defaultProps: {}, 
+      ws_data: {
+        text: '',
+        imgurl: ''
+      },
       dataForm:{
         map_location:'GETLOCATION'
       },  
     }
   },
   mounted(){     //本可以共用view-module.js中的get请求,但界面必须手动刷新才能发送get请求,所以在本组件重新写了get请求
+    this.initSocket('token_ws')
     this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`,{params:{map_location:'GETLOCATION'}})
       .then(res => {
         console.log("-----mounted---res.list-")
@@ -172,6 +109,9 @@ export default {
         console.log("error")
       })
   },
+  destroyed() {
+    this.webSocket.close()
+  },  
   computed:{
     count(){
         return this.$store.state.rtc;
@@ -180,27 +120,63 @@ export default {
     }
   },
   methods:{
-      PlayVideo(token) {
-        console.log("---0---------------------0000")
-        console.log(this.$refs.myvideo)
-        this.$refs.myvideo.PlayVideo(token);
-      },
-      handleNodeClick(val) {
-        console.log("----点击事件-----00------")
-        console.log(val)
-        console.log("val中详细内容")
-        var tempId = val.id
-        if(tempId){
-          this.PlayVideo(val.token)
+    initSocket(token) {
+      let ws_url = `${this.url}` + token + '/'
+      this.webSocket = new WebSocket(ws_url)
+      this.webSocket.onopen = this.webSocketOnOpen
+      this.webSocket.onclose = this.webSocketOnClose
+      this.webSocket.onmessage = this.webSocketOnMessage
+      this.webSocket.onerror = this.webSocketOnError
+    },
+    // 建立连接成功后的状态
+    webSocketOnOpen() {
+      console.log('websocket连接成功');
+    },
+    // 获取到后台消息的事件，操作数据的代码在onmessage中书写
+    webSocketOnMessage(res) {
+      // res就是后台实时传过来的数据
+      console.log('this is for ----------')
+      let resData = JSON.parse(res.data)
+      console.log(resData.imgurl)
+      this.ws_data.text = resData.num
+      this.ws_data.imgurl = resData.imgurl
+      //给后台发送数据
+    },
+    // 关闭连接
+    webSocketOnClose(e) {
+      console.log('websocket连接已关闭',e);
+    },
+    //连接失败的事件
+    webSocketOnError(res) {
+    console.log('websocket连接失败');
+    // 打印失败的数据
+    console.log(res);
+    },
+    
+    PlayVideo(token) {
+      console.log("---0---------------------0000")
+      console.log(this.$refs.myvideo)
+      this.$refs.myvideo.PlayVideo(token);
+    },
+    handleNodeClick(val) {
+      console.log("----点击事件-----00------")
+      var tempId = val.id
+      if(tempId){
+        this.PlayVideo(val.token)
+        // this.initSocket(val.token)
+        if(this.webSocket) {
+          this.webSocket.close()
         }
-        // console.log(val.children[0].label)
-        // console.log(val.children[1].label)
-        // this.markerRefs = []
-        // this.positions = val.streamlng
-        // console.log("----点击事件-----marker对象-")
-        // this.reflash = !this.reflash
-      },
-      
+        this.initSocket(val.token)
+        this.$axios.post(`/sys/camerareal?token=${cookieGet('token')}`,{c_token:val.token,c_id:val.id})
+          .then(res => {
+
+          })
+          .catch(() => {
+            console.log("error")
+          })
+      }
+    },
     }
 }
 </script>
@@ -282,41 +258,6 @@ export default {
       border-left: 0px !important;
   }
 
-  #videoPanel>div:nth-last-child(2) {
-      border-bottom: 1px solid rgb(22, 22, 22) !important;
-  }
-
-
-  #videoPanel:-webkit-full-screen {
-    background-color: rgb(73, 74, 75) !important;
-    display: block;
-    width: 100%;
-    height: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
-    margin-bottom: auto;
-    top: 0;
-    left: 0;
-    padding: 0px;
-    box-shadow: 0px 0px 50px #000;
-  }
-
-
-  #videoPanel:-moz-full-screen {
-    background-color: rgb(73, 74, 75) !important;
-    display: block;
-    width: 100%;
-    height: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
-    margin-bottom: auto;
-    top: 0;
-    left: 0;
-    padding: 0px;
-    box-shadow: 0px 0px 50px #000;
-  }
 
   div[name="flex"]:hover {
       /*background-color: #3c8dbc;*/

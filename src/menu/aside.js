@@ -40,7 +40,8 @@ export default [
       { path: '/realTime', title: '人车情报研判中心', icon: 'camera' },
       { path: '/stream-list', title: '历史监控查询', icon: 'magic' },
       // { path: '/match_search', title: '结构化监控查询', icon: 'gg-circle' },
-      { path: '/structured_video', title: '视频结构化展示', icon: 'gg-circle' }
+      { path: '/structured_video', title: '视频结构化展示', icon: 'gg-circle' },
+      { path: '/testws', title: 'websocket测试', icon: 'camera' }
       // { path: '/face-search-by-face', title: '通过位置查询视频', icon: 'yelp' },
     ]
   },
