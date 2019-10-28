@@ -29,13 +29,14 @@
               <p>车牌抓拍记录</p>
               <el-image
                 v-for="(item,index) in car_url" :key="index" 
-                style="width: 50px; height: 50px; padding:1px;"
+                style="width: 100px; height: 50px; padding:1px;"
                 :src="item"
                 :fit="fit"></el-image> 
           </div>
 
           <div class="two-row-first" style="height:45%; width:60%;float:left;padding:3px;background-color:#F2F6FC;border:2px solid #FFFFFF">
               <p>人像匹配列表</p>
+              <!-- <el-button type="primary" @click="downloadExcel">导出表格</el-button> -->
               <el-image
                 style="width: 100px; height: 100px; padding:1px;"
                 src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
@@ -44,6 +45,16 @@
                 style="width: 100px; height: 100px; padding:1px;"
                 src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
                 :fit="fit"></el-image>
+                <!-- 测试表格下载 -->
+                <!-- <el-table 
+                  :data="tableData"
+                  border
+                  style="width: 100%">
+                  <el-table-column type="selection" header-align="center" align="center" width="50"/>
+                  <el-table-column prop="date" label="日期" width="100"></el-table-column>
+                  <el-table-column prop="name" label="姓名" width="140"></el-table-column>
+                  <el-table-column prop="address" label="地址"></el-table-column>
+                </el-table> -->
 
           </div>
 
@@ -81,10 +92,26 @@ export default {
       //   deleteURL: `/sys/stream?token=${cookieGet('token')}`,
       //   deleteIsBatch: true
       // },
+      tableData: [{
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄'
+        }],
       url:[
         "http://10.2.155.139:8888/media/image/10/000063_0.jpg",
         "http://10.2.155.139:8888/media/image/10/000063_11.jpg",
-        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
         "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
         "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
         "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
@@ -134,14 +161,46 @@ export default {
         console.log("----点击事件-----00------")
         console.log(val)
         console.log("val中详细内容")
-        // console.log(val.children[0].label)
-        // console.log(val.children[1].label)
         this.PlayVideo()
-        // this.markerRefs = []
-        // this.positions = val.streamlng
-        // console.log("----点击事件-----marker对象-")
-        // this.reflash = !this.reflash
       },
+
+       //列表下载
+      downloadExcel() {
+        this.$confirm('确定下载列表文件?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.excelData = this.selectData //你要导出的数据list。
+          this.export2Excel()
+        }).catch(() => {
+
+        });
+      },
+     //数据写入excel
+      export2Excel() {
+        var that = this;
+        require.ensure([], () => {
+          
+          const { export_json_to_excel } = require('../../../excel/export2Excel'); //这里必须使用绝对路径，使用@/+存放export2Excel的路径
+          // const tHeader = ['商品名称','商品货号','售价','库存','销量','分享',]; // 导出的表头名信息
+          const tHeader = ['日期','姓名','地址',];
+          console.log("确定后执行不-------")
+          // const filterVal = ['name','number', 'salePrice','stocknums','salesnums','sharenums',]; // 导出的表头字段名，需要导出表格字段名
+          const filterVal = ['date','name','address'];
+          const list = this.tableData;
+          const data = that.formatJson(filterVal, list);
+          export_json_to_excel(tHeader, data, '下载数据excel');// 导出的表格名称，根据需要自己命名
+          console.log("执行完了-------")
+        })
+      },
+      //格式转换，直接复制即可
+      formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
+      },
+
+
+
       
     }
 }

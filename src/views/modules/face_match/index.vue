@@ -201,6 +201,9 @@ export default {
     getDatas(){//先发送get请求,
 
       this.showA = true
+      if( this.dataForm.faceid == null){
+        this.dataForm.faceid = 0
+      }
       var url = `/api/check?token=${cookieGet('token')}` + '&faceid=' + this.dataForm.faceid
       this.$axios.get(url)
       .then(res=> {
