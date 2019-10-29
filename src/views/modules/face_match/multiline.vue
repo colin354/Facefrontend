@@ -175,7 +175,7 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
                     this.dataList = []
                     this.temp = res.list
                     this.dataList = res.list
-                    console.log(this.temp)                  
+                    console.log(this.dataList)                  
                     console.log('可以正常打印不-------')
                 }).catch(error =>{
                     console.log(error)
