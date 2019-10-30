@@ -29,7 +29,16 @@
             <!-- <el-button type="primary" @click="initSocket">建立websocket连接</el-button>
             <el-button type="primary" @click="webSocketOnMessage">发送消息</el-button>
             <el-button type="primary" @click="webSocketOnClose">关闭</el-button> -->
-          <p>{{ ws_data.text }}</p>
+            <el-image
+              style="width: 100px; height: 100px"
+              :src="ws_data.faceurl"
+              fit="fit">
+            </el-image>
+            <!-- <el-image
+              style="width: 100px; height: 100px"
+              :src="ws_data.imgurl"
+              fit="fit">
+            </el-image> -->
         </div>
       </el-row>
   </el-col>
@@ -45,7 +54,7 @@
             <el-image
               style="width: 100px; height: 100px"
               :src="ws_data.imgurl"
-              :fit="fit">
+              fit="fit">
             </el-image>
           </el-row>
         </el-card>        
@@ -137,9 +146,17 @@ export default {
       // res就是后台实时传过来的数据
       console.log('this is for ----------')
       let resData = JSON.parse(res.data)
-      console.log(resData.imgurl)
+      console.log(resData)
       this.ws_data.text = resData.num
       this.ws_data.imgurl = resData.imgurl
+      this.ws_data.faceurl = resData.faceurl
+      // let msg = `<el-image style="width: 100px; height: 100px" :src="`+this.ws_data.imgurl+`"fit="fit"></el-image>`
+      // console.log(msg)
+      // this.$notify({
+      //   title:'new pic',
+      //   dangerouslyUseHTMLString: true,
+      //   message: msg
+      // })
       //给后台发送数据
     },
     // 关闭连接
@@ -167,10 +184,11 @@ export default {
         if(this.webSocket) {
           this.webSocket.close()
         }
+        this.ws_data.imgurl = ''
+        this.ws_data.faceurl = ''
         this.initSocket(val.token)
         this.$axios.post(`/sys/camerareal?token=${cookieGet('token')}`,{c_token:val.token,c_id:val.id})
           .then(res => {
-
           })
           .catch(() => {
             console.log("error")

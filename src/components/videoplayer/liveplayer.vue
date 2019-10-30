@@ -74,7 +74,7 @@ export default {
             };
 
             this.h5handler = new H5sPlayerWS(conf);
-            // this.h5handler = new H5sPlayerRTC(conf);
+            //this.h5handler = new H5sPlayerRTC(conf);
 
             this.h5handler.connect();
         },
