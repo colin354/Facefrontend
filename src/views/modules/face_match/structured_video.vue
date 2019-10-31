@@ -50,7 +50,6 @@
             :facematch="o"
             :streamtime="info.streamtime"
             ></facecompile> -->
-            <!-- <facecollapse :mach_info="info"></facecollapse> -->
           <el-collapse v-model="activeNames" @change="handleChange" accordion>
             <el-collapse-item v-for="(o, index) in info.facematch" :key="index" :title="o.facename" :name="o.key" >
               <facecompile :facemark="o.marks" :facematch="o" :streamtime="info.streamtime"></facecompile>
@@ -155,7 +154,6 @@ import '@/views/modules/face_match/src/custom-theme.css'
 import faceimg from './face-img'
 import personIdentification from './persion-identification'
 import facecompile from './face-compile'
-import facecollapse from './face-collapse'
 import 'vuetify/dist/vuetify.min.css'
 import { timeout } from 'q';
 
@@ -165,7 +163,6 @@ export default {
     videoPlayer,
     faceimg,
     facecompile,
-    facecollapse,
     personIdentification
   },
   data() {
