@@ -274,8 +274,8 @@ export default {
       this.visible = true
       console.log('----这是我要的数据----')
       console.log(this.dataList) 
-      //url = `${process.env.VUE_APP_API}/`+url
-      url = 'http://10.2.155.139:8888'+url
+      url = `${process.env.VUE_APP_API}/`+url
+      //url = 'http://10.2.155.139:8888'+url
       this.playerOptions.sources[0].src = url
       this.$axios
       .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:fid,streamid:sid}})
