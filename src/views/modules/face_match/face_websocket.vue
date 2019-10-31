@@ -14,7 +14,7 @@ export default {
   data() {
     return {
       webSocket: null,
-      url: 'ws://10.2.155.139:8888/ws/chat/',
+      url: 'ws://221.231.13.230:8888/ws/chat/',
       // url: 'ws://192.168.4.14:8000/ws/chat/',
       types: 'test'
     }
