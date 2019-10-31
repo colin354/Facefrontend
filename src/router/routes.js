@@ -1,3 +1,4 @@
+import frame from './modules/frame'
 import layoutHeaderAside from '@/layout/header-aside'
 
 // 由于懒加载页面太多的话会造成webpack热更新太慢，所以开发环境不使用懒加载，只有生产环境使用懒加载
@@ -163,7 +164,7 @@ const frameIn = [
           auth: true,
           title: ' 视频结构化展示'
         }
-      },      
+      },
       // {
       //   path: 'face-websocket',
       //   name: 'face-websocket',
@@ -244,7 +245,7 @@ const frameIn = [
           auth: true,
           title: '预警事件查询'
         }
-      },      
+      },
       {
         path: 'watermark',
         name: 'watermark',
@@ -318,7 +319,8 @@ const frameIn = [
         }
       }
     ]
-  }
+  },
+  frame
 ]
 
 /**

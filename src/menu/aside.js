@@ -1,3 +1,4 @@
+import demoFrame from './modules/demo-frame'
 // 菜单 侧边栏
 export default [
   { path: '/index', title: '首页', icon: 'home' },
@@ -102,5 +103,6 @@ export default [
       { path: '/wea-analyse', title: '社区水电气分析', icon: 'tint' },
       { path: '/camera-analyse', title: '摄像头数据分析', icon: 'file-video-o' }
     ]
-  }
+  },
+  demoFrame
 ]
