@@ -192,8 +192,8 @@ export default {
         sources: [
           {
             type: "video/mp4",
-            //src: "http://10.2.155.139:8888/media/test_video/jwc.mp4"
-            src: "http://10.2.155.139:8888/record_media/token111/2019-10-18TZ08/11-07-50/token111-d23eb70a-eff5-4ffb-a8ce-da7c0a684e8d.mp4"
+            //src: "http://221.231.13.230:10080/media/test_video/jwc.mp4"
+            src: "http://221.231.13.230:10080/record_media/token111/2019-10-18TZ08/11-07-50/token111-d23eb70a-eff5-4ffb-a8ce-da7c0a684e8d.mp4"
           }
         ],
         poster: "",

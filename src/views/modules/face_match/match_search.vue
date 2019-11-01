@@ -282,7 +282,7 @@ export default {
         sources: [
           {
             type: "video/mp4",
-            src: "http://10.2.155.139:8888/media/test_video/jwc.mp4"
+            src: "http://221.231.13.230:10080/media/test_video/jwc.mp4"
           }
         ],
         poster: "",

@@ -7,16 +7,27 @@
             <div class="grid-content bg-purple">
               <el-card class="box-card">
                 <el-form :inline="true" size="mini" :model="dataForm" @submit.native.prevent>
-                  <el-form-item>
+                  <!-- <el-form-item>
                     <el-input v-model.number="dataForm.faceid" :placeholder="$t('check.faceid')" 
                     @keyup.enter.native="getDataList()" clearable/>
-                  </el-form-item>
+                  </el-form-item> -->
                   <el-form-item>
-                    <el-button @click="getDatas()">{{ $t('query')}}</el-button>
+                    <!-- <el-button @click="getDatas()">{{ $t('query')}}</el-button> -->
                     <el-button @click="getDurationGPSData()" v-if="showA">地图轨迹</el-button>
+                    <!-- <el-button @click="getDataList()" v-if="showAllVisible">显示所有</el-button> -->
                   </el-form-item>
                 </el-form>
-                <facecarsousel :facelist="facelist"></facecarsousel>
+                <!--以下是face-carsousel内容-->
+                <el-carousel :interval="4000" type="card" height="150px">
+                  <el-carousel-item v-for="(item, index) in facelist" :key="index">
+                    <el-card :body-style="{ padding: '0px'}" >
+                      <span v-if="showId" @click="getDatas(item.user_id)">id:{{item.user_id}}</span>
+                      <span v-if="showUserId_Id" @click="getDatas(item.user_id)">id:{{item.userid_id}}</span>
+                      <img :src="item.imgurl" style="width:100%" @click="getDatas(item.user_id)">
+                    </el-card>
+                  </el-carousel-item>
+                </el-carousel>
+                <!-- <facecarsousel :facelist="facelist"></facecarsousel> -->
               </el-card>
             </div>
           </el-col>
@@ -133,6 +144,9 @@ export default {
     return {
       total: 0,
       showA: false,
+      showAllVisible: false,
+      showId:true,
+      showUserId_Id:false,
       temp:[],
       getLocations:[],
       dataList:[],
@@ -198,10 +212,10 @@ export default {
           })
       });
     },
-    getDatas(){//先发送get请求,
-
+    getDatas(user_id){//先发送get请求,
       this.showA = true
-      var url = `/api/check?token=${cookieGet('token')}` + '&faceid=' + this.dataForm.faceid
+      // var url = `/api/check?token=${cookieGet('token')}` + '&faceid=' + this.dataForm.faceid
+      var url = `/api/check?token=${cookieGet('token')}` + '&faceid=' + user_id
       this.$axios.get(url)
       .then(res=> {
         console.log("---0000000000------------+++++++++")
@@ -216,12 +230,15 @@ export default {
       .catch(error =>{
           console.log(error)
       })
+      this.showUserId_Id = true
+      this.showId = false
       // this.getDurationGPSData()
     },
-    //高德地图
 
+    //高德地图
     getDurationGPSData(){//再画出同一个人的多条轨迹   
     //画出一个人的轨迹
+    this.showAllVisible = true
     this.map = new AMap.Map('amap-show', {
                     // center: [120.094163,33.313109],  //汇文公馆
                     center:[120.095913,33.302156],
@@ -275,7 +292,7 @@ export default {
       console.log('----这是我要的数据----')
       console.log(this.dataList) 
       //url = `${process.env.VUE_APP_API}/`+url
-      url = 'http://10.2.155.139:8888'+url
+      url = 'http://221.231.13.230:10080'+url
       this.playerOptions.sources[0].src = url
       this.$axios
       .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:fid,streamid:sid}})
