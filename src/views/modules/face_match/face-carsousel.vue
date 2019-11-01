@@ -11,6 +11,8 @@
   </el-carousel>
 </template>
 
+
+
 <script>
 export default {
   props: {
