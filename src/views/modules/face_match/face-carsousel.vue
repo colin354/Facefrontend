@@ -2,7 +2,7 @@
   <el-carousel :interval="4000" type="card" height="150px">
     <el-carousel-item v-for="(item, index) in facelist" :key="index">
       <el-card :body-style="{ padding: '0px'}" >
-        <span>id:{{item.user_id}}</span>
+        <!-- <span>id:{{item.user_id}}</span> -->
         <!-- <span class="name">{{item.username}}</span> -->
         <img :src="item.imgurl" style="width:100%">
         <!-- <img :src="item.imgurl" style="width:50% "> -->
