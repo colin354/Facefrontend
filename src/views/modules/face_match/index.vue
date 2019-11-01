@@ -17,7 +17,6 @@
                     <!-- <el-button @click="getDataList()" v-if="showAllVisible">显示所有</el-button> -->
                   </el-form-item>
                 </el-form>
-                <!--以下是face-carsousel内容-->
                 <el-carousel :interval="4000" type="card" height="150px">
                   <el-carousel-item v-for="(item, index) in facelist" :key="index">
                     <el-card :body-style="{ padding: '0px'}" >
