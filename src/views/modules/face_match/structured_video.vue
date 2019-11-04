@@ -43,25 +43,34 @@
       </el-row>
 
       <el-row>
-
           <!-- <facecompile
             v-for="(o, index) in info.facematch" :key="index"
             :facemark="o.marks"
             :facematch="o"
             :streamtime="info.streamtime"
             ></facecompile> -->
-          <el-collapse v-model="activeNames" @change="handleChange" accordion>
+
+          <!-- <el-collapse  v-model="activeNames" @change="handleChange" accordion >
             <el-collapse-item v-for="(o, index) in info.facematch" :key="index" :title="o.facename" :name="o.key" >
               <facecompile :facemark="o.marks" :facematch="o" :streamtime="info.streamtime"></facecompile>
             </el-collapse-item>
-          </el-collapse>
-
+          </el-collapse> -->
+        <el-card class="box-card">
+          <div ref="wrapper" class="demo-bs-wrapper">
+            <div>
+              <div v-for="(o, index) in info.facematch" :key="index" class="demo-bs-item">
+                <facecompile :facemark="o.marks" :facematch="o" :streamtime="info.streamtime"></facecompile>
+              </div>
+            </div>
+          </div>
+        </el-card>      
       </el-row>
   </el-col>
   <el-col :span="5">
     <el-row> 
       <div class="grid-content bg-purple">
-        <personIdentification :personList="personList"></personIdentification>
+        <personIdentification :personarr="personarr"></personIdentification>
+        <!-- <faceimg :imgarr="personarr"></faceimg> -->
       </div>
     </el-row>
 
@@ -155,7 +164,8 @@ import faceimg from './face-img'
 import personIdentification from './persion-identification'
 import facecompile from './face-compile'
 import 'vuetify/dist/vuetify.min.css'
-import { timeout } from 'q';
+import { timeout } from 'q'
+import BScroll from 'better-scroll'
 
 export default {
   name: "page3",
@@ -167,6 +177,7 @@ export default {
   },
   data() {
     return {
+      BS: null,
       activeNames: ['1'],
       streamList:[],
       defaultProps: {id:''}, 
@@ -174,6 +185,7 @@ export default {
       visible: false,
       playertime: 0,
       imgarr: [],
+      personarr: [],
       matchnum: 0,
       video_per: 0,
       info: {
@@ -190,8 +202,6 @@ export default {
           {
             type: "video/mp4",
             src:""
-            //src: "http://10.2.155.139:8888/media/test_video/jwc.mp4"
-            //src: "http://10.2.155.139:8888/record_media/token111/2019-10-18TZ08/11-07-50/token111-d23eb70a-eff5-4ffb-a8ce-da7c0a684e8d.mp4"
           }
         ],
         poster: "",
@@ -200,17 +210,34 @@ export default {
     };
   },
   mounted() {
-    console.log('777777777')
     this.getStreamList()
   },
+  beforeDestroy () {
+    this.scrollDestroy()
+  },  
   computed: {
     player() {
       return this.$refs.videoPlayer.player;
     }
   }, 
   methods: {
+    scrollInit () {
+      this.BS = new BScroll(this.$refs.wrapper, {
+        mouseWheel: true,
+        click: true,
+        scrollbar: {
+          fade: true,
+          interactive: false
+        }
+      })
+    },
+    scrollDestroy () {
+      if (this.BS) {
+        this.BS.destroy()
+      }
+    },
     handleChange(val) {
-      console.log(val);
+      this.scrollInit()
     },    
     getStreamList(){
       this.$axios.get(`/api/videoStruct/page?token=${cookieGet('token')}`,{params:{map_location:'GETLOCATION'}})
@@ -224,11 +251,11 @@ export default {
         })
     },
     handleNodeClick(val) {
-        this.personList = []
+        //this.personList = []
         this.info.facematch = []
         var tempId = val.id  //只有单个id时才进行赋值
-        console.log("uuuuuuuuuuu")
-        console.log(val)
+
+        this.scrollInit()
         if(tempId){
           this.playerOptions.sources[0].src = val.streamUrl
           this.getForPhoto(tempId)
@@ -237,65 +264,13 @@ export default {
     getForPhoto(id){
       this.$axios.get(`/api/check?token=${cookieGet('token')}&streamid=${id}`)
         .then(res=> {
-          this.personList = []
-          
-          for(var i=0; i<res.list_reid.length; i++){
-            console.log("-------person----------")
-            console.log(res.list_reid[i])
-            this.personList[i] = res.list_reid[i]
-            console.log("------person-----------")
-          }
-          console.log(this.personList)
           this.playerOptions.custum = res.list
           this.matchnum = res.count
           this.info = res.info
-          console.log("-----uuuuuuuuuuu-----")
+          console.log('33333333333333')
           console.log(this.info)
-          console.log("-----uuuuu11uuuuuu-----")
         })
         .catch(error =>{
-          console.log('yingyingyingyingying')
-          console.log(error)
-        }) 
-    },
-    deleteRequest(){
-      this.$axios.delete(`/api/check?token=${cookieGet('token')}`)
-      .then(res =>{
-        this.$message({
-                message: this.$t("prompt.success"),
-                type: "success",
-                duration: 500,
-                })
-        this.getDataList()
-            })
-      .catch(error =>{
-          console.log(error)
-      }) 
-    },
-
-    broadcast(id,streamurl){
-      this.visible = true
-      this.playerOptions.sources[0].src = streamurl
-      this.$axios.get(`/api/check?token=${cookieGet('token')}&streamid=${id}`)
-        .then(res=> {
-          this.personList = []
-          console.log("-------0------9090--------------------11111111111")
-          console.log(res)
-          console.log(res.list_reid)
-          for(var i=0; i<res.list_reid.length; i++){
-            console.log("-------person----------")
-            console.log(res.list_reid[i])
-            this.personList[i] = res.list_reid[i]
-            console.log("------person-----------")
-          }
-          console.log(this.personList)
-          console.log("这这这这这这这这这这这这这")
-          this.playerOptions.custum = res.list
-          this.matchnum = res.count
-          this.info = res.info
-        })
-        .catch(error =>{
-          console.log('yingyingyingyingying')
           console.log(error)
         }) 
     },
@@ -311,7 +286,6 @@ export default {
     // ...player event
     onPlayerTimeupdate(player) {
       console.log('pplayer'+player)
-      // console.log(player.currentTime())
       this.playertime = player.currentTime()
     },
     onPlayerEnded(player) {
@@ -343,6 +317,7 @@ export default {
       let acustum = this.playerOptions.custum;
       let aa = this;
       this.imgarr=[]
+      this.personarr=[]
       player.markers({
         markerStyle: {
             'width':'9px',
@@ -350,10 +325,13 @@ export default {
             'background-color': 'orange'
         },
         onMarkerReached: function(marker,index){
-          console.log("-------marker--------")
+          console.log("-------marker--111------")
           console.log(marker)
-          console.log(marker.imgList)
+          console.log(marker.personList.length)
           aa.imgarr = marker.imgList
+          if(marker.personList.length != 0){
+            aa.personarr = marker.personList
+          }
         },
           markers: acustum  //默认标记点信息给markers
       })   
@@ -453,4 +431,19 @@ export default {
   .btn {
     float:right;
   }
+  .demo-bs-wrapper {
+    height: 255px;
+    position: relative;
+    overflow: hidden;
+    border: 0px solid $color-border-1;
+    border-radius: 4px;
+    .demo-bs-item {
+      line-height: 40px;
+      padding-left: 10px;
+      border-bottom: 1px solid $color-border-4;
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }  
 </style>

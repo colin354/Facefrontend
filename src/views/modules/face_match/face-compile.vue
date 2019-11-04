@@ -1,25 +1,32 @@
 <template>
   <el-row :gutter="0">
-    <el-row :gutter="13">
-      <el-col :span="4">
-        <img :src=facematch.faceurl class="faceimage">
-      </el-col>
-      <el-col :span="4"  v-for="item in src" :key="item.time">
-        <div class="imgblock">
-          <el-image :src="item.imgurl" class="facematchimage">
-            <div slot="error" class="image-slot">
-              <i class="el-icon-picture-outline">点击mark点，查看视频截图图片</i>
-            </div>
-            <div slot="placeholder" class="image-slot">
-              加载中<span class="dot">...</span>
-            </div>
-          </el-image>
-        </div>
-        <span style="font-size:12px;">{{$t('check.threshold')}}:{{item.threshold}}</span>
-      </el-col>
-    </el-row>
+
     <el-row :gutter="0">
-      <el-col :span="3">
+      <el-col :span="4">
+        <el-image :src=facematch.faceurl fit="contain" style="width: 100px; height: 100px"></el-image>
+      </el-col>
+      <el-col :span="18" :gutter="0">
+        <el-col :span="3.6" v-for="item in src" :key="item.time">
+          <!-- <div class="imgblock"> -->
+            <!-- <span class="demonstration">{{$t('check.threshold')}}:{{item.threshold}}</span> -->
+            <el-image :src="item.imgurl" fit="contain" style="width: 100px; height: 100px">
+              <div slot="error" class="image-slot">
+                <i class="el-icon-picture-outline">点击mark点，查看视频截图图片</i>
+              </div>
+              <div slot="placeholder" class="image-slot">
+                加载中<span class="dot">...</span>
+              </div>
+            </el-image>
+          <!-- </div> -->
+        </el-col>
+      </el-col>
+      <el-col :span="2">
+        <el-image :src=facematch.person_url fit="contain" style="width: 90px; height: 100px"></el-image>
+      </el-col>      
+    </el-row>
+
+    <el-row>
+      <el-col :span="4">
         <span>匹配次数:{{facematch.facecount}}</span>
       </el-col>
       <el-col :span="20">
@@ -112,13 +119,13 @@ export default {
     display: block;
   }
   .facematchimage {
-    width: 100%;
-    height: 100%;
-    display: block;
+    width: 50%;
+    height: 50%;
   }
   .imgblock {
-    height: 110px;
-    width: 130px;
+    height: 100%;
+    width: 100%;
+    display: block;
   }
   .slider {
     color: #fff000

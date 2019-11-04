@@ -6,7 +6,7 @@
   </div>
   <el-row>
     <el-row v-for="(o, index) in imgarr" :key="index" :offset="index > 0 ? 1 : 0">
-      <el-col :span="24">
+      <el-col :span="12">
           <img :src=o.imgurl class="faceimage">
           <span style="font-size:12px;">{{$t('check.threshold')}}:{{o.threshold}}</span>
       </el-col>

@@ -5,17 +5,18 @@
     <el-button style="float: right; padding: 3px 0" type="text">刷新</el-button>
   </div>
   <el-row>
-    <el-row v-for="(o, index) in personList" :key="index" :offset="index > 0 ? 1 : 0">
-      <el-col :span="8">
-        <div class="box-card" v-for="(item,index) in o.imgList" :key="index">
-            <!-- <el-card class="box-card"> -->
-            <!-- <el-card class="box-card" :span ="24"> -->
-              <img :src=item.imgurl class="image">
-            <!-- </el-card> -->
-        </div>
-          <!-- <span style="font-size:12px;">{{$t('check.threshold')}}:{{o.threshold}}</span> -->
+    <el-row v-for="(o, index) in personarr" :key="index" :offset="index > 0 ? 1 : 0">
+      <el-col :span="12">
+          <img :src=o.imgurl class="faceimage">
       </el-col>
-    </el-row>
+    </el-row>    
+    <!-- <el-row v-for="(o, index) in personarr" :key="index" :offset="index > 0 ? 1 : 0">
+      <el-col :span="8">
+        <div class="box-card" v-for="(item,index) in o.personarr" :key="index">
+              <img :src=item.imgurl class="image">
+        </div>
+      </el-col>
+    </el-row> -->
   </el-row>
 </el-card>
 </template>
@@ -23,7 +24,7 @@
 <script>
 export default {
   props: {
-    personList:Array,
+    personarr:Array,
     required: true
   },
   data() {
@@ -34,10 +35,6 @@ export default {
     };
   },
   mounted(){
-      console.log('-----------personarr')
-      console.log(this.personarr)
-    //   this.ImgList = this.personarr
-      console.log(this.ImgList)
   }
 }
 </script>
