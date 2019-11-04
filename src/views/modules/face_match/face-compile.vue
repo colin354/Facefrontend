@@ -2,14 +2,19 @@
   <el-row :gutter="0">
 
     <el-row :gutter="0">
-      <el-col :span="4">
-        <el-image :src=facematch.faceurl fit="contain" style="width: 100px; height: 100px"></el-image>
+      <el-col :span="2" :gutter="0">
+        <span>人脸</span>
+        <el-image :src=facematch.faceurl fit="cover" style="display:block;width: 80%; height: 80%"></el-image>
       </el-col>
-      <el-col :span="18" :gutter="0">
-        <el-col :span="3.6" v-for="item in src" :key="item.time">
+      <el-col :span="2" :gutter="0">
+        <span>行人</span>
+        <el-image :src=facematch.person_url fit="cover" style="display:block;width: 60%; height: 60%;"></el-image>
+      </el-col>   
+        <el-col :span="4" v-for="item in src" :key="item.time">
           <!-- <div class="imgblock"> -->
-            <!-- <span class="demonstration">{{$t('check.threshold')}}:{{item.threshold}}</span> -->
-            <el-image :src="item.imgurl" fit="contain" style="width: 100px; height: 100px">
+            <!-- <span>{{$t('check.threshold')}}:{{item.threshold}}</span> -->
+            <span>匹配</span>
+            <el-image :src="item.imgurl" fit="cover" style="display:block;width: 40%; height: 40%;">
               <div slot="error" class="image-slot">
                 <i class="el-icon-picture-outline">点击mark点，查看视频截图图片</i>
               </div>
@@ -18,11 +23,9 @@
               </div>
             </el-image>
           <!-- </div> -->
-        </el-col>
+
       </el-col>
-      <el-col :span="2">
-        <el-image :src=facematch.person_url fit="contain" style="width: 90px; height: 100px"></el-image>
-      </el-col>      
+   
     </el-row>
 
     <el-row>

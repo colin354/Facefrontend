@@ -432,7 +432,7 @@ export default {
     float:right;
   }
   .demo-bs-wrapper {
-    height: 255px;
+    height: 320px;
     position: relative;
     overflow: hidden;
     border: 0px solid $color-border-1;
