@@ -98,6 +98,8 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
         data () {
             return {
                 showA:false,
+                viaMarker:[],
+                maxLocation:[],
                 //日期选项
                 pickerOptions: {
                   shortcuts: [{
@@ -159,8 +161,48 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
             },
             createTrackMap(){
                 this.initPage();
-                // this.initPage();
+                this.addMarker();
             },
+            addMarker(){//画轨迹的同时,添加摄像头图标
+              var startIcon = new AMap.Icon({ //摄像头图标
+                  // 图标尺寸
+                  size: new AMap.Size(25, 34),
+                  // 图标的取图地址
+                  image: 'http://10.2.155.139:8888/media/fxq_test/camera_0.png',//此处修改摄像头图标
+                  // 图标所用图片大小
+                  imageSize: new AMap.Size(20, 20),
+                  // 图标取图偏移量
+                  imageOffset: new AMap.Pixel(-1, -1)
+              });
+              let self = this
+              for(var i=1 ; i < this.temp.length ; i++){ //选择途经点比较多的数据
+                var maxCount = this.temp[0].location.length
+                if(this.temp[i].location.length >= maxCount){
+                  this.maxLocation = this.temp[i].location 
+                  console.log("maxloction")
+                  console.log(this.maxLocation)             
+                }
+              }                         
+              for(var j=0; j < this.maxLocation.length ; j++ ){
+                if(j < 1){ // 第一个经纬度特殊,只有0与1便可直接显示
+                  var viaMarker0 = new AMap.Marker({
+                    position:new AMap.LngLat(self.maxLocation[j][0],self.maxLocation[j][1]),
+                    icon: startIcon,
+                    offset:new AMap.Pixel(-10,-10)
+                  })
+                  this.map.add([viaMarker0])
+                }else{ // 之后的经纬度,信息在位置2和3上                            
+                  var viaMarker1 = new AMap.Marker({
+                    position:new AMap.LngLat(self.maxLocation[j][2],self.maxLocation[j][3]),
+                    icon: startIcon,
+                    offset:new AMap.Pixel(-10,-10)
+                  })
+                  this.map.add([viaMarker1])
+                }
+              }  
+            },
+
+            
             findTrackData(){
                 this.showA = true
                 this.getDurationGPSData(); //发送get请求
@@ -213,9 +255,9 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
                             return;
                         }
                         for(var i=0 ; i<this.temp.length; i++){
-                            console.log("------外层for----")
-                            console.log(this.temp[i].location)
-                            console.log(this.temp[i].color)
+                            // console.log("------外层for----")
+                            // console.log(this.temp[i].location)
+                            // console.log(this.temp[i].color)
                             var tempColor = this.temp[i].color  //同一个i值即同一个faceid,同一个人,用同一种颜色;不同的i值用不同的颜色
                             var bezierCurve = new AMap.BezierCurve({
                                 path: this.temp[i].location,
@@ -242,7 +284,6 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
                             bezierCurve.setMap(this.map)
                             // 缩放地图到合适的视野级别
                             this.map.setFitView([ bezierCurve ])
-
                         }                                                       
                     })
                 )

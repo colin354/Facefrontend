@@ -277,7 +277,39 @@ export default {
         })
     )
     this.showA = false
+    this.addMarker()  //地图上显示轨迹的同时,显示摄像头图标
+    },
 
+    //添加摄像头图标
+    addMarker(){
+      let self = this
+      var startIcon = new AMap.Icon({ //摄像头图标
+          // 图标尺寸
+          size: new AMap.Size(25, 34),
+          // 图标的取图地址
+          image: 'http://10.2.155.139:8888/media/fxq_test/camera_0.png',//此处修改摄像头图标
+          // 图标所用图片大小
+          imageSize: new AMap.Size(20, 20),
+          // 图标取图偏移量
+          imageOffset: new AMap.Pixel(-1, -1)
+      });
+      for(var i=0 ; i < this.getLocations.length ; i++){
+        if(i < 1){
+          var viaMarker0 = new AMap.Marker({
+            position:new AMap.LngLat(self.getLocations[i][0],self.getLocations[i][1]),
+            icon: startIcon,
+            offset:new AMap.Pixel(-10,-10)
+          })
+          this.map.add([viaMarker0])
+        }else{
+          var viaMarker1 = new AMap.Marker({
+            position:new AMap.LngLat(self.getLocations[i][2],self.getLocations[i][3]),
+            icon: startIcon,
+            offset:new AMap.Pixel(-10,-10)
+          })
+          this.map.add([viaMarker1])
+        }
+      }
     },
     // 分页, 每页条数
     pageChangeHandle (val) {
