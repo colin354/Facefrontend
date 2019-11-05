@@ -7,16 +7,26 @@
             <div class="grid-content bg-purple">
               <el-card class="box-card">
                 <el-form :inline="true" size="mini" :model="dataForm" @submit.native.prevent>
-                  <el-form-item>
+                  <!-- <el-form-item>
                     <el-input v-model.number="dataForm.faceid" :placeholder="$t('check.faceid')" 
                     @keyup.enter.native="getDataList()" clearable/>
-                  </el-form-item>
+                  </el-form-item> -->
                   <el-form-item>
-                    <el-button @click="getDatas()">{{ $t('query')}}</el-button>
+                    <!-- <el-button @click="getDatas()">{{ $t('query')}}</el-button> -->
                     <el-button @click="getDurationGPSData()" v-if="showA">地图轨迹</el-button>
+                    <!-- <el-button @click="getDataList()" v-if="showAllVisible">显示所有</el-button> -->
                   </el-form-item>
                 </el-form>
-                <facecarsousel :facelist="facelist"></facecarsousel>
+                <el-carousel :interval="4000" type="card" height="150px">
+                  <el-carousel-item v-for="(item, index) in facelist" :key="index">
+                    <el-card :body-style="{ padding: '0px'}" >
+                      <span v-if="showId" @click="getDatas(item.user_id)">id:{{item.user_id}}</span>
+                      <span v-if="showUserId_Id" @click="getDatas(item.user_id)">id:{{item.userid_id}}</span>
+                      <img :src="item.imgurl" style="width:100%" @click="getDatas(item.user_id)">
+                    </el-card>
+                  </el-carousel-item>
+                </el-carousel>
+                <!-- <facecarsousel :facelist="facelist"></facecarsousel> -->
               </el-card>
             </div>
           </el-col>
@@ -133,6 +143,9 @@ export default {
     return {
       total: 0,
       showA: false,
+      showAllVisible: false,
+      showId:true,
+      showUserId_Id:false,
       temp:[],
       getLocations:[],
       dataList:[],
@@ -198,10 +211,10 @@ export default {
           })
       });
     },
-    getDatas(){//先发送get请求,
-
+    getDatas(user_id){//先发送get请求,
       this.showA = true
-      var url = `/api/check?token=${cookieGet('token')}` + '&faceid=' + this.dataForm.faceid
+      // var url = `/api/check?token=${cookieGet('token')}` + '&faceid=' + this.dataForm.faceid
+      var url = `/api/check?token=${cookieGet('token')}` + '&faceid=' + user_id
       this.$axios.get(url)
       .then(res=> {
         console.log("---0000000000------------+++++++++")
@@ -216,12 +229,15 @@ export default {
       .catch(error =>{
           console.log(error)
       })
+      this.showUserId_Id = true
+      this.showId = false
       // this.getDurationGPSData()
     },
-    //高德地图
 
+    //高德地图
     getDurationGPSData(){//再画出同一个人的多条轨迹   
     //画出一个人的轨迹
+    this.showAllVisible = true
     this.map = new AMap.Map('amap-show', {
                     // center: [120.094163,33.313109],  //汇文公馆
                     center:[120.095913,33.302156],
@@ -261,7 +277,39 @@ export default {
         })
     )
     this.showA = false
+    this.addMarker()  //地图上显示轨迹的同时,显示摄像头图标
+    },
 
+    //添加摄像头图标
+    addMarker(){
+      let self = this
+      var startIcon = new AMap.Icon({ //摄像头图标
+          // 图标尺寸
+          size: new AMap.Size(25, 34),
+          // 图标的取图地址
+          image: 'http://10.2.155.139:8888/media/fxq_test/camera_0.png',//此处修改摄像头图标
+          // 图标所用图片大小
+          imageSize: new AMap.Size(20, 20),
+          // 图标取图偏移量
+          imageOffset: new AMap.Pixel(-1, -1)
+      });
+      for(var i=0 ; i < this.getLocations.length ; i++){
+        if(i < 1){
+          var viaMarker0 = new AMap.Marker({
+            position:new AMap.LngLat(self.getLocations[i][0],self.getLocations[i][1]),
+            icon: startIcon,
+            offset:new AMap.Pixel(-10,-10)
+          })
+          this.map.add([viaMarker0])
+        }else{
+          var viaMarker1 = new AMap.Marker({
+            position:new AMap.LngLat(self.getLocations[i][2],self.getLocations[i][3]),
+            icon: startIcon,
+            offset:new AMap.Pixel(-10,-10)
+          })
+          this.map.add([viaMarker1])
+        }
+      }
     },
     // 分页, 每页条数
     pageChangeHandle (val) {

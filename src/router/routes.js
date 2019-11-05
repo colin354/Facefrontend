@@ -135,7 +135,7 @@ const frameIn = [
         component: _import('modules/stream/real-video'),
         meta: {
           auth: true,
-          title: '实时监控管理'
+          title: '地图布控显示'
         }
       },
       {

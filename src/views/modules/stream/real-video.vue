@@ -8,8 +8,6 @@
         class="amap-demo" style="height: 700px;">
         <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position" :events="marker.events" :icon="icon">
         </el-amap-marker>
-        <!-- <el-amap-info-window v-if="window" :position="window.position" :visible="window.visible" :content="window.content">
-        </el-amap-info-window>         -->
       </el-amap>
     </el-card>
     <el-dialog
@@ -94,6 +92,7 @@ export default {
             // 图标取图偏移量
             imageOffset: new AMap.Pixel(-1, -1)
         });
+        console.log("摄像头----")
         this.icon = startIcon
       },
 
@@ -123,15 +122,6 @@ export default {
               }
             }
           });
-
-          // windows.push({
-          //   position: [120.09465,33.313217 + i * 0.001],
-          //   content:          
-          //    `<div class="grid-content bg-purple" height="500" width="500">
-          //       <v-liveplayer ref="myvideo" h5id='1' ></v-liveplayer>
-          //     </div>`,
-          //   visible: false
-          // });
         }
         this.markers = markers;
         // this.windows = windows;
