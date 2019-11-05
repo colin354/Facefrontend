@@ -40,6 +40,16 @@ const bus = new Vue()
 import event from '@/components/views/js/event'
 import axios from '@/plugin/axios/http'
 
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
+//引入基本模板
+let echart = require('echarts/lib/echarts')
+//引入柱状图组件
+require('echarts/lib/chart/bar')
+//引入提示框和title组件
+require('echarts/lib/component/tooltip')
+require('echarts/lib/component/title')
+
 
 Vue.prototype.EVENT = event
 Vue.prototype.$http = axios
