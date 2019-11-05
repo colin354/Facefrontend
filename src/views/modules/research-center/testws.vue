@@ -94,7 +94,7 @@ export default {
   data(){
     return{
       webSocket: null,
-      url: 'ws://10.2.155.139:9988/ws/chat/',
+      url: 'ws://221.231.13.230:8888/ws/chat/',
       streamList:[],
       defaultProps: {}, 
       ws_data: {

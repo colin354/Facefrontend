@@ -55,7 +55,7 @@
               <facecompile :facemark="o.marks" :facematch="o" :streamtime="info.streamtime"></facecompile>
             </el-collapse-item>
           </el-collapse> -->
-        <el-card class="box-card">
+        <el-card class="box-card" :body-style="{ padding: '2px' }">
           <div ref="wrapper" class="demo-bs-wrapper">
             <div>
               <div v-for="(o, index) in info.facematch" :key="index" class="demo-bs-item">
@@ -432,7 +432,7 @@ export default {
     float:right;
   }
   .demo-bs-wrapper {
-    height: 320px;
+    height: 330px;
     position: relative;
     overflow: hidden;
     border: 0px solid $color-border-1;

@@ -1,19 +1,28 @@
 <template>
   <el-row :gutter="0">
-
-    <el-row :gutter="0">
-      <el-col :span="2" :gutter="0">
-        <span>人脸</span>
-        <el-image :src=facematch.faceurl fit="cover" style="display:block;width: 80%; height: 80%"></el-image>
+    <el-row>
+      <el-col :span="2">
+        <!-- <span >{{facematch.facename}}</span> -->
+        <span >人脸</span>
+        <el-image 
+          :src=facematch.faceurl 
+          fit="cover" 
+          style="display:block;width: 80%; height: 80%"
+          :preview-src-list="srcList">
+        </el-image>
       </el-col>
-      <el-col :span="2" :gutter="0">
+      <el-col :span="2" >
         <span>行人</span>
-        <el-image :src=facematch.person_url fit="cover" style="display:block;width: 60%; height: 60%;"></el-image>
+        <el-image :src=facematch.person_url fit="cover" style="display:block;width: 60%; height: 60%;">
+          <div slot="error" class="image-slot">
+            <i class="el-icon-picture-outline">无行人照片</i>
+          </div>          
+        </el-image>
       </el-col>   
         <el-col :span="4" v-for="item in src" :key="item.time">
           <!-- <div class="imgblock"> -->
             <!-- <span>{{$t('check.threshold')}}:{{item.threshold}}</span> -->
-            <span>匹配</span>
+            <span>{{item.time}}s</span>
             <el-image :src="item.imgurl" fit="cover" style="display:block;width: 40%; height: 40%;">
               <div slot="error" class="image-slot">
                 <i class="el-icon-picture-outline">点击mark点，查看视频截图图片</i>
@@ -23,9 +32,7 @@
               </div>
             </el-image>
           <!-- </div> -->
-
       </el-col>
-   
     </el-row>
 
     <el-row>
@@ -71,7 +78,11 @@ export default {
       facematchurl: '',
       src: [],
       marks: {
-      }
+      },
+      srcList: [
+        'https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg',
+        'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg'
+      ]      
     }
   },
   created() {
