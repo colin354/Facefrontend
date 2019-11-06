@@ -141,7 +141,7 @@ const frameIn = [
       {
         path: 'face-match',
         name: 'face-match',
-        component: _import('modules/face_match/index'),
+        component: _import('modules/face_match/face-match'),
         meta: {
           auth: true,
           title: '人像轨迹搜索'
@@ -288,7 +288,7 @@ const frameIn = [
         component: _import('modules/research-center/testws'),
         meta: {
           auth: true,
-          title: '测试websocket'
+          title: '人车情报研判中心'
         }
       },
       {
@@ -300,6 +300,15 @@ const frameIn = [
           title: '摄像头管理'
         }
       },
+      {
+        path: 'camera-check',
+        name: 'camera-check',
+        component: _import('modules/face/camera-check'),
+        meta: {
+          auth: true,
+          title: '检测运维'
+        }
+      },      
       {
         path: 'wea-analyse',
         name: 'wea-analyse',
@@ -315,7 +324,7 @@ const frameIn = [
         component: _import('modules/dataanalyse/camera-analyse'),
         meta: {
           auth: true,
-          title: '摄像头数据分析'
+          title: '影像数据分析'
         }
       }
     ]

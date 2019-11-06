@@ -18,11 +18,12 @@ export default [
       // { path: '/face-search', title: '结构化监控查询', icon: 'gg-circle' },
       // { path: '/face-match', title: '通过人脸查询视频', icon: 'newspaper-o' },
       { path: '/liveview', title: '实时监控显示', icon: 'play' },
-      { path: '/real-video', title: '地图布控显示', icon: 'support' }
+      { path: '/real-video', title: '地图布控显示', icon: 'support' },
+      { path: '/stream-list', title: '历史监控查询', icon: 'magic' }
     ]
   },
   {
-    title: '轨迹追踪搜索',
+    title: '轨迹追踪',
     icon: 'paper-plane',
     children: [
       // { path: '/face-search', title: '结构化监控查询', icon: 'gg-circle' },
@@ -38,11 +39,10 @@ export default [
     children: [
       // { path: '/face-search', title: '结构化监控查询', icon: 'gg-circle' },
       // { path: '/face-match', title: '通过人脸查询视频', icon: 'newspaper-o' },
-      { path: '/realTime', title: '人车情报研判中心', icon: 'camera' },
-      { path: '/stream-list', title: '历史监控查询', icon: 'magic' },
+      // { path: '/realTime', title: '人车情报研判中心', icon: 'camera' },
       // { path: '/match_search', title: '结构化监控查询', icon: 'gg-circle' },
-      { path: '/structured_video', title: '视频结构化展示', icon: 'gg-circle' },
-      { path: '/testws', title: 'websocket测试', icon: 'camera' }
+      { path: '/testws', title: '人车情报研判中心', icon: 'camera' },
+      { path: '/structured_video', title: '视频结构化展示', icon: 'gg-circle' }
       // { path: '/face-search-by-face', title: '通过位置查询视频', icon: 'yelp' },
     ]
   },
@@ -51,12 +51,10 @@ export default [
     icon: 'superpowers',
     children: [
       { path: '/stream-catch', title: '监控布控显示', icon: 'university' },
-      { path: '/camera-detect', title: '监控检测管理', icon: 'yelp' }
+      { path: '/camera-detect', title: '监控检测管理', icon: 'yelp' },
       // { path: '/liveview', title: '实时监控管理', icon: 'play' },  //先暂时隐藏掉
-      // { path: '/stream-list', title: '历史监控查询', icon: 'magic' },
-      // { path: '/real-video', title: '实时监控管理', icon: 'camera' },
       // { path: '/camera', title: '实时摄像头预览', icon: 'play' },
-      // { path: '/face-search', title: '结构化监控查询', icon: 'gg-circle' },
+      { path: '/camera-check', title: '检测运维', icon: 'cogs' }
       // { path: '/face-websocket', title: 'websocket测试', icon: 'gg-circle' },
       // { path: '/test-realTime', title: 'test-realTime', icon: 'camera' }
     ]
@@ -101,7 +99,7 @@ export default [
     icon: 'linode',
     children: [
       { path: '/wea-analyse', title: '社区水电气分析', icon: 'tint' },
-      { path: '/camera-analyse', title: '摄像头数据分析', icon: 'file-video-o' }
+      { path: '/camera-analyse', title: '影像数据分析', icon: 'file-video-o' }
     ]
   },
   demoFrame

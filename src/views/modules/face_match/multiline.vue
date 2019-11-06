@@ -30,7 +30,7 @@
               </div>
             </el-col>
           </el-row>
-           
+      
           <el-row :gutter="18">
             <el-col>
               <div class="grid-content bg-purple">
@@ -51,10 +51,11 @@
             <div class="grid-content bg-purple">
               <el-card class="box-card">
                 <el-table
+                  height="640"
                   size="mini"
                   :data="dataList"
                   border
-                  style="width: 100%;">
+                  style="width: 100%">
                   <el-table-column prop="facename" :label="$t('person.name')" header-align="center" align="center" width="80"/>
                   
                   <el-table-column prop="faceimgurl" :label="$t('person.picture')" header-align="center" align="center" width="140">

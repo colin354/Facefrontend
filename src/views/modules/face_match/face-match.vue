@@ -14,7 +14,7 @@
                   <el-form-item>
                     <!-- <el-button @click="getDatas()">{{ $t('query')}}</el-button> -->
                     <el-button @click="getDurationGPSData()" v-if="showA">地图轨迹</el-button>
-                    <!-- <el-button @click="getDataList()" v-if="showAllVisible">显示所有</el-button> -->
+                    <el-button @click="getDataList()" v-if="showAllVisible">显示所有</el-button>
                   </el-form-item>
                 </el-form>
                 <el-carousel :interval="4000" type="card" height="150px">
@@ -37,6 +37,7 @@
             <div class="grid-content bg-purple">
               <el-card class="box-card">
                 <el-table
+                  height="460"
                   size="mini"
                   :data="dataList.slice((page-1)*limit,page*limit)"
                   border

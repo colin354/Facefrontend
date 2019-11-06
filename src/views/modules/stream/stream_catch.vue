@@ -77,12 +77,6 @@ export default {
       markerRefs:[],
       amapManager,
       defaultProps: {},
-<<<<<<< HEAD
-      zoom: 20,
-      center: [120.09467,33.301341],
-      positions: [],
-=======
->>>>>>> ee5f8cbd0c5d648739dd8e3d58dbb73dd17bad9d
       dataForm:{
         map_location:'GETLOCATION'
       },
