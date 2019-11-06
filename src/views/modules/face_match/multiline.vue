@@ -99,8 +99,7 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
         data () {
             return {
                 showA:false,
-                viaMarker:[],
-                maxLocation:[],
+                markers:[],
                 //日期选项
                 pickerOptions: {
                   shortcuts: [{
@@ -165,6 +164,7 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
                 this.addMarker();
             },
             addMarker(){//画轨迹的同时,添加摄像头图标
+              let self = this
               var startIcon = new AMap.Icon({ //摄像头图标
                   // 图标尺寸
                   size: new AMap.Size(25, 34),
@@ -175,32 +175,18 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
                   // 图标取图偏移量
                   imageOffset: new AMap.Pixel(-1, -1)
               });
-              let self = this
-              for(var i=1 ; i < this.temp.length ; i++){ //选择途经点比较多的数据
-                var maxCount = this.temp[0].location.length
-                if(this.temp[i].location.length >= maxCount){
-                  this.maxLocation = this.temp[i].location 
-                  console.log("maxloction")
-                  console.log(this.maxLocation)             
-                }
-              }                         
-              for(var j=0; j < this.maxLocation.length ; j++ ){
-                if(j < 1){ // 第一个经纬度特殊,只有0与1便可直接显示
-                  var viaMarker0 = new AMap.Marker({
-                    position:new AMap.LngLat(self.maxLocation[j][0],self.maxLocation[j][1]),
-                    icon: startIcon,
-                    offset:new AMap.Pixel(-10,-10)
-                  })
-                  this.map.add([viaMarker0])
-                }else{ // 之后的经纬度,信息在位置2和3上                            
+              console.log("-------this.Markers----")
+              console.log(this.markers)
+              if(this.markers){                
+                for(var i=0 ; i < this.markers.length ; i++){
                   var viaMarker1 = new AMap.Marker({
-                    position:new AMap.LngLat(self.maxLocation[j][2],self.maxLocation[j][3]),
-                    icon: startIcon,
-                    offset:new AMap.Pixel(-10,-10)
-                  })
+                      position:new AMap.LngLat(self.markers[i][0],self.markers[i][1]),
+                      icon: startIcon,
+                      offset:new AMap.Pixel(-10,-10)
+                    })
                   this.map.add([viaMarker1])
                 }
-              }  
+              }                            
             },
 
             
@@ -214,9 +200,11 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
                     console.log("------------res-----")
                     console.log(res)
                     console.log("------------res-----")
-                    this.temp = []
+                    this.temp = []  //存放轨迹的经纬度
                     this.dataList = []
+                    this.markers = [] //存放摄像头经纬度
                     this.temp = res.list
+                    this.markers = res.Markers
                     this.dataList = res.list
                     console.log(this.temp)                  
                     console.log('可以正常打印不-------')

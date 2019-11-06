@@ -12,9 +12,8 @@
                     @keyup.enter.native="getDataList()" clearable/>
                   </el-form-item> -->
                   <el-form-item>
-                    <!-- <el-button @click="getDatas()">{{ $t('query')}}</el-button> -->
                     <el-button @click="getDurationGPSData()" v-if="showA">地图轨迹</el-button>
-                    <el-button @click="getDataList()" v-if="showAllVisible">显示所有</el-button>
+                    <el-button @click="showAll()" v-if="showAllVisible">返回</el-button>
                   </el-form-item>
                 </el-form>
                 <el-carousel :interval="4000" type="card" height="150px">
@@ -26,7 +25,6 @@
                     </el-card>
                   </el-carousel-item>
                 </el-carousel>
-                <!-- <facecarsousel :facelist="facelist"></facecarsousel> -->
               </el-card>
             </div>
           </el-col>
@@ -142,16 +140,14 @@ export default {
   data() {
     let id = this.$route.params.id;//存放face.vue界面传过来的faceid
     return {
+      cameraMarkers:[],
       total: 0,
       showA: false,
       showAllVisible: false,
       showId:true,
       showUserId_Id:false,
-      temp:[],
       getLocations:[],
       dataList:[],
-      // id: null, //存放face.vue界面传过来的faceid
-      showMapline: true,
       visible: false,
       facelist: [],
       imgarr: [],
@@ -190,11 +186,11 @@ export default {
   },
   created(){ 
     console.log("this is created!!--------------------facelist") 
-    console.log(this.facelist)  
+    console.log(this.facelist)
+     
   },
   mounted() {
     this.initMap()
-    // console.log("this is current player instance object", this.player);
   },
   computed: {
     player() {
@@ -202,37 +198,65 @@ export default {
     }
   }, 
   methods: {
-   initMap(){
+    showAll(){
+      this.showA = false
+      console.log("----showALl---")      
+      var url = `/api/check?token=${cookieGet('token')}`
+        this.$axios.get(url)
+        .then(res=> {
+          console.log("---0000000000------------+++++++++")
+          console.log(res)
+          this.total = res.count
+          this.dataList = res.list        
+          this.facelist = []
+          this.dataList = []
+          this.facelist = res.imgList //存放人脸图片相关信息          
+          this.dataList = res.list          
+          console.log("===================")
+        })
+        .catch(error =>{
+            console.log(error)
+        })
+      this.showUserId_Id = false
+      this.showId = true
+      this.initMap() //点击返回后,所有的轨迹应该消失
+    },
+    initMap(){
       lazyAMapApiLoaderInstance.load().then(() => {
           this.map = new AMap.Map('amap-show', {
-
-              // center: [120.094163,33.313109],//汇文公馆
               center:[120.095913,33.302156],
               zoom: 18
           })
       });
+      this.showAllVisible = false
     },
-    getDatas(user_id){//先发送get请求,
+    getDatas(user_id){//先发送get请求,     
       this.showA = true
-      // var url = `/api/check?token=${cookieGet('token')}` + '&faceid=' + this.dataForm.faceid
-      var url = `/api/check?token=${cookieGet('token')}` + '&faceid=' + user_id
-      this.$axios.get(url)
-      .then(res=> {
-        console.log("---0000000000------------+++++++++")
-        console.log(res)
-        this.total = res.count
-        this.dataList = res.list
-        this.getLocations = res.location
-        this.facelist = res.imgList
-        console.log("===================")
-        console.log(this.getLocations)
-      })
-      .catch(error =>{
-          console.log(error)
-      })
+      if(user_id){
+        var url = `/api/check?token=${cookieGet('token')}` + '&faceid=' + user_id
+        this.$axios.get(url)
+        .then(res=> {
+          console.log("---0000000000------------+++++++++")
+          console.log(res)
+          this.dataList = []
+          this.getLocations = []
+          this.facelist = []
+          this.cameraMarkers = []
+
+          this.total = res.count
+          this.dataList = res.list
+          this.getLocations = res.location //存放轨迹的经纬度信息
+          this.facelist = res.imgList //存放人脸图片相关信息
+          this.cameraMarkers = res.Markers
+          console.log("===================")
+          console.log(this.getLocations)
+        })
+        .catch(error =>{
+            console.log(error)
+        })
+      }
       this.showUserId_Id = true
       this.showId = false
-      // this.getDurationGPSData()
     },
 
     //高德地图
@@ -294,21 +318,16 @@ export default {
           // 图标取图偏移量
           imageOffset: new AMap.Pixel(-1, -1)
       });
-      for(var i=0 ; i < this.getLocations.length ; i++){
-        if(i < 1){
+      console.log("----addMarker---")
+      console.log(this.cameraMarkers)
+      if(this.cameraMarkers){
+        for(var i=0 ; i<this.cameraMarkers.length; i++){
           var viaMarker0 = new AMap.Marker({
-            position:new AMap.LngLat(self.getLocations[i][0],self.getLocations[i][1]),
+            position:new AMap.LngLat(self.cameraMarkers[i][0],self.cameraMarkers[i][1]),
             icon: startIcon,
             offset:new AMap.Pixel(-10,-10)
           })
           this.map.add([viaMarker0])
-        }else{
-          var viaMarker1 = new AMap.Marker({
-            position:new AMap.LngLat(self.getLocations[i][2],self.getLocations[i][3]),
-            icon: startIcon,
-            offset:new AMap.Pixel(-10,-10)
-          })
-          this.map.add([viaMarker1])
         }
       }
     },
