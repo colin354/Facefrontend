@@ -1,5 +1,5 @@
 <template>
-  <d2-container-frame src="http://118.190.164.248:8088/"/>
+  <d2-container-frame src="https://tianji.zmeng123.cn/login"/>
 </template>
 
 <script>

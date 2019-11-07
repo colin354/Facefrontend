@@ -1,5 +1,5 @@
 <template>
-  <d2-container-frame src="http://118.190.164.248:8088/"/>
+  <d2-container-frame src="https://221.231.126.66:81/"/>
 </template>
 
 <script>

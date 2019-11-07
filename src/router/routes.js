@@ -192,8 +192,9 @@ const frameIn = [
       //     title: '通过位置查询视频'
       //   }
       // },
+      // 添加了与通过位置查询视频一样的界面
       {
-        path: 'multiline', //添加了与通过位置查询视频一样的界面
+        path: 'multiline',
         name: 'multiline',
         component: _import('modules/face_match/multiline'),
         meta: {

@@ -45,9 +45,9 @@
           </el-row>
         </el-col>
 
-       <el-col :span="6">
-         <el-row :gutter="15">
-           <el-col>
+      <el-col :span="6">
+        <el-row :gutter="15">
+          <el-col>
             <div class="grid-content bg-purple">
               <el-card class="box-card">
                 <el-table
@@ -72,14 +72,10 @@
                 </el-table>
               </el-card>
             </div>
-           </el-col>
-         </el-row>
-       </el-col> 
-      </el-row>
-
-
-
-
+          </el-col>
+        </el-row>
+      </el-col> 
+    </el-row>
   </d2-container>
 </template>
 

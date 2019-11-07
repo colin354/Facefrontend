@@ -63,7 +63,7 @@
                   <div id="amap-show" class="amap-demo"></div>
               </div>
             </el-card>
-         </div>
+        </div>
       </el-col>
     </el-row>
 
