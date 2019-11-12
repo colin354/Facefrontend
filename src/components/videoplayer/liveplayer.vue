@@ -75,8 +75,8 @@ export default {
                 session: 'c1782caf-b670-42d8-ba90-2244d0b0ee83' //session got from login
             };
 
-            this.h5handler = new H5sPlayerWS(conf);
-            //this.h5handler = new H5sPlayerRTC(conf);
+            // this.h5handler = new H5sPlayerWS(conf);
+            this.h5handler = new H5sPlayerRTC(conf);
 
             this.h5handler.connect();
         },
@@ -92,9 +92,9 @@ export default {
 <style scoped>
 
 .h5video{
-  width: 100%;
-  height: 100%;
-  background: black;
+    width: 100%;
+    height: 100%;
+    background: black;
 }
 
 
