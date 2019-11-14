@@ -72,6 +72,8 @@ export default [
     icon: 'gear',
     children: [
       { path: '/user', title: '用户管理', icon: 'user' },
+      // { path: '/role', title: '角色管理', icon: 'refresh' },
+      // { path: '/menuManage', title: '菜单管理', icon: 'unlock' },
       { path: '/face-list', title: '人脸库管理', icon: 'address-card' },
       { path: '/camera', title: '摄像头管理', icon: 'video-camera' },
       { path: '/watermark', title: '水印设置', icon: 'bookmark' }

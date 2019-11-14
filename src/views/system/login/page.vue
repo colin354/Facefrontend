@@ -1,18 +1,19 @@
 <template>
   <div class="page-login">
-    <div class="page-login--layer page-login--layer-area">
-      <ul class="circles">
+    <img class="img1" src="./image/citylife.jpg">
+    <!-- <div class="page-login--layer page-login--layer-area"> -->
+      <!-- <ul class="circles">
         <li v-for="n in 10" :key="n"></li>
-      </ul>
-    </div>
-    <div class="page-login--layer page-login--layer-time" flex="main:center cross:center">{{time}}</div>
+      </ul> -->
+    <!-- </div> -->
+    <!-- <div class="page-login--layer page-login--layer-time" flex="main:center cross:center">{{time}}</div> -->
     <div class="page-login--layer">
       <div class="page-login--content" flex="dir:top main:justify cross:center box:justify">
         <div class="page-login--content-header">
-          <p class="page-login--content-header-motto">
+          <!-- <p class="page-login--content-header-motto">
             时间是一切财富中最宝贵的财富。
             <span>—— 德奥弗拉斯多</span>
-          </p>
+          </p> -->
         </div>
         <div class="page-login--content-main" flex="dir:top main:center cross:center">
           <!-- logo -->
@@ -73,11 +74,11 @@
             <a href="#">隐私</a>
             <a href="#">条款</a>
           </p>
-          <p class="page-login--content-footer-copyright">
+          <!-- <p class="page-login--content-footer-copyright">
             Copyright
             <d2-icon name="copyright"/>2018 D2 Projects 开源组织出品
             <a href="https://github.com/FairyEver">@FairyEver</a>
-          </p>
+          </p> -->
         </div>
       </div>
     </div>
@@ -215,6 +216,12 @@ export default {
 </script>
 
 <style lang="scss">
+  .img1{
+    background-size: 100% 100%;
+    height: 100%;
+    position: fixed;
+    width: 100%
+  }
 .page-login {
   @extend %unable-select;
   $backgroundColor: #f0f2f5;
@@ -300,6 +307,7 @@ export default {
     .page-login--quick {
       width: 100%;
     }
+
   }
   // 快速选择用户面板
   .page-login--quick-user {

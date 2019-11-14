@@ -51,11 +51,20 @@
             <el-button style="float: right; padding: 3px 0" type="text">筛选</el-button>
           </div>
           <el-row>
-            <el-image
+            <!--原有的-->
+            <!-- <el-image
               style="width: 100px; height: 100px"
               :src="ws_data.imgurl"
               fit="fit">
-            </el-image>
+            </el-image> -->
+
+            <!--更改显示多张图片-->
+            <el-image v-for="(img,index) in imgs" :key="index"
+              style="width: 100px; height: 100px"
+              :src="img"
+              fit="fit">
+            </el-image>&nbsp;&nbsp;&nbsp;&nbsp;
+            
           </el-row>
         </el-card>        
       </div>
@@ -85,7 +94,6 @@ import { cookieGet } from '@/common/cookie'
 import Liveplayer from '@/components/videoplayer/liveplayer';
 import '@/assets/h5splayer.js'
 import {H5siOS,H5sPlayerCreate} from '@/assets/h5splayerhelper.js'
-
 export default {
   // mixins: [ mixinViewModule ],
   components: {
@@ -95,6 +103,8 @@ export default {
     return{
       webSocket: null,
       url: 'ws://221.231.13.230:8888/ws/chat/',
+      // url: 'ws://10.2.155.139:8888/ws/chat/',
+      imgs:[], //存放固定数目的照片
       streamList:[],
       defaultProps: {}, 
       ws_data: {
@@ -150,6 +160,15 @@ export default {
       this.ws_data.text = resData.num
       this.ws_data.imgurl = resData.imgurl
       this.ws_data.faceurl = resData.faceurl
+      if(this.imgs.length >= 3){
+        this.imgs.shift() //删除数组第一个元素
+        this.imgs.push(this.ws_data.imgurl) //向数组末尾添加一个元素
+      }
+      else{
+        this.imgs.push(this.ws_data.imgurl) //向数组末尾添加一个元素
+      }
+      console.log(this.ws_data.imgurl)
+      console.log('this is for ----------')     
       // let msg = `<el-image style="width: 100px; height: 100px" :src="`+this.ws_data.imgurl+`"fit="fit"></el-image>`
       // console.log(msg)
       // this.$notify({
@@ -189,6 +208,7 @@ export default {
         this.initSocket(val.token)
         this.$axios.post(`/sys/camerareal?token=${cookieGet('token')}`,{c_token:val.token,c_id:val.id})
           .then(res => {
+            console.log("handle------Node-----Click")
           })
           .catch(() => {
             console.log("error")
@@ -265,37 +285,28 @@ export default {
   .content{
       min-height: 50px;
   }
-
   div[name='flex'] {
       display: flex;
       border-bottom: 0px !important;
-
   }
-
   div[name='flex']+[name='flex'] {
       border-left: 0px !important;
   }
-
-
   div[name="flex"]:hover {
       /*background-color: #3c8dbc;*/
       cursor: pointer;
   }
-
   .videoClickColor {
       background-color: #616263 !important;
       opacity: 0.80;
   }
-
   .videoColor {
       background-color: rgb(73, 74, 75) !important;
   }
-
   .pre-scrollable {
       max-height: 480px;
       overflow-y: scroll;
   }
-
   .layout1x1 {
       background: url('../../../assets/h5s/img/layout/1x1.png') #f2f2f2;
       background-repeat: no-repeat;
@@ -311,7 +322,6 @@ export default {
       height: 32px;
       width: 32px;
   }
-
   .layout2x2 {
       background: url('../../../assets/h5s/img/layout/2x2.png') #f2f2f2;
       background-repeat: no-repeat;
@@ -327,7 +337,6 @@ export default {
       height: 32px;
       width: 32px;
   }
-
   .layout3x3 {
       background: url('../../../assets/h5s/img/layout/3x3.png') #f2f2f2;
       background-repeat: no-repeat;
@@ -343,7 +352,6 @@ export default {
       height: 32px;
       width: 32px;
   }
-
   .layout4x4 {
       background: url('../../../assets/h5s/img/layout/4x4.png') #f2f2f2;
       background-repeat: no-repeat;
@@ -359,7 +367,6 @@ export default {
       height: 32px;
       width: 32px;
   }
-
   .layoutfull {
       background: url('../../../assets/h5s/img/layout/fullscreen.png') #f2f2f2;
       background-repeat: no-repeat;
@@ -421,12 +428,10 @@ export default {
     line-height: 200px;
     margin: 0;
   }
-
   .el-carousel__item img {
     height: 400px;
     width: 400px
   }
-
   .el-carousel__item:nth-child(2n) {
     background-color: #99a9bf;
   }

@@ -93,6 +93,24 @@ const frameIn = [
           title: '用户管理'
         }
       },
+      // {
+      //   path: 'role',
+      //   name: 'role',
+      //   component: _import('modules/sys/role'),
+      //   meta: {
+      //     auth: true,
+      //     title: '角色管理'
+      //   }
+      // },
+      // {
+      //   path: 'menuManage',
+      //   name: 'menuManage',
+      //   component: _import('modules/sys/menuManage'),
+      //   meta: {
+      //     auth: true,
+      //     title: '菜单管理'
+      //   }
+      // },
       {
         path: 'camera',
         name: 'camera',

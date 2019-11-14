@@ -2,37 +2,36 @@
   <d2-container class="page">
       <!-- <div id="lineChart" :style="{width:'500px',height:'300px',float:'left',padding:'10px',border:'10px',}"></div>
       <div id="bubbleChart" :style="{width:'500px',height:'300px',float:'right',padding:'10px',border:'10px',}"></div> -->
-      <div>
-          <div style="width:32%; height:50%; float:left;margin-right:15px;">
+      <div style="width:100%; height:100%;">
+          <div style="width:32%; height:50%; float:left;margin-right:5px;">
             <div class="font1">人群类别</div>
-            <div id="barChart" class="table1"></div>
+            <div id="barChart_t" class="table1"></div>
           </div>
 
-          <div style="width:32%; height:50%; float:left;margin-right:15px;" >
+          <div style="width:32%; height:50%; float:left;margin-right:5px;" >
             <div class="font1">人停留时长</div>
-            <div id="columnarChart" class="table1"></div>
+            <div id="columnarChart_t" class="table1"></div>
           </div>
 
-          <div style="width:32%; height:50%; float:left;margin-right:15px;" >
+          <div style="width:32%; height:50%; float:left;margin-right:5px;" >
             <div class="font1">车辆类别</div>
-            <div id="bar1Chart" class="table1"></div>
+            <div id="bar1Chart_t" class="table1"></div>
           </div>
 
-          <div style="width:32%; height:50%; float:left;margin-top:23px;margin-right:15px;" >
+          <div style="width:32%; height:50%; float:left;margin-top:0;margin-right:5px;" >
             <div class="font1">当前车辆数</div>
-            <div id="verticalChart"  class="table1"></div>
+            <div id="verticalChart_t"  class="table1"></div>
           </div>
 
-          <div style="width:32%; height:50%; float:left;margin-top:23px;margin-right:15px;" >
+          <div style="width:32%; height:50%; float:left;margin-top:0;margin-right:5px;" >
             <div class="font1">人流高峰时段</div>
-            <div id="numChart" class="table1"></div>
+            <div id="numChart_t" class="table1"></div>
           </div>
 
-          <div style="width:32%; height:50%; float:left;margin-top:23px;margin-right:15px;" >
+          <div style="width:32%; height:50%; float:left;margin-top:0;margin-right:5px;" >
             <div class="font1">访客喜好</div>
-            <div id="habbitChart" class="table1"></div>
+            <div id="habbitChart_t" class="table1"></div>
           </div>
-
       </div>
       <!-- <div id="parallelChart" :style="{width:'500px',height:'300px',float:'right',padding:'10px',border:'10px',}"></div> -->
 
@@ -44,13 +43,23 @@
 
 <script>
 import D2PageCover from './components/d2-page-cover'
+// import {EleResize} from '../../../assets/js/esresize'
 export default {
+  name:'bottom',
   components: {
     D2PageCover,
   },
   data(){
     return{
+      myChart:null,
+      myColumnarChart:null,
+      myBar1Chart:null,
+      myVerticalChart:null,
+      myNumChart:null,
+      myHabbitChart:null,
     }
+  },
+  computed:{
   },
   mounted(){
     this.barChart();
@@ -60,10 +69,18 @@ export default {
     this.numChart();
     this.habbitChart();
   },
-  methods:{    
+  methods:{
+    resizeHandle(){
+      this.myChart.resize()
+      this.myColumnarChart.resize()
+      this.myBar1Chart.resize()
+      this.myVerticalChart.resize()
+      this.myNumChart.resize()
+      this.myHabbitChart.resize()
+    },    
     barChart(){
-      let barChart = this.$echarts.init(document.getElementById("barChart"));
-      barChart.setOption({
+      this.myChart = this.$echarts.init(document.getElementById("barChart_t"))
+      this.myChart.setOption({
           // title: { text: "人群性质" },
           tooltip: {
             trigger: 'item',
@@ -73,8 +90,10 @@ export default {
               orient:'vertical', // orient:'horizontal', //'vertical'
               // x:'center',
               // y: 'bottom',//'center'|'top'
-              x: 390,
-              y: 100,
+              // x: 390,
+              // y: 100,
+              x: '72%',
+              y: '36%',
               data:['陌生人','服务类人员','闲散人员','暂住人口','业主']
           },
           series: [
@@ -106,11 +125,12 @@ export default {
                     {value:1548, name:'业主',itemStyle:{color:'#87CEFF'}}]
               }
           ]
-      });
+        });
+      window.addEventListener("resize",this.resizeHandle)
     },
     columnarChart(){
-      let columnarChart = this.$echarts.init(document.getElementById("columnarChart"));             
-      columnarChart.setOption({
+      this.myColumnarChart = this.$echarts.init(document.getElementById("columnarChart_t"));             
+      this.myColumnarChart.setOption({
           color: ['#87CEFF'],
           tooltip : {
               trigger: 'axis',
@@ -147,10 +167,11 @@ export default {
               }
           ]
       });
+      window.addEventListener("resize",this.resizeHandle)
     },
     bar1Chart(){
-      let bar1Chart = this.$echarts.init(document.getElementById("bar1Chart"));
-      bar1Chart.setOption({
+      this.myBar1Chart = this.$echarts.init(document.getElementById("bar1Chart_t"));
+      this.myBar1Chart.setOption({
           // title: { text: "人群性质" },
           tooltip: {
             trigger: 'item',
@@ -160,8 +181,8 @@ export default {
               orient:'vertical', // orient:'horizontal', //'vertical'
               // x:'center',
               // y: 'bottom',//'center'|'top'
-              x: 390,
-              y: 100,
+              x: '72%',
+              y: '36%',
               data:['业主车辆','服务类车辆','闲散车辆','暂住车辆','陌生车辆']
           },
           series: [
@@ -195,12 +216,13 @@ export default {
               }
           ]
       });
+      window.addEventListener("resize",this.resizeHandle)
     },
     verticalChart(){
       var category = ['业主', '服务类', '闲散', '暂住', '陌生', '临时', '其他'];
       var barData = [889, 122, 118, 481, 131, 213, 163];
-      let verticalChart = this.$echarts.init(document.getElementById("verticalChart"));
-      verticalChart.setOption({
+      this.myVerticalChart = this.$echarts.init(document.getElementById("verticalChart_t"));
+      this.myVerticalChart.setOption({
         tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -265,10 +287,11 @@ export default {
             }
           }]
       })
+      window.addEventListener("resize",this.resizeHandle)
     },
     numChart(){
-      let numChart = this.$echarts.init(document.getElementById("numChart"));
-      numChart.setOption({
+      this.myNumChart = this.$echarts.init(document.getElementById("numChart_t"));
+      this.myNumChart.setOption({
           // title: { text: "人群性质" },
           tooltip: {
             trigger: 'item',
@@ -278,8 +301,8 @@ export default {
               orient:'vertical', // orient:'horizontal', //'vertical'
               // x:'center',
               // y: 'bottom',//'center'|'top'
-              x: 390,
-              y: 100,
+              x: '72%',
+              y: '36%',
               data:['10:00-12:00','09:00-10:00','12:00-14:00','14:00-16:00','16:00-19:00']
           },
           series: [
@@ -313,10 +336,11 @@ export default {
               }
           ]
       });
+      window.addEventListener("resize",this.resizeHandle)
     },
     habbitChart(){
-        let habbitChart = this.$echarts.init(document.getElementById("habbitChart"));
-        habbitChart.setOption({
+        this.myHabbitChart = this.$echarts.init(document.getElementById("habbitChart_t"));
+        this.myHabbitChart.setOption({
             title : {
                 x:'center'
             },
@@ -326,8 +350,8 @@ export default {
             },
             legend: {
                 orient:'vertical', // orient:'horizontal', //'vertical'
-                x: 430,
-                y: 100,
+                x: '80%',
+                y: '36%',
                 data: ['周一','周二','周三','周四','周五','周六','周日']
             },
             series : [
@@ -361,7 +385,11 @@ export default {
                 }
             ]
         })
+        window.addEventListener("resize",this.resizeHandle)
     },
+  },
+  destroyed(){
+    window.removeEventListener("resize",this.resizeHandle)
   }
 }
 </script>
@@ -384,30 +412,21 @@ export default {
     }
   }
   .font1{
-    // width:530px; 
-    // height:35px; 
     width:100%; 
     height:10%; 
     float:left; 
-    // padding:2px; 
     border:2px solid #F0F0F0; 
     font-size:17px;
-    // margin-bottom:0;
-    // margin-right:2px;
   }
   .table1{
     margin-top: 0;
-    width:525px; 
-    height:350px; 
-    // width:100%; 
-    // height:auto;
-    float:left; 
-    // padding:1px; 
-    border:2px solid  #F0F0F0; 
-    // margin: 10px;
-    // padding:2px;
-    // margin-top:0;
-    // margin-right:2px;
+    // width:525px; 
+    // height:350px; 
+    width:100%; 
+    height:80%;
+    float:left;  
+    border:2px solid  #F0F0F0;
+    box-sizing: border-box; 
   }
 }
 </style>
@@ -419,7 +438,6 @@ export default {
     </d2-page-cover>
   </d2-container>
 </template>
-
 <script>
 // import D2PageCover from './components/d2-page-cover'
 // export default {
@@ -428,7 +446,6 @@ export default {
 //   }
 // }
 // </script>
-
 // <style lang="scss" scoped>
 // .page {
 //   .page__logo {
