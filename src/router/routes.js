@@ -334,9 +334,45 @@ const frameIn = [
         component: _import('modules/dataanalyse/wea-analyse'),
         meta: {
           auth: true,
-          title: '社区水电气分析'
+          title: '水电煤数据分析'
         }
       },
+      {
+        path: 'people-analyse',
+        name: 'people-analyse',
+        component: _import('modules/dataanalyse/people-analyse'),
+        meta: {
+          auth: true,
+          title: '人口数据分析'
+        }
+      },
+      {
+        path: 'enterprise-analyse',
+        name: 'enterprise-analyse',
+        component: _import('modules/dataanalyse/enterprise-analyse'),
+        meta: {
+          auth: true,
+          title: '企业数据分析'
+        }
+      },
+      {
+        path: 'express-analyse',
+        name: 'express-analyse',
+        component: _import('modules/dataanalyse/express-analyse'),
+        meta: {
+          auth: true,
+          title: '快递数据分析'
+        }
+      },
+      {
+        path: 'ss-analyse',
+        name: 'ss-analyse',
+        component: _import('modules/dataanalyse/ss-analyse'),
+        meta: {
+          auth: true,
+          title: '社保数据分析'
+        }
+      },      
       {
         path: 'camera-analyse',
         name: 'camera-analyse',
