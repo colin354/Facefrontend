@@ -34,6 +34,7 @@ import SplitPane from 'vue-splitpane'
 import VCharts from 'v-charts'
 import VueAMap from 'vue-amap'
 import { lazyAMapApiLoaderInstance } from 'vue-amap'
+// import watermark from '../src/assets/waterMark.js'
 // import 'vuetify/dist/vuetify.min.css'
 const bus = new Vue()
 
@@ -50,7 +51,7 @@ require('echarts/lib/chart/bar')
 require('echarts/lib/component/tooltip')
 require('echarts/lib/component/title')
 
-
+// Vue.prototype.$watermark = watermark
 Vue.prototype.EVENT = event
 Vue.prototype.$http = axios
 Vue.prototype.$http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
