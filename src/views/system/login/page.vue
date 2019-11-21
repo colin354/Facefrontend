@@ -17,8 +17,8 @@
         </div>
         <div class="page-login--content-main" flex="dir:top main:center cross:center">
           <!-- logo -->
-          <img class="page-login--logo" src="./image/logo@smarco.png">
-          <!-- <img class="page-login--logo" src="./image/logo.png"> -->
+          <!-- <img class="page-login--logo" src="./image/logo@smarco.png"> -->
+          <img class="page-login--logo" src="./image/logo-bai1.png">
           <!-- 表单 -->
           <div class="page-login--form">
             <el-card shadow="never">
@@ -266,13 +266,14 @@ export default {
   }
   // main
   .page-login--logo {
-    width: 240px;
+    width: 280px;
     margin-bottom: 2em;
     margin-top: -2em;
   }
   // 登录表单
   .page-login--form {
     width: 280px;
+    opacity:0.8;
     // 卡片
     .el-card {
       margin-bottom: 15px;
