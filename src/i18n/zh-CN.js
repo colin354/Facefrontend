@@ -479,4 +479,28 @@ t.camera.name ='摄像头名称'
 t.camera.location = '位置'
 t.camera.lat = '纬度'
 t.camera.lon = '经度'
+
+t.warning = {}
+t.warning.id = '序号'
+t.warning.warningId = '预警事件编号'
+t.warning.name = '预警事件名称'
+t.warning.level = '预警事件级别'
+t.warning.type = '预警事件类型'
+t.warning.people_max = '行人数量上限'
+t.warning.car_max = '车辆数量上限'
+t.warning.target_people = '目标行人'
+t.warning.target_car = '目标车辆'
+t.warning.camera_num = '已部署摄像头节点数'
+t.warning.operation = '操作'
+t.warning.time = '预警时间'
+t.warning.cameraId = '摄像头编号'
+
+t.wea = {}
+t.wea.location = '位置'
+t.wea.householders_name = '户主姓名'
+t.wea.householders_phone = '户主联系方式'
+t.wea.householders_wea_month = '本月水电气表读数'
+t.wea.householders_wea_history = '历史平均水电气表读数'
+t.wea.householders_warning = '异常指数'
+t.wea.operation = '操作'
 export default t

@@ -265,6 +265,7 @@ export default {
   // 登录表单
   .page-login--form {
     width: 280px;
+    opacity:0.8; 
     // 卡片
     .el-card {
       margin-bottom: 15px;

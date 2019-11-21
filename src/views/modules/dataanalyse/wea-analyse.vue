@@ -12,12 +12,12 @@
       border
       @sort-change="dataListSortChangeHandle"
       style="width: 100%;">
-      <el-table-column prop="requestUri" :label="$t('logError.requestUri')" header-align="center" align="center"/>
-      <el-table-column prop="requestMethod" :label="$t('logError.requestMethod')" header-align="center" align="center"/>
-      <el-table-column prop="requestParams" :label="$t('logError.requestParams')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
-      <el-table-column prop="ip" :label="$t('logError.ip')" header-align="center" align="center"/>
-      <el-table-column prop="userAgent" :label="$t('logError.userAgent')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
-      <el-table-column prop="createDate" :label="$t('logError.createDate')" sortable="custom" header-align="center" align="center" width="180"/>
+      <el-table-column prop="requestUri" :label="$t('wea.location')" header-align="center" align="center"/>
+      <el-table-column prop="requestMethod" :label="$t('wea.householders_name')" header-align="center" align="center"/>
+      <el-table-column prop="requestParams" :label="$t('wea.householders_phone')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
+      <el-table-column prop="ip" :label="$t('wea.householders_wea_month')" header-align="center" align="center"/>
+      <el-table-column prop="userAgent" :label="$t('wea.householders_wea_history')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
+      <el-table-column prop="createDate" :label="$t('wea.householders_warning')" sortable="custom" header-align="center" align="center" width="180"/>
       <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
         <template slot-scope="scope">
           <el-button type="text" size="mini" @click="infoHandle(scope.row.errorInfo)">{{ $t('logError.errorInfo') }}</el-button>

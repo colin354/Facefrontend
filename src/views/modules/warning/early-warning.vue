@@ -5,10 +5,10 @@
         <el-input v-model="dataForm.processName" :placeholder="$t('process.name')" clearable/>
       </el-form-item>
       <el-form-item>
-        <el-input v-model="dataForm.key" :placeholder="$t('process.key')" clearable/>
-      </el-form-item>
-      <el-form-item>
         <el-button @click="getDataList()">{{ $t('query') }}</el-button>
+      </el-form-item>      
+      <el-form-item>
+        <el-button type="primary" @click="getDataList()">{{ $t('add') }}</el-button>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="deployHandle()">{{ $t('process.deployFile') }}</el-button>
@@ -26,22 +26,16 @@
       @sort-change="dataListSortChangeHandle"
       style="width: 100%;">
       <el-table-column type="selection" header-align="center" align="center" width="50"/>
-      <el-table-column prop="id" :label="$t('process.id')" header-align="center" align="center"/>
-      <el-table-column prop="deploymentId" :label="$t('process.deploymentId')" header-align="center" align="center" width="80"/>
-      <el-table-column prop="name" :label="$t('process.name')" header-align="center" align="center"/>
-      <el-table-column prop="key" :label="$t('process.key')" header-align="center" align="center"/>
-      <el-table-column prop="version" :label="$t('process.version')" header-align="center" align="center"/>
-      <el-table-column prop="resourceName" :label="$t('process.resourceName')" header-align="center" align="center" :show-overflow-tooltip="true" width="100">
-        <template slot-scope="scope">
-          <a :href="getResourceURL(scope.row.deploymentId, scope.row.resourceName)" target="_blank">{{ scope.row.resourceName }}</a>
-        </template>
-      </el-table-column>
-      <el-table-column prop="diagramResourceName" :label="$t('process.diagramResourceName')" header-align="center" align="center" :show-overflow-tooltip="true" width="100">
-        <template slot-scope="scope">
-          <a :href="getResourceURL(scope.row.deploymentId, scope.row.diagramResourceName)" target="_blank">{{ scope.row.diagramResourceName }}</a>
-        </template>
-      </el-table-column>
-      <el-table-column prop="deploymentTime" :label="$t('process.deploymentTime')" header-align="center" align="center" width="180"/>
+      <el-table-column prop="id" :label="$t('warning.id')" header-align="center" align="center"/>
+      <el-table-column prop="warningId" :label="$t('warning.warningId')" header-align="center" align="center"/>
+      <el-table-column prop="name" :label="$t('warning.name')" header-align="center" align="center"/>
+      <el-table-column prop="level" :label="$t('warning.level')" header-align="center" align="center"/>
+      <el-table-column prop="type" :label="$t('warning.type')" header-align="center" align="center"/>
+      <el-table-column prop="people_max" :label="$t('warning.people_max')" header-align="center" align="center" :show-overflow-tooltip="true" />
+      <el-table-column prop="car_max" :label="$t('warning.car_max')" header-align="center" align="center" :show-overflow-tooltip="true" />
+      <el-table-column prop="target_people" :label="$t('warning.target_people')" header-align="center" align="center"/>
+      <el-table-column prop="target_car" :label="$t('warning.target_car')" header-align="center" align="center" />
+      <el-table-column prop="camera_num" :label="$t('warning.camera_num')" header-align="center" align="center" />
       <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
         <template slot-scope="scope">
           <el-button v-if="scope.row.suspended" type="text" size="mini" @click="activeHandle(scope.row.id)">{{ $t('process.active') }}</el-button>

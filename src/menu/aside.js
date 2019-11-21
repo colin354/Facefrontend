@@ -2,15 +2,15 @@ import demoFrame from './modules/demo-frame'
 // 菜单 侧边栏
 export default [
   { path: '/index', title: '首页', icon: 'home' },
-  // {
-  //   title: '人像卡口',
-  //   icon: 'folder-o',
-  //   children: [
-  //     { path: '/page1', title: '抓拍查询' },
-  //     { path: '/page2', title: '报警查询' },
-  //     { path: '/page3', title: '轨迹查询' }
-  //   ]
-  // },
+  {
+    title: '人像卡口',
+    icon: 'folder-o',
+    children: [
+      { path: '/page1', title: '抓拍查询' },
+      { path: '/page2', title: '报警查询' },
+      { path: '/page3', title: '轨迹查询' }
+    ]
+  },
   {
     title: '大数据分析',
     icon: 'linode',
@@ -64,8 +64,9 @@ export default [
     title: '预警事件中心',
     icon: 'bell-o',
     children: [
+      { path: '/warning-query', title: '预警事件查询', icon: 'share-alt-square' },
       { path: '/early-warning', title: '预警事件管理', icon: 'bell' },
-      { path: '/warning-query', title: '预警事件查询', icon: 'share-alt-square' }
+      { path: '/early-warning-type', title: '预警事件类型管理', icon: 'bell' }
     ]
   },
   demoFrame,
