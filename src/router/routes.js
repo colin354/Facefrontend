@@ -334,7 +334,7 @@ const frameIn = [
         component: _import('modules/dataanalyse/wea-analyse'),
         meta: {
           auth: true,
-          title: '水电煤数据分析'
+          title: '水电气数据分析'
         }
       },
       {
@@ -381,7 +381,16 @@ const frameIn = [
           auth: true,
           title: '影像数据分析'
         }
-      }
+      },
+      {
+        path: 'week-analyse',
+        name: 'week-analyse',
+        component: _import('modules/dataanalyse/week-analyse'),
+        meta: {
+          auth: true,
+          title: '周数据分析'
+        }
+      }, 
     ]
   },
   frame

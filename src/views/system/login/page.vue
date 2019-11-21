@@ -18,6 +18,7 @@
         <div class="page-login--content-main" flex="dir:top main:center cross:center">
           <!-- logo -->
           <img class="page-login--logo" src="./image/logo@smarco.png">
+          <!-- <img class="page-login--logo" src="./image/logo.png"> -->
           <!-- 表单 -->
           <div class="page-login--form">
             <el-card shadow="never">
