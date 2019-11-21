@@ -93,6 +93,24 @@ const frameIn = [
           title: '用户管理'
         }
       },
+      // {
+      //   path: 'role',
+      //   name: 'role',
+      //   component: _import('modules/sys/role'),
+      //   meta: {
+      //     auth: true,
+      //     title: '角色管理'
+      //   }
+      // },
+      // {
+      //   path: 'menuManage',
+      //   name: 'menuManage',
+      //   component: _import('modules/sys/menuManage'),
+      //   meta: {
+      //     auth: true,
+      //     title: '菜单管理'
+      //   }
+      // },
       {
         path: 'camera',
         name: 'camera',
@@ -325,7 +343,7 @@ const frameIn = [
         component: _import('modules/dataanalyse/wea-analyse'),
         meta: {
           auth: true,
-          title: '水电煤数据分析'
+          title: '水电气数据分析'
         }
       },
       {
@@ -372,7 +390,16 @@ const frameIn = [
           auth: true,
           title: '影像数据分析'
         }
-      }
+      },
+      {
+        path: 'week-analyse',
+        name: 'week-analyse',
+        component: _import('modules/dataanalyse/week-analyse'),
+        meta: {
+          auth: true,
+          title: '周数据分析'
+        }
+      }, 
     ]
   },
   frame

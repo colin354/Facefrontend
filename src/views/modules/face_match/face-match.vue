@@ -7,22 +7,23 @@
             <div class="grid-content bg-purple">
               <el-card class="box-card">
                 <el-form :inline="true" size="mini" :model="dataForm" @submit.native.prevent>
-                  <!-- <el-form-item>
-                    <el-input v-model.number="dataForm.faceid" :placeholder="$t('check.faceid')" 
-                    @keyup.enter.native="getDataList()" clearable/>
-                  </el-form-item> -->
                   <el-form-item>
-                    <el-button @click="getDurationGPSData()" v-if="showA">地图轨迹</el-button>
                     <el-button @click="showAll()" v-if="showAllVisible">返回</el-button>
                   </el-form-item>
                 </el-form>
                 <el-carousel :interval="4000" type="card" height="150px">
                   <el-carousel-item v-for="(item, index) in facelist" :key="index">
-                    <el-card :body-style="{ padding: '0px'}" >
-                      <span v-if="showId" @click="getDatas(item.user_id)">id:{{item.user_id}}</span>
-                      <span v-if="showUserId_Id" @click="getDatas(item.user_id)">id:{{item.userid_id}}</span>
+                    <!-- 默认显示全部图片时,用的是user_id -->
+                    <el-card v-if="showId" :body-style="{ padding: '0px'}" >
+                      <span @click="getDatas(item.user_id)">id:{{item.user_id}}</span>
                       <img :src="item.imgurl" style="width:100%" @click="getDatas(item.user_id)">
                     </el-card>
+                    <!-- 点击单独一张图片,有了查询结果及轨迹后,此时用的是userid_id -->
+                    <el-card v-else="showId" :body-style="{ padding: '0px'}" >
+                      <span @click="getDatas(item.userid_id)">id:{{item.userid_id}}</span>
+                      <img :src="item.imgurl" style="width:100%" @click="getDatas(item.userid_id)">
+                    </el-card>
+
                   </el-carousel-item>
                 </el-carousel>
               </el-card>
@@ -126,9 +127,7 @@ import faceimg from './face-img'
 import facecarsousel from './face-carsousel'
 import { constants } from 'crypto'
 import { lazyAMapApiLoaderInstance } from 'vue-amap';
-
 // videojs.registerPlugin("markers", markers);
-
 export default {
   name: "page3",
   components: {
@@ -142,10 +141,8 @@ export default {
     return {
       cameraMarkers:[],
       total: 0,
-      showA: false,
       showAllVisible: false,
       showId:true,
-      showUserId_Id:false,
       getLocations:[],
       dataList:[],
       visible: false,
@@ -199,14 +196,14 @@ export default {
   }, 
   methods: {
     showAll(){
-      this.showA = false
       console.log("----showALl---")      
       var url = `/api/check?token=${cookieGet('token')}`
         this.$axios.get(url)
         .then(res=> {
           console.log("---0000000000------------+++++++++")
           console.log(res)
-          this.total = res.count
+          // this.total = res.count
+          this.total = res.list.length
           this.dataList = res.list        
           this.facelist = []
           this.dataList = []
@@ -217,7 +214,6 @@ export default {
         .catch(error =>{
             console.log(error)
         })
-      this.showUserId_Id = false
       this.showId = true
       this.initMap() //点击返回后,所有的轨迹应该消失
     },
@@ -231,7 +227,6 @@ export default {
       this.showAllVisible = false
     },
     getDatas(user_id){//先发送get请求,     
-      this.showA = true
       if(user_id){
         var url = `/api/check?token=${cookieGet('token')}` + '&faceid=' + user_id
         this.$axios.get(url)
@@ -242,69 +237,68 @@ export default {
           this.getLocations = []
           this.facelist = []
           this.cameraMarkers = []
-
-          this.total = res.count
+          // this.total = res.count
+          this.total = res.list.length
           this.dataList = res.list
           this.getLocations = res.location //存放轨迹的经纬度信息
           this.facelist = res.imgList //存放人脸图片相关信息
           this.cameraMarkers = res.Markers
-          console.log("===================")
-          console.log(this.getLocations)
+          console.log("===getDatas=====getDatas===========")
+          console.log(this.facelist)
+          console.log("data-----list")
+          console.log(this.dataList)
+          this.getDurationGPSData()
         })
         .catch(error =>{
             console.log(error)
         })
       }
-      this.showUserId_Id = true
       this.showId = false
     },
-
     //高德地图
     getDurationGPSData(){//再画出同一个人的多条轨迹   
     //画出一个人的轨迹
-    this.showAllVisible = true
-    this.map = new AMap.Map('amap-show', {
-                    // center: [120.094163,33.313109],  //汇文公馆
-                    center:[120.095913,33.302156],
-                    zoom: 18
-                },
-        AMapUI.loadUI(['misc/PathSimplifier'], (PathSimplifier) => {
-            if (!PathSimplifier.supportCanvas) {
-                alert('当前环境不支持 Canvas！');
-                return;
-            }
-             //同一个i值即同一个faceid,同一个人,用同一种颜色;不同的i值用不同的颜色
-              var bezierCurve = new AMap.BezierCurve({
-                  path: this.getLocations,
-                  showDir: true,
-                  dirColor:'white',
-                  isOutline: true,
-                  outlineColor: "transparent",
-                  borderWeight: 3,
-                  strokeColor: 'blue', //线颜色
-                  strokeOpacity: 1,//线透明度
-                  strokeWeight: 5, //线宽
-                  // 线样式还支持 'dashed'
-                  strokeStyle: "solid", //线样式
-                  // strokeStyle是dashed时有效
-                  strokeDasharray: [10, 10],
-                  lineJoin: 'round',
-                  lineCap: 'round',
-                  zIndex: 50,
-                  dirArrowStyle:{
-                      stepSpace: 8,  //stepSpace: {number} 箭头排布的间隔，单位像素
-                      width: 3
-                  }                                   
-              })
-              bezierCurve.setMap(this.map)
-              // 缩放地图到合适的视野级别
-              this.map.setFitView([ bezierCurve ]) 
-        })
-    )
-    this.showA = false
-    this.addMarker()  //地图上显示轨迹的同时,显示摄像头图标
+      this.showAllVisible = true
+      this.map = new AMap.Map('amap-show', {
+                      // center: [120.094163,33.313109],  //汇文公馆
+                      center:[120.095913,33.302156],
+                      zoom: 18
+                  },
+          AMapUI.loadUI(['misc/PathSimplifier'], (PathSimplifier) => {
+              if (!PathSimplifier.supportCanvas) {
+                  alert('当前环境不支持 Canvas！');
+                  return;
+              }
+              //同一个i值即同一个faceid,同一个人,用同一种颜色;不同的i值用不同的颜色
+                var bezierCurve = new AMap.BezierCurve({
+                    path: this.getLocations,
+                    showDir: true,
+                    dirColor:'white',
+                    isOutline: true,
+                    outlineColor: "transparent",
+                    borderWeight: 3,
+                    strokeColor: 'blue', //线颜色
+                    strokeOpacity: 1,//线透明度
+                    strokeWeight: 5, //线宽
+                    // 线样式还支持 'dashed'
+                    strokeStyle: "solid", //线样式
+                    // strokeStyle是dashed时有效
+                    strokeDasharray: [10, 10],
+                    lineJoin: 'round',
+                    lineCap: 'round',
+                    zIndex: 50,
+                    dirArrowStyle:{
+                        stepSpace: 8,  //stepSpace: {number} 箭头排布的间隔，单位像素
+                        width: 3
+                    }                                   
+                })
+                bezierCurve.setMap(this.map)
+                // 缩放地图到合适的视野级别
+                this.map.setFitView([ bezierCurve ]) 
+          })
+      )
+      this.addMarker()  //地图上显示轨迹的同时,显示摄像头图标
     },
-
     //添加摄像头图标
     addMarker(){
       let self = this
@@ -312,14 +306,14 @@ export default {
           // 图标尺寸
           size: new AMap.Size(25, 34),
           // 图标的取图地址
-          image: 'http://10.2.155.139:8888/media/fxq_test/camera_0.png',//此处修改摄像头图标
+          image: 'http://221.231.13.230:8888/media/fxq_test/camera_0.png',
+          // image: 'http://10.2.155.139:8888/media/fxq_test/camera_0.png',//此处修改摄像头图标
+          // image: 'http://172.14.40.60:8888/media/fxq_test/camera_0.png',//此处修改摄像头图标
           // 图标所用图片大小
           imageSize: new AMap.Size(20, 20),
           // 图标取图偏移量
           imageOffset: new AMap.Pixel(-1, -1)
       });
-      console.log("----addMarker---")
-      console.log(this.cameraMarkers)
       if(this.cameraMarkers){
         for(var i=0 ; i<this.cameraMarkers.length; i++){
           var viaMarker0 = new AMap.Marker({

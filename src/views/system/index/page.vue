@@ -1,81 +1,177 @@
 <template>
-  <d2-container class="page">
-      <!-- <div id="lineChart" :style="{width:'500px',height:'300px',float:'left',padding:'10px',border:'10px',}"></div>
-      <div id="bubbleChart" :style="{width:'500px',height:'300px',float:'right',padding:'10px',border:'10px',}"></div> -->
-      <div>
-          <div style="width:32%; height:50%; float:left;margin-right:15px;">
-            <div class="font1">人群类别</div>
-            <div id="barChart" class="table1"></div>
-          </div>
+    <d2-container>
+      <el-row :gutter="18">
+        <el-col :span="18">
+          <el-row :gutter="18">
+            <el-col>
+              <div class="grid-content bg-purple">
+                <el-card class="box-card-hei">
+                    <div id="container" style="height:700px;"></div>
+                </el-card>
+              </div>
+            </el-col>
+          </el-row>
+        </el-col>
 
-          <div style="width:32%; height:50%; float:left;margin-right:15px;" >
-            <div class="font1">人停留时长</div>
-            <div id="columnarChart" class="table1"></div>
-          </div>
-
-          <div style="width:32%; height:50%; float:left;margin-right:15px;" >
-            <div class="font1">车辆类别</div>
-            <div id="bar1Chart" class="table1"></div>
-          </div>
-
-          <div style="width:32%; height:50%; float:left;margin-top:23px;margin-right:15px;" >
-            <div class="font1">当前车辆数</div>
-            <div id="verticalChart"  class="table1"></div>
-          </div>
-
-          <div style="width:32%; height:50%; float:left;margin-top:23px;margin-right:15px;" >
-            <div class="font1">人流高峰时段</div>
-            <div id="numChart" class="table1"></div>
-          </div>
-
-          <div style="width:32%; height:50%; float:left;margin-top:23px;margin-right:15px;" >
-            <div class="font1">访客喜好</div>
-            <div id="habbitChart" class="table1"></div>
-          </div>
-
-      </div>
-      <!-- <div id="parallelChart" :style="{width:'500px',height:'300px',float:'right',padding:'10px',border:'10px',}"></div> -->
-
-    <!-- <d2-page-cover> -->     
-      <!-- <img src="./image/logo@smarco.png"> -->
-    <!-- </d2-page-cover> -->
+      <el-col :span="6">
+        <el-row :gutter="15">
+          <el-col>
+            <div style="width:100%; height:100%;">
+              <div id="columnarChart_t" style="width:100%; height:260%;"></div>
+              <div id="barChart_t" style="width:100%; height:260%;"></div>               
+              <div id="habbitChart_t" style="width:100%; height:260%;"></div>
+            </div>
+          </el-col>
+        </el-row>
+      </el-col> 
+    </el-row>
   </d2-container>
 </template>
 
 <script>
 import D2PageCover from './components/d2-page-cover'
+import VueAMap from 'vue-amap'
+
+let amapManager = new VueAMap.AMapManager();
 export default {
-  components: {
+  name:'bottom',
+  components:{
     D2PageCover,
   },
-  data(){
-    return{
+  data () {
+    return {
+      myChart:null,
+      myColumnarChart:null,
+      myHabbitChart:null,
     }
   },
   mounted(){
+    this.initMap();
     this.barChart();
     this.columnarChart();
-    this.bar1Chart();
-    this.verticalChart();
-    this.numChart();
     this.habbitChart();
   },
-  methods:{    
+  methods:{
+    initMap(){
+      var map = new AMap.Map('container',{
+        zoom: 13,
+        // center: [120.076145,33.333651],
+        // center:[120.077784,33.325384],
+        center:[120.076904,33.32407],
+      });
+      var path0=[[120.100242,33.365627], [120.101427,33.364077], [120.098461,33.359363],[120.097109,33.356467],
+                [120.095521,33.355721],[120.094105,33.355014],[120.100349,33.339534],
+                [120.079364,33.334751],[120.077154,33.339083],[120.08108,33.339871],[120.080394,33.34161],
+                [120.073313,33.339975],[120.072943,33.340623],[120.071355,33.339518],[120.065156,33.337468],
+                [120.065671,33.336579],[120.064363,33.336015],[120.063191,33.33787],[120.06376,33.338074],
+                [120.062011,33.341254],[120.056432,33.339802],[120.046476,33.354455],[120.047334,33.356032],
+                [120.043987,33.35948],[120.047903,33.36162],[120.04963,33.35979],[120.062923,33.362808],
+                [120.063202,33.362721],[120.071503,33.36356],[120.073139,33.363836],[120.085006,33.36558],
+                [120.085363,33.365571],[120.087691,33.365592],[120.088099,33.365631],[120.092008,33.366011],
+                [120.093262,33.366111],[120.094533,33.366087],[120.096918,33.365336],[120.09741,33.365286]];
+      var path1=[[120.100349,33.339534], [120.108259,33.313758],[120.102074,33.312925],[120.097139,33.311874],
+                [120.095787,33.314645],[120.092072,33.314252],[120.092414,33.312984],[120.09081,33.312794],
+                [120.09035,33.313868],[120.088989,33.314377],[120.087878,33.31514],[120.087394,33.315649],
+                [120.087086,33.31627],[120.086649,33.316205],[120.086927,33.314976],[120.085586,33.314504],
+                [120.085363,33.315406],[120.085005,33.317352],[120.075879,33.316484],[120.076051,33.314519],
+                [120.071836,33.313982],[120.071836,33.313982],[120.06972,33.320039],[120.069317,33.32027],
+                [120.067716,33.322484],[120.087699,33.325764],[120.086583,33.328425],[120.085789,33.328504],
+                [120.083472,33.332993],[120.088643,33.334176],[120.089344,33.337025]];
+      var path2=[[120.10009,33.287951],[120.100293,33.287333],[120.103919,33.287989],[120.105249,33.283713],
+                [120.112974,33.282332],[120.121978,33.283731],[120.118759,33.287347],[120.11302,33.294689],
+                [120.109887,33.307056],[120.109071,33.310151],[120.108259,33.313758],[120.102074,33.312925],
+                [120.097139,33.311874],[120.095787,33.314645],[120.092072,33.314252],[120.092414,33.312984],
+                [120.09081,33.312794],[120.09035,33.313868],[120.088989,33.314377],[120.087878,33.31514],
+                [120.087394,33.315649],[120.087086,33.31627],[120.086649,33.316205],[120.086927,33.314976],
+                [120.085586,33.314504],[120.085363,33.315406],[120.085005,33.317352],[120.075879,33.316484],
+                [120.076051,33.314519],[120.071836,33.313982],[120.071836,33.313982],[120.073241,33.311057],
+                [120.073391,33.310412],[120.073675,33.309743],[120.074588,33.308531],[120.077212,33.303753],
+                [120.077733,33.302649],[120.079224,33.300226],[120.079363,33.299655],[120.079386,33.299075],
+                [120.078976,33.297655],[120.080553,33.293272],[120.081089,33.29226],[120.081577,33.290491],
+                [120.082436,33.288816],[120.083294,33.286614],[120.08356,33.286135],[120.083651,33.28556],
+                [120.085061,33.282223],[120.085934,33.280678],[120.086348,33.278748],[120.086781,33.277875],
+                [120.094216,33.280117],[120.093787,33.286851]];
+      var path3=[[120.073241,33.311057],[120.073391,33.310412],
+                [120.073675,33.309743],[120.074588,33.308531],[120.077212,33.303753],[120.077733,33.302649],
+                [120.079224,33.300226],[120.079363,33.299655],[120.079386,33.299075],[120.078976,33.297655],
+                [120.080553,33.293272],[120.081089,33.29226],[120.081577,33.290491],[120.079392,33.290025],
+                [120.079982,33.288194],[120.076838,33.287448],[120.076356,33.288913],[120.075367,33.288779],
+                [120.074846,33.290817],[120.065008,33.288555],[120.064718,33.288428],[120.064598,33.286637],
+                [120.064483,33.286471],[120.064268,33.286496],[120.06374,33.28648],[120.063532,33.286092],
+                [120.060399,33.285634],[120.059948,33.287705],[120.057116,33.287049],[120.058189,33.283342],
+                [120.055997,33.282948],[120.056405,33.281583],[120.055847,33.28168],[120.054232,33.28147],
+                [120.053991,33.282483],[120.048476,33.281604],[120.048599,33.280979],[120.042528,33.279741],
+                [120.04418,33.282717],[120.044242,33.282853],[120.04407,33.282903],[120.043394,33.285287],
+                [120.044535,33.28559],[120.044474,33.286203],[120.044634,33.287367],[120.042574,33.286971],
+                [120.041834,33.287244],[120.040825,33.290941],[120.039752,33.293702],[120.038663,33.297392],
+                [120.037491,33.297256],[120.036219,33.299472],[120.032162,33.298782],[120.031442,33.300844],
+                [120.030875,33.302353],[120.032334,33.304503],[120.034105,33.304153],[120.034303,33.303349],
+                [120.03588,33.30353],[120.035418,33.306104],[120.036477,33.306237],[120.036402,33.306909],
+                [120.037239,33.307006],[120.037574,33.307031],[120.03772,33.306524],[120.043494,33.307677],
+                [120.044404,33.305699],[120.048536,33.306496],[120.048658,33.306457],[120.048755,33.306376],
+                [120.056203,33.307826],[120.058728,33.308335],[120.058428,33.309795],[120.059996,33.310113],
+                [120.059899,33.310631],[120.072033,33.313552]];
+      var path4=[[120.056432,33.339802],[120.062011,33.341254],[120.06376,33.338074],[120.063191,33.33787],
+                [120.064363,33.336015],[120.065671,33.336579],[120.065156,33.337468],[120.071355,33.339518],[120.072943,33.340623],
+                [120.073313,33.339975],[120.080394,33.34161],[120.08108,33.339871],[120.077154,33.339083],[120.079364,33.334751],
+                [120.089344,33.337025],[120.088643,33.334176],[120.083472,33.332993],[120.085789,33.328504],[120.086583,33.328425],
+                [120.087699,33.325764],[120.067716,33.322484],[120.069317,33.32027],[120.06972,33.320039],[120.071836,33.313982],
+                [120.072033,33.313552],[120.059899,33.310631],[120.059996,33.310113],[120.058428,33.309795],[120.058728,33.308335],
+                [120.056203,33.307826],[120.048755,33.306376],[120.048658,33.306457],[120.048536,33.306496],[120.044404,33.305699],
+                [120.043494,33.307677],[120.03772,33.306524],[120.037574,33.307031],[120.037239,33.307006],[120.036402,33.306909],
+                [120.035598,33.310606],[120.043752,33.312209],[120.043563,33.313023],[120.042432,33.312762],[120.041856,33.314894],
+                [120.053508,33.317358],[120.053259,33.318006],[120.056393,33.318573],[120.054728,33.324391],[120.054225,33.325645],
+                [120.051028,33.324827],[120.051296,33.324234],[120.046211,33.322125],[120.044527,33.32432],[120.042418,33.323725],
+                [120.04231,33.324197],[120.038941,33.323508],[120.038509,33.324699],[120.038976,33.324818],[120.038481,33.326059],
+                [120.038084,33.325936],[120.037992,33.326156],[120.033768,33.325118],[120.032347,33.328274],[120.035412,33.329147],
+                [120.034082,33.330519],[120.033863,33.330976],[120.032511,33.330481],[120.032126,33.331507],[120.033022,33.331735],
+                [120.032124,33.333865],[120.031201,33.333683],[120.029972,33.337662],[120.030721,33.337784],[120.030647,33.338177],
+                [120.032407,33.338522],[120.033014,33.337135],[120.03494,33.337465],[120.035616,33.33546],[120.04256,33.337188],
+                [120.044302,33.332433],[120.051812,33.334645],[120.052398,33.333727],[120.058159,33.335285],[120.057513,33.336427],
+                [120.058586,33.336712]];
+      var path5=[[120.036021,33.30868],[120.035598,33.310606],[120.043752,33.312209],[120.043563,33.313023],
+                [120.042432,33.312762],[120.041856,33.314894],[120.053508,33.317358],[120.053259,33.318006],[120.056393,33.318573],
+                [120.054728,33.324391],[120.054225,33.325645],[120.051028,33.324827],[120.051296,33.324234],[120.046211,33.322125],
+                [120.044527,33.32432],[120.042418,33.323725],[120.04231,33.324197],[120.038941,33.323508],[120.038509,33.324699],
+                [120.038976,33.324818],[120.038481,33.326059],[120.038084,33.325936],[120.037992,33.326156],[120.033768,33.325118],
+                [120.034072,33.324537],[120.029029,33.322948],[120.030424,33.319871],[120.026758,33.31866],[120.026251,33.318362],
+                [120.026573,33.317329],[120.023242,33.316273],[120.024251,33.31255],[120.022174,33.312167],[120.022955,33.30837],
+                [120.025466,33.308772],[120.025398,33.30941],[120.027308,33.309747],[120.027576,33.3088],[120.031613,33.309631],
+                [120.031585,33.309936],[120.032272,33.310097],[120.032419,33.309765],[120.033005,33.309873],[120.033305,33.309199],
+                [120.033469,33.309038],[120.033631,33.308906],[120.035101,33.309111],[120.035335,33.308456]];
+      console.log("---map----map----map");
+      var path =[path0,path1,path2,path3,path4,path5]
+      var color=["#4169E1",'#836FFF','#F7C885','#F8A1A1','#D1EEEE','#5D478B']
+      for(var i=0; i < 6 ;i++){
+        var polygon1 = new AMap.Polygon({
+            map:map,
+            path:path[i],
+            strokeColor: color[i], //线条颜色
+            strokeWeight: 6,       //轮廓线宽度
+            strokeOpacity: 0.2,    //轮廓线透明度
+            fillColor: color[i],   //多边形填充颜色
+            fillOpacity: 0.9,      //多边形填充透明度
+        })
+      }
+    },
+    resizeHandle(){
+      this.myChart.resize();
+      this.myColumnarChart.resize();
+      this.myHabbitChart.resize();      
+    },
     barChart(){
-      let barChart = this.$echarts.init(document.getElementById("barChart"));
-      barChart.setOption({
-          // title: { text: "人群性质" },
+      this.myChart = this.$echarts.init(document.getElementById("barChart_t"))
+      this.myChart.setOption({
+          title: { text: "出租房屋" },
           tooltip: {
             trigger: 'item',
             formatter: "{a}  <br/>  {b}:  {c} ({d}%)"
           },
           legend: {             
               orient:'vertical', // orient:'horizontal', //'vertical'
-              // x:'center',
-              // y: 'bottom',//'center'|'top'
-              x: 390,
-              y: 100,
-              data:['陌生人','服务类人员','闲散人员','暂住人口','业主']
+              x: '72%',
+              y: '36%',
+              data:['第一警务区','第二警务区','第三警务区','第四警务区','第五警务区','第六警务区']
           },
           series: [
               {
@@ -99,18 +195,21 @@ export default {
                 },
                 labelLine: { normal: { show: false } },
                 data:[
-                    {value:335, name:'陌生人',itemStyle:{color:'#7FFF00'}},
-                    {value:310, name:'服务类人员',itemStyle:{color:'#4876FF'}},
-                    {value:234, name:'闲散人员',itemStyle:{color:'#F7C885'}},
-                    {value:135, name:'暂住人口',itemStyle:{color:'#F8A1A1'}},
-                    {value:1548, name:'业主',itemStyle:{color:'#87CEFF'}}]
+                    {value:506, name:'第一警务区',itemStyle:{color:'#87CEFF'}},
+                    {value:894, name:'第二警务区',itemStyle:{color:'#D1EEEE'}},
+                    {value:121, name:'第三警务区',itemStyle:{color:'#F7C885'}},
+                    {value:107, name:'第四警务区',itemStyle:{color:'#F8A1A1'}},
+                    {value:95, name:'第五警务区',itemStyle:{color:'#836FFF'}},
+                    {value:37, name:'第六警务区',itemStyle:{color:'#5D478B'}},]
               }
           ]
-      });
+        });
+      window.addEventListener("resize",this.resizeHandle)
     },
     columnarChart(){
-      let columnarChart = this.$echarts.init(document.getElementById("columnarChart"));             
-      columnarChart.setOption({
+      this.myColumnarChart = this.$echarts.init(document.getElementById("columnarChart_t"));             
+      this.myColumnarChart.setOption({
+          title: { text: "企业分布" },
           color: ['#87CEFF'],
           tooltip : {
               trigger: 'axis',
@@ -127,7 +226,7 @@ export default {
           xAxis : [
               {
                   type : 'category',
-                  data : ['10min', '30min', '2hour', '4hour', '6hour', '8hour', '8h以上'],
+                  data : ['第一警务区','第二警务区','第三警务区','第四警务区','第五警务区','第六警务区'],
                   axisTick: {
                       alignWithLabel: true
                   }
@@ -143,309 +242,69 @@ export default {
                   name:'直接访问',
                   type:'bar',
                   barWidth: '60%',
-                  data:[10, 52, 200, 334, 390, 330, 220]
+                  data:[38, 71, 126, 17, 35, 43]
               }
           ]
       });
-    },
-    bar1Chart(){
-      let bar1Chart = this.$echarts.init(document.getElementById("bar1Chart"));
-      bar1Chart.setOption({
-          // title: { text: "人群性质" },
-          tooltip: {
-            trigger: 'item',
-            formatter: "{a}  <br/>  {b}:  {c} ({d}%)"
-          },
-          legend: {             
-              orient:'vertical', // orient:'horizontal', //'vertical'
-              // x:'center',
-              // y: 'bottom',//'center'|'top'
-              x: 390,
-              y: 100,
-              data:['业主车辆','服务类车辆','闲散车辆','暂住车辆','陌生车辆']
-          },
-          series: [
-              {
-                name:'车辆类别',
-                type:'pie',
-                radius: ['60%', '90%'],
-                center:['35%', '49%'], //调整饼图所在位置
-                avoidLabelOverlap: false,
-                label: {
-                    normal: {
-                        show: false,
-                        position: 'center'
-                    },
-                    emphasis: {
-                        show: true,
-                        textStyle: {
-                            fontSize: '30',
-                            fontWeight: 'bold'
-                        }
-                    }
-                },
-                labelLine: { normal: { show: false } },
-                data:[
-                    // {value:115, name:'陌生人',itemStyle:{color:'#48D1CC'}},
-                    {value:2548, name:'业主车辆',itemStyle:{color:'#87CEFF'}},
-                    {value:210, name:'服务类车辆',itemStyle:{color:'#4876FF'}},
-                    {value:124, name:'闲散车辆',itemStyle:{color:'#F7C885'}},
-                    {value:335, name:'暂住车辆',itemStyle:{color:'#F8A1A1'}},
-                    {value:148, name:'陌生车辆',itemStyle:{color:'#7FFF00'}}]
-              }
-          ]
-      });
-    },
-    verticalChart(){
-      var category = ['业主', '服务类', '闲散', '暂住', '陌生', '临时', '其他'];
-      var barData = [889, 122, 118, 481, 131, 213, 163];
-      let verticalChart = this.$echarts.init(document.getElementById("verticalChart"));
-      verticalChart.setOption({
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'shadow'
-            }
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        xAxis: {
-            type: 'value',
-            axisLine: {
-                show: false
-            },
-            axisTick: {
-                show: false
-            }
-        },
-        yAxis: {
-            type: 'category',
-            data: category,
-            splitLine: {show: false},
-            axisLine: {
-                show: false
-            },
-            axisTick: {
-                show: false
-            },
-            offset: 10,
-            nameTextStyle: {
-                fontSize: 15
-            }
-        },
-        series: [{
-            name: '数量',
-            type: 'bar',
-            data: barData,
-            barWidth: 22,
-            barGap: 10,
-            color:'#87CEFF',
-            smooth: true,
-            label: {
-              normal: {
-                show: true,
-                position: 'right',
-                offset: [5, -2],
-                textStyle: { color: '#87CEFF',fontSize: 13 }
-              }
-            },
-            itemStyle: {
-              // emphasis: { barBorderRadius: 7},
-              normal: {
-                  // barBorderRadius: 7,
-                  color: this.$echarts.graphic.LinearGradient(
-                      0, 0, 1, 0,
-                      [ {offset: 0, color: '#00FFFF'}, {offset: 1, color: '#00FFFF'} ]
-                  )
-              }
-            }
-          }]
-      })
-    },
-    numChart(){
-      let numChart = this.$echarts.init(document.getElementById("numChart"));
-      numChart.setOption({
-          // title: { text: "人群性质" },
-          tooltip: {
-            trigger: 'item',
-            formatter: "{a}  <br/>  {b}:  {c} ({d}%)"
-          },
-          legend: {             
-              orient:'vertical', // orient:'horizontal', //'vertical'
-              // x:'center',
-              // y: 'bottom',//'center'|'top'
-              x: 390,
-              y: 100,
-              data:['10:00-12:00','09:00-10:00','12:00-14:00','14:00-16:00','16:00-19:00']
-          },
-          series: [
-              {
-                name:'高峰',
-                type:'pie',
-                radius: ['60%', '90%'],
-                center:['35%', '49%'], //调整饼图所在位置
-                avoidLabelOverlap: false,
-                label: {
-                    normal: {
-                        show: false,
-                        position: 'center'
-                    },
-                    emphasis: {
-                        show: true,
-                        textStyle: {
-                            fontSize: '30',
-                            fontWeight: 'bold'
-                        }
-                    }
-                },
-                labelLine: { normal: { show: false } },
-                data:[
-                    // {value:115, name:'陌生人',itemStyle:{color:'#48D1CC'}},
-                    {value:2148, name:'10:00-12:00',itemStyle:{color:'#87CEFF'}},
-                    {value:310, name:'09:00-10:00',itemStyle:{color:'#4876FF'}},
-                    {value:344, name:'12:00-14:00',itemStyle:{color:'#F7C885'}},
-                    {value:545, name:'14:00-16:00',itemStyle:{color:'#F8A1A1'}},
-                    {value:218, name:'16:00-19:00',itemStyle:{color:'#7FFF00'}}]
-              }
-          ]
-      });
+      window.addEventListener("resize",this.resizeHandle)
     },
     habbitChart(){
-        let habbitChart = this.$echarts.init(document.getElementById("habbitChart"));
-        habbitChart.setOption({
-            title : {
-                x:'center'
-            },
-            tooltip : {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-                orient:'vertical', // orient:'horizontal', //'vertical'
-                x: 430,
-                y: 100,
-                data: ['周一','周二','周三','周四','周五','周六','周日']
-            },
-            series : [
-                {
-                    name: '来访时间',
-                    type: 'pie',
-                    radius : '81%',
-                    center: ['39%', '49%'],
-                    label:{
-                      normal : {
-                        // formatter: '{b}:{c}: ({d}%)',
-                        textStyle : { fontWeight : 'normal', fontSize : 15}
-                      }
+        this.myHabbitChart = this.$echarts.init(document.getElementById("habbitChart_t"))
+        this.myHabbitChart.setOption({
+          title: { text: "常住人口" },
+          tooltip: {
+            trigger: 'item',
+            formatter: "{a}  <br/>  {b}:  {c} ({d}%)"
+          },
+          legend: {             
+              orient:'vertical', // orient:'horizontal', //'vertical'
+              x: '72%',
+              y: '36%',
+              data:['第一警务区','第二警务区','第三警务区','第四警务区','第五警务区','第六警务区']
+          },
+          series: [
+              {
+                name:'人群分类',
+                type:'pie',
+                radius: ['60%', '90%'],
+                center:['35%', '49%'], //调整饼图所在位置
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'center'
                     },
-                    data:[
-                        {value:335, name:'周一',itemStyle:{color:'#4876FF'}},
-                        {value:310, name:'周二',itemStyle:{color:'#F7C885'}},
-                        {value:234, name:'周三',itemStyle:{color:'#F8A1A1'}},
-                        {value:135, name:'周四',itemStyle:{color:'#7FFF00'}},
-                        {value:1548, name:'周五',itemStyle:{color:'#87CEFF'}},
-                        {value:1671, name:'周六',itemStyle:{color:'#6495ED'}},
-                        {value:1740, name:'周日',itemStyle:{color:'#00CED1'}}
-                    ],
-                    itemStyle: {
-                        emphasis: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '30',
+                            fontWeight: 'bold'
                         }
                     }
-                }
-            ]
-        })
+                },
+                labelLine: { normal: { show: false } },
+                data:[
+                    {value:10149, name:'第一警务区',itemStyle:{color:'#87CEFF'}},
+                    {value:2007, name:'第二警务区',itemStyle:{color:'#D1EEEE'}},
+                    {value:9683, name:'第三警务区',itemStyle:{color:'#F7C885'}},
+                    {value:4326, name:'第四警务区',itemStyle:{color:'#F8A1A1'}},
+                    {value:5833, name:'第五警务区',itemStyle:{color:'#836FFF'}},
+                    {value:3342, name:'第六警务区',itemStyle:{color:'#5D478B'}},]
+              }
+          ]
+        });
+      window.addEventListener("resize",this.resizeHandle)
     },
-  }
-}
+    destroyed(){
+      window.removeEventListener("resize",this.resizeHandle)
+    },
+  },
+};
 </script>
 
-<style lang="scss" scoped>
-  .page {
-  .page__logo {
-    width: 120px;
+<style>
+  .amap-demo {
+    height: 100%;
+    width: 100%;
   }
-  .page__btn-group {
-    color: $color-text-placehoder;
-    font-size: 12px;
-    margin-top: 0px;
-    margin-bottom: 20px;
-    span {
-      color: $color-text-sub;
-      &:hover {
-        color: $color-text-main;
-      }
-    }
-  }
-  .font1{
-    // width:530px; 
-    // height:35px; 
-    width:100%; 
-    height:10%; 
-    float:left; 
-    // padding:2px; 
-    border:2px solid #F0F0F0; 
-    font-size:17px;
-    // margin-bottom:0;
-    // margin-right:2px;
-  }
-  .table1{
-    margin-top: 0;
-    width:525px; 
-    height:350px; 
-    // width:100%; 
-    // height:auto;
-    float:left; 
-    // padding:1px; 
-    border:2px solid  #F0F0F0; 
-    // margin: 10px;
-    // padding:2px;
-    // margin-top:0;
-    // margin-right:2px;
-  }
-}
 </style>
-
-<!--<template>
-  <d2-container class="page">
-    <d2-page-cover>
-      <img src="./image/logo@smarco.png">
-    </d2-page-cover>
-  </d2-container>
-</template>
-
-<script>
-// import D2PageCover from './components/d2-page-cover'
-// export default {
-//   components: {
-//     D2PageCover
-//   }
-// }
-// </script>
-
-// <style lang="scss" scoped>
-// .page {
-//   .page__logo {
-//     width: 120px;
-//   }
-//   .page__btn-group {
-//     color: $color-text-placehoder;
-//     font-size: 12px;
-//     margin-top: 0px;
-//     margin-bottom: 20px;
-//     span {
-//       color: $color-text-sub;
-//       &:hover {
-//         color: $color-text-main;
-//       }
-//     }
-//   }
-// }
-// </style>
--->

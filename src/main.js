@@ -34,6 +34,7 @@ import SplitPane from 'vue-splitpane'
 import VCharts from 'v-charts'
 import VueAMap from 'vue-amap'
 import { lazyAMapApiLoaderInstance } from 'vue-amap'
+// import watermark from '../src/assets/waterMark.js'
 // import 'vuetify/dist/vuetify.min.css'
 const bus = new Vue()
 
@@ -50,7 +51,7 @@ require('echarts/lib/chart/bar')
 require('echarts/lib/component/tooltip')
 require('echarts/lib/component/title')
 
-
+// Vue.prototype.$watermark = watermark
 Vue.prototype.EVENT = event
 Vue.prototype.$http = axios
 Vue.prototype.$http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
@@ -101,5 +102,12 @@ new Vue({
     this.$store.commit('d2admin/ua/get')
     // 初始化全屏监听
     this.$store.dispatch('d2admin/fullscreen/listen')
-  }
+  },
+  // watch: {
+  //   '$route.matched'(val){
+  //     let fullAside = this.$store.state.d2Admin.menu.fullAside
+  //     const _side = fullAside.filter(menu => menu.path === val[0].path)
+  //     this.$store.commit('d2admin/menu/asideSet',_side.length > 0 ? _side[0].children : [])
+  //   }
+  // }
 }).$mount('#app')

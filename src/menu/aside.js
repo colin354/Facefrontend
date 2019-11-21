@@ -17,9 +17,10 @@ export default [
     children: [
       { path: '/people-analyse', title: '人口数据分析', icon: 'tint' },
       { path: '/enterprise-analyse', title: '企业数据分析', icon: 'tint' },
-      { path: '/wea-analyse', title: '水电煤数据分析', icon: 'tint' },
+      { path: '/wea-analyse', title: '水电气数据分析', icon: 'tint' },
       { path: '/express-analyse', title: '快递数据分析', icon: 'tint' },
-      { path: '/ss-analyse', title: '社保数据分析', icon: 'tint' }
+      { path: '/ss-analyse', title: '社保数据分析', icon: 'tint' },
+      { path: '/week-analyse', title: '周数据分析', icon: 'tint' }
     ]
   },
   {
@@ -75,6 +76,8 @@ export default [
     icon: 'gear',
     children: [
       { path: '/user', title: '用户管理', icon: 'user' },
+      // { path: '/role', title: '角色管理', icon: 'refresh' },
+      // { path: '/menuManage', title: '菜单管理', icon: 'unlock' },
       { path: '/face-list', title: '人脸库管理', icon: 'address-card' },
       // { path: '/camera', title: '摄像头管理', icon: 'video-camera' },
       { path: '/camera-detect', title: '摄像头管理', icon: 'video-camera' },
