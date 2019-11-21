@@ -257,6 +257,15 @@ const frameIn = [
         }
       },
       {
+        path: 'early-warning-type',
+        name: 'early-warning-type',
+        component: _import('modules/warning/early-warning-type'),
+        meta: {
+          auth: true,
+          title: '预警事件类型管理'
+        }
+      },
+      {
         path: 'warning-query',
         name: 'warning-query',
         component: _import('modules/warning/warning-query'),

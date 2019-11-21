@@ -17,8 +17,13 @@
         </div>
         <div class="page-login--content-main" flex="dir:top main:center cross:center">
           <!-- logo -->
+<<<<<<< HEAD
           <!-- <img class="page-login--logo" src="./image/logo@smarco.png"> -->
           <img class="page-login--logo" src="./image/logo-bai1.png">
+=======
+          <img class="page-login--logo" src="./image/logo_w@smarco.png">
+          <!-- <img class="page-login--logo" src="./image/logo.png"> -->
+>>>>>>> ee39ca5a1f3c6f8b05f239eebc16fc020a85c391
           <!-- 表单 -->
           <div class="page-login--form">
             <el-card shadow="never">

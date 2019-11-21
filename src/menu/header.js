@@ -65,8 +65,9 @@ export default [
     title: '预警事件中心',
     icon: 'bell-o',
     children: [
+      { path: '/warning-query', title: '预警事件查询', icon: 'share-alt-square' },
       { path: '/early-warning', title: '预警事件管理', icon: 'bell' },
-      { path: '/warning-query', title: '预警事件查询', icon: 'share-alt-square' }
+      { path: '/early-warning-type', title: '预警事件类型管理', icon: 'bell' }
     ]
   },
   demoFrame,

@@ -48,6 +48,7 @@
     "vue-horizontal-timeline": "^0.5.0",
     "vue-i18n": "^8.10.0",
     "vue-router": "^3.0.3",
+    "vue-seamless-scroll": "^1.1.17",
     "vue-splitpane": "^1.0.4",
     "vue-video-player": "^5.0.2",
     "vuetify": "^1.5.16",
