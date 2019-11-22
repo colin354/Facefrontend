@@ -2,15 +2,15 @@ import demoFrame from './modules/demo-frame'
 // 菜单 侧边栏
 export default [
   { path: '/index', title: '首页', icon: 'home' },
-  {
-    title: '人像卡口',
-    icon: 'folder-o',
-    children: [
-      { path: '/page1', title: '抓拍查询' },
-      { path: '/page2', title: '报警查询' },
-      { path: '/page3', title: '轨迹查询' }
-    ]
-  },
+  // {
+  //   title: '人像卡口',
+  //   icon: 'folder-o',
+  //   children: [
+  //     { path: '/page1', title: '抓拍查询' },
+  //     { path: '/page2', title: '报警查询' },
+  //     { path: '/page3', title: '轨迹查询' }
+  //   ]
+  // },
   {
     title: '大数据分析',
     icon: 'linode',
@@ -30,6 +30,9 @@ export default [
       { title: '智慧小区',
         icon: 'universal-access',
         children: [
+          {
+            path: '/overview', title: '小区概览', icon: 'yelp'
+          },
           {
             title: '监控布控中心',
             icon: 'television',

@@ -93,6 +93,15 @@ const frameIn = [
           title: '用户管理'
         }
       },
+      {
+        path: 'overview',
+        name: 'overview',
+        component: _import('modules/sys/overview'),
+        meta: {
+          auth: true,
+          title: '小区概览'
+        }
+      },
       // {
       //   path: 'role',
       //   name: 'role',

@@ -31,6 +31,9 @@ export default [
         icon: 'universal-access',
         children: [
           {
+            path: '/overview', title: '小区概览', icon: 'yelp'
+          },
+          {
             title: '监控布控中心',
             icon: 'television',
             children: [
