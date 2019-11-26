@@ -91,7 +91,7 @@ export default {
         {
             name:'居住人口',
             type:'line',
-            data:[1, 0, 3, 4],
+            data:[1, 1, 3, 3],
             markPoint: {
                 data: [
                     {type: 'max', name: '最大值'},

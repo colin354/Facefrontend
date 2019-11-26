@@ -90,6 +90,13 @@ module.exports = {
       .use('i18n')
       .loader('@kazupon/vue-i18n-loader')
       .end()
+    // markdown
+    config.module
+      .rule('md')
+      .test(/\.md$/)
+      .use('text-loader')
+      .loader('text-loader')
+      .end()      
     // svg
     const svgRule = config.module.rule('svg')
     svgRule.uses.clear()
