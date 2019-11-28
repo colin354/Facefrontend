@@ -17,6 +17,21 @@
         <el-row :gutter="15">
           <el-col>
             <div style="width:100%; height:100%;">
+              <div>
+                {{weather_data.city}} 温度: {{weather_data_0.tem}} 空气质量: {{weather_data_0.air_level}} 天气: 
+                  <img v-if="weather_data_0.wea_img=='yun'"  style="display:inline-block;width: 42px;height: 42px;" src="./image/yahoo/yun.png" alt="">
+                  <img v-else-if="weather_data_0.wea_img=='yu'" style="display:inline-block;width: 42px;height: 42px;" src="./image/yahoo/yu.png" alt="">
+                  <img v-else-if="weather_data_0.wea_img=='bingbao'"  style="display:inline-block;width: 42px;height: 42px;" src="./image/yahoo/lei.png" alt="">
+                  <img v-else-if="weather_data_0.wea_img=='lei'" style="display:inline-block;width: 42px;height: 42px;" src="./image/yahoo/lei.png" alt="">
+                  <img v-else-if="weather_data_0.wea_img=='longjuanfeng'" style="display:inline-block;width: 42px;height: 42px;" src="./image/yahoo/shachen.png" alt="">
+                  <img v-else-if="weather_data_0.wea_img=='qing'" style="display:inline-block;width: 42px;height: 42px;" src="./image/yahoo/qing.png" alt="">
+                  <img v-else-if="weather_data_0.wea_img=='shachen'" style="display:inline-block;width: 42px;height: 42px;" src="./image/yahoo/shachen.png" alt="">
+                  <img v-else-if="weather_data_0.wea_img=='wu'" style="display:inline-block;width: 42px;height: 42px;" src="./image/yahoo/wu.png" alt="">
+                  <img v-else-if="weather_data_0.wea_img=='xue'" style="display:inline-block;width: 42px;height: 42px;" src="./image/yahoo/xue.png" alt="">
+                  <img v-else-if="weather_data_0.wea_img=='yin'" style="display:inline-block;width: 42px;height: 42px;" src="./image/yahoo/yin.png" alt="">
+                  <img v-else-if="weather_data_0.wea_img=='yujiaxue'" style="display:inline-block;width: 42px;height: 42px;" src="./image/yahoo/yujiaxue.png" alt="">
+                <hr/>
+              </div>
               <div id="columnarChart_t" style="width:100%; height:260%;"></div>
               <div id="barChart_t" style="width:100%; height:260%;"></div>               
               <div id="habbitChart_t" style="width:100%; height:260%;"></div>
@@ -30,9 +45,7 @@
 
 <script>
 import D2PageCover from './components/d2-page-cover'
-import VueAMap from 'vue-amap'
 
-let amapManager = new VueAMap.AMapManager();
 export default {
   name:'bottom',
   components:{
@@ -43,13 +56,31 @@ export default {
       myChart:null,
       myColumnarChart:null,
       myHabbitChart:null,
+      weather_data:{city:''},
+      weather_data_0:{air:'',air_level:'',air_tips:'',tem:'',tem1:'',tem2:'',wea:'',wea_img:'',win_speed:''}
     }
+  },
+  beforeCreate(){
+    console.log('beforecccccreate')
+    console.log(this)
+  },
+  beforeMount(){
+    console.log('bbbbbbefor')
+    console.log(this)
+    // this.getWeather();
+  },
+  created(){
+    console.log('cccreated')
+    console.log(this.weather_data)
   },
   mounted(){
     this.initMap();
     this.barChart();
     this.columnarChart();
     this.habbitChart();
+    this.getWeather();
+    console.log(this.weather_data)
+
   },
   methods:{
     initMap(){
@@ -58,7 +89,7 @@ export default {
         // center: [120.076145,33.333651],
         // center:[120.077784,33.325384],
         center:[120.076904,33.32407],
-      });
+      });    
       var path0=[[120.100242,33.365627], [120.101427,33.364077], [120.098461,33.359363],[120.097109,33.356467],
                 [120.095521,33.355721],[120.094105,33.355014],[120.100349,33.339534],
                 [120.079364,33.334751],[120.077154,33.339083],[120.08108,33.339871],[120.080394,33.34161],
@@ -152,12 +183,24 @@ export default {
             fillColor: color[i],   //多边形填充颜色
             fillOpacity: 0.9,      //多边形填充透明度
         })
-      }
+      }  
     },
     resizeHandle(){
       this.myChart.resize();
       this.myColumnarChart.resize();
-      this.myHabbitChart.resize();      
+      this.myHabbitChart.resize();   
+    },
+    getWeather(){
+				let arr = []
+				let api = "https://www.tianqiapi.com/api/?version=v1&appid=[12419927]&appsecret=[mjdd4C4l]&city=盐城";
+				this.$http.get(api).then(res => {
+          console.log(res.data)
+          console.log(res.data.data[0])
+          this.weather_data = res.data
+          this.weather_data_0 = res.data.data[0]
+        }).catch(() => {
+          console.log("error")
+        })
     },
     barChart(){
       this.myChart = this.$echarts.init(document.getElementById("barChart_t"))
@@ -294,6 +337,7 @@ export default {
           ]
         });
       window.addEventListener("resize",this.resizeHandle)
+            
     },
     destroyed(){
       window.removeEventListener("resize",this.resizeHandle)

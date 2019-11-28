@@ -1,6 +1,6 @@
 <template>
   <div class="d2-demo-article">
-    <div v-if="!long" class="d2-demo-article__control">
+    <div class="d2-demo-article__control">
       <el-switch
         v-model="isLong"
         @change="handleChange"
@@ -19,8 +19,6 @@
 
 <script>
 import { cookieGet } from '@/common/cookie'
-import sourceLong from '../md/long.md'
-import sourceShort from '../md/short.md'
 export default {
   props: {
     // 指定为长文本
@@ -28,24 +26,55 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    person_id: {
+      type: Array,
+      required: false,
+      default: []
     }
   },
   data () {
     return {
-      sourceLong,
-      sourceShort,
       isLong: false,
       imgArray: [],
       imgList: [],
-      faceIds: []
+      faceIds: [],
     }
   },
   created () {
     this.isLong = this.long
   },
+  mounted() {
+  },
+  watch:{
+    person_id :{
+      handler(newVal,oldVal) {
+        this.faceIds = newVal
+      }
+    },
+    long(val) {
+      this.isLong = this.long
+      if(this.long){
+        this.handleChange(true)
+      }
+    }
+  },
+  computed: {
+    person_ids: {
+      get: function(){
+        this.faceIds = this.person_id
+        return this.faceIds
+      },
+      set: function(val){
+        this.faceIds = val
+      }
+    }
+  },
   methods: {
     handleSelect(val){
       if(val){
+        console.log('hhhhhhhaahhahahahahahahahh')
+        console.log(val)
         this.$emit('checked-person',val)
       }
     },
@@ -54,7 +83,7 @@ export default {
       this.$axios.get(`/api/face/image?token=${cookieGet('token')}`)
         .then(res => {
           this.imgList = res.imgList
-          this.faceIds = []
+          // this.faceIds = []
         })
         .catch(() => {
           console.log("error")

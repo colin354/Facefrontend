@@ -1,6 +1,6 @@
 <template>
   <div class="d2-demo-article">
-    <div v-if="!long" class="d2-demo-article__control">
+    <div class="d2-demo-article__control">
       <el-switch
         v-model="isLong"
         active-text="设置部署摄像头"
@@ -13,6 +13,7 @@
         show-checkbox
         node-key="id"
         ref="tree"
+        :default-checked-keys="camera_id"
         @check-change="handleCheck"
         @node-click="handleNodeClick"
         >
@@ -30,12 +31,46 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    camera_id: {
+      type: Array,
+      required: false,
+      default: []
+    }    
+  },
+  watch:{
+    camera_id :{
+      handler(newVal,oldVal) {
+        this.$refs.tree.setCheckedKeys([]);
+        console.log('cccccccpperson___wwwwwwach')
+        console.log(newVal)
+        console.log(oldVal)
+      }
+    },
+    long(val) {
+      this.isLong = this.long
+      if(this.long){
+        console.log('hahahaha-----------')
+        this.handleChange(true)
+      }
     }
   },
+  // computed: {
+  //   camera_ids: {
+  //     get: function(){
+  //       this.cameraIds = this.camera_id
+  //       return this.cameraIds
+  //     },
+  //     set: function(val){
+  //       this.cameraIds = val
+  //     }
+  //   }
+  // },  
   data () {
     return {
       isLong: false,
-      streamList : []
+      streamList : [],
+      cameraIds : [],
     }
   },
   created () {
@@ -47,12 +82,12 @@ export default {
   methods:{ 
     handleCheck(val){
       this.$emit('checked-camera',this.$refs.tree.getCheckedKeys())
-      console.log(this.$refs.tree.getCheckedKeys())
     },
     handleChange(val){
       if(val){
       this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`,{params:{map_location:'GETLOCATION'}})
         .then(res => {
+          console.log('rrrreereerererere1111111')
           console.log(res)
           this.streamList = res.streamList
         })

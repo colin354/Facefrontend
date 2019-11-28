@@ -48,10 +48,25 @@ export default {
         getDataListURL: '/sys/log/error/page',
         getDataListIsPage: true,
         exportURL: '/sys/log/error/export'
-      }
+      },
+      weather_data: null
     }
   },
+  mounted() {
+    this.getWeather()
+  },
   methods: {
+    getWeather(){
+				let arr = []
+				let api = "https://www.tianqiapi.com/api/?version=v1&appid=[12419927]&appsecret=[mjdd4C4l]&city=盐城";
+				this.$http.get(api).then(res => {
+          console.log(res.data)
+          console.log(res.data.data[0])
+          this.weather_data = res.data
+        }).catch(() => {
+          console.log("error")
+        })
+    },    
     // 异常信息
     infoHandle (info) {
       this.$alert(info, this.$t('logError.errorInfo'), {

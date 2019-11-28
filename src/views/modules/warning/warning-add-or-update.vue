@@ -4,6 +4,7 @@
     :title="!dataForm.id ? $t('add') : $t('update')"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
+    @close="handleClose"
   >
     <el-form
       :data="cameraList"
@@ -13,9 +14,9 @@
       @keyup.enter.native="dataFormSubmitHandle()"
       label-width="120px"
     >
-      <!-- <el-form-item prop="warning_id" :label="$t('warning.warningId')">
-        <el-input v-model="dataForm.warning_id" :placeholder="$t('warning.warningId')"/>
-      </el-form-item> -->
+      <el-form-item v-show="dataForm.id" prop="warning_id" :label="$t('warning.warningId')">
+        <el-input :disabled="true" v-model="dataForm.warning_id" :placeholder="$t('warning.warningId')"/>
+      </el-form-item>
 
       <el-form-item prop="warning_name" :label="$t('warning.name')">
         <el-input v-model="dataForm.warning_name" :placeholder="$t('warning.name')"/>        
@@ -36,15 +37,17 @@
       </el-form-item>      
 
       <el-form-item prop="warning_target_people" :label="$t('warning.target_people')">
-        <target-people @checked-person="checkedPerson"/>
+        <target-people v-if="!dataForm.id" :person_id="target_people" @checked-person="checkedPerson" />
+        <target-people v-else-if="dataForm.id" :long="com_person" :person_id="target_people" @checked-person="checkedPerson"/>
       </el-form-item>
 
       <el-form-item prop="warning_target_car" :label="$t('warning.target_car')">
         <target-car @checked-car="checkedCar"/>        
       </el-form-item>   
       
-      <el-form-item prop="camera_num" label="摄像头节点">
-        <target-camera @checked-camera="checkedCamera"/>
+      <el-form-item prop="warning_target_camera" label="摄像头节点">
+        <target-camera v-if="!dataForm.id" :camera_id="target_camera" @checked-camera="checkedCamera"/>
+        <target-camera v-else-if="dataForm.id" :long="com_camera" :camera_id="target_camera" @checked-camera="checkedCamera"/>
       </el-form-item>
 
     </el-form>
@@ -81,11 +84,16 @@ export default {
         warning_type_id: "",
         warning_people_max:0,
         warning_car_max:0,
-        target_people:[],
-        target_car:[],
-        target_camera:[]
+        warning_target_people:'',
+        warning_target_car:[],
+        warning_target_camera:''
       },
-      warningType:[]
+      com_person:false,
+      com_car:false,
+      com_camera:false,
+      warningType:[],
+      target_people:[],
+      target_camera:[]
     };
   },
   computed: {
@@ -106,15 +114,14 @@ export default {
       this.visible = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].resetFields()
+        this.$refs["warningType"]=[]
+        this.getWarningType()  
         if (this.dataForm.id) {//若是修改,则走此句
-          console.log("id---------camera add --id")
-          console.log(this.dataForm.id)
           this.getInfo()
         }else{
           this.dataForm = {
             // streamstatus:"0"
           }//若是新增,则走此句       
-          this.getWarningType()   
         }
       })
     },
@@ -131,38 +138,63 @@ export default {
         .catch(() => {});
     },
     checkedPerson(person_id) {
-      this.dataForm.warning_target_people = person_id
+      console.log('3333333333333')
+      console.log(person_id)
+      if(person_id){
+        this.dataForm.warning_target_people = person_id.join('.')
+      }
     },
+
     checkedCar(car_id) {
       this.dataForm.warning_target_car = car_id
     },
     checkedCamera(camera_id) {
-      this.dataForm.warning_target_camera = camera_id
+      if(camera_id){
+        this.dataForm.warning_target_camera = camera_id.join('.')
+      }
     },      
     getWarningType() {
       this.$axios
         .get(`/api/warningType?token=${cookieGet("token")}`)
         .then(res => {
           this.warningType = res.list;
-          console.log('123445')
-          console.log(this.warningType)
         })
         .catch(() => {});      
     },    
     // 获取信息
     getInfo() {
       this.$axios
-        .get(`/api/warningType?token=${cookieGet("token")}`,{params:{id:this.dataForm.id}})
+        .get(`/api/warningEvent?token=${cookieGet("token")}`,{params:{id:this.dataForm.id}})
         .then(res => {
-          console.log('----000----修改时获取')
+          // this.warningType = res.warning_type
+          console.log('11111111110---00099')
           console.log(res)
           this.dataForm = {
             ...this.dataForm,
             ...res
           };
+          this.com_person = res.warning_target_people == null ? false : true
+          this.com_camera = res.warning_target_camera == null ? false : true
+          var target_people_int = []
+          var target_camera_int = []
+          if(this.com_person){
+            target_people_int = (res.warning_target_people.split(".")).map(function(data){return +data})
+          }
+          if(this.com_camera){
+            target_camera_int = (res.warning_target_camera.split(".")).map(function(data){return +data})
+          }
+          this.target_people = target_people_int
+          this.target_camera = target_camera_int
         })
-        .catch(() => {});
+        .catch(() => {
+          console.log('error!!!!!!')
+        });
     },
+    handleClose(){
+      console.log('ooooooclose')
+      this.target_people = []
+      this.target_camera = []
+    },    
     // 表单提交
     dataFormSubmitHandle: debounce(
       function() {

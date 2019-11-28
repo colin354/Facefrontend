@@ -26,22 +26,22 @@
       @sort-change="dataListSortChangeHandle"
       style="width: 100%;">
       <el-table-column type="selection" header-align="center" align="center" width="50"/>
-      <el-table-column prop="id" :label="$t('warning.id')" header-align="center" align="center"/>
+      <el-table-column prop="id" :label="$t('warning.id')" header-align="center" align="center" width="60"/>
       <el-table-column prop="warning_id" :label="$t('warning.warningId')" header-align="center" align="center"/>
-      <el-table-column prop="warning_name" :label="$t('warning.name')" header-align="center" align="center"/>
-      <el-table-column prop="warning_level" :label="$t('warning.level')" header-align="center" align="center"/>
+      <el-table-column prop="warning_name" :label="$t('warning.name')" header-align="center" align="center" width="100"/>
+      <el-table-column prop="warning_level" :label="$t('warning.level')" header-align="center" align="center" width="100"/>
       <el-table-column prop="warning_type" :label="$t('warning.type')" header-align="center" align="center"/>
       <el-table-column prop="warning_people_max" :label="$t('warning.people_max')" header-align="center" align="center" :show-overflow-tooltip="true" />
       <el-table-column prop="warning_car_max" :label="$t('warning.car_max')" header-align="center" align="center" :show-overflow-tooltip="true" />
       <el-table-column prop="warning_target_people_name" :label="$t('warning.target_people')" header-align="center" align="center"/>
       <el-table-column prop="warning_target_car_name" :label="$t('warning.target_car')" header-align="center" align="center" />
       <el-table-column prop="warning_target_camera_num" :label="$t('warning.camera_num')" header-align="center" align="center" />
-      <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
+      <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="200">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.suspended" type="text" size="mini" @click="activeHandle(scope.row.id)">{{ $t('process.active') }}</el-button>
-          <el-button v-else type="text" size="mini" @click="suspendHandle(scope.row.id)">{{ $t('process.suspend') }}</el-button>
-          <el-button type="text" size="mini" @click="deleteHandle(scope.row.deploymentId)">{{ $t('delete') }}</el-button>
-          <el-button type="text" size="mini" @click="convertToModelHandle(scope.row.id)">{{ $t('process.convertToModel') }}</el-button>
+          <el-button type="text" size="mini" @click="startHandle(scope.row.id)">{{ $t('warning.start') }}</el-button>
+          <el-button type="text" size="mini" @click="stopHandle(scope.row.id)">{{ $t('warning.stop') }}</el-button>
+          <el-button type="text" size="mini" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
+          <el-button type="text" size="mini" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -64,7 +64,7 @@
 
 <script>
 import mixinViewModule from '@/mixins/view-module'
-import AddOrUpdate from './warning-add-or-update copy'
+import AddOrUpdate from './warning-add-or-update'
 import Deploy from './process-deploy'
 import { cookieGet } from '@/common/cookie'
 import qs from 'qs'
