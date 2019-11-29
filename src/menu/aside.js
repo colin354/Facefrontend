@@ -15,48 +15,42 @@ export default [
     title: '警务巡防中心',
     icon: 'futbol-o',
     children: [
-      { title: '智慧小区',
+      { title: '监控中心',
         icon: 'universal-access',
         children: [
           {
-            path: '/overview', title: '小区概览', icon: 'yelp'
-          },
-          {
-            title: '监控布控中心',
+            title: '实时监控',
             icon: 'television',
             children: [
               { path: '/liveview', title: '实时监控显示', icon: 'play' },
               { path: '/real-video', title: '地图布控显示', icon: 'support' },
+            ]
+          },
+          {
+            title: '监控管理',
+            icon: 'yelp',
+            children: [
               { path: '/stream-list', title: '历史监控查询', icon: 'magic' }
-            ]
-          },
-          {
-            title: '情报研判中心',
-            icon: 'codiepie',
-            children: [
-              { path: '/testws', title: '人车情报研判中心', icon: 'camera' },
-              { path: '/structured_video', title: '视频结构化展示', icon: 'gg-circle' }
-            ]
-          },
-          {
-            title: '轨迹追踪',
-            icon: 'paper-plane',
-            children: [
-              { path: '/multiline', title: '地图轨迹融合', icon: 'yelp' },
-              { path: '/face-match', title: '人像轨迹搜索', icon: 'newspaper-o' }
             ]
           }
         ]
       },
-      { title: '视频融合中', icon: 'link' },
-      { title: '三位立体警务巡防系统', icon: 'tint' }
+      { title: '人车情报研判中心', icon: 'camera', path: '/testws' },
+      { title: '轨迹追踪中心',
+        icon: 'paper-plane',
+        children: [
+          { path: '/multiline', title: '地图轨迹融合', icon: 'yelp' },
+          { path: '/face-match', title: '人像轨迹搜索', icon: 'newspaper-o' }
+        ]
+      },
+      { title: '视频结构化中心', path: '/structured_video', icon: 'gg-circle' }
     ]
   },
   {
     title: '预警事件中心',
     icon: 'bell-o',
     children: [
-      { path: '/warning-query', title: '预警事件查询', icon: 'share-alt-square' },
+      { path: '/warning-query', title: '预警事件查询', icon: 'bell' },
       { path: '/early-warning', title: '预警事件管理', icon: 'bell' },
       { path: '/early-warning-type', title: '预警事件类型管理', icon: 'bell' }
     ]
@@ -78,13 +72,23 @@ export default [
     title: '系统管理',
     icon: 'gear',
     children: [
-      { path: '/user', title: '用户管理', icon: 'user' },
-      // { path: '/role', title: '角色管理', icon: 'refresh' },
-      // { path: '/menuManage', title: '菜单管理', icon: 'unlock' },
-      { path: '/face-list', title: '人脸库管理', icon: 'address-card' },
-      // { path: '/camera', title: '摄像头管理', icon: 'video-camera' },
-      { path: '/camera-detect', title: '摄像头管理', icon: 'video-camera' },
-      { path: '/watermark', title: '水印设置', icon: 'bookmark' },
+      {
+        title: '系统用户管理',
+        icon: 'database',
+        children: [
+          { path: '/user', title: '用户管理', icon: 'user' },
+          { path: '/user', title: '权限管理', icon: 'user' },
+        ]
+      },
+      {
+        title: '数据库管理',
+        icon: 'database',
+        children: [
+          { path: '/face-list', title: '人口数据库', icon: 'address-card' },
+          { path: '/camera-detect', title: '摄像头数据库', icon: 'video-camera' },
+          { path: '/whitelist-database', title: '车辆数据库', icon: 'cubes' }
+        ]
+      },
       {
         title: '日志管理',
         icon: 'file-text',
@@ -95,11 +99,10 @@ export default [
         ]
       },
       {
-        title: '数据库管理',
-        icon: 'database',
+        title: '系统设置',
+        icon: 'file-text',
         children: [
-          { path: '/sensitive-database', title: '敏感数据库管理', icon: 'cube' },
-          { path: '/whitelist-database', title: '白名单数据库管理', icon: 'cubes' }
+          { path: '/watermark', title: '水印设置', icon: 'bookmark' }
         ]
       }
     ]

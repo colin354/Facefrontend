@@ -36,9 +36,9 @@
       <el-table-column prop="warning_target_people_name" :label="$t('warning.target_people')" header-align="center" align="center"/>
       <el-table-column prop="warning_target_car_name" :label="$t('warning.target_car')" header-align="center" align="center" />
       <el-table-column prop="warning_target_camera_num" :label="$t('warning.camera_num')" header-align="center" align="center" />
-      <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="200">
+      <el-table-column prop="warning_event_flag" :label="$t('handle')" fixed="right" header-align="center" align="center" width="200">
         <template slot-scope="scope">
-          <el-button type="text" size="mini" @click="startHandle(scope.row.id)">{{ $t('warning.start') }}</el-button>
+          <el-button type="text" size="mini" @click="startHandle(scope.row.id)" :disabled="scope.row.warning_event_flag == 1 ? true : false">{{ $t('warning.start') }}</el-button>
           <el-button type="text" size="mini" @click="stopHandle(scope.row.id)">{{ $t('warning.stop') }}</el-button>
           <el-button type="text" size="mini" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
           <el-button type="text" size="mini" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
@@ -91,14 +91,26 @@ export default {
   },
   methods: {
     // 获取流程(xml/image)url地址
-    getResourceURL (id, name) {
-      var params = qs.stringify({
-        'token': cookieGet('token'),
-        'deploymentId': id,
-        'resourceName': name
-      })
-      return `${window.SITE_CONFIG['apiURL']}/act/process/resource?${params}`
-    },
+    startHandle (id) {
+      this.$axios.post(`/api/warningCtrl?token=${cookieGet('token')}`,{params:{id:id,start:true}})
+        .then(res => {
+          console.log('rrrreereerererere1111111')
+          this.getDataList()
+        })
+        .catch(() => {
+          console.log("error")
+        })
+      },
+    stopHandle (id) {
+      this.$axios.post(`/api/warningCtrl?token=${cookieGet('token')}`,{params:{id:id,start:false}})
+        .then(res => {
+          console.log('rrrreereerererere1111111')
+          this.getDataList()
+        })
+        .catch(() => {
+          console.log("error")
+        })
+      },      
     // 部署流程文件
     deployHandle () {
       this.deployVisible = true

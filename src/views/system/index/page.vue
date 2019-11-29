@@ -18,7 +18,10 @@
           <el-col>
             <div style="width:100%; height:100%;">
               <div>
-                {{weather_data.city}} 温度: {{weather_data_0.tem}} 空气质量: {{weather_data_0.air_level}} 天气: 
+                <br/>
+                {{weather_data.city}} {{weather_data_0.date}} {{weather_data_0.week}}
+                <br/>   
+                温度: {{weather_data_0.tem}} 空气质量: {{weather_data_0.air_level}} 天气: 
                   <img v-if="weather_data_0.wea_img=='yun'"  style="display:inline-block;width: 42px;height: 42px;" src="./image/yahoo/yun.png" alt="">
                   <img v-else-if="weather_data_0.wea_img=='yu'" style="display:inline-block;width: 42px;height: 42px;" src="./image/yahoo/yu.png" alt="">
                   <img v-else-if="weather_data_0.wea_img=='bingbao'"  style="display:inline-block;width: 42px;height: 42px;" src="./image/yahoo/lei.png" alt="">
@@ -57,7 +60,19 @@ export default {
       myColumnarChart:null,
       myHabbitChart:null,
       weather_data:{city:''},
-      weather_data_0:{air:'',air_level:'',air_tips:'',tem:'',tem1:'',tem2:'',wea:'',wea_img:'',win_speed:''}
+      weather_data_0:{
+        air:'',
+        air_level:'',
+        air_tips:'',
+        tem:'',
+        tem1:'',
+        tem2:'',
+        wea:'',
+        wea_img:'',
+        win_speed:'',
+        date:'',
+        week:''
+      }
     }
   },
   beforeCreate(){

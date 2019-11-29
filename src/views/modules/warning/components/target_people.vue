@@ -73,8 +73,6 @@ export default {
   methods: {
     handleSelect(val){
       if(val){
-        console.log('hhhhhhhaahhahahahahahahahh')
-        console.log(val)
         this.$emit('checked-person',val)
       }
     },
