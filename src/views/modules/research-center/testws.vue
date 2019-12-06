@@ -156,7 +156,6 @@ export default {
       // res就是后台实时传过来的数据
       console.log('this is for ----------')
       let resData = JSON.parse(res.data)
-      console.log(resData)
       this.ws_data.text = resData.num
       this.ws_data.imgurl = resData.imgurl
       this.ws_data.faceurl = resData.faceurl
@@ -167,8 +166,6 @@ export default {
       else{
         this.imgs.push(this.ws_data.imgurl) //向数组末尾添加一个元素
       }
-      console.log(this.ws_data.imgurl)
-      console.log('this is for ----------')     
       // let msg = `<el-image style="width: 100px; height: 100px" :src="`+this.ws_data.imgurl+`"fit="fit"></el-image>`
       // console.log(msg)
       // this.$notify({
@@ -197,7 +194,7 @@ export default {
     handleNodeClick(val) {
       console.log("----点击事件-----00------")
       var tempId = val.id
-      if(tempId){
+      if(tempId<10000){
         this.PlayVideo(val.token)
         // this.initSocket(val.token)
         if(this.webSocket) {

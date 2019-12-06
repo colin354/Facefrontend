@@ -94,7 +94,6 @@ export default {
     startHandle (id) {
       this.$axios.post(`/api/warningCtrl?token=${cookieGet('token')}`,{params:{id:id,start:true}})
         .then(res => {
-          console.log('rrrreereerererere1111111')
           this.getDataList()
         })
         .catch(() => {
@@ -104,7 +103,6 @@ export default {
     stopHandle (id) {
       this.$axios.post(`/api/warningCtrl?token=${cookieGet('token')}`,{params:{id:id,start:false}})
         .then(res => {
-          console.log('rrrreereerererere1111111')
           this.getDataList()
         })
         .catch(() => {

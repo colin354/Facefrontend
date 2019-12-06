@@ -12,7 +12,7 @@ export default [
   //   ]
   // },
   {
-    title: '警务巡防中心',
+    title: '三维立体警务巡防中心',
     icon: 'futbol-o',
     children: [
       { title: '监控中心',
