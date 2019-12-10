@@ -481,6 +481,8 @@ t.camera.lat = '纬度'
 t.camera.lon = '经度'
 
 t.warning = {}
+t.warning.start = '启动'
+t.warning.stop = '停止'
 t.warning.id = '序号'
 t.warning.warningId = '预警事件编号'
 t.warning.name = '预警事件名称'

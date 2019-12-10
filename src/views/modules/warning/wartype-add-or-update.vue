@@ -15,10 +15,6 @@
     >
       <el-form-item prop="warning_level" :label="$t('warning.level')">
         <el-input v-model="dataForm.warning_level" :placeholder="$t('warning.level')"/>
-        <!-- <el-select v-model="dataForm.warningLevel" :placeholder="$t('warning.level')">
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
-        </el-select> -->
       </el-form-item>
 
       <el-form-item prop="warning_type" :label="$t('warning.type')">
@@ -81,9 +77,11 @@ export default {
           console.log(this.dataForm.id)
           this.getInfo()
         }else{
+          console.log('hello')
           this.dataForm = {
             // streamstatus:"0"
           }//若是新增,则走此句
+          // this.getWarningType()
         }
       })
     },

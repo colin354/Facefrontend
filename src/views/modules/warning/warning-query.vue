@@ -6,12 +6,6 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">{{ $t('query') }}</el-button>
-      </el-form-item>      
-      <el-form-item>
-        <el-button type="primary" @click="getDataList()">{{ $t('add') }}</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="deployHandle()">{{ $t('process.deployFile') }}</el-button>
       </el-form-item>
       <el-form-item>
         <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
@@ -27,23 +21,54 @@
       style="width: 100%;">
       <el-table-column type="selection" header-align="center" align="center" width="50"/>
       <el-table-column prop="id" :label="$t('warning.id')" header-align="center" align="center" width="50"/>
-      <el-table-column prop="time" :label="$t('warning.time')" header-align="center" align="center"/>
-      <el-table-column prop="cameraId" :label="$t('warning.cameraId')" header-align="center" align="center"/>
-      <el-table-column prop="level" :label="$t('warning.level')" header-align="center" align="center"/>
-      <el-table-column prop="type" :label="$t('warning.warningId')" header-align="center" align="center"/>
-      <el-table-column prop="people_max" :label="$t('warning.name')" header-align="center" align="center" :show-overflow-tooltip="true" />
-      <el-table-column prop="car_max" :label="$t('warning.type')" header-align="center" align="center" :show-overflow-tooltip="true" />
+      <el-table-column prop="warning_time" :label="$t('warning.time')" header-align="center" align="center"/>
+      <el-table-column prop="warning_camera_id" :label="$t('warning.cameraId')" header-align="center" align="center"/>
+      <el-table-column prop="warning_level" :label="$t('warning.level')" header-align="center" align="center"/>
+      <el-table-column prop="warning_id" :label="$t('warning.warningId')" header-align="center" align="center"/>
+      <el-table-column prop="warning_name" :label="$t('warning.name')" header-align="center" align="center" :show-overflow-tooltip="true" />
+      <el-table-column prop="warning_message" :label="$t('warning.type')" header-align="center" align="center" :show-overflow-tooltip="true" />
       <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
         <template slot-scope="scope">
           <el-button v-if="scope.row.suspended" type="text" size="mini" @click="activeHandle(scope.row.id)">{{ $t('process.active') }}</el-button>
-          <el-button v-else type="text" size="mini" @click="suspendHandle(scope.row.id)">{{ $t('process.suspend') }}</el-button>
+          <el-button v-else type="text" size="mini" @click="playVideo(scope.row.id)">播放</el-button>
           <el-button type="text" size="mini" @click="deleteHandle(scope.row.deploymentId)">{{ $t('delete') }}</el-button>
-          <el-button type="text" size="mini" @click="convertToModelHandle(scope.row.id)">{{ $t('process.convertToModel') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <!-- 弹窗, 部署流程文件 -->
-    <deploy v-if="deployVisible" ref="deploy" @refreshDataList="getDataList"/>
+    
+    <el-dialog
+      :visible.sync="video_visible"
+      title="视频播放"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+    >
+      <el-row>
+        <el-col :span="24">
+          <div class="grid-content bg-purple">
+            <video-player
+              class="vjs-default-skin"
+              ref="videoPlayer"
+              :options="playerOptions"
+              :playsinline="true"
+              customEventName="customstatechangedeventname"
+              @play="onPlayerPlay($event)"
+              @pause="onPlayerPause($event)"
+              @ended="onPlayerEnded($event)"
+              @waiting="onPlayerWaiting($event)"
+              @playing="onPlayerPlaying($event)"
+              @loadeddata="onPlayerLoadeddata($event)"
+              @timeupdate="onPlayerTimeupdate($event)"
+              @canplay="onPlayerCanplay($event)"
+              @canplaythrough="onPlayerCanplaythrough($event)"
+              @statechanged="playerStateChanged($event)"
+              @ready="playerReadied"
+            ></video-player>                
+          </div>
+        </el-col>
+      </el-row>
+
+    </el-dialog>
+
     <!-- 分页 -->
     <el-pagination
       slot="footer"
@@ -63,26 +88,47 @@ import mixinViewModule from '@/mixins/view-module'
 import Deploy from './process-deploy'
 import { cookieGet } from '@/common/cookie'
 import qs from 'qs'
+import "video.js/dist/video-js.css"
+import { videoPlayer } from "vue-video-player"
+import 'videojs-hotkeys'
+import '@/views/modules/face_match/src/custom-theme.css'
+
 export default {
   mixins: [ mixinViewModule ],
   data () {
     return {
       mixinViewModuleOptions: {
-        getDataListURL: '/act/process/page',
+        getDataListURL: `/api/warningHistory?token=${cookieGet('token')}`,
         getDataListIsPage: true,
-        deleteURL: '/act/process',
+        deleteURL: `/api/warningHistory?token=${cookieGet('token')}`,
         deleteIsBatch: true,
-        deleteIsBatchKey: 'deploymentId'
       },
       dataForm: {
         processName: '',
         key: ''
       },
-      deployVisible: false
+      video_visible: false,
+      playerOptions: {
+        // videojs options
+        loop: true,
+        muted: true,
+        fluid: true,
+        language: "en",
+        playbackRates: [0.7, 1.0, 1.5, 2.0],
+        sources: [
+          {
+            type: "video/mp4",
+            src: ""
+          }
+        ],
+        poster: "",
+        custum: []
+      }
     }
   },
   components: {
-    Deploy
+    Deploy,
+    videoPlayer
   },
   methods: {
     // 获取流程(xml/image)url地址
@@ -95,12 +141,45 @@ export default {
       return `${window.SITE_CONFIG['apiURL']}/act/process/resource?${params}`
     },
     // 部署流程文件
-    deployHandle () {
-      this.deployVisible = true
-      this.$nextTick(() => {
-        this.$refs.deploy.init()
-      })
+    playVideo (id) {
+      console.log(id)
+      this.video_visible = true
     },
+    // listen event
+    onPlayerPlay(player) {
+      console.log('player play!', player)
+    },
+    onPlayerPause(player) {
+      console.log('player pause!', player)
+    },
+    onPlayerEnded(player) {
+      console.log('player end!', player)
+    },
+    // ...player event
+    onPlayerTimeupdate(player) {
+      console.log("hahahahahaha")
+    },
+    onPlayerLoadeddata(player) {
+    },
+    onPlayerPlaying(player) {
+      console.log('on player')
+    },
+    // or listen state event
+    playerStateChanged(playerCurrentState) {
+      console.log('111111player current update state', playerCurrentState)
+    },
+    onPlayerCanplaythrough(player) {
+      console.log('11111on ply')
+    },
+    onPlayerCanplay(player) {
+      console.log('aaabbaa')
+    },
+    onPlayerWaiting(player) {
+      console.log('waiting')
+    },
+    playerReadied(player){
+      console.log("the player is readied!!!!!", player);
+    },    
     // 激活
     activeHandle (id) {
       this.$confirm(this.$t('prompt.info', { 'handle': this.$t('process.active') }), this.$t('prompt.title'), {

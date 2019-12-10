@@ -33,6 +33,7 @@
     "patternfly-bootstrap-treeview": "^2.1.8",
     "qs": "^6.7.0",
     "screenfull": "^4.2.0",
+    "text-loader": "0.0.1",
     "ua-parser-js": "^0.7.19",
     "v-charts": "^1.19.0",
     "videojs-markers": "^1.0.1",

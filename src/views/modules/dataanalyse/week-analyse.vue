@@ -4,8 +4,8 @@
         <div id="waterChart_t" class="table1" style="width:49%; height:48%; float:left;margin-right:5px;"></div>
         <div id="lightChart_t" class="table1" style="width:49%; height:48%; float:left;margin-right:5px;"></div>
         <div id="gasChart_t" class="table1" style="width:49%; height:48%; float:left;margin-right:5px;"></div>
-        <div class="table1" style="width:49%; height:48%; float:left;margin-right:5px;">
-          <p>此户在10月份第三周有新住户入住，疑似2人，未有燃气数据可能小区未接入天然气，请信息采集人员前去确认</p>
+        <div id="allChart_t" class="table1" style="width:49%; height:48%; float:left;margin-right:5px;">
+          
         </div>
       </div>
   </d2-container>
@@ -13,17 +13,29 @@
 
 <script>
 import D2PageCover from '../../system/index/components/d2-page-cover'
+import vueSeamless from 'vue-seamless-scroll'
 // import {EleResize} from '../../../assets/js/esresize'
 export default {
   name:'bottom',
   components: {
     D2PageCover,
+    vueSeamless,
   },
   data(){
     return{
       myWaterChart:null,
       myLightChart:null,
       myGasChart:null,
+      myAllChart:null,
+      option: {
+        step: 1,
+        limitMoveNum: 3,
+        openTouch: false,
+        waitTime: 1,
+        direction: 1,
+        singleHeight: 30
+      },
+      APIIpList: ['','','','','','','','']      
     }
   },
   computed:{
@@ -31,14 +43,71 @@ export default {
   mounted(){
     this.waterChart();
     this.lightChart();
-    this.gasChart()
+    this.gasChart();
+    this.allChart();
   },
   methods:{
     resizeHandle(){
       this.myWaterChart.resize()
       this.myLightChart.resize()
       this.myGasChart.resize()
+      this.myAllChart.resize()
+    },
+    allChart(){
+        this.myAllChart = this.$echarts.init(document.getElementById('allChart_t'));
+        this.myAllChart.setOption({
+    title: {
+        text: '汇文公馆12栋1203 周居住人数分析',
+    },
+    tooltip: {
+        trigger: 'axis'
     },    
+    legend: {
+        data:['最高气温','最低气温']
+    },
+    toolbox: {
+        show: true,
+        feature: {
+            dataZoom: {
+                yAxisIndex: 'none'
+            },
+            dataView: {readOnly: false},
+            magicType: {type: ['line', 'bar']},
+            restore: {},
+            saveAsImage: {}
+        }
+    },
+    xAxis:  {
+        type: 'category',
+        data: ['第一周', '第二周', '第三周', '第四周']
+    },
+    yAxis: {
+        type: 'value',
+        axisLabel: {
+            formatter: '{value} （人）'
+        }
+    },
+    series: [
+        {
+            name:'居住人口',
+            type:'line',
+            data:[1, 1, 3, 3],
+            markPoint: {
+                data: [
+                    {type: 'max', name: '最大值'},
+                    {type: 'min', name: '最小值'}
+                ]
+            },
+            markLine: {
+                data: [
+                    {type: 'average', name: '平均值'}
+                ]
+            }
+        },
+    ]
+})
+        // window.addEventListener("resize",this.resizeHandle)      
+    },
     waterChart(){
         this.myWaterChart = this.$echarts.init(document.getElementById('waterChart_t'));
         this.myWaterChart.setOption({
@@ -61,7 +130,7 @@ export default {
               smooth:true
           }]
         })
-        window.addEventListener("resize",this.resizeHandle)
+        // window.addEventListener("resize",this.resizeHandle)
     },
     lightChart(){
         this.myLightChart = this.$echarts.init(document.getElementById('lightChart_t'));
@@ -85,7 +154,7 @@ export default {
               smooth:true
           }]
         })
-        window.addEventListener("resize",this.resizeHandle)
+        // window.addEventListener("resize",this.resizeHandle)
     },
     gasChart(){
         this.myGasChart = this.$echarts.init(document.getElementById('gasChart_t'));
@@ -109,7 +178,7 @@ export default {
               smooth:true
           }]
         })
-        window.addEventListener("resize",this.resizeHandle)
+        // window.addEventListener("resize",this.resizeHandle)
     },
   },
   destroyed(){
@@ -151,4 +220,8 @@ export default {
     box-sizing: border-box; 
   }
 }
+  .box-card {
+    width: 500px;
+    height: 500px;
+  }
 </style>

@@ -8,7 +8,7 @@
         <el-button @click="getDataList()">{{ $t('query') }}</el-button>
       </el-form-item>      
       <el-form-item>
-        <el-button type="primary" @click="getDataList()">{{ $t('add') }}</el-button>
+        <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="deployHandle()">{{ $t('process.deployFile') }}</el-button>
@@ -26,26 +26,27 @@
       @sort-change="dataListSortChangeHandle"
       style="width: 100%;">
       <el-table-column type="selection" header-align="center" align="center" width="50"/>
-      <el-table-column prop="id" :label="$t('warning.id')" header-align="center" align="center"/>
-      <el-table-column prop="warningId" :label="$t('warning.warningId')" header-align="center" align="center"/>
-      <el-table-column prop="name" :label="$t('warning.name')" header-align="center" align="center"/>
-      <el-table-column prop="level" :label="$t('warning.level')" header-align="center" align="center"/>
-      <el-table-column prop="type" :label="$t('warning.type')" header-align="center" align="center"/>
-      <el-table-column prop="people_max" :label="$t('warning.people_max')" header-align="center" align="center" :show-overflow-tooltip="true" />
-      <el-table-column prop="car_max" :label="$t('warning.car_max')" header-align="center" align="center" :show-overflow-tooltip="true" />
-      <el-table-column prop="target_people" :label="$t('warning.target_people')" header-align="center" align="center"/>
-      <el-table-column prop="target_car" :label="$t('warning.target_car')" header-align="center" align="center" />
-      <el-table-column prop="camera_num" :label="$t('warning.camera_num')" header-align="center" align="center" />
-      <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
+      <el-table-column prop="id" :label="$t('warning.id')" header-align="center" align="center" width="60"/>
+      <el-table-column prop="warning_id" :label="$t('warning.warningId')" header-align="center" align="center"/>
+      <el-table-column prop="warning_name" :label="$t('warning.name')" header-align="center" align="center" width="100"/>
+      <el-table-column prop="warning_level" :label="$t('warning.level')" header-align="center" align="center" width="100"/>
+      <el-table-column prop="warning_type" :label="$t('warning.type')" header-align="center" align="center"/>
+      <el-table-column prop="warning_people_max" :label="$t('warning.people_max')" header-align="center" align="center" :show-overflow-tooltip="true" />
+      <el-table-column prop="warning_car_max" :label="$t('warning.car_max')" header-align="center" align="center" :show-overflow-tooltip="true" />
+      <el-table-column prop="warning_target_people_name" :label="$t('warning.target_people')" header-align="center" align="center"/>
+      <el-table-column prop="warning_target_car_name" :label="$t('warning.target_car')" header-align="center" align="center" />
+      <el-table-column prop="warning_target_camera_num" :label="$t('warning.camera_num')" header-align="center" align="center" />
+      <el-table-column prop="warning_event_flag" :label="$t('handle')" fixed="right" header-align="center" align="center" width="200">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.suspended" type="text" size="mini" @click="activeHandle(scope.row.id)">{{ $t('process.active') }}</el-button>
-          <el-button v-else type="text" size="mini" @click="suspendHandle(scope.row.id)">{{ $t('process.suspend') }}</el-button>
-          <el-button type="text" size="mini" @click="deleteHandle(scope.row.deploymentId)">{{ $t('delete') }}</el-button>
-          <el-button type="text" size="mini" @click="convertToModelHandle(scope.row.id)">{{ $t('process.convertToModel') }}</el-button>
+          <el-button type="text" size="mini" @click="startHandle(scope.row.id)" :disabled="scope.row.warning_event_flag == 1 ? true : false">{{ $t('warning.start') }}</el-button>
+          <el-button type="text" size="mini" @click="stopHandle(scope.row.id)">{{ $t('warning.stop') }}</el-button>
+          <el-button type="text" size="mini" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
+          <el-button type="text" size="mini" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
     <!-- 弹窗, 部署流程文件 -->
+    <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
     <deploy v-if="deployVisible" ref="deploy" @refreshDataList="getDataList"/>
     <!-- 分页 -->
     <el-pagination
@@ -63,6 +64,7 @@
 
 <script>
 import mixinViewModule from '@/mixins/view-module'
+import AddOrUpdate from './warning-add-or-update'
 import Deploy from './process-deploy'
 import { cookieGet } from '@/common/cookie'
 import qs from 'qs'
@@ -71,11 +73,10 @@ export default {
   data () {
     return {
       mixinViewModuleOptions: {
-        getDataListURL: '/act/process/page',
+        getDataListURL: `/api/warningEvent?token=${cookieGet('token')}`,
         getDataListIsPage: true,
-        deleteURL: '/act/process',
+        deleteURL: `/api/warningEvent?token=${cookieGet('token')}`,
         deleteIsBatch: true,
-        deleteIsBatchKey: 'deploymentId'
       },
       dataForm: {
         processName: '',
@@ -85,18 +86,29 @@ export default {
     }
   },
   components: {
+    AddOrUpdate,
     Deploy
   },
   methods: {
     // 获取流程(xml/image)url地址
-    getResourceURL (id, name) {
-      var params = qs.stringify({
-        'token': cookieGet('token'),
-        'deploymentId': id,
-        'resourceName': name
-      })
-      return `${window.SITE_CONFIG['apiURL']}/act/process/resource?${params}`
-    },
+    startHandle (id) {
+      this.$axios.post(`/api/warningCtrl?token=${cookieGet('token')}`,{params:{id:id,start:true}})
+        .then(res => {
+          this.getDataList()
+        })
+        .catch(() => {
+          console.log("error")
+        })
+      },
+    stopHandle (id) {
+      this.$axios.post(`/api/warningCtrl?token=${cookieGet('token')}`,{params:{id:id,start:false}})
+        .then(res => {
+          this.getDataList()
+        })
+        .catch(() => {
+          console.log("error")
+        })
+      },      
     // 部署流程文件
     deployHandle () {
       this.deployVisible = true
