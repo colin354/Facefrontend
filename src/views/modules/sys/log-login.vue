@@ -25,22 +25,19 @@
       border
       @sort-change="dataListSortChangeHandle"
       style="width: 100%;">
-      <el-table-column prop="creatorName" :label="$t('logLogin.creatorName')" header-align="center" align="center"/>
-      <el-table-column prop="operation" :label="$t('logLogin.operation')" header-align="center" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.operation === 0 ? $t('logLogin.operation0') : $t('logLogin.operation1') }}
-        </template>
+      <el-table-column prop="login_username" :label="$t('logLogin.creatorName')" header-align="center" align="center"/>
+      <el-table-column prop="login_op" :label="$t('logLogin.operation')" header-align="center" align="center">
       </el-table-column>
-      <el-table-column prop="status" :label="$t('logLogin.status')" sortable="custom" header-align="center" align="center">
+      <el-table-column prop="login_status" :label="$t('logLogin.status')" sortable="custom" header-align="center" align="center">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 0" size="mini" type="danger">{{ $t('logLogin.status0') }}</el-tag>
-          <el-tag v-else-if="scope.row.status === 1" size="mini" type="success">{{ $t('logLogin.status1') }}</el-tag>
+          <el-tag v-if="scope.row.login_status === 0" size="mini" type="danger">{{ $t('logLogin.status0') }}</el-tag>
+          <el-tag v-else-if="scope.row.login_status === 1" size="mini" type="success">{{ $t('logLogin.status1') }}</el-tag>
           <el-tag v-else size="mini" type="warning">{{ $t('logLogin.status2') }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="ip" :label="$t('logLogin.ip')" header-align="center" align="center"/>
-      <el-table-column prop="userAgent" :label="$t('logLogin.userAgent')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
-      <el-table-column prop="createDate" :label="$t('logLogin.createDate')" sortable="custom" header-align="center" align="center" width="180"/>
+      <el-table-column prop="login_ip" :label="$t('logLogin.ip')" header-align="center" align="center"/>
+      <el-table-column prop="login_useragent" :label="$t('logLogin.userAgent')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
+      <el-table-column prop="login_time" :label="$t('logLogin.createDate')" sortable="custom" header-align="center" align="center" width="180"/>
     </el-table>
     <!-- 分页 -->
     <el-pagination
@@ -58,14 +55,15 @@
 
 <script>
 import mixinViewModule from '@/mixins/view-module'
+import { cookieGet } from '@/common/cookie'
 export default {
   mixins: [ mixinViewModule ],
   data () {
     return {
       mixinViewModuleOptions: {
-        getDataListURL: '/sys/log/login/page',
+        getDataListURL: `/sys/log/login/page?token=${cookieGet('token')}`,
         getDataListIsPage: true,
-        exportURL: '/sys/log/login/export'
+        exportURL: `/sys/log/login/export?token=${cookieGet('token')}`
       },
       dataForm: {
         creatorName: '',
