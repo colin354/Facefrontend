@@ -311,6 +311,15 @@ const frameIn = [
         }
       },
       {
+        path: 'camera-database',
+        name: 'camera-database',
+        component: _import('modules/sys/camera-database'),
+        meta: {
+          auth: true,
+          title: '归档视频管理'
+        }
+      },      
+      {
         path: 'realTime',
         name: 'realTime',
         component: _import('modules/research-center/realTime'),

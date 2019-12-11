@@ -57,14 +57,15 @@
 
 <script>
 import mixinViewModule from '@/mixins/view-module'
+import { cookieGet } from '@/common/cookie'
 export default {
   mixins: [ mixinViewModule ],
   data () {
     return {
       mixinViewModuleOptions: {
-        getDataListURL: '/sys/log/operation/page',
+        getDataListURL: `/sys/log/operation/page?token=${cookieGet('token')}`,
         getDataListIsPage: true,
-        exportURL: '/sys/log/operation/export'
+        exportURL: `/sys/log/operation/export?token=${cookieGet('token')}`
       },
       dataForm: {
         status: ''
