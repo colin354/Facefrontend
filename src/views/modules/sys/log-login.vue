@@ -58,6 +58,7 @@ import mixinViewModule from '@/mixins/view-module'
 import { cookieGet } from '@/common/cookie'
 export default {
   mixins: [ mixinViewModule ],
+  name: "log-login",
   data () {
     return {
       mixinViewModuleOptions: {

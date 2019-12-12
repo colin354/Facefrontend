@@ -4,6 +4,7 @@
 
 <script>
 export default {
+  name: "ggswgk",
   data () {
     return {
       filename: __filename

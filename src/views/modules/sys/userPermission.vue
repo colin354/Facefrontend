@@ -65,7 +65,7 @@ import mixinViewModule from '@/mixins/view-module'
 import AddOrUpdate from './user-add-or-update'
 export default {
   mixins: [ mixinViewModule ],
-  name: "user",
+  name: "userPermission",
   data () {
     return {
       mixinViewModuleOptions: {

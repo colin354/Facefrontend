@@ -29,7 +29,7 @@
 import D2PageCover from '../../system/index/components/d2-page-cover'
 // import {EleResize} from '../../../assets/js/esresize'
 export default {
-  name:'bottom',
+  name:'wea-analyse',
   components: {
     D2PageCover,
   },

@@ -1,4 +1,4 @@
-import frame from './modules/frame'
+// import frame from './modules/frame'
 import layoutHeaderAside from '@/layout/header-aside'
 
 // 由于懒加载页面太多的话会造成webpack热更新太慢，所以开发环境不使用懒加载，只有生产环境使用懒加载
@@ -23,33 +23,33 @@ const frameIn = [
         component: _import('system/index')
       },
       // 演示页面
-      {
-        path: 'page1',
-        name: 'page1',
-        meta: {
-          title: '抓拍查询',
-          auth: true
-        },
-        component: _import('modules/demo/page1')
-      },
-      {
-        path: 'page2',
-        name: 'page2',
-        meta: {
-          title: '报警查询',
-          auth: true
-        },
-        component: _import('modules/demo/page2')
-      },
-      {
-        path: 'page3',
-        name: 'page3',
-        meta: {
-          title: '轨迹查询',
-          auth: true
-        },
-        component: _import('modules/demo/page3')
-      },
+      // {
+      //   path: 'page1',
+      //   name: 'page1',
+      //   meta: {
+      //     title: '抓拍查询',
+      //     auth: true
+      //   },
+      //   component: _import('modules/demo/page1')
+      // },
+      // {
+      //   path: 'page2',
+      //   name: 'page2',
+      //   meta: {
+      //     title: '报警查询',
+      //     auth: true
+      //   },
+      //   component: _import('modules/demo/page2')
+      // },
+      // {
+      //   path: 'page3',
+      //   name: 'page3',
+      //   meta: {
+      //     title: '轨迹查询',
+      //     auth: true
+      //   },
+      //   component: _import('modules/demo/page3')
+      // },
       // 系统 前端日志
       {
         path: 'log',
@@ -75,123 +75,114 @@ const frameIn = [
         component: _import('system/function/redirect')
       },
       // 新建人脸库
-      {
-        path: 'face-list',
-        name: 'face-list',
-        component: _import('modules/face/face'),
-        meta: {
-          auth: true,
-          title: '人脸库管理'
-        }
-      },
-      {
-        path: 'user',
-        name: 'user',
-        component: _import('modules/sys/user'),
-        meta: {
-          auth: true,
-          title: '用户管理'
-        }
-      },
-      {
-        path: 'overview',
-        name: 'overview',
-        component: _import('modules/sys/overview'),
-        meta: {
-          auth: true,
-          title: '小区概览'
-        }
-      },
       // {
-      //   path: 'role',
-      //   name: 'role',
-      //   component: _import('modules/sys/role'),
+      //   path: 'face-list',
+      //   name: 'face-list',
+      //   component: _import('modules/face/face'),
       //   meta: {
       //     auth: true,
-      //     title: '角色管理'
+      //     title: '人口数据库'
       //   }
       // },
       // {
-      //   path: 'menuManage',
-      //   name: 'menuManage',
-      //   component: _import('modules/sys/menuManage'),
+      //   path: 'user',
+      //   name: 'user',
+      //   component: _import('modules/sys/user'),
+      //   meta: {
+      //     auth: true,
+      //     title: '用户管理'
+      //   }
+      // },
+      // {
+      //   path: 'userPermission',
+      //   name: 'userPermission',
+      //   component: _import('modules/sys/userPermission'),
+      //   meta: {
+      //     auth: true,
+      //     title: '权限管理'
+      //   }
+      // },
+      // {
+      //   path: 'userMenu',
+      //   name: 'userMenu',
+      //   component: _import('modules/sys/userMenu'),
       //   meta: {
       //     auth: true,
       //     title: '菜单管理'
       //   }
       // },
-      {
-        path: 'camera',
-        name: 'camera',
-        component: _import('modules/face/camera'),
-        meta: {
-          auth: true,
-          title: '摄像头管理'
-        }
-      },
-      {
-        path: 'stream-list',
-        name: 'stream-list',
-        component: _import('modules/stream/stream'),
-        meta: {
-          auth: true,
-          title: '历史监控查询'
-        }
-      },
-      {
-        path: 'stream-catch',
-        name: 'stream-catch',
-        component: _import('modules/stream/stream_catch'),
-        meta: {
-          auth: true,
-          title: '监控布控显示'
-        }
-      },
-      {
-        path: 'liveview',
-        name: 'liveview',
-        component: _import('modules/stream/liveview'),
-        meta: {
-          auth: true,
-          title: '实时监控管理'
-        }
-      },
-      {
-        path: 'real-video',
-        name: 'real-video',
-        component: _import('modules/stream/real-video'),
-        meta: {
-          auth: true,
-          title: '地图布控显示'
-        }
-      },
-      {
-        path: 'face-match',
-        name: 'face-match',
-        component: _import('modules/face_match/face-match'),
-        meta: {
-          auth: true,
-          title: '人像轨迹搜索'
-        }
-      },
-      {
-        path: 'match_search',
-        name: 'match_search',
-        component: _import('modules/face_match/match_search'),
-        meta: {
-          auth: true,
-          title: ' 结构化监控查询'
-        }
-      },
-      {
-        path: 'structured_video',
-        name: 'structured_video',
-        component: _import('modules/face_match/structured_video'),
-        meta: {
-          auth: true,
-          title: ' 视频结构化展示'
-        }
-      },
+      // {
+      //   path: 'camera',
+      //   name: 'camera',
+      //   component: _import('modules/face/camera'),
+      //   meta: {
+      //     auth: true,
+      //     title: '摄像头管理'
+      //   }
+      // },
+      // {
+      //   path: 'stream-list',
+      //   name: 'stream-list',
+      //   component: _import('modules/stream/stream'),
+      //   meta: {
+      //     auth: true,
+      //     title: '历史监控查询'
+      //   }
+      // },
+      // {
+      //   path: 'stream-catch',
+      //   name: 'stream-catch',
+      //   component: _import('modules/stream/stream_catch'),
+      //   meta: {
+      //     auth: true,
+      //     title: '监控布控显示'
+      //   }
+      // },
+      // {
+      //   path: 'liveview',
+      //   name: 'liveview',
+      //   component: _import('modules/stream/liveview'),
+      //   meta: {
+      //     auth: true,
+      //     title: '实时监控显示'
+      //   }
+      // },
+      // {
+      //   path: 'real-video',
+      //   name: 'real-video',
+      //   component: _import('modules/stream/real-video'),
+      //   meta: {
+      //     auth: true,
+      //     title: '地图布控显示'
+      //   }
+      // },
+      // {
+      //   path: 'face-match',
+      //   name: 'face-match',
+      //   component: _import('modules/face_match/face-match'),
+      //   meta: {
+      //     auth: true,
+      //     title: '人像轨迹搜索'
+      //   }
+      // },
+      // {
+      //   path: 'match_search',
+      //   name: 'match_search',
+      //   component: _import('modules/face_match/match_search'),
+      //   meta: {
+      //     auth: true,
+      //     title: ' 结构化监控查询'
+      //   }
+      // },
+      // {
+      //   path: 'structured_video',
+      //   name: 'structured_video',
+      //   component: _import('modules/face_match/structured_video'),
+      //   meta: {
+      //     auth: true,
+      //     title: ' 视频结构化中心'
+      //   }
+      // },
       // {
       //   path: 'face-websocket',
       //   name: 'face-websocket',
@@ -220,207 +211,207 @@ const frameIn = [
       //   }
       // },
       // 添加了与通过位置查询视频一样的界面
-      {
-        path: 'multiline',
-        name: 'multiline',
-        component: _import('modules/face_match/multiline'),
-        meta: {
-          auth: true,
-          title: '地图轨迹融合'
-        }
-      },
-      {
-        path: 'sys-log-login',
-        name: 'sys-log-login',
-        component: _import('modules/sys/log-login'),
-        meta: {
-          auth: true,
-          title: '登录日志'
-        }
-      },
-      {
-        path: 'sys-log-operation',
-        name: 'sys-log-operation',
-        component: _import('modules/sys/log-operation'),
-        meta: {
-          auth: true,
-          title: '操作日志'
-        }
-      },
-      {
-        path: 'sys-log-error',
-        name: 'sys-log-error',
-        component: _import('modules/sys/log-error'),
-        meta: {
-          auth: true,
-          title: '异常日志'
-        }
-      },
-      {
-        path: 'early-warning',
-        name: 'early-warning',
-        component: _import('modules/warning/early-warning'),
-        meta: {
-          auth: true,
-          title: '预警事件管理'
-        }
-      },
-      {
-        path: 'early-warning-type',
-        name: 'early-warning-type',
-        component: _import('modules/warning/early-warning-type'),
-        meta: {
-          auth: true,
-          title: '预警事件类型管理'
-        }
-      },
-      {
-        path: 'warning-query',
-        name: 'warning-query',
-        component: _import('modules/warning/warning-query'),
-        meta: {
-          auth: true,
-          title: '预警事件查询'
-        }
-      },
-      {
-        path: 'watermark',
-        name: 'watermark',
-        component: _import('modules/face/watermark'),
-        meta: {
-          auth: true,
-          title: '水印设置'
-        }
-      },
-      {
-        path: 'sensitive-database',
-        name: 'sensitive-database',
-        component: _import('modules/sys/sensitive-database'),
-        meta: {
-          auth: true,
-          title: '敏感数据库管理'
-        }
-      },
-      {
-        path: 'whitelist-database',
-        name: 'whitelist-database',
-        component: _import('modules/sys/whitelist-database'),
-        meta: {
-          auth: true,
-          title: '白名单数据库管理'
-        }
-      },
-      {
-        path: 'camera-database',
-        name: 'camera-database',
-        component: _import('modules/sys/camera-database'),
-        meta: {
-          auth: true,
-          title: '归档视频管理'
-        }
-      },      
-      {
-        path: 'realTime',
-        name: 'realTime',
-        component: _import('modules/research-center/realTime'),
-        meta: {
-          auth: true,
-          title: '人车情报研判中心'
-        }
-      },
-      {
-        path: 'testws',
-        name: 'testws',
-        component: _import('modules/research-center/testws'),
-        meta: {
-          auth: true,
-          title: '人车情报研判中心'
-        }
-      },
-      {
-        path: 'camera-detect',
-        name: 'camera-detect',
-        component: _import('modules/face/camera-detect'),
-        meta: {
-          auth: true,
-          title: '摄像头管理'
-        }
-      },
-      {
-        path: 'camera-check',
-        name: 'camera-check',
-        component: _import('modules/face/camera-check'),
-        meta: {
-          auth: true,
-          title: '检测运维'
-        }
-      },      
-      {
-        path: 'wea-analyse',
-        name: 'wea-analyse',
-        component: _import('modules/dataanalyse/wea-analyse'),
-        meta: {
-          auth: true,
-          title: '水电气数据分析'
-        }
-      },
-      {
-        path: 'people-analyse',
-        name: 'people-analyse',
-        component: _import('modules/dataanalyse/people-analyse'),
-        meta: {
-          auth: true,
-          title: '人口数据分析'
-        }
-      },
-      {
-        path: 'enterprise-analyse',
-        name: 'enterprise-analyse',
-        component: _import('modules/dataanalyse/enterprise-analyse'),
-        meta: {
-          auth: true,
-          title: '企业数据分析'
-        }
-      },
-      {
-        path: 'express-analyse',
-        name: 'express-analyse',
-        component: _import('modules/dataanalyse/express-analyse'),
-        meta: {
-          auth: true,
-          title: '快递数据分析'
-        }
-      },
-      {
-        path: 'ss-analyse',
-        name: 'ss-analyse',
-        component: _import('modules/dataanalyse/ss-analyse'),
-        meta: {
-          auth: true,
-          title: '社保数据分析'
-        }
-      },      
-      {
-        path: 'camera-analyse',
-        name: 'camera-analyse',
-        component: _import('modules/dataanalyse/camera-analyse'),
-        meta: {
-          auth: true,
-          title: '影像数据分析'
-        }
-      },
-      {
-        path: 'week-analyse',
-        name: 'week-analyse',
-        component: _import('modules/dataanalyse/week-analyse'),
-        meta: {
-          auth: true,
-          title: '周数据分析'
-        }
-      }, 
+      // {
+      //   path: 'multiline',
+      //   name: 'multiline',
+      //   component: _import('modules/face_match/multiline'),
+      //   meta: {
+      //     auth: true,
+      //     title: '地图轨迹融合'
+      //   }
+      // },
+      // {
+      //   path: 'sys-log-login',
+      //   name: 'sys-log-login',
+      //   component: _import('modules/sys/log-login'),
+      //   meta: {
+      //     auth: true,
+      //     title: '登录日志'
+      //   }
+      // },
+      // {
+      //   path: 'sys-log-operation',
+      //   name: 'sys-log-operation',
+      //   component: _import('modules/sys/log-operation'),
+      //   meta: {
+      //     auth: true,
+      //     title: '操作日志'
+      //   }
+      // },
+      // {
+      //   path: 'sys-log-error',
+      //   name: 'sys-log-error',
+      //   component: _import('modules/sys/log-error'),
+      //   meta: {
+      //     auth: true,
+      //     title: '异常日志'
+      //   }
+      // },
+      // {
+      //   path: 'early-warning',
+      //   name: 'early-warning',
+      //   component: _import('modules/warning/early-warning'),
+      //   meta: {
+      //     auth: true,
+      //     title: '预警事件管理'
+      //   }
+      // },
+      // {
+      //   path: 'early-warning-type',
+      //   name: 'early-warning-type',
+      //   component: _import('modules/warning/early-warning-type'),
+      //   meta: {
+      //     auth: true,
+      //     title: '预警事件类型管理'
+      //   }
+      // },
+      // {
+      //   path: 'warning-query',
+      //   name: 'warning-query',
+      //   component: _import('modules/warning/warning-query'),
+      //   meta: {
+      //     auth: true,
+      //     title: '预警事件查询'
+      //   }
+      // },
+      // {
+      //   path: 'watermark',
+      //   name: 'watermark',
+      //   component: _import('modules/face/watermark'),
+      //   meta: {
+      //     auth: true,
+      //     title: '水印设置'
+      //   }
+      // },
+      // {
+      //   path: 'sensitive-database',
+      //   name: 'sensitive-database',
+      //   component: _import('modules/sys/sensitive-database'),
+      //   meta: {
+      //     auth: true,
+      //     title: '敏感数据库管理'
+      //   }
+      // },
+      // {
+      //   path: 'whitelist-database',
+      //   name: 'whitelist-database',
+      //   component: _import('modules/sys/whitelist-database'),
+      //   meta: {
+      //     auth: true,
+      //     title: '车辆数据库'
+      //   }
+      // },
+      // {
+      //   path: 'camera-database',
+      //   name: 'camera-database',
+      //   component: _import('modules/sys/camera-database'),
+      //   meta: {
+      //     auth: true,
+      //     title: '归档视频'
+      //   }
+      // },      
+      // {
+      //   path: 'realTime',
+      //   name: 'realTime',
+      //   component: _import('modules/research-center/realTime'),
+      //   meta: {
+      //     auth: true,
+      //     title: '人车情报研判中心'
+      //   }
+      // },
+      // {
+      //   path: 'testws',
+      //   name: 'testws',
+      //   component: _import('modules/research-center/testws'),
+      //   meta: {
+      //     auth: true,
+      //     title: '人车情报研判中心'
+      //   }
+      // },
+      // {
+      //   path: 'camera-detect',
+      //   name: 'camera-detect',
+      //   component: _import('modules/face/camera-detect'),
+      //   meta: {
+      //     auth: true,
+      //     title: '摄像头数据库'
+      //   }
+      // },
+      // {
+      //   path: 'camera-check',
+      //   name: 'camera-check',
+      //   component: _import('modules/face/camera-check'),
+      //   meta: {
+      //     auth: true,
+      //     title: '检测运维'
+      //   }
+      // },      
+      // {
+      //   path: 'wea-analyse',
+      //   name: 'wea-analyse',
+      //   component: _import('modules/dataanalyse/wea-analyse'),
+      //   meta: {
+      //     auth: true,
+      //     title: '水电气数据分析'
+      //   }
+      // },
+      // {
+      //   path: 'people-analyse',
+      //   name: 'people-analyse',
+      //   component: _import('modules/dataanalyse/people-analyse'),
+      //   meta: {
+      //     auth: true,
+      //     title: '人口数据分析'
+      //   }
+      // },
+      // {
+      //   path: 'enterprise-analyse',
+      //   name: 'enterprise-analyse',
+      //   component: _import('modules/dataanalyse/enterprise-analyse'),
+      //   meta: {
+      //     auth: true,
+      //     title: '企业数据分析'
+      //   }
+      // },
+      // {
+      //   path: 'express-analyse',
+      //   name: 'express-analyse',
+      //   component: _import('modules/dataanalyse/express-analyse'),
+      //   meta: {
+      //     auth: true,
+      //     title: '快递数据分析'
+      //   }
+      // },
+      // {
+      //   path: 'ss-analyse',
+      //   name: 'ss-analyse',
+      //   component: _import('modules/dataanalyse/ss-analyse'),
+      //   meta: {
+      //     auth: true,
+      //     title: '社保数据分析'
+      //   }
+      // },      
+      // {
+      //   path: 'camera-analyse',
+      //   name: 'camera-analyse',
+      //   component: _import('modules/dataanalyse/camera-analyse'),
+      //   meta: {
+      //     auth: true,
+      //     title: '影像数据分析'
+      //   }
+      // },
+      // {
+      //   path: 'week-analyse',
+      //   name: 'week-analyse',
+      //   component: _import('modules/dataanalyse/week-analyse'),
+      //   meta: {
+      //     auth: true,
+      //     title: '周数据分析'
+      //   }
+      // }, 
     ]
   },
-  frame
+  // frame
 ]
 
 /**

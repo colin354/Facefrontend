@@ -70,6 +70,7 @@ import { cookieGet } from '@/common/cookie'
 import qs from 'qs'
 export default {
   mixins: [ mixinViewModule ],
+  name: "early-warning",
   data () {
     return {
       mixinViewModuleOptions: {

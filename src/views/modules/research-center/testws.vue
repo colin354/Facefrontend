@@ -96,6 +96,7 @@ import '@/assets/h5splayer.js'
 import {H5siOS,H5sPlayerCreate} from '@/assets/h5splayerhelper.js'
 export default {
   // mixins: [ mixinViewModule ],
+  name:'testws',
   components: {
     'v-liveplayer': Liveplayer
   }, 

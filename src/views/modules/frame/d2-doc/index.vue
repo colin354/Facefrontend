@@ -4,6 +4,7 @@
 
 <script>
 export default {
+  name: "d2-doc",
   data () {
     return {
       filename: __filename

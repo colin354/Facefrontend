@@ -4,6 +4,7 @@
 
 <script>
 export default {
+  name: "wuye",
   data () {
     return {
       filename: __filename

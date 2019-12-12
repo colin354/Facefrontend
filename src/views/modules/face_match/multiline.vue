@@ -90,7 +90,7 @@ import mixinViewModule from '@/mixins/view-module'
 import { lazyAMapApiLoaderInstance } from 'vue-amap';
 // import carUrl from '../../assets/images/carame.png'
     export default {
-        name: "track-show",
+        name: "multiline",
         // mixins: [ mixinViewModule ],
         data () {
             return {

@@ -170,7 +170,7 @@ import {H5sPlayerWS,H5sPlayerHls,H5sPlayerRTC} from '@/assets/h5splayer.js'
 import {H5siOS,H5sPlayerCreate} from '@/assets/h5splayerhelper.js'
 export default {
     
-    name:"archive",
+    name:"camera-database",
     data() {
         return {
             timelink:0,//滑块

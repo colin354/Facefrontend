@@ -42,6 +42,7 @@
 import mixinViewModule from '@/mixins/view-module'
 export default {
   mixins: [ mixinViewModule ],
+  name:'ss-analyse',
   data () {
     return {
       mixinViewModuleOptions: {

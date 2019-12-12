@@ -168,7 +168,7 @@ import { timeout } from 'q'
 import BScroll from 'better-scroll'
 
 export default {
-  name: "page3",
+  name: "structured_video",
   components: {
     videoPlayer,
     faceimg,

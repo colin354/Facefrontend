@@ -17,6 +17,7 @@
 
 <script>
 export default {
+  name: "tianji",
   data () {
     return {
       videoWidth: 540,

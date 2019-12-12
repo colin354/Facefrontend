@@ -82,6 +82,7 @@ import { cookieGet } from '@/common/cookie'
 import facegrid from './face-grid'
 
 export default {
+  name: "face-list",
   mixins: [ mixinViewModule ],
   data () {
     console.log('11111************111*****')

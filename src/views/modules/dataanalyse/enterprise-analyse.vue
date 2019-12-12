@@ -78,6 +78,7 @@
 import mixinViewModule from '@/mixins/view-module'
 export default {
   mixins: [ mixinViewModule ],
+  name:'enterprise-analyse',
   data () {
     return {
       mixinViewModuleOptions: {

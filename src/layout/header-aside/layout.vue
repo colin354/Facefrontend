@@ -164,7 +164,7 @@ export default {
         .then(res => {
           this.userInfoSet({
             id: res.id,
-            name: res.username
+            name: res.userName
           })
         })
         .catch(() => {})

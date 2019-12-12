@@ -87,6 +87,11 @@ export default {
     asideSet (state, menu) {
       // store 赋值
       state.aside = menu
+    },
+    fullAsideSet(state, menu) {
+      // store 赋值
+      state.fullAside = menu
+      state.aside = menu
     }
   }
 }

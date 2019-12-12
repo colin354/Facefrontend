@@ -54,7 +54,9 @@ service.interceptors.request.use(config => {
   var defaults = {}
   // 防止缓存，GET请求默认带_t参数
   if (config.method === 'get') {
-    console.log('****')
+    console.log('**---请求拦截**')
+    console.log(config)
+    console.log('**---请求拦截*--end*')
     config.params = {
       ...config.params,
       ...{ '_t': new Date().getTime() }
@@ -119,6 +121,9 @@ service.interceptors.response.use(
           // [ 示例 ] code === 0 代表没有错误
           return dataAxios
         case '999999':
+            console.log('**---响应拦截**')
+            console.log(dataAxios.data)
+            console.log('**---响应拦截*--end*')
           return dataAxios.data
         case 'xxx':
           // [ 示例 ] 其它和后台约定的 code

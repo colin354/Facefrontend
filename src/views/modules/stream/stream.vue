@@ -99,6 +99,7 @@ import AddOrUpdate from './stream-add-or-update'
 import { cookieGet } from '@/common/cookie'
 export default {
   mixins: [ mixinViewModule ],
+  name: "stream",
   data () {
     return {
       mixinViewModuleOptions: {

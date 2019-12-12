@@ -156,6 +156,7 @@ import '@/views/modules/face_match/src/custom-theme.css'
 
 export default {
   mixins: [ mixinViewModule ],
+  name: "camera-detect",
   data () {
     return {
       detect_state: '',

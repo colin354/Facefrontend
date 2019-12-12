@@ -16,7 +16,7 @@ import D2PageCover from '../../system/index/components/d2-page-cover'
 import vueSeamless from 'vue-seamless-scroll'
 // import {EleResize} from '../../../assets/js/esresize'
 export default {
-  name:'bottom',
+  name:'week-analyse',
   components: {
     D2PageCover,
     vueSeamless,

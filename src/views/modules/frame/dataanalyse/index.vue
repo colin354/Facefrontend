@@ -4,6 +4,7 @@
 
 <script>
 export default {
+  name: "dataanalyse",
   data () {
     return {
       filename: __filename

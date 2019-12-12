@@ -129,7 +129,7 @@ import { constants } from 'crypto'
 import { lazyAMapApiLoaderInstance } from 'vue-amap';
 // videojs.registerPlugin("markers", markers);
 export default {
-  name: "page3",
+  name: "face-match",
   components: {
     videoPlayer,
     faceimg,

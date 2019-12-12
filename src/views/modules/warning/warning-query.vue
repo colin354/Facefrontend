@@ -95,6 +95,7 @@ import '@/views/modules/face_match/src/custom-theme.css'
 
 export default {
   mixins: [ mixinViewModule ],
+  name: "warning-query",
   data () {
     return {
       mixinViewModuleOptions: {
