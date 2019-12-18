@@ -505,4 +505,15 @@ t.wea.householders_wea_month = '本月水电气表读数'
 t.wea.householders_wea_history = '历史平均水电气表读数'
 t.wea.householders_warning = '异常指数'
 t.wea.operation = '操作'
+
+t.data = {}
+t.data.index = '温馨提示: 后续还会继续加功能，请关注我github更新...'
+t.data.dheader = '数据监控大屏'
+t.data.dright_messege = '最新消息'
+t.data.content_map = '盐都区管辖地图'
+t.data.dleft = {}
+t.data.dleft.device_info = '终端情况'
+t.data.dleft.device_list = '终端列表'
+t.data.dright = {}
+t.data.dright.warning_info = '预警情况'
 export default t

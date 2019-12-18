@@ -318,7 +318,7 @@ const frameIn = [
           auth: true,
           title: '归档视频管理'
         }
-      },      
+      },
       {
         path: 'realTime',
         name: 'realTime',
@@ -446,6 +446,28 @@ const errorPage = [
   }
 ]
 
+/**
+ * 大屏页面
+ */
+const screenPage = [
+  {
+    path: '/screen',
+    name: 'screen',
+    component: _import('system/screen')
+  }
+]
+
+/**
+ * 大屏页面
+ */
+const screenDataPage = [
+  {
+    path: '/screenData',
+    name: 'screenData',
+    component: _import('system/screenData')
+  }
+]
+
 // 导出需要显示菜单的
 export const frameInRoutes = frameIn
 
@@ -453,5 +475,7 @@ export const frameInRoutes = frameIn
 export default [
   ...frameIn,
   ...frameOut,
-  ...errorPage
+  ...errorPage,
+  ...screenPage,
+  ...screenDataPage
 ]

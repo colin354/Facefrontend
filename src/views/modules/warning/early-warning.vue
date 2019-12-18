@@ -11,7 +11,9 @@
         <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="deployHandle()">{{ $t('process.deployFile') }}</el-button>
+        <!-- <el-button type="primary" @click="deployHandle()">{{ $t('process.deployFile') }}</el-button> -->
+        <a href="screen" target="_blank">open1</a>
+        <a href="screenData" target="_blank">open2</a>
       </el-form-item>
       <el-form-item>
         <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
