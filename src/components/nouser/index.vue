@@ -49,7 +49,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .modal {
   z-index: 9999;
   display: block;

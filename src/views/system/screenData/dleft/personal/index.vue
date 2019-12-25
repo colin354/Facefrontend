@@ -7,11 +7,10 @@
         </div>
       </div>
       <div class="right">
-        <div class="name">{{ personalData.username }}</div>
+        <div class="name1">{{ personalData.username }}</div>
 
         <div class="year">
           <a class="date">{{ personalData.joinDate }}</a>
-          <a class="time">加入github</a>
         </div>
       </div>
     </div>
@@ -20,13 +19,13 @@
 
 <script>
 export default {
-  name: "personal",
+  name: 'personal',
   props: {
     personalData: Object
   }
-};
+}
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 @import "./index";
 </style>

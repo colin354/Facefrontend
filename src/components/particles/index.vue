@@ -28,7 +28,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #particles-js {
   position: fixed;
   top: 0;

@@ -3,9 +3,9 @@
         <dheader></dheader>
         <topnav></topnav>
         <div class="data-content">
-        <div class="data-time">
+        <!-- <div class="data-time">
             {{ $t("data.index") }}
-        </div>
+        </div> -->
         <div class="data-main">
             <div class="main-left">
             <dleft :personalData="personalData" :username="username"></dleft>
@@ -18,18 +18,22 @@
             </div>
         </div>
         </div>
-        <nouser :isShow="isShow" v-if="isShow"></nouser>
+        <!-- <nouser :isShow="isShow" v-if="isShow"></nouser> -->
         <loading v-if="pageShow"></loading>
     </div>
     </template>
 
-    <script>
-    import dheader from "./dheader";
-    import dleft from "./dleft";
-    import dcontent from "./dcontent";
-    import dright from "./dright";
-    import { cookieGet } from "@/common/cookie";
-    export default {
+<script>
+import dheader from "./dheader";
+import dleft from "./dleft";
+import dcontent from "./dcontent";
+import dright from "./dright";
+import { cookieGet } from "@/common/cookie";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@/assets/screenData/iconfont/iconfont.css";
+import "@/assets/screenData/css/global.scss";
+import { mapState, mapActions } from 'vuex'
+export default {
     components: {
         dheader,
         dleft,
@@ -45,35 +49,37 @@
         username: ""
         };
     },
-    created() {
+    created() {       
         let username = this.$route.params.user;
         this.getData(username);
     },
     methods: {
-        getData(username) {
+    ...mapState('d2admin/user', ['info']),
+    getData (username) {
         this.$axios.get(`/api/screenData?token=${cookieGet("token")}`)
             .then(response => {
             console.log("-------11100011------");
-            console.log(response)
             let res = JSON.parse(JSON.stringify(response));
             console.log(res)
             if(res.code === 200 ){
+                console.log("-------88888888------");
                 this.username = username;
-                let data = res.data;
+                let data = res.data
+                let date = new Date()
+                let year = date.getFullYear()
+                let month = date.getMonth() + 1
+                let day = date.getDate()
                 //个人图片、加入github时间
-                let sinceDate = data.created_at;
-                let joinDate = sinceDate.substring(0, 10);
-                let img = data.avatar_url;
                 let objP = {
-                username: username,
-                joinDate: joinDate,
-                img: img
+                username: '盐都警务',
+                joinDate: year+'-'+month+'-'+day,
+                img: ''
                 };
                 this.personalData = objP;
                 //仓库数、粉丝数、跟随数
-                let pubRepos = data.public_repos;
-                let followers = data.followers;
-                let following = data.following;
+                let pubRepos = data.camera_count;
+                let followers = data.face_count;
+                let following = data.warning_count;
                 let objN = {
                 pubRepos: pubRepos,
                 followers: followers,
@@ -92,9 +98,9 @@
         }
     }
     };
-    </script>
+</script>
 
-    <style lang="scss">
+    <style scoped lang="scss">
     .data-page {
     background: url(../../../assets/screenData/data/true.png) repeat-x;
     top: 0;

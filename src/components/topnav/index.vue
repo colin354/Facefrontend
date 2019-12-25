@@ -19,7 +19,7 @@
 
 <script>
 import screenfull from "screenfull";
-import "@/assets/screenData/iconfont/iconfont.css";
+// import "@/assets/screenData/iconfont/iconfont.css";
 // import "@/assets/screenData/css/global.scss";
 
 export default {
@@ -54,7 +54,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .navbar {
   top: -80px;
   width: 202px;

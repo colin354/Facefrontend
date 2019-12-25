@@ -12,7 +12,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .loading {
   position: fixed;
   left: 0;

@@ -43,7 +43,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .myevent-box {
   width: 100%;
   height: 100%;

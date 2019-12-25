@@ -5,9 +5,9 @@
         <a>
           <div
             class="img"
-            :style="{ background: 'url(' + item.avatar_url + ')' }"
+            :style="{ background: 'url(' + item.imgurl + ')' }"
           ></div>
-          <div class="name">{{ item.login }}</div>
+          <div class="name">{{ item.faceid }}</div>
         </a>
       </li>
     </ul>
@@ -19,22 +19,22 @@ export default {
   props: {
     data: Array
   },
-  data() {
+  data () {
     return {
       getData: {}
-    };
+    }
   },
   watch: {
-    data(data) {
+    data (data) {
       if (data) {
-        this.getData = data;
+        this.getData = data
       }
     }
   }
-};
+}
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .follower-box {
   width: 100%;
   height: 100%;

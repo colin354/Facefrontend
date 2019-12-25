@@ -512,8 +512,15 @@ t.data.dheader = '数据监控大屏'
 t.data.dright_messege = '最新消息'
 t.data.content_map = '盐都区管辖地图'
 t.data.dleft = {}
-t.data.dleft.device_info = '终端情况'
+t.data.dleft.device_info = '预警部署终端占比情况'
 t.data.dleft.device_list = '终端列表'
 t.data.dright = {}
-t.data.dright.warning_info = '预警情况'
+t.data.dright.warning_info = '陌生人抓拍'
+t.data.dright.warning_target = '目标人物'
+t.data.dright.message_pOne = '号机预警'
+t.data.dright.message_pTwo = ''
+t.data.content = {}
+t.data.content.warning_num = '预警总数'
+t.data.content.target_people_num = '抓拍总数'
+t.data.content.camera_num = '终端接入数'
 export default t

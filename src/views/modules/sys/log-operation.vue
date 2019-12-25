@@ -21,25 +21,21 @@
       border
       @sort-change="dataListSortChangeHandle"
       style="width: 100%;">
-      <el-table-column prop="creatorName" :label="$t('logOperation.creatorName')" header-align="center" align="center"/>
-      <el-table-column prop="operation" :label="$t('logOperation.operation')" header-align="center" align="center"/>
-      <el-table-column prop="requestUri" :label="$t('logOperation.requestUri')" header-align="center" align="center"/>
-      <el-table-column prop="requestMethod" :label="$t('logOperation.requestMethod')" header-align="center" align="center"/>
-      <el-table-column prop="requestParams" :label="$t('logOperation.requestParams')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
-      <el-table-column prop="requestTime" :label="$t('logOperation.requestTime')" sortable="custom" header-align="center" align="center">
-        <template slot-scope="scope">
-          {{ `${scope.row.requestTime}ms` }}
-        </template>
-      </el-table-column>
+      <el-table-column prop="operation_username" :label="$t('logOperation.creatorName')" header-align="center" align="center"/>
+      <!-- <el-table-column prop="operation_op" :label="$t('logOperation.operation')" header-align="center" align="center"/> -->
+      <el-table-column prop="operation_url" :label="$t('logOperation.requestUri')" header-align="center" align="center"/>
+      <el-table-column prop="operation_method" :label="$t('logOperation.requestMethod')" header-align="center" align="center"/>
+      <el-table-column prop="operation_params" :label="$t('logOperation.requestParams')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
+
       <el-table-column prop="status" :label="$t('logOperation.status')" sortable="custom" header-align="center" align="center">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 0" size="mini" type="danger">{{ $t('logOperation.status0') }}</el-tag>
           <el-tag v-else size="mini" type="success">{{ $t('logOperation.status1') }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="ip" :label="$t('logOperation.ip')" header-align="center" align="center"/>
-      <el-table-column prop="userAgent" :label="$t('logOperation.userAgent')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
-      <el-table-column prop="createDate" :label="$t('logOperation.createDate')" sortable="custom" header-align="center" align="center" width="180"/>
+      <el-table-column prop="operation_ip" :label="$t('logOperation.ip')" header-align="center" align="center"/>
+      <el-table-column prop="operation_useragent" :label="$t('logOperation.userAgent')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
+      <el-table-column prop="operation_time" :label="$t('logOperation.createDate')" sortable="custom" header-align="center" align="center" width="180"/>
     </el-table>
     <!-- 分页 -->
     <el-pagination

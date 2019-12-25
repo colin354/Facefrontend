@@ -5,10 +5,10 @@
         <li v-for="(item, index) in getData" :key="index">
           <a>
             <icon :type="'tongzhi1'" :size="'1.5rem'" :color="'#F0FF00'"></icon>
-            {{ index }}、{{ item.created_at.substring(0, 10) }} &nbsp;&nbsp;{{
-              item.actor.login
-            }}&nbsp; {{ $t("data.dright.message.pOne") }}
-            {{ item.payload.action }}&nbsp; {{ $t("data.dright.message.pTwo") }}
+            {{ index }}、{{ item.warning_time.substring(0, 10) }} &nbsp;&nbsp;{{
+              item.warning_camera_id
+            }}&nbsp; {{ $t("data.dright.message_pOne") }}
+            {{ item.warning_message }}&nbsp; {{ $t("data.dright.message_pTwo") }}
           </a>
         </li>
       </ul>
@@ -56,7 +56,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .messege-box {
   width: 100%;
   height: 100%;
