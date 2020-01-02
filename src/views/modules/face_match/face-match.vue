@@ -303,10 +303,8 @@ export default {
     addMarker(){
       let self = this
       var startIcon = new AMap.Icon({ //摄像头图标
-          // 图标尺寸
           size: new AMap.Size(25, 34),
-          // 图标的取图地址
-          image: 'http://221.231.13.230:8888/media/fxq_test/camera_0.png',
+          image: '',
           // image: 'http://10.2.155.139:8888/media/fxq_test/camera_0.png',//此处修改摄像头图标
           // image: 'http://172.14.40.60:8888/media/fxq_test/camera_0.png',//此处修改摄像头图标
           // 图标所用图片大小

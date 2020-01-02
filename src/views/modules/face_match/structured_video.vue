@@ -1,159 +1,85 @@
 <template>
   <d2-container>
-<el-row :gutter="20">
-  <el-col :span="6">
-    <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <span>视频列表</span>
-        <el-button style="float: right; padding: 3px 0" type="text">过滤</el-button>
-      </div>
-      <el-row>
-          <el-tree
-            :data="streamList"
-            :props="defaultProps"
-            accordion
-            @node-click="handleNodeClick"
-            >
-          </el-tree>
-      </el-row>
-    </el-card>
-  </el-col>
-  <el-col :span="13">
-      <el-row >
-      <div class="grid-content bg-purple">
-          <video-player
-            class="vjs-custom-skin"
-            ref="videoPlayer"
-            :options="playerOptions"
-            :playsinline="true"
-            customEventName="customstatechangedeventname"
-            @play="onPlayerPlay($event)"
-            @pause="onPlayerPause($event)"
-            @ended="onPlayerEnded($event)"
-            @waiting="onPlayerWaiting($event)"
-            @playing="onPlayerPlaying($event)"
-            @loadeddata="onPlayerLoadeddata($event)"
-            @timeupdate="onPlayerTimeupdate($event)"
-            @canplay="onPlayerCanplay($event)"
-            @canplaythrough="onPlayerCanplaythrough($event)"
-            @statechanged="playerStateChanged($event)"
-            @ready="playerReadied"
-          ></video-player>
-      </div>
-      </el-row>
+    <el-row :gutter="20">
+      <el-col :span="6">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>视频列表</span>
+            <el-button style="float: right; padding: 3px 0" type="text">过滤</el-button>
+          </div>
+          <el-row>
+              <el-input
+                placeholder="输入关键字进行过滤"
+                v-model="filterText">
+              </el-input>
+              <el-tree
+                :data="streamList"
+                :props="defaultProps"
+                accordion
+                :filter-node-method="filterNode"
+                ref="tree"
+                @node-click="handleNodeClick"
+                >
+              </el-tree>
+          </el-row>
+        </el-card>
+      </el-col>
+      <el-col :span="13">
+        <el-row >
+          <div class="grid-content bg-purple">
+            <video-player
+              class="vjs-custom-skin"
+              ref="videoPlayer"
+              :options="playerOptions"
+              :playsinline="true"
+              customEventName="customstatechangedeventname"
+              @play="onPlayerPlay($event)"
+              @pause="onPlayerPause($event)"
+              @ended="onPlayerEnded($event)"
+              @waiting="onPlayerWaiting($event)"
+              @playing="onPlayerPlaying($event)"
+              @loadeddata="onPlayerLoadeddata($event)"
+              @timeupdate="onPlayerTimeupdate($event)"
+              @canplay="onPlayerCanplay($event)"
+              @canplaythrough="onPlayerCanplaythrough($event)"
+              @statechanged="playerStateChanged($event)"
+              @ready="playerReadied"
+            ></video-player>
+          </div>
+        </el-row>
 
-      <el-row>
-          <!-- <facecompile
-            v-for="(o, index) in info.facematch" :key="index"
-            :facemark="o.marks"
-            :facematch="o"
-            :streamtime="info.streamtime"
-            ></facecompile> -->
-
-          <!-- <el-collapse  v-model="activeNames" @change="handleChange" accordion >
-            <el-collapse-item v-for="(o, index) in info.facematch" :key="index" :title="o.facename" :name="o.key" >
-              <facecompile :facemark="o.marks" :facematch="o" :streamtime="info.streamtime"></facecompile>
-            </el-collapse-item>
-          </el-collapse> -->
-        <el-card class="box-card" :body-style="{ padding: '2px' }">
-          <div ref="wrapper" class="demo-bs-wrapper">
-            <div>
-              <div v-for="(o, index) in info.facematch" :key="index" class="demo-bs-item">
-                <facecompile :facemark="o.marks" :facematch="o" :streamtime="info.streamtime"></facecompile>
+        <el-row>
+          <el-card class="box-card" :body-style="{ padding: '2px' }">
+            <div ref="wrapper" class="demo-bs-wrapper">
+              <div>
+                <div v-for="(o, index) in info.facematch" :key="index" class="demo-bs-item">
+                  <facecompile :facemark="o.marks" :facematch="o" :streamtime="info.streamtime"></facecompile>
+                </div>
               </div>
             </div>
+          </el-card>
+        </el-row>
+      </el-col>
+      <el-col :span="5">
+        <el-row>
+          <div class="grid-content bg-purple">
+            <personIdentification :personarr="personarr"></personIdentification>
           </div>
-        </el-card>      
-      </el-row>
-  </el-col>
-  <el-col :span="5">
-    <el-row> 
-      <div class="grid-content bg-purple">
-        <personIdentification :personarr="personarr"></personIdentification>
-        <!-- <faceimg :imgarr="personarr"></faceimg> -->
-      </div>
+        </el-row>
+
+        <el-row>
+          <div class="grid-content bg-purple">
+            <faceimg :imgarr="imgarr"></faceimg>
+          </div>
+        </el-row>
+      </el-col>
     </el-row>
-
-    <el-row>
-      <div class="grid-content bg-purple">
-        <faceimg :imgarr="imgarr"></faceimg>
-      </div>
-    </el-row>    
-  </el-col>
-</el-row>
-        <!-- 
-          <el-tree
-            :data="streamList"
-            :props="defaultProps"
-            accordion
-            @node-click="handleNodeClick"
-            class="bg">
-        </el-tree>
-
-        <el-row :gutter="20">
-          <el-col :span="18">
-            <el-row >
-            <div class="grid-content bg-purple">
-                <video-player
-                  class="vjs-custom-skin"
-                  ref="videoPlayer"
-                  :options="playerOptions"
-                  :playsinline="true"
-                  customEventName="customstatechangedeventname"
-                  @play="onPlayerPlay($event)"
-                  @pause="onPlayerPause($event)"
-                  @ended="onPlayerEnded($event)"
-                  @waiting="onPlayerWaiting($event)"
-                  @playing="onPlayerPlaying($event)"
-                  @loadeddata="onPlayerLoadeddata($event)"
-                  @timeupdate="onPlayerTimeupdate($event)"
-                  @canplay="onPlayerCanplay($event)"
-                  @canplaythrough="onPlayerCanplaythrough($event)"
-                  @statechanged="playerStateChanged($event)"
-                  @ready="playerReadied"
-                ></video-player>
-            </div>
-            </el-row>
-
-            <el-row :gutter="10">
-                <div style="width:100%; height:20%;float:left;padding:3px;border:2px solid 	#FFFF00">  
-                    <facecompile
-                      v-for="(o, index) in info.facematch" :key="index"
-                      :facemark="o.marks"
-                      :facematch="o"
-                      :streamtime="info.streamtime"
-                      ></facecompile>
-                </div>
-            </el-row>
-          </el-col>
-
-          <el-col :span="6">
-            <el-row>
-            <div class="grid-content bg-purple">
-                <div class="imgblock">
-                  <personIdentification :personList="personList"></personIdentification>
-                </div>
-            </div>
-            </el-row>
-
-            <el-row>
-            <div class="grid-content bg-purple">
-              <el-card class="box-card" :body-style="{ padding: '0px' }">
-                <div class="imgblock">
-                  <faceimg  :imgarr="imgarr"></faceimg>
-                </div>
-              </el-card>
-            </div>
-            </el-row>
-          </el-col>
-        </el-row>   -->
-  
   </d2-container>
 </template>
 
 <script>
-import "video.js/dist/video-js.css";
-import { videoPlayer } from "vue-video-player";
+import 'video.js/dist/video-js.css'
+import { videoPlayer } from 'vue-video-player'
 import { cookieGet } from '@/common/cookie'
 import mixinViewModule from '@/mixins/view-module'
 import 'videojs-hotkeys'
@@ -168,20 +94,21 @@ import { timeout } from 'q'
 import BScroll from 'better-scroll'
 
 export default {
-  name: "page3",
+  name: 'page3',
   components: {
     videoPlayer,
     faceimg,
     facecompile,
     personIdentification
   },
-  data() {
+  data () {
     return {
+      filterText: '',
       BS: null,
       activeNames: ['1'],
-      streamList:[],
-      defaultProps: {id:''}, 
-      personList:[],
+      streamList: [],
+      defaultProps: {id: ''},
+      personList: [],
       visible: false,
       playertime: 0,
       imgarr: [],
@@ -209,18 +136,27 @@ export default {
       }
     };
   },
-  mounted() {
+  mounted () {
     this.getStreamList()
   },
   beforeDestroy () {
     this.scrollDestroy()
-  },  
+  },
   computed: {
-    player() {
+    player () {
       return this.$refs.videoPlayer.player;
     }
-  }, 
+  },
+  watch: {
+    filterText (val) {
+      this.$refs.tree.filter(val)
+    }
+  },  
   methods: {
+    filterNode (value, data) {
+      if (!value) return true
+      return data.label.indexOf(value) !== -1
+    },
     scrollInit () {
       this.BS = new BScroll(this.$refs.wrapper, {
         mouseWheel: true,
@@ -236,10 +172,10 @@ export default {
         this.BS.destroy()
       }
     },
-    handleChange(val) {
+    handleChange (val) {
       this.scrollInit()
-    },    
-    getStreamList(){
+    },
+    getStreamList () {
       this.$axios.get(`/api/videoStruct/page?token=${cookieGet('token')}`,{params:{map_location:'GETLOCATION'}})
         .then(res => {
           this.streamList = res.streamList
@@ -247,21 +183,21 @@ export default {
           console.log(res)
         })
         .catch(() => {
-          console.log("error")
+          console.log('error')
         })
     },
-    handleNodeClick(val) {
-        //this.personList = []
-        this.info.facematch = []
-        var tempId = val.id  //只有单个id时才进行赋值
+    handleNodeClick (val) {
+      //this.personList = []
+      this.info.facematch = []
+      var tempId = val.id  //只有单个id时才进行赋值
 
-        this.scrollInit()
-        if(tempId){
-          this.playerOptions.sources[0].src = val.streamUrl
-          this.getForPhoto(tempId)
-        }
+      this.scrollInit()
+      if (tempId) {
+        this.playerOptions.sources[0].src = val.streamUrl
+        this.getForPhoto(tempId)
+      }
     },
-    getForPhoto(id){
+    getForPhoto (id) {
       this.$axios.get(`/api/check?token=${cookieGet('token')}&streamid=${id}`)
         .then(res=> {
           this.playerOptions.custum = res.list
@@ -272,7 +208,7 @@ export default {
         })
         .catch(error =>{
           console.log(error)
-        }) 
+        })
     },
     // listen event
     onPlayerPlay(player) {  //点击视频上的播放,便开始播放视频
@@ -320,24 +256,23 @@ export default {
       this.personarr=[]
       player.markers({
         markerStyle: {
-            'width':'9px',
-            'border-radius': '40%',
-            'background-color': 'orange'
+          'width': '9px',
+          'border-radius': '40%',
+          'background-color': 'orange'
         },
-        onMarkerReached: function(marker,index){
-          console.log("-------marker--111------")
+        onMarkerReached: function (marker, index) {
+          console.log('-------marker--111------')
           console.log(marker)
-          console.log(marker.personList.length)
           aa.imgarr = marker.imgList
-          if(marker.personList.length != 0){
+          if (marker.personList.length !== 0) {
             aa.personarr = marker.personList
           }
         },
-          markers: acustum  //默认标记点信息给markers
-      })   
+        markers: acustum  //默认标记点信息给markers
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scop>

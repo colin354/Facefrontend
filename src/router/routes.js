@@ -84,6 +84,16 @@ const frameIn = [
           title: '人脸库管理'
         }
       },
+      // 新建人脸库
+      {
+        path: 'stranger-list',
+        name: 'stranger-list',
+        component: _import('modules/face/stranger'),
+        meta: {
+          auth: true,
+          title: '陌生人脸库管理'
+        }
+      },
       {
         path: 'user',
         name: 'user',

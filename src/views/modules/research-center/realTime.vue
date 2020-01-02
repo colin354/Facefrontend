@@ -131,29 +131,8 @@ export default {
   }, 
   data(){
     return{
-      // mixinViewModuleOptions: {
-      //   getDataListURL: `/sys/stream/page?token=${cookieGet('token')}`,
-      //   getDataListIsPage: true,
-      //   deleteURL: `/sys/stream?token=${cookieGet('token')}`,
-      //   deleteIsBatch: true
-      // },
-      url:[
-        "http://221.231.13.230:8888/media/image/10/000063_0.jpg",
-        "http://221.231.13.230:8888/media/image/10/000063_11.jpg",
-        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-        "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-        ],
-      car_url:[
-        "http://221.231.13.230:8888/media/card_image/card1.jpg",
-        "http://221.231.13.230:8888/media/card_image/card2.jpg",
-        "http://221.231.13.230:8888/media/card_image/card3.jpg",
-        "http://221.231.13.230:8888/media/card_image/card4.jpg"
-      ],
+      url:[],
+      car_url:[],
       streamList:[],
       defaultProps: {}, 
       dataForm:{

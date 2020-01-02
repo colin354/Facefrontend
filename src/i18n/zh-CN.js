@@ -523,4 +523,37 @@ t.data.content = {}
 t.data.content.warning_num = '预警总数'
 t.data.content.target_people_num = '抓拍总数'
 t.data.content.camera_num = '终端接入数'
+
+t.ss = {}
+t.ss.id = '序号'
+t.ss.name = '姓名'
+t.ss.id_card = '身份证'
+t.ss.ss_card = '社保登记编码'
+t.ss.jfjs = '缴费基数'
+t.ss.jfbs = '缴费标识'
+t.ss.cbzt = '参保状态'
+t.ss.tbdw = '填报单位'
+t.ss.xzbj = '险种标志'
+t.ss.cbrq = '参保日期'
+
+t.enterprise = {}
+t.enterprise.id = '序号'
+t.enterprise.name = '企业名称'
+t.enterprise.tysh = '统一社会信用代码'
+t.enterprise.fddb = '法定代表人'
+t.enterprise.jyzt = '经营状态'
+t.enterprise.czzb = '注册资本'
+t.enterprise.gslx = '公司类型'
+t.enterprise.clrq = '成立日期'
+t.enterprise.sshy = '所属行业'
+t.enterprise.rygm = '人员规模'
+t.enterprise.addr = '地址'
+
+t.stranger = {}
+t.stranger.id = '序号'
+t.stranger.faceid = '陌生人id'
+t.stranger.img = '陌生人图片'
+t.stranger.c_gender = '性别'
+t.stranger.c_age = '年龄'
+
 export default t

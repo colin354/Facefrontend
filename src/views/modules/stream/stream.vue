@@ -117,7 +117,7 @@ export default {
         sources: [
           {
             type: "video/mp4",
-            src: "http://221.231.13.230:8888/media/test_video/jwc.mp4"
+            src: ""
           }
         ],
         poster: "",
@@ -130,10 +130,8 @@ export default {
     AddOrUpdate,
     videoPlayer
   },
-  mounted() {
-    console.log("this is current player instance object", this.player);
-    console.log("-----------------------1111111111111")
-    console.log(this.dataList)
+  mounted () {
+
   },
   computed: {
     player() {

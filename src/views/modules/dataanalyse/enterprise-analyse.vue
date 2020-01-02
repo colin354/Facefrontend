@@ -13,13 +13,24 @@
       border
       @sort-change="dataListSortChangeHandle"
       style="width: 100%;">
-      <el-table-column prop="requestUri" :label="$t('logError.requestUri')" header-align="center" align="center"/>
-      <el-table-column prop="requestMethod" :label="$t('logError.requestMethod')" header-align="center" align="center"/>
-      <el-table-column prop="requestParams" :label="$t('logError.requestParams')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
-      <el-table-column prop="ip" :label="$t('logError.ip')" header-align="center" align="center"/>
-      <el-table-column prop="userAgent" :label="$t('logError.userAgent')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
-      <el-table-column prop="createDate" :label="$t('logError.createDate')" sortable="custom" header-align="center" align="center" width="180"/>
-      <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
+t.enterprise.name = '企业名称'
+t.enterprise.tysh = '统一社会信用代码'
+t.enterprise.fddb = '法定代表人'
+t.enterprise.jyzt = '经营状态'
+t.enterprise.czzb = '注册资本'
+t.enterprise.gslx = '公司类型'
+t.enterprise.clrq = '成立日期'
+t.enterprise.sshy = '所属行业'
+t.enterprise.rygm = '人员规模'
+t.enterprise.addr = '地址'
+
+      <el-table-column prop="requestUri" :label="$t('enterprise.id')" header-align="center" align="center"/>
+      <el-table-column prop="requestMethod" :label="$t('enterprise.tysh')" header-align="center" align="center"/>
+      <el-table-column prop="requestParams" :label="$t('enterprise.fddb')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
+      <el-table-column prop="ip" :label="$t('enterprise.jyzt')" header-align="center" align="center"/>
+      <el-table-column prop="userAgent" :label="$t('enterprise.czzb')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
+      <el-table-column prop="createDate" :label="$t('enterprise.gslx')" sortable="custom" header-align="center" align="center" width="180"/>
+      <el-table-column prop="ip" :label="$t('enterprise.clrq')" fixed="right" header-align="center" align="center" width="150">
         <template slot-scope="scope">
           <el-button type="text" size="mini" @click="infoHandle(scope.row.errorInfo)">{{ $t('logError.errorInfo') }}</el-button>
         </template>

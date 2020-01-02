@@ -85,6 +85,7 @@ export default [
         icon: 'database',
         children: [
           { path: '/face-list', title: '人口数据库', icon: 'address-card' },
+          { path: '/stranger-list', title: '陌生人口数据库', icon: 'address-card' },
           { path: '/camera-detect', title: '摄像头数据库', icon: 'video-camera' },
           { path: '/whitelist-database', title: '车辆数据库', icon: 'cubes' },
           { path: '/camera-database', title: '归档视频', icon: 'cubes' }

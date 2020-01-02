@@ -169,7 +169,7 @@ export default {
           // 图标尺寸
           size: new AMap.Size(25, 34),
           // 图标的取图地址
-          image: 'http://221.231.13.230:8888/media/fxq_test/camera_0.png',//此处修改摄像头图标
+          image: '',//此处修改摄像头图标
           // 图标所用图片大小
           imageSize: new AMap.Size(25, 25),
           // 图标取图偏移量
