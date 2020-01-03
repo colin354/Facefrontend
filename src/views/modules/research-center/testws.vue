@@ -26,12 +26,16 @@
 
       <el-row>
         <div class="grid-content bg-purple">
-            <el-image v-for="(img,index) in imgs" :key="index"
+          <el-card class="box-card">
+            <!-- <el-image v-for="(img,index) in imgs" :key="index"
               style="width: 100px; height: 100px"
-              :src="img"
-              fit="fit">
-            </el-image>
+              :src="img">
+            </el-image> &nbsp; -->
+            <img v-for="(img,index) in imgs" :key="index"
+              style="width: 100px; height: 100px"
+              :src="img">
             <br>
+          </el-card>
             <!-- <el-image v-for="(img,index) in imgs" :key="index"
               style="width: 100px; height: 100px"
               :src="img"
@@ -46,16 +50,21 @@
       </el-row>
   </el-col>
   <el-col :span="6">
-    <el-row> 
+    <el-row>
       <div class="grid-content bg-purple">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>人脸检测结果</span>
-            <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
+            <el-button style="float: right; padding: 3px 0" type="text">
+              <router-link :to="{name:'warning-query'}">
+                更多
+              </router-link>
+            </el-button>
           </div>
           <el-row>
             <el-table
               :data="warning_info"
+              :row-class-name="tableRowClassName"
               style="width: 100%">
               <el-table-column
                 prop="warning_time"
@@ -63,7 +72,12 @@
               </el-table-column>
               <el-table-column
                 prop="warning_level"
-                label="预警级别">
+                label="级别">
+                <template slot-scope="scope">
+                  <el-tag
+                    :type="scope.row.warning_color === 3 ? 'danger' : 'primary'"
+                    disable-transitions>{{scope.row.warning_level}}</el-tag>
+                </template>
               </el-table-column>
               <el-table-column
                 prop="warning_capture_url"
@@ -153,8 +167,8 @@ export default {
   },
   destroyed () {
     this.webSocket.close()
-  },  
-  computed:{
+  },
+  computed: {
     count () {
       return this.$store.state.rtc
     }
@@ -197,15 +211,6 @@ export default {
       } else {
         this.imgs.push(this.ws_data.imgurl) //向数组末尾添加一个元素
       }
-
-      // let msg = `<el-image style="width: 100px; height: 100px" :src="`+this.ws_data.imgurl+`"fit="fit"></el-image>`
-      // console.log(msg)
-      // this.$notify({
-      //   title:'new pic',
-      //   dangerouslyUseHTMLString: true,
-      //   message: msg
-      // })
-      //给后台发送数据
     },
     // 关闭连接
     webSocketOnClose(e) {
@@ -218,10 +223,22 @@ export default {
       console.log(res)
     },
 
-    PlayVideo(token) {
-      console.log('---0---------------------0000')
-      console.log(this.$refs.myvideo)
+    PlayVideo (token) {
       this.$refs.myvideo.PlayVideo(token);
+    },
+    tableRowClassName ({row, rowIndex}) {
+      console.log(row.warning_color)
+      if (row.warning_color === 0) {
+        console.log('here!!!!!!!')
+        return ''
+      } else if (row.warning_color === 1) {
+        console.log('there!!!!!!!')
+        return 'target-row'
+      } else if (row.warning_color === 2) {
+        console.log('there!!!!!!!')
+        return 'stranger-row'
+      }
+      return ''
     },
     handleClick () {
       location.reload()
@@ -232,7 +249,7 @@ export default {
         })
         .catch(() => {
           console.log('error')
-        })     
+        })
     },
     handleNodeClick (val) {
       console.log('----点击事件-----00------')
@@ -269,7 +286,15 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.el-table .target-row {
+  background: oldlace;
+}
+
+.el-table .stranger-row {
+  background: #f54f4f3d;
+}
+
 .bg{
   background-color:#F2F6FC;
 }
@@ -356,81 +381,6 @@ export default {
   .pre-scrollable {
       max-height: 480px;
       overflow-y: scroll;
-  }
-  .layout1x1 {
-      background: url('../../../assets/h5s/img/layout/1x1.png') #f2f2f2;
-      background-repeat: no-repeat;
-      background-size: 32px 32px;
-      color: #000;
-      height: 32px;
-      width: 32px;
-  }
-  .layout1x1:hover {
-      background: url('../../../assets/h5s/img/layout/1x1.png') #7a7878;
-      background-size: 32px 32px;
-      color: rgb(187, 184, 184);
-      height: 32px;
-      width: 32px;
-  }
-  .layout2x2 {
-      background: url('../../../assets/h5s/img/layout/2x2.png') #f2f2f2;
-      background-repeat: no-repeat;
-      background-size: 32px 32px;
-      color: #000;
-      height: 32px;
-      width: 32px;
-  }
-  .layout2x2:hover {
-      background: url('../../../assets/h5s/img/layout/2x2.png') #7a7878;
-      background-size: 32px 32px;
-      color: rgb(187, 184, 184);
-      height: 32px;
-      width: 32px;
-  }
-  .layout3x3 {
-      background: url('../../../assets/h5s/img/layout/3x3.png') #f2f2f2;
-      background-repeat: no-repeat;
-      background-size: 32px 32px;
-      color: #000;
-      height: 32px;
-      width: 32px;
-  }
-  .layout3x3:hover {
-      background: url('../../../assets/h5s/img/layout/3x3.png') #7a7878;
-      background-size: 32px 32px;
-      color: rgb(187, 184, 184);
-      height: 32px;
-      width: 32px;
-  }
-  .layout4x4 {
-      background: url('../../../assets/h5s/img/layout/4x4.png') #f2f2f2;
-      background-repeat: no-repeat;
-      background-size: 32px 32px;
-      color: #000;
-      height: 32px;
-      width: 32px;
-  }
-  .layout4x4:hover {
-      background: url('../../../assets/h5s/img/layout/4x4.png') #7a7878;
-      background-size: 32px 32px;
-      color: rgb(187, 184, 184);
-      height: 32px;
-      width: 32px;
-  }
-  .layoutfull {
-      background: url('../../../assets/h5s/img/layout/fullscreen.png') #f2f2f2;
-      background-repeat: no-repeat;
-      background-size: 32px 32px;
-      color: #000;
-      height: 32px;
-      width: 32px;
-  }
-  .layoutfull:hover {
-      background: url('../../../assets/h5s/img/layout/fullscreen.png') #7a7878;
-      background-size: 32px 32px;
-      color: rgb(187, 184, 184);
-      height: 32px;
-      width: 32px;
   }
   .inner {
     position: right;

@@ -144,7 +144,8 @@ export default {
     playVideo (id, url) {
       console.log('----------ididid-------')
       console.log(id)
-      console.log('----------ididid-------')
+      console.log('----------uuurl-------')
+      console.log(url)
       this.playerOptions.sources[0].src = url
       this.video_visible = true
     },
