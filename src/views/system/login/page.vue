@@ -1,6 +1,6 @@
 <template>
   <div class="page-login">
-    <img class="img1" src="./image/citylife.jpg">
+    <img class="img1" src="./image/citylife1.png">
     <!-- <div class="page-login--layer page-login--layer-area"> -->
       <!-- <ul class="circles">
         <li v-for="n in 10" :key="n"></li>

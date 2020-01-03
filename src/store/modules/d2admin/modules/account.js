@@ -48,6 +48,9 @@ export default {
           .then(() => {
             commit('d2admin/gray/set', false, { root: true })
             logout()
+            setTimeout(() => {
+              location.reload()
+            }, 1000);
           })
           .catch(() => {
             commit('d2admin/gray/set', false, { root: true })

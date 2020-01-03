@@ -66,7 +66,7 @@ export default {
         this.facelist = res.imgList ? res.imgList : []
         this.streamlist = res.streamList ? res.streamList : []
         console.log("0000------res.faceList")
-        console.log(this.dataList)
+        console.log(res)
         console.log("---")
         // console.log(res.check_info)
         console.log(this.streamlist)
@@ -106,6 +106,8 @@ export default {
 
     // 新增 / 修改
     addOrUpdateHandle (id) {
+      console.log("新增 / 修改---id")
+      console.log(id)
       this.addOrUpdateVisible = true
       this.$nextTick(() => {
         this.$refs.addOrUpdate.dataForm.id = id

@@ -1,49 +1,66 @@
 <template>
   <d2-container class="mod-sys__user">
-    <el-form :inline="true" size="mini" :model="dataForm" @keyup.enter.native="getDataList()">
-      <el-form-item>
-        <el-input v-model="dataForm.username" :placeholder="$t('user.username')" clearable/>
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="getDataList()">{{ $t('query') }}</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
-      </el-form-item>
-    </el-form>
-    <el-table
-      size="mini"
-      v-loading="dataListLoading"
-      :data="dataList"
-      border
-      @selection-change="dataListSelectionChangeHandle"
-      @sort-change="dataListSortChangeHandle"
-      style="width: 100%;">
-      <el-table-column type="selection" header-align="center" align="center" width="50"/>
-      <el-table-column prop="username" :label="$t('user.username')" sortable="custom" header-align="center" align="center"/>
-      <el-table-column prop="deptName" :label="$t('user.deptName')" header-align="center" align="center"/>
-      <el-table-column prop="email" :label="$t('user.email')" header-align="center" align="center"/>
-      <el-table-column prop="mobile" :label="$t('user.mobile')" sortable="custom" header-align="center" align="center"/>
-      <el-table-column prop="status" :label="$t('user.status')" sortable="custom" header-align="center" align="center">
+    <template slot="header">
+      <el-form :inline="true" :model="searchForm" ref="searchForm" size="mini" style="margin-bottom: -18px;">
+        <el-form-item label="名称" prop="name">
+          <el-input v-model="searchForm.name" placeholder="名称" style="width: 100px;" />
+        </el-form-item>
+
+        <el-form-item label="标识" prop="code">
+          <el-input v-model="searchForm.code" placeholder="标识" style="width: 120px;" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="getDataList()">
+            <d2-icon name="search" /> 查询
+          </el-button>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button @click="">
+            <d2-icon name="refresh" /> 重置
+          </el-button>
+        </el-form-item>
+        <el-button type="primary" size="mini" icon="el-icon-circle-plus" @click="addOrUpdateHandle()">
+          新增角色
+        </el-button>
+      </el-form>
+    </template>
+
+    <el-button v-if="multipleSelection.length>0" type="danger" size="mini" icon="el-icon-delete" @click="">
+      删除
+    </el-button>
+    <el-table :data="dataList.slice((page-1)*limit,page*limit)" v-loading="loading" size="small" stripe highlight-current-row style="width: 100%;">
+      <el-table-column type="selection" width="55">
+      </el-table-column>
+      <el-table-column label="角色名称" prop="name" sortable="custom">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 0" size="mini" type="danger">{{ $t('user.status0') }}</el-tag>
-          <el-tag v-else size="mini" type="success">{{ $t('user.status1') }}</el-tag>
+          {{scope.row.name}}
         </template>
       </el-table-column>
-      <el-table-column prop="createDate" :label="$t('user.createDate')" sortable="custom" header-align="center" align="center" width="180"/>
-      <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
+
+      <el-table-column label="角色标识" prop="code" sortable="custom" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <el-button type="text" size="mini" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
-          <el-button type="text" size="mini" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
+          {{scope.row.code}}
         </template>
       </el-table-column>
+
+      <el-table-column label="角色描述" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          {{scope.row.description}}
+        </template>
+      </el-table-column>
+      <el-table-column label="角色操作">
+        <template slot-scope="scope">
+          <el-button type="primary" title="编辑" size="mini" icon="el-icon-edit" circle @click="addOrUpdateHandle(scope.row.id)"></el-button>
+          <el-button type="danger" title="删除" size="mini" icon="el-icon-delete" circle @click="delRole(scope.row.id)"></el-button>
+          <el-button type="warning" title="用户列表" size="mini" icon="el-icon-share" circle @click="openRoleUserDialog(scope.row)"></el-button>
+          <el-button title="权限" size="mini" icon="el-icon-setting" circle @click="openPermissionDialog(scope.row)"></el-button>
+        </template>
+      </el-table-column>
+
     </el-table>
+    <role-permission :role="role" v-model="permissionDialogVisible" />
+    <role-user :role="role" v-model="roleUserDialogVisible" />
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
     <!-- 分页 -->
@@ -62,26 +79,87 @@
 
 <script>
 import mixinViewModule from '@/mixins/view-module'
-import AddOrUpdate from './user-add-or-update'
+import AddOrUpdate from './permission-add-or-update'
+import roleUser from "./roleUser"
+import rolePermission from "./rolePermission";
+
 export default {
   mixins: [ mixinViewModule ],
   name: "userPermission",
   data () {
     return {
       mixinViewModuleOptions: {
-        getDataListURL: '/sys/user/page',
+        getDataListURL: '/api/role', //默认加载当前权限列表
         getDataListIsPage: true,
-        deleteURL: '/sys/user',
+        deleteURL: '/api/role',
         deleteIsBatch: true,
-        exportURL: '/sys/user/export'
       },
       dataForm: {
         username: ''
-      }
+      },
+      searchForm: {},
+      loading: false,
+      tableData: [],
+      multipleSelection: [],
+      role: { id: "", name: "" },
+      editFormVisible: false,
+      permissionDialogVisible: false,
+      roleUserDialogVisible: false
     }
   },
   components: {
-    AddOrUpdate
+    AddOrUpdate,
+    roleUser,
+    rolePermission
+  },
+  mounted() {
+  },
+  methods: { 
+    delRole(id) {
+      this.$confirm("确认删除？", "确认信息", {
+        distinguishCancelAndClose: true,
+        confirmButtonText: "删除",
+        cancelButtonText: "取消"
+      }).then(
+        () => {
+        this.$axios.delete(`/api/role/${id}`).then(res=>{
+          console.log("-----888")
+          this.$message({
+            message: "删除成功",
+            type: "success",
+            duration: 500,
+          })
+          this.getDataList()
+        });
+      });
+    },
+    // batchDel() {
+    //   this.$confirm("确认删除？", "确认信息", {
+    //     distinguishCancelAndClose: true,
+    //     confirmButtonText: "删除",
+    //     cancelButtonText: "取消"
+    //   }).then(() => {
+    //     roleService
+    //       .delRoles({
+    //         ids: JSON.stringify(this.multipleSelection.map(s => s.id))
+    //       })
+    //       .then(() => {
+    //         this.getTableData();
+    //       });
+    //   });
+    // },
+    openEditForm(role) {
+      this.role = role;
+      this.editFormVisible = true;
+    },
+    openPermissionDialog(role) {
+      this.role = role;
+      this.permissionDialogVisible = true;
+    },
+    openRoleUserDialog(role) {
+      this.role = role;
+      this.roleUserDialogVisible = !this.roleUserDialogVisible;
+    }
   }
 }
 </script>

@@ -4,54 +4,23 @@
       <el-form-item prop="username" :label="$t('user.username')">
         <el-input v-model="dataForm.username" :placeholder="$t('user.username')"/>
       </el-form-item>
-      <el-form-item prop="deptName" :label="$t('user.deptName')" class="dept-list">
-        <el-popover v-model="deptListVisible" ref="deptListPopover" placement="bottom-start" trigger="click">
-          <el-tree
-            :data="deptList"
-            :props="{ label: 'name', children: 'children' }"
-            node-key="id"
-            ref="deptListTree"
-            :highlight-current="true"
-            :expand-on-click-node="false"
-            accordion
-            @current-change="deptListTreeCurrentChangeHandle">
-          </el-tree>
-        </el-popover>
-        <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" :placeholder="$t('user.deptName')"/>
-      </el-form-item>
       <el-form-item prop="password" :label="$t('user.password')" :class="{ 'is-required': !dataForm.id }">
         <el-input v-model="dataForm.password" type="password" :placeholder="$t('user.password')"/>
       </el-form-item>
-      <el-form-item prop="comfirmPassword" :label="$t('user.comfirmPassword')" :class="{ 'is-required': !dataForm.id }">
-        <el-input v-model="dataForm.comfirmPassword" type="password" :placeholder="$t('user.comfirmPassword')"/>
-      </el-form-item>
-      <el-form-item prop="realName" :label="$t('user.realName')">
-        <el-input v-model="dataForm.realName" :placeholder="$t('user.realName')"/>
-      </el-form-item>
-      <el-form-item prop="gender" :label="$t('user.gender')" size="mini">
-        <el-radio-group v-model="dataForm.gender">
-          <el-radio :label="0">{{ $t('user.gender0') }}</el-radio>
-          <el-radio :label="1">{{ $t('user.gender1') }}</el-radio>
-          <el-radio :label="2">{{ $t('user.gender2') }}</el-radio>
-        </el-radio-group>
+      <el-form-item prop="real_name" :label="$t('user.realName')">
+        <el-input v-model="dataForm.real_name" :placeholder="$t('user.realName')"/>
       </el-form-item>
       <el-form-item prop="email" :label="$t('user.email')">
         <el-input v-model="dataForm.email" :placeholder="$t('user.email')"/>
       </el-form-item>
-      <el-form-item prop="mobile" :label="$t('user.mobile')">
-        <el-input v-model="dataForm.mobile" :placeholder="$t('user.mobile')"/>
-      </el-form-item>
-      <el-form-item prop="roleIdList" :label="$t('user.roleIdList')" class="role-list">
-        <el-select v-model="dataForm.roleIdList" multiple :placeholder="$t('user.roleIdList')">
-          <el-option v-for="role in roleList" :key="role.id" :label="role.name" :value="role.id"/>
-        </el-select>
-      </el-form-item>
-      <el-form-item prop="status" :label="$t('user.status')" size="mini">
-        <el-radio-group v-model="dataForm.status">
-          <el-radio :label="0">{{ $t('user.status0') }}</el-radio>
-          <el-radio :label="1">{{ $t('user.status1') }}</el-radio>
-        </el-radio-group>
-      </el-form-item>
+      <el-form-item prop="phone" :label="$t('user.mobile')">
+        <el-input v-model="dataForm.phone" :placeholder="$t('user.mobile')"/>
+      </el-form-item> 
+      <!-- <el-form-item prop="role_name" :label="$t('user.roleIdList')" class="role-list">
+        <div v-for="(item,index) in roleList" :key="index">              
+           <el-radio v-model="radio" :label="item.name">{{item.name}}</el-radio>                                    
+        </div>
+      </el-form-item> -->
     </el-form>
     <template slot="footer">
       <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
@@ -73,19 +42,23 @@ export default {
       roleIdListDefault: [],
       dataForm: {
         id: '',
-        username: '',
+        user_name: '',
         deptId: '0',
         deptName: '',
         password: '',
         comfirmPassword: '',
-        realName: '',
+        real_name: '',
         gender: 0,
         email: '',
-        mobile: '',
-        roleIdList: [],
+        phone: '',
+        role_name: '',
         status: 1
-      }
+      },
+      radio:'',
     }
+  },
+  mounted(){
+    this.init()
   },
   computed: {
     dataRule () {
@@ -124,19 +97,19 @@ export default {
           { required: true, message: this.$t('validate.required'), trigger: 'change' }
         ],
         password: [
-          { validator: validatePassword, trigger: 'blur' }
+          { required: true,validator: validatePassword, trigger: 'blur' }
         ],
         comfirmPassword: [
           { validator: validateComfirmPassword, trigger: 'blur' }
         ],
-        realName: [
+        real_name: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         email: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' },
           { validator: validateEmail, trigger: 'blur' }
         ],
-        mobile: [
+        phone: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' },
           { validator: validateMobile, trigger: 'blur' }
         ]
@@ -150,65 +123,96 @@ export default {
         this.$refs['dataForm'].resetFields()
         this.roleIdListDefault = []
         Promise.all([
-          this.getDeptList(),
+          // this.getDeptList(),
           this.getRoleList()
         ]).then(() => {
+          console.log("this.init中的内容")
           if (this.dataForm.id) {
-            this.getInfo()
+            console.log(this.dataForm.id)
+            this.getInfo(this.dataForm.id)
+          }else{
+            //this.dataForm = {}
           }
-        })
+        }).catch(() => {});
       })
     },
-    // 获取部门列表
-    getDeptList () {
-      return this.$axios.get('/sys/dept/list').then(res => {
-        this.deptList = res
-      }).catch(() => {})
+    // 获取信息
+    getInfo(id) {
+      this.$axios.get(`/api/sys/user`)
+        .then(res => {
+          console.log("返回的是什么")
+          console.log(res.list)
+          for(var i=0 ; i < res.list.length ; i++){       
+            if(res.list[i].id == id){
+              this.dataForm = {
+                ...res.list[i]
+              }
+            }
+          }
+        })
+        .catch(() => {});
     },
+    // 获取部门列表
+    // getDeptList () {
+    //   return this.$axios.get('/sys/dept/list').then(res => {
+    //     this.deptList = res
+    //   }).catch(() => {})
+    // },
     // 获取角色列表
     getRoleList () {
-      return this.$axios.get('/sys/role/list').then(res => {
+      return this.$axios.get('/api/role').then(res => {
         this.roleList = res
+        console.log(res)
+        console.log("获取角色列表")
+        console.log(this.roleList)
       }).catch(() => {})
     },
     // 获取信息
-    getInfo () {
-      this.$axios.get(`/sys/user/${this.dataForm.id}`).then(res => {
-        this.dataForm = {
-          ...this.dataForm,
-          ...res,
-          roleIdList: []
-        }
-        this.$refs.deptListTree.setCurrentKey(this.dataForm.deptId)
-        // 角色配置, 区分是否为默认角色
-        for (var i = 0; i < res.roleIdList.length; i++) {
-          if (this.roleList.filter(item => item.id === res.roleIdList[i])[0]) {
-            this.dataForm.roleIdList.push(res.roleIdList[i])
-            continue
-          }
-          this.roleIdListDefault.push(res.roleIdList[i])
-        }
-      }).catch(() => {})
-    },
+    // getInfo () {
+    //   this.$axios.get(`/sys/user/${this.dataForm.id}`).then(res => {
+    //     this.dataForm = {
+    //       ...this.dataForm,
+    //       ...res,
+    //       role_name: ''
+    //     }
+    //     this.$refs.deptListTree.setCurrentKey(this.dataForm.deptId)
+    //     // 角色配置, 区分是否为默认角色
+    //     for (var i = 0; i < res.role_name.length; i++) {
+    //       if (this.roleList.filter(item => item.id === res.role_name[i])[0]) {
+    //         this.dataForm.role_name.push(res.role_name[i])
+    //         continue
+    //       }
+    //       this.roleIdListDefault.push(res.role_name[i])
+    //     }
+    //     console.log("获取信息")
+    //     console.log(res)
+    //     console.log(this.roleIdListDefault)
+    //   }).catch(() => {})
+    // },
     // 所属部门树, 选中
-    deptListTreeCurrentChangeHandle (data, node) {
-      this.dataForm.deptId = data.id
-      this.dataForm.deptName = data.name
-      this.deptListVisible = false
-    },
+    // deptListTreeCurrentChangeHandle (data, node) {
+    //   this.dataForm.deptId = data.id
+    //   this.dataForm.deptName = data.name
+    //   this.deptListVisible = false
+    // },
     // 表单提交
     dataFormSubmitHandle: debounce(function () {
       this.$refs['dataForm'].validate((valid) => {
+        console.log("trest=====")
+        console.log(this.dataForm)
+        console.log(valid)
+        console.log(this.dataForm.id)
         if (!valid) {
           return false
         }
-        this.$axios[!this.dataForm.id ? 'post' : 'put']('/sys/user', {
+        this.$axios[!this.dataForm.id ? 'post' : 'put']('/api/sys/user'+(!this.dataForm.id?"":("/"+this.dataForm.id)), {
           ...this.dataForm,
-          roleIdList: [
-            ...this.dataForm.roleIdList,
+          role_name: [
+            ...this.dataForm.role_name,
             ...this.roleIdListDefault
           ]
         }).then(res => {
+          console.log("----啊----")
           this.$message({
             message: this.$t('prompt.success'),
             type: 'success',
