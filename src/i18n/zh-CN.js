@@ -468,17 +468,26 @@ t.message.live.protocol = '协议'
 t.message.live.mainstream = '主码流'
 t.message.live.substream = '子码流'
 
-t.person ={}
+t.person = {}
 t.person.name = '姓名'
 t.person.picture = '图片'
 t.person.color = '颜色'
 t.person.rgb = 'rgb'
 
-t.camera ={}
-t.camera.name ='摄像头名称'
+t.camera = {}
+t.camera.id = '序号'
+t.camera.name = '摄像头名称'
 t.camera.location = '位置'
 t.camera.lat = '纬度'
 t.camera.lon = '经度'
+t.camera.warning = '预警事件编号'
+
+t.camera_stream = {}
+t.camera_stream.id = '序号'
+t.camera_stream.cameraId = '监控ID'
+t.camera_stream.start_time = '起始时间'
+t.camera_stream.end_time = '结束时间'
+t.camera_stream.time = '时长'
 
 t.warning = {}
 t.warning.start = '启动'

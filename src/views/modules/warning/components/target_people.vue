@@ -44,7 +44,7 @@ export default {
   created () {
     this.isLong = this.long
   },
-  mounted() {
+  mounted () {
   },
   watch:{
     person_id :{

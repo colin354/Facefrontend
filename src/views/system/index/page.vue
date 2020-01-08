@@ -98,7 +98,7 @@ export default {
 
   },
   methods:{
-    initMap(){
+    initMap () {
       var map = new AMap.Map('container',{
         zoom: 13,
         // center: [120.076145,33.333651],
@@ -187,7 +187,7 @@ export default {
                 [120.033469,33.309038],[120.033631,33.308906],[120.035101,33.309111],[120.035335,33.308456]];
       console.log("---map----map----map");
       var path =[path0,path1,path2,path3,path4,path5]
-      var color=["#4169E1",'#836FFF','#F7C885','#F8A1A1','#D1EEEE','#5D478B']
+      var color=["#4169E1",'#836FFF','#F7C885','#F8A1A1','#D1EEEE', '#5D478B']
       for(var i=0; i < 6 ;i++){
         var polygon1 = new AMap.Polygon({
             map:map,

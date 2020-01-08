@@ -1,17 +1,20 @@
 <template>
-  <d2-container>
+  <div>
     <el-row :gutter="20">
       <el-col :span="18">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
             <el-amap
-              vid="amapDemo"  
+              vid="amapDemo"
               :center="center"
-              :zoom="zoom"  
+              :zoom="zoom"
+              :plugin="plugin"  :key="reflash" :events="events_map"
               class="amap-demo" style="height: 700px;">
-              <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position" :events="marker.events" :icon="icon">
+              <el-amap-marker v-for="(marker,index) in markers" :key="index"
+                :position="marker.position" :events="marker.events" :icon="icon">
               </el-amap-marker>
             </el-amap>
+
           </el-card>
         </div>
       </el-col>
@@ -45,7 +48,7 @@
         </el-col>
       </el-row>      
     </el-dialog>
-  </d2-container>
+  </div>
 </template>
 
 <script>
@@ -64,7 +67,7 @@ export default {
   components: {
     'v-liveplayer': Liveplayer
   },
-  data(){
+  data () {
     let self = this;
     return {
       reflash:false,
@@ -77,8 +80,8 @@ export default {
       markerRefs:[],
       amapManager,
       defaultProps: {},
-      dataForm:{
-        map_location:'GETLOCATION'
+      dataForm: {
+        map_location: 'GETLOCATION'
       },
       visible: false,
       zoom: 18,
@@ -86,7 +89,7 @@ export default {
       markers: [],
       windows: [],
       window: '',
-      icon:'',
+      icon: '',
       rows: 3,
       cols: 3,
       selectCol: 1,
@@ -94,47 +97,119 @@ export default {
       proto: this.$store.state.rtc,
       contentHeight: '',
       contentWidth: '',
-      data:[],
-      temp:'',
-      children:'',
-      tempToken:'',
-    };
-  },
-  computed:{
-    count(){
-        return this.$store.state.rtc;
+      data: [],
+      temp: '',
+      children: '',
+      tempToken: '',
+      events_map: {
+        init: (o) => {
+          setTimeout(() => {
+            console.log('map events!!!!!')
+            console.log(self.markerRefs)
+            console.log(o)
+            o.plugin(["AMap.MarkerClusterer"],function() {
+              let cluster = new AMap.MarkerClusterer(o, self.markerRefs, {
+                gridSize: 80,
+                renderCluserMarker: self._renderCluserMarker
+              })
+            })
+            // console.log(cluster);
+          }, 1000)
+        }
+      },
+      events: {
+        init: (o) => {
+          console.log('-------marker events-')
+          console.log(o)
+          this.markerRefs.push(o)
+        },
+        'moveend': () => {
+        },
+        'zoomchange': () => {
+        },
+        'click': (e) => {
+          // console.log(e);
+          this.center = [e.lnglat.lng,e.lnglat.lat];// 点击选择新地址为中心点
+        }
+      },
+      plugin: ['ToolBar', {
+        pName: 'MapType',
+        defaultType: 0,
+        events: {
+          init (o) {
+            console.log(o);
+          }
+        }
+      }]
     }
   },
-  mounted(){        
+  computed:{
+    count () {
+      return this.$store.state.rtc;
+    }
+  },
+  mounted () {
     this.getInfo()
     this.getIcon()
   },
   methods: {
-    getInfo(){ //本可以共用view-module.js中的get请求,但界面必须手动刷新才能发送get请求,所以在本组件重新写了get请求 
-      this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`,{params:{map_location:'GETLOCATION'}})
-      .then(res => {
-        console.log("-----mounted---res.list-")
-        console.log(res)
-        this.temp = res.streamList[0].streamlng //存放经纬度
-        this.children = res.streamList[0].children //含有id、经纬度、token等信息
-        if(this.children){
-          this.getWindow(this.children)
-        }
-      })
-      .catch(() => {
-        console.log("error")
-      })
+    getInfo () { // 本可以共用view-module.js中的get请求,但界面必须手动刷新才能发送get请求,所以在本组件重新写了get请求 
+      this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`, { params: { map_location: 'GETLOCATION' } })
+        .then(res => {
+          console.log('-----mounted---res.list-')
+          console.log(res)
+          this.temp = res.streamList[0].streamlng // 存放经纬度
+          this.children = res.streamList[0].children // 含有id、经纬度、token等信息
+          if (this.children) {
+            this.getWindow(this.children)
+          }
+        })
+        .catch(() => {
+          console.log('error')
+        })
     },
-    handleNodeClick(val) {
-      console.log("----点击事件-----00------")
+    getSingleInfo () { // 本可以共用view-module.js中的get请求,但界面必须手动刷新才能发送get请求,所以在本组件重新写了get请求 
+      this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`, { params: { map_location: 'GETLOCATION' } })
+        .then(res => {
+          console.log('-----mounted---res.list-')
+          console.log(res)
+          this.temp = res.streamList[1].streamlng // 存放经纬度
+          this.children = res.streamList[1].children // 含有id、经纬度、token等信息
+          if (this.children) {
+            this.getWindow(this.children)
+          }
+        })
+        .catch(() => {
+          console.log('error')
+        })
+    },
+    handleNodeClick (val) {
+      console.log('----点击事件-----00------')
       console.log(val)
       this.markerRefs = []
-      this.positions = val.streamlng
-      console.log("----点击事件-----marker对象-")
+      this.markers.length = 0
+      this.markers = []
+      // this.getSingleInfo()
+      let self = this
+      for (let i = 0; i < val.streamlng.length; i++) {
+        this.markers.push({
+          position: val.streamlng[i],
+          events: {
+            init (o) {
+              self.markerRefs.push(o)
+            },
+            click (e) {
+              self.visible = true
+              self.tempToken = val.token
+            }
+          }
+        })
+      }
+      // this.positions = val.streamlng
       this.reflash = !this.reflash
     },
-    _renderCluserMarker(context) {
-      const count = this.positions.length;
+    _renderCluserMarker (context) {
+      const count = this.markers.length;
       let factor = Math.pow(context.count/count, 1/18)
       let div = document.createElement('div');
       let Hue = 180 - factor* 180;
@@ -156,50 +231,46 @@ export default {
       context.marker.setOffset(new AMap.Pixel(-size/2,-size/2));
       context.marker.setContent(div)
     },
-    
-    PlayVideo() {
-      if(this.tempToken){
+    PlayVideo () {
+      if (this.tempToken) {
         this.$refs.myvideo.PlayVideo(this.tempToken);
       }
     },
-    //设置摄像头图标,所有值都是原始值
-    getIcon(){
+    // 设置摄像头图标,所有值都是原始值
+    getIcon () {
       // 创建一个 Icon
       var startIcon = new AMap.Icon({
-          // 图标尺寸
-          size: new AMap.Size(25, 34),
-          // 图标的取图地址
-          image: '',//此处修改摄像头图标
-          // 图标所用图片大小
-          imageSize: new AMap.Size(25, 25),
-          // 图标取图偏移量
-          imageOffset: new AMap.Pixel(-1, -1)
+        // 图标尺寸
+        size: new AMap.Size(25, 34),
+        // 图标的取图地址
+        image: 'http://221.231.13.230:8888/media/fxq_test/camera_0.png', // 此处修改摄像头图标
+        // 图标所用图片大小
+        imageSize: new AMap.Size(25, 25),
+        // 图标取图偏移量
+        imageOffset: new AMap.Pixel(-1, -1)
       });
       this.icon = startIcon
     },
 
-    //弹出窗口所在位置及内容
-    getWindow(val){
+    // 弹出窗口所在位置及内容
+    getWindow (val) {
       console.log("getWindow中的   val")
       console.log(val[0].token)
-      let markers = [];
-      let self = this;
-
-      for (let i = 0 ; i < this.temp.length ; i ++) {
-        let self = this;
+      let markers = []
+      let self = this
+      for (let i = 0; i < this.temp.length; i++) {
         markers.push({
           position: this.temp[i],
           events: {
-            click(e) {
-              console.log("eeeeeeeee")
-              console.log(e)
-              console.log(val[i].token)
+            init (o) {
+              self.markerRefs.push(o)
+            },
+            click (e) {
               self.visible = true
               self.tempToken = val[i].token
             }
-            
           }
-        });
+        })
       }
       this.markers = markers;
     },

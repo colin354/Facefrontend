@@ -271,7 +271,7 @@ export default {
 
     },
     //查询摄像头对应的视频列表
-    queryVideo(id,name,location){ 
+    queryVideo(id,name,location){
       this.query_visible = true
       this.videoList =[]
       this.videoList.streamUrl = ''

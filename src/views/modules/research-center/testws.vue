@@ -229,13 +229,10 @@ export default {
     tableRowClassName ({row, rowIndex}) {
       console.log(row.warning_color)
       if (row.warning_color === 0) {
-        console.log('here!!!!!!!')
         return ''
       } else if (row.warning_color === 1) {
-        console.log('there!!!!!!!')
         return 'target-row'
       } else if (row.warning_color === 2) {
-        console.log('there!!!!!!!')
         return 'stranger-row'
       }
       return ''

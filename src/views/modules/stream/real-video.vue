@@ -39,94 +39,94 @@ import {H5siOS,H5sPlayerCreate} from '@/assets/h5splayerhelper.js'
 
 let amapManager = new AMapManager()
 export default {
-    name: "real-video",
-    components: {
-        'v-liveplayer': Liveplayer
-    }, 
-    data ()  {
-      // let self = this
-      return {
-        visible: false,
-        zoom: 18,
-        center: [120.09465,33.313217],
-        markers: [],
-        windows: [],
-        window: '',
-        icon:'',
-        rows: 3,
-        cols: 3,
-        selectCol: 1,
-        selectRow: 1,
-        proto: this.$store.state.rtc,
-        contentHeight: '',
-        contentWidth: '',
-        data:[],
-      };
-    },
-    computed:{
-      count(){
-          return this.$store.state.rtc;
-      }
-    },
-    mounted() {
-      this.getIcon()  //获得摄像头图标
-      this.getWindow() //弹出窗口
-      // this.PlayVideo()
-    },
-    methods:{
-      PlayVideo() {
-        console.log("---0---------------------0000")
-        console.log(this.$refs.myvideo)
-        this.$refs.myvideo.PlayVideo("token111");
-      },
-      //设置摄像头图标,所有值都是原始值
-      getIcon(){
-        // 创建一个 Icon
-        var startIcon = new AMap.Icon({
-            // 图标尺寸
-            size: new AMap.Size(25, 34),
-            // 图标的取图地址
-            image: '',//此处修改摄像头图标
-            // 图标所用图片大小
-            imageSize: new AMap.Size(25, 25),
-            // 图标取图偏移量
-            imageOffset: new AMap.Pixel(-1, -1)
-        });
-        console.log("摄像头----")
-        this.icon = startIcon
-      },
-
-      //弹出窗口所在位置及内容
-      getWindow(){
-        // this.visible = true  
-        let markers = [];
-        let windows = [];
-
-        let num = 2;
-        let self = this;
-
-        for (let i = 0 ; i < num ; i ++) {
-          markers.push({
-            position: [120.09465,33.313217 + i * 0.001],
-            events: {
-              click() {
-                self.visible = true
-                self.windows.forEach(window => {
-                  // self.visible = false;
-                });
-
-                self.window = self.windows[i];
-                self.$nextTick(() => {
-                  // self.visible = true;
-                });
-              }
-            }
-          });
-        }
-        this.markers = markers;
-        // this.windows = windows;
-      },
+  name: 'real-video',
+  components: {
+    'v-liveplayer': Liveplayer
+  }, 
+  data () {
+    // let self = this
+    return {
+      visible: false,
+      zoom: 18,
+      center: [120.09465,33.313217],
+      markers: [],
+      windows: [],
+      window: '',
+      icon:'',
+      rows: 3,
+      cols: 3,
+      selectCol: 1,
+      selectRow: 1,
+      proto: this.$store.state.rtc,
+      contentHeight: '',
+      contentWidth: '',
+      data:[],
+    };
+  },
+  computed:{
+    count(){
+        return this.$store.state.rtc;
     }
+  },
+  mounted() {
+    this.getIcon()  //获得摄像头图标
+    this.getWindow() //弹出窗口
+    // this.PlayVideo()
+  },
+  methods:{
+    PlayVideo() {
+      console.log("---0---------------------0000")
+      console.log(this.$refs.myvideo)
+      this.$refs.myvideo.PlayVideo("token111");
+    },
+    //设置摄像头图标,所有值都是原始值
+    getIcon(){
+      // 创建一个 Icon
+      var startIcon = new AMap.Icon({
+          // 图标尺寸
+          size: new AMap.Size(25, 34),
+          // 图标的取图地址
+          image: '',//此处修改摄像头图标
+          // 图标所用图片大小
+          imageSize: new AMap.Size(25, 25),
+          // 图标取图偏移量
+          imageOffset: new AMap.Pixel(-1, -1)
+      });
+      console.log("摄像头----")
+      this.icon = startIcon
+    },
+
+    //弹出窗口所在位置及内容
+    getWindow(){
+      // this.visible = true  
+      let markers = [];
+      let windows = [];
+
+      let num = 2;
+      let self = this;
+
+      for (let i = 0 ; i < num ; i ++) {
+        markers.push({
+          position: [120.09465,33.313217 + i * 0.001],
+          events: {
+            click() {
+              self.visible = true
+              self.windows.forEach(window => {
+                // self.visible = false;
+              });
+
+              self.window = self.windows[i];
+              self.$nextTick(() => {
+                // self.visible = true;
+              });
+            }
+          }
+        });
+      }
+      this.markers = markers;
+      // this.windows = windows;
+    },
+  }
 }
 </script>
 <style lang="scss" scoped>

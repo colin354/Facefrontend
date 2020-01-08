@@ -23,14 +23,15 @@ export default [
             icon: 'television',
             children: [
               { path: '/liveview', title: '实时监控显示', icon: 'play' },
-              { path: '/real-video', title: '地图布控显示', icon: 'support' },
+              { path: '/stream-catch', title: '地图布控显示', icon: 'support' },
+              { path: '/video_map_list', title: '实时视频显示', icon: 'support' }
             ]
           },
           {
             title: '监控管理',
             icon: 'yelp',
             children: [
-              { path: '/stream-list', title: '历史监控查询', icon: 'magic' }
+              { path: '/camera-list', title: '历史监控查询', icon: 'magic' }
             ]
           }
         ]

@@ -142,10 +142,6 @@ export default {
     },
     // 部署流程文件
     playVideo (id, url) {
-      console.log('----------ididid-------')
-      console.log(id)
-      console.log('----------uuurl-------')
-      console.log(url)
       this.playerOptions.sources[0].src = url
       this.video_visible = true
     },

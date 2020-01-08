@@ -30,7 +30,7 @@ export default [
             title: '监控管理',
             icon: 'yelp',
             children: [
-              { path: '/stream-list', title: '历史监控查询', icon: 'magic' }
+              { path: '/camera-list', title: '历史监控查询', icon: 'magic' }
             ]
           }
         ]

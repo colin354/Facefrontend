@@ -9,12 +9,12 @@
               <el-input v-model="dataForm.username" :placeholder="$t('face.name')" 
               @keyup.enter.native="getDataList()" clearable/>
             </el-form-item>
-            <el-form-item>
+            <!-- <el-form-item>
               <el-button @click="getDataList()">{{ $t('query') }}</el-button>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
-            </el-form-item>
+              <el-button type="primary">{{ $t('add') }}</el-button>
+            </el-form-item> -->
             <el-form-item>
               <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
             </el-form-item>
@@ -41,9 +41,9 @@
               </el-table-column>
               <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
                 <template slot-scope="scope">
-                  <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)" icon="el-icon-edit" circle></el-button>
+                  <!-- <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)" icon="el-icon-edit" circle></el-button> -->
                   <el-button type="primary" size="mini" @click="deleteHandle(scope.row.id)" icon="el-icon-delete" circle></el-button>
-                  <el-button type="primary" size="mini" @click="getImgs(scope.row.id,scope.row.imgurls)" icon="el-icon-picture-outline-round" circle></el-button>
+                  <!-- <el-button type="primary" size="mini" @click="getImgs(scope.row.id,scope.row.imgurls)" icon="el-icon-picture-outline-round" circle></el-button> -->
                 </template>
               </el-table-column>
             </el-table>
@@ -75,7 +75,6 @@ import facegrid from './face-grid'
 export default {
   mixins: [ mixinViewModule ],
   data () {
-    console.log('11111************111*****')
     return {
       id: 0,//存放faceid,向face-match界面发送待查询人的faceid
       imgs:[],

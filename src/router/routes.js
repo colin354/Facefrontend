@@ -140,12 +140,21 @@ const frameIn = [
         }
       },
       {
+        path: 'camera-list',
+        name: 'camera-list',
+        component: _import('modules/stream/camera_stream'),
+        meta: {
+          auth: true,
+          title: '历史监控查询'
+        }
+      },
+      {
         path: 'stream-list',
         name: 'stream-list',
         component: _import('modules/stream/stream'),
         meta: {
           auth: true,
-          title: '历史监控查询'
+          title: '监控记录查询'
         }
       },
       {
@@ -173,6 +182,15 @@ const frameIn = [
         meta: {
           auth: true,
           title: '地图布控显示'
+        }
+      },
+      {
+        path: 'video_map_list',
+        name: 'video_map_list',
+        component: _import('modules/stream/video_map_list'),
+        meta: {
+          auth: true,
+          title: '实时视频显示'
         }
       },
       {
@@ -364,7 +382,7 @@ const frameIn = [
           auth: true,
           title: '检测运维'
         }
-      },      
+      },
       {
         path: 'wea-analyse',
         name: 'wea-analyse',
@@ -409,7 +427,7 @@ const frameIn = [
           auth: true,
           title: '社保数据分析'
         }
-      },      
+      },
       {
         path: 'camera-analyse',
         name: 'camera-analyse',
@@ -427,7 +445,7 @@ const frameIn = [
           auth: true,
           title: '周数据分析'
         }
-      }, 
+      }
     ]
   },
   frame

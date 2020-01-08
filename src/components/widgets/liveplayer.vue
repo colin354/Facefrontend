@@ -3,14 +3,14 @@
     <video class="h5video" :id="videoid" autoplay webkit-playsinline playsinline></video>
 
     <div class="h5controls"  style="display:none padding:0px">
-        <button type="button" class="btn vidbuttion pull-right" @click="CloseVideo($event)"> <i class="mdi mdi-close"></i></button>
+        <!-- <button type="button" class="btn vidbuttion pull-right" @click="CloseVideo($event)"> <i class="mdi mdi-close"></i></button>
         <button type="button" class="btn vidbuttion pull-right" @click="FullScreen($event)"> <i class="mdi mdi-fullscreen"></i></button>
         <button type="button" class="btn vidbuttion pull-right" @click="PtzControlShow($event)"> <i class="mdi mdi-parking"></i></button>
         <button type="button" class="btn vidbuttion pull-right rtcbutton" > <i class="mdi mdi-format-title"></i></button>
         <button type="button" class="btn vidbuttion pull-right" @click="DoManualRecordStop($event)"> <i class="mdi mdi-stop"></i></button>
         <button type="button" class="btn vidbuttion pull-right" @click="DoManualRecordStart($event)"> <i class="mdi mdi-record"></i></button>
         <button type="button" class="btn vidbuttion pull-right" @click="DoSnapshot($event)"> <i class="mdi mdi-camera"></i></button>
-        <button type="button" class="btn vidbuttion pull-right" @click="DoSnapshotWeb($event)"> <i class="mdi mdi-file-image"></i></button>
+        <button type="button" class="btn vidbuttion pull-right" @click="DoSnapshotWeb($event)"> <i class="mdi mdi-file-image"></i></button> -->
         <!-- audio
         <button type="button" class="btn vidbuttion pull-right" > <i class="mdi  mdi-record"></i></button>
         <button type="button" class="btn vidbuttion pull-right" href="#"> <i class="mdi mdi-volume-high"></i></button>
