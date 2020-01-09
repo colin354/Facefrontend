@@ -134,6 +134,7 @@ export default {
       this.reflash = !this.reflash
     },
     _renderCluserMarker(context) {
+      console.log("这个在哪里运行--")
       const count = this.positions.length;
       let factor = Math.pow(context.count/count, 1/18)
       let div = document.createElement('div');

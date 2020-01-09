@@ -66,10 +66,10 @@ export default {
         this.facelist = res.imgList ? res.imgList : []
         this.streamlist = res.streamList ? res.streamList : []
         console.log("0000------res.faceList")
-        console.log(res)
+        // console.log(res)
         console.log("---")
         // console.log(res.check_info)
-        console.log(this.streamlist)
+        // console.log(this.streamlist)
       }).catch(() => {
         // this.face_url = ''
         this.dataList = []
