@@ -38,6 +38,41 @@ export default [
   //   ]
   // },
   // {
+  //   title: '三维立体警务巡防中心',
+  //   icon: 'futbol-o',
+  //   children: [
+  //     { title: '监控中心',
+  //       icon: 'universal-access',
+  //       children: [
+  //         {
+  //           title: '实时监控',
+  //           icon: 'television',
+  //           children: [
+  //             { path: '/liveview', title: '实时监控显示', icon: 'play' },
+  //             { path: '/real-video', title: '地图布控显示', icon: 'support' },
+  //           ]
+  //         },
+  //         {
+  //           title: '监控管理',
+  //           icon: 'yelp',
+  //           children: [
+  //             { path: '/camera-list', title: '历史监控查询', icon: 'magic' }
+  //           ]
+  //         }
+  //       ]
+  //     },
+  //     { title: '人车情报研判中心', icon: 'camera', path: '/testws' },
+  //     { title: '轨迹追踪中心',
+  //       icon: 'paper-plane',
+  //       children: [
+  //         { path: '/multiline', title: '地图轨迹融合', icon: 'yelp' },
+  //         { path: '/face-match', title: '人像轨迹搜索', icon: 'newspaper-o' }
+  //       ]
+  //     },
+  //     { title: '视频结构化中心', path: '/structured_video', icon: 'gg-circle' }
+  //   ]
+  // },
+  // {
   //   title: '预警事件中心',
   //   icon: 'bell-o',
   //   children: [
@@ -76,6 +111,7 @@ export default [
   //       icon: 'database',
   //       children: [
   //         { path: '/face-list', title: '人口数据库', icon: 'address-card' },
+  //         { path: '/stranger-list', title: '陌生人口数据库', icon: 'address-card' },
   //         { path: '/camera-detect', title: '摄像头数据库', icon: 'video-camera' },
   //         { path: '/whitelist-database', title: '车辆数据库', icon: 'cubes' },
   //         { path: '/camera-database', title: '归档视频', icon: 'cubes' }

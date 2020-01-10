@@ -2,7 +2,7 @@
   <d2-container>
     <el-form :inline="true" size="mini" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.processName" :placeholder="$t('process.name')" clearable/>
+        <el-input v-model="dataForm.queryName" :placeholder="$t('warning.type')" clearable/>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">{{ $t('query') }}</el-button>
@@ -30,7 +30,7 @@
       <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
         <template slot-scope="scope">
           <el-button v-if="scope.row.suspended" type="text" size="mini" @click="activeHandle(scope.row.id)">{{ $t('process.active') }}</el-button>
-          <el-button v-else type="text" size="mini" @click="playVideo(scope.row.id)">播放</el-button>
+          <el-button v-else type="text" size="mini" @click="playVideo(scope.row.id, scope.row.warning_video_url)">播放</el-button>
           <el-button type="text" size="mini" @click="deleteHandle(scope.row.deploymentId)">{{ $t('delete') }}</el-button>
         </template>
       </el-table-column>
@@ -105,7 +105,7 @@ export default {
         deleteIsBatch: true,
       },
       dataForm: {
-        processName: '',
+        queryName: '',
         key: ''
       },
       video_visible: false,
@@ -142,8 +142,8 @@ export default {
       return `${window.SITE_CONFIG['apiURL']}/act/process/resource?${params}`
     },
     // 部署流程文件
-    playVideo (id) {
-      console.log(id)
+    playVideo (id, url) {
+      this.playerOptions.sources[0].src = url
       this.video_visible = true
     },
     // listen event

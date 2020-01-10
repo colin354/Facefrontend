@@ -10,9 +10,7 @@
       <el-form-item>
         <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="deployHandle()">{{ $t('process.deployFile') }}</el-button>
-      </el-form-item>
+
       <el-form-item>
         <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
       </el-form-item>

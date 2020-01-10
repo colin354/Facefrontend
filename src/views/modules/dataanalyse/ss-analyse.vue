@@ -12,17 +12,16 @@
       border
       @sort-change="dataListSortChangeHandle"
       style="width: 100%;">
-      <el-table-column prop="requestUri" :label="$t('logError.requestUri')" header-align="center" align="center"/>
-      <el-table-column prop="requestMethod" :label="$t('logError.requestMethod')" header-align="center" align="center"/>
-      <el-table-column prop="requestParams" :label="$t('logError.requestParams')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
-      <el-table-column prop="ip" :label="$t('logError.ip')" header-align="center" align="center"/>
-      <el-table-column prop="userAgent" :label="$t('logError.userAgent')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
-      <el-table-column prop="createDate" :label="$t('logError.createDate')" sortable="custom" header-align="center" align="center" width="180"/>
-      <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
-        <template slot-scope="scope">
-          <el-button type="text" size="mini" @click="infoHandle(scope.row.errorInfo)">{{ $t('logError.errorInfo') }}</el-button>
-        </template>
-      </el-table-column>
+      <el-table-column prop="requestUri" :label="$t('ss.id')" header-align="center" align="center"/>
+      <el-table-column prop="requestMethod" :label="$t('ss.name')" header-align="center" align="center"/>
+      <el-table-column prop="requestParams" :label="$t('ss.id_card')" header-align="center" align="center" :show-overflow-tooltip="true"/>
+      <el-table-column prop="ip" :label="$t('ss.ss_card')" header-align="center" align="center"/>
+      <el-table-column prop="userAgent" :label="$t('ss.jfjs')" header-align="center" align="center" :show-overflow-tooltip="true"/>
+      <el-table-column prop="createDate" :label="$t('ss.jfbs')" header-align="center" align="center"/>
+      <el-table-column prop="createDate" :label="$t('ss.cbzt')" header-align="center" align="center"/>
+      <el-table-column prop="ip" :label="$t('ss.tbdw')" header-align="center" align="center"/>
+      <el-table-column prop="ip" :label="$t('ss.xzbj')" header-align="center" align="center"/>
+      <el-table-column prop="ip" :label="$t('ss.cbrq')" sortable="custom" header-align="center" align="center"/>
     </el-table>
     <!-- 分页 -->
     <el-pagination

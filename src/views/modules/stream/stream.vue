@@ -1,13 +1,13 @@
 <template>
   <d2-container>
     <el-row :gutter="20">
-      <el-col :span="12">
+      <el-col>
         <div class="grid-content bg-purple">
           <el-card class="box-card">
             <el-form :inline="true" size="mini" :model="dataForm">
-              <el-form-item>
+              <!-- <el-form-item>
                 <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item>
                 <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
               </el-form-item>
@@ -21,33 +21,32 @@
               @sort-change="dataListSortChangeHandle"
               style="width: 100%;">
               <el-table-column type="selection" header-align="center" align="center" width="40"/>
-              <el-table-column prop="streamname" :label="$t('stream.videoname')" header-align="center" align="center" width="130"/>
-              <el-table-column prop="streamlocation" :label="$t('stream.location')" header-align="center" align="center" width="150"/>
-              <el-table-column prop="streamtime" :label="$t('stream.duration')" header-align="center" align="center" width="50"/>
-              <!-- <el-table-column prop="streamfps" :label="$t('stream.frame')" header-align="center" align="center" width="80"/> -->
+              <el-table-column prop="id" :label="$t('camera_stream.id')" header-align="center" align="center" width="80"/>
+              <el-table-column prop="cameraId" :label="$t('camera_stream.cameraId')" header-align="center" align="center" width="80"/>
+              <el-table-column prop="startTime" :label="$t('camera_stream.start_time')" header-align="center" align="center" />
+              <el-table-column prop="streamtime" :label="$t('camera_stream.end_time')" header-align="center" align="center" />
+              <el-table-column prop="streamTime" :label="$t('camera_stream.time')" header-align="center" align="center"/>
               <!-- <el-table-column prop="streamstatus" :label="$t('stream.status')" sortable="custom" header-align="center" align="center" width="80"/> -->
               <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
                 <template slot-scope="scope">
-                  <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)" icon="el-icon-edit" circle></el-button>
+                  <el-button type="primary" size="mini" @click="playVideo(scope.row.id, scope.row.streamUrl)" icon="el-icon-video-play" circle></el-button>
                   <el-button type="primary" size="mini" @click="deleteHandle(scope.row.id)" icon="el-icon-delete" circle></el-button>                  
-                  <el-button type="primary" size="mini" @click="broadcast(scope.row.streamurl,scope.row.streamlocation,scope.row.streamname)" icon="el-icon-video-play" circle></el-button>
                 </template>
               </el-table-column>
             </el-table>
           </el-card>
         </div>
       </el-col>
-      <!-- 右侧视频 -->
-      <el-card class="box-card" :span="12" style="background-color:#F2F6FC;">
-        <span style="font-size:16px;">{{video_name}}</span>
-        <!-- <div v-if="!video_name" style="font-size:16px;">{{this.dataList[0].streamlocation + ' - ' +this.dataList[0].streamname}}</div>
-        <div v-else style="font-size:16px;">{{video_name}} </div> -->
-      </el-card>
-      <!-- <el-card class="box-card" :span="12" height="500" width="500"> -->
-      <el-card class="box-card">
-        <el-col>
-          <div class="grid-content bg-purple" height="500" width="500">           
-              <video-player
+    <el-dialog
+      :visible.sync="video_visible"
+      title="视频播放"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+    >
+      <el-row>
+        <el-col :span="24">
+          <div class="grid-content bg-purple">
+            <video-player
               class="vjs-default-skin"
               ref="videoPlayer"
               :options="playerOptions"
@@ -64,10 +63,12 @@
               @canplaythrough="onPlayerCanplaythrough($event)"
               @statechanged="playerStateChanged($event)"
               @ready="playerReadied"
-            ></video-player>
-          </div> 
+            ></video-player>                
+          </div>
         </el-col>
-      </el-card>
+      </el-row>
+    </el-dialog>
+
         <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
     </el-row>
     <!-- 分页 -->
@@ -101,14 +102,18 @@ export default {
   mixins: [ mixinViewModule ],
   name: "stream",
   data () {
+    let id = this.$route.params.cameraid; //存放face.vue界面传过来的faceid
     return {
       mixinViewModuleOptions: {
-        getDataListURL: `/sys/stream/page?token=${cookieGet('token')}`,
+        getDataListURL: `/sys/camerastream?token=${cookieGet('token')}`,
         getDataListIsPage: true,
-        deleteURL: `/sys/stream?token=${cookieGet('token')}`,
+        deleteURL: `/sys/camerastream?token=${cookieGet('token')}`,
         deleteIsBatch: true
       },
-      dataForm: {},
+      video_visible: false,
+      dataForm: {
+        cameraid:id
+      },
       playerOptions: {
         // videojs options
         muted: true,
@@ -118,37 +123,31 @@ export default {
         sources: [
           {
             type: "video/mp4",
-            src: "http://221.231.13.230:8888/media/test_video/jwc.mp4"
+            src: ""
           }
         ],
         poster: "",
         custum: [],
       },
-      video_name: "北京市海淀区北四环中路269号-1-20190925092718-17.0"
+      video_name: ""
     }
   },
   components: {
     AddOrUpdate,
     videoPlayer
   },
-  mounted() {
-    console.log("this is current player instance object", this.player);
-    console.log("-----------------------1111111111111")
-    console.log(this.dataList)
+  mounted () {
+    console.log('ttttttist is params')
   },
   computed: {
-    player() {
+    player () {
       return this.$refs.videoPlayer.player;
     }
-  }, 
+  },
   methods: {
-    broadcast(streamurl,streamlocation,streamname){
-      this.playerOptions.sources[0].src = streamurl
-      console.log("----我要的数据-------")
-      // console.log(id_rec)
-      console.log(this.dataList)
-      // console.log(this.dataList[id_rec].streamlocation+'——'+this.dataList[id_rec].streamname)
-      this.video_name = streamlocation+'-'+streamname
+    playVideo (id, url) {
+      this.playerOptions.sources[0].src = url
+      this.video_visible = true
     },
     // listen event
     onPlayerPlay(player) {  //点击视频上的播放,便开始播放视频
@@ -191,8 +190,6 @@ export default {
   }
 }
 </script>
-
-
 
 <style lang="scss" scoped>
   .inner {

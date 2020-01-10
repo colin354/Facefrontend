@@ -1,11 +1,11 @@
 <template>
-  <d2-container>
-
+<d2-container>
 <el-row :gutter="20">
   <el-col :span="5">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>摄像头列表</span>
+        <el-button style="float: right; padding: 3px 0" type="text" @click="handleClick">切换</el-button>
       </div>
       <el-row>
           <el-tree
@@ -26,14 +26,21 @@
 
       <el-row>
         <div class="grid-content bg-purple">
-            <!-- <el-button type="primary" @click="initSocket">建立websocket连接</el-button>
-            <el-button type="primary" @click="webSocketOnMessage">发送消息</el-button>
-            <el-button type="primary" @click="webSocketOnClose">关闭</el-button> -->
-            <el-image
+          <el-card class="box-card">
+            <!-- <el-image v-for="(img,index) in imgs" :key="index"
               style="width: 100px; height: 100px"
-              :src="ws_data.faceurl"
+              :src="img">
+            </el-image> &nbsp; -->
+            <img v-for="(img,index) in imgs" :key="index"
+              style="width: 100px; height: 100px"
+              :src="img">
+            <br>
+          </el-card>
+            <!-- <el-image v-for="(img,index) in imgs" :key="index"
+              style="width: 100px; height: 100px"
+              :src="img"
               fit="fit">
-            </el-image>
+            </el-image> -->
             <!-- <el-image
               style="width: 100px; height: 100px"
               :src="ws_data.imgurl"
@@ -43,30 +50,56 @@
       </el-row>
   </el-col>
   <el-col :span="6">
-    <el-row> 
+    <el-row>
       <div class="grid-content bg-purple">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>人脸检测结果</span>
-            <el-button style="float: right; padding: 3px 0" type="text">筛选</el-button>
+            <el-button style="float: right; padding: 3px 0" type="text">
+              <router-link :to="{name:'warning-query'}">
+                更多
+              </router-link>
+            </el-button>
           </div>
           <el-row>
-            <!--原有的-->
-            <!-- <el-image
-              style="width: 100px; height: 100px"
-              :src="ws_data.imgurl"
-              fit="fit">
-            </el-image> -->
-
-            <!--更改显示多张图片-->
-            <el-image v-for="(img,index) in imgs" :key="index"
-              style="width: 100px; height: 100px"
-              :src="img"
-              fit="fit">
-            </el-image>&nbsp;&nbsp;&nbsp;&nbsp;
-            
+            <el-table
+              :data="warning_info"
+              :row-class-name="tableRowClassName"
+              style="width: 100%">
+              <el-table-column
+                prop="warning_time"
+                label="时间">
+              </el-table-column>
+              <el-table-column
+                prop="warning_level"
+                label="级别">
+                <template slot-scope="scope">
+                  <el-tag
+                    :type="scope.row.warning_color === 3 ? 'danger' : 'primary'"
+                    disable-transitions>{{scope.row.warning_level}}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="warning_capture_url"
+                label="抓拍图像">
+                  <template  slot-scope="scope">
+                    <img :src="scope.row.warning_capture_url" width="70" height="70">
+                  </template>
+              </el-table-column>
+              <el-table-column
+                prop="warning_target_url"
+                label="匹配目标">
+                  <template v-if="scope.row.warning_target_url" slot-scope="scope">
+                    <img :src="scope.row.warning_target_url" width="70" height="70">
+                  </template>
+              </el-table-column>
+              <el-table-column
+                prop="warning_message"
+                label="预警信息">
+              </el-table-column>
+            </el-table>
           </el-row>
-        </el-card>        
+        </el-card>
       </div>
     </el-row>
 
@@ -75,17 +108,17 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>车牌检测结果</span>
-            <el-button style="float: right; padding: 3px 0" type="text">筛选</el-button>
+            <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
           </div>
           <el-row>
 
           </el-row>
-        </el-card>           
+        </el-card>
       </div>
-    </el-row>    
+    </el-row>
   </el-col>
 </el-row>
-  </d2-container>
+</d2-container>
 </template>
 
 <script>
@@ -93,54 +126,56 @@ import { cookieGet } from '@/common/cookie'
 // import mixinViewModule from '@/mixins/view-module'
 import Liveplayer from '@/components/videoplayer/liveplayer';
 import '@/assets/h5splayer.js'
-import {H5siOS,H5sPlayerCreate} from '@/assets/h5splayerhelper.js'
+import { H5siOS,H5sPlayerCreate } from '@/assets/h5splayerhelper.js'
 export default {
   // mixins: [ mixinViewModule ],
   name:'testws',
   components: {
     'v-liveplayer': Liveplayer
   }, 
-  data(){
-    return{
+  data () {
+    return {
       webSocket: null,
-      url: 'ws://221.231.13.230:8888/ws/chat/',
+      url: 'ws://221.231.13.230:9988/ws/chat/',
       // url: 'ws://10.2.155.139:8888/ws/chat/',
-      imgs:[], //存放固定数目的照片
-      streamList:[],
-      defaultProps: {}, 
+      imgs: [], //存放固定数目的照片
+      streamList: [],
+      warning_info: [],
+      defaultProps: {},
       ws_data: {
         text: '',
         imgurl: ''
       },
-      dataForm:{
-        map_location:'GETLOCATION'
-      },  
+      dataForm: {
+        map_location: 'GETLOCATION'
+      }
     }
   },
-  mounted(){     //本可以共用view-module.js中的get请求,但界面必须手动刷新才能发送get请求,所以在本组件重新写了get请求
+  created () {
     this.initSocket('token_ws')
-    this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`,{params:{map_location:'GETLOCATION'}})
+  },
+  mounted () {     //本可以共用view-module.js中的get请求,但界面必须手动刷新才能发送get请求,所以在本组件重新写了get请求
+    this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`, { params:{ map_location:'GETLOCATION' } })
       .then(res => {
-        console.log("-----mounted---res.list-")
-        console.log(res)
         this.streamList = res.streamList
+        console.log('-----mmmmount------')
+        // console.log((this.streamList)[1].children[0])
+        // this.handleNodeClick((this.streamList)[1].children[0])
       })
       .catch(() => {
-        console.log("error")
+        console.log('error')
       })
   },
-  destroyed() {
+  destroyed () {
     this.webSocket.close()
-  },  
-  computed:{
-    count(){
-        return this.$store.state.rtc;
-        console.log("streamlist----")
-        console.log(this.streamlist)
+  },
+  computed: {
+    count () {
+      return this.$store.state.rtc
     }
   },
-  methods:{
-    initSocket(token) {
+  methods: {
+    initSocket (token) {
       let ws_url = `${this.url}` + token + '/'
       this.webSocket = new WebSocket(ws_url)
       this.webSocket.onopen = this.webSocketOnOpen
@@ -149,32 +184,34 @@ export default {
       this.webSocket.onerror = this.webSocketOnError
     },
     // 建立连接成功后的状态
-    webSocketOnOpen() {
+    webSocketOnOpen () {
       console.log('websocket连接成功');
     },
     // 获取到后台消息的事件，操作数据的代码在onmessage中书写
-    webSocketOnMessage(res) {
+    webSocketOnMessage (res) {
       // res就是后台实时传过来的数据
       console.log('this is for ----------')
+      console.log(this.ws_data.warning_info)
       let resData = JSON.parse(res.data)
+      console.log(resData.warning_info)
       this.ws_data.text = resData.num
       this.ws_data.imgurl = resData.imgurl
       this.ws_data.faceurl = resData.faceurl
-      if(this.imgs.length >= 3){
+      if (Object.keys(resData.warning_info).length !== 0) {
+        this.ws_data.warning_info = resData.warning_info
+        if (this.warning_info.length >= 5) {
+          this.warning_info.shift() //删除数组第一个元素
+          this.warning_info.push(this.ws_data.warning_info) //向数组末尾添加一个元素
+        } else {
+          this.warning_info.push(this.ws_data.warning_info) //向数组末尾添加一个元素
+        }
+      }
+      if (this.imgs.length >= 8) {
         this.imgs.shift() //删除数组第一个元素
         this.imgs.push(this.ws_data.imgurl) //向数组末尾添加一个元素
-      }
-      else{
+      } else {
         this.imgs.push(this.ws_data.imgurl) //向数组末尾添加一个元素
       }
-      // let msg = `<el-image style="width: 100px; height: 100px" :src="`+this.ws_data.imgurl+`"fit="fit"></el-image>`
-      // console.log(msg)
-      // this.$notify({
-      //   title:'new pic',
-      //   dangerouslyUseHTMLString: true,
-      //   message: msg
-      // })
-      //给后台发送数据
     },
     // 关闭连接
     webSocketOnClose(e) {
@@ -182,42 +219,80 @@ export default {
     },
     //连接失败的事件
     webSocketOnError(res) {
-    console.log('websocket连接失败');
-    // 打印失败的数据
-    console.log(res);
+      console.log('websocket连接失败')
+      // 打印失败的数据
+      console.log(res)
     },
-    
-    PlayVideo(token) {
-      console.log("---0---------------------0000")
-      console.log(this.$refs.myvideo)
+
+    PlayVideo (token) {
       this.$refs.myvideo.PlayVideo(token);
     },
-    handleNodeClick(val) {
-      console.log("----点击事件-----00------")
+    tableRowClassName ({row, rowIndex}) {
+      console.log(row.warning_color)
+      if (row.warning_color === 0) {
+        return ''
+      } else if (row.warning_color === 1) {
+        return 'target-row'
+      } else if (row.warning_color === 2) {
+        return 'stranger-row'
+      }
+      return ''
+    },
+    handleClick () {
+      location.reload()
+      this.initSocket()
+      this.$axios.post(`/sys/camerareal?token=${cookieGet('token')}`,{ c_token:'None',c_id:'None' })
+        .then(res => {
+          console.log('handle------Node-----Click-------')
+        })
+        .catch(() => {
+          console.log('error')
+        })
+    },
+    handleNodeClick (val) {
+      console.log('----点击事件-----00------')
+      console.log(val)
       var tempId = val.id
-      if(tempId<10000){
+      if (tempId < 10000) {
         this.PlayVideo(val.token)
         // this.initSocket(val.token)
-        if(this.webSocket) {
+        if (this.webSocket) {
           this.webSocket.close()
         }
         this.ws_data.imgurl = ''
         this.ws_data.faceurl = ''
         this.initSocket(val.token)
-        this.$axios.post(`/sys/camerareal?token=${cookieGet('token')}`,{c_token:val.token,c_id:val.id})
+        this.$axios.post(`/sys/camerareal?token=${cookieGet('token')}`,{ c_token:val.token,c_id:val.id })
           .then(res => {
-            console.log("handle------Node-----Click")
+            console.log('handle------Node-----Click')
           })
           .catch(() => {
-            console.log("error")
+            console.log('error')
+          })
+        this.$axios.get(`/api/warningHistory?token=${cookieGet('token')}`, { params:{c_token: val.token }})
+          .then(res => {
+            this.imgs = []
+            this.warning_info = res.list
+            console.log(this.warning_info)
+          })
+          .catch(() => {
+            console.log('error')
           })
       }
-    },
     }
+  }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.el-table .target-row {
+  background: oldlace;
+}
+
+.el-table .stranger-row {
+  background: #f54f4f3d;
+}
+
 .bg{
   background-color:#F2F6FC;
 }
@@ -304,81 +379,6 @@ export default {
   .pre-scrollable {
       max-height: 480px;
       overflow-y: scroll;
-  }
-  .layout1x1 {
-      background: url('../../../assets/h5s/img/layout/1x1.png') #f2f2f2;
-      background-repeat: no-repeat;
-      background-size: 32px 32px;
-      color: #000;
-      height: 32px;
-      width: 32px;
-  }
-  .layout1x1:hover {
-      background: url('../../../assets/h5s/img/layout/1x1.png') #7a7878;
-      background-size: 32px 32px;
-      color: rgb(187, 184, 184);
-      height: 32px;
-      width: 32px;
-  }
-  .layout2x2 {
-      background: url('../../../assets/h5s/img/layout/2x2.png') #f2f2f2;
-      background-repeat: no-repeat;
-      background-size: 32px 32px;
-      color: #000;
-      height: 32px;
-      width: 32px;
-  }
-  .layout2x2:hover {
-      background: url('../../../assets/h5s/img/layout/2x2.png') #7a7878;
-      background-size: 32px 32px;
-      color: rgb(187, 184, 184);
-      height: 32px;
-      width: 32px;
-  }
-  .layout3x3 {
-      background: url('../../../assets/h5s/img/layout/3x3.png') #f2f2f2;
-      background-repeat: no-repeat;
-      background-size: 32px 32px;
-      color: #000;
-      height: 32px;
-      width: 32px;
-  }
-  .layout3x3:hover {
-      background: url('../../../assets/h5s/img/layout/3x3.png') #7a7878;
-      background-size: 32px 32px;
-      color: rgb(187, 184, 184);
-      height: 32px;
-      width: 32px;
-  }
-  .layout4x4 {
-      background: url('../../../assets/h5s/img/layout/4x4.png') #f2f2f2;
-      background-repeat: no-repeat;
-      background-size: 32px 32px;
-      color: #000;
-      height: 32px;
-      width: 32px;
-  }
-  .layout4x4:hover {
-      background: url('../../../assets/h5s/img/layout/4x4.png') #7a7878;
-      background-size: 32px 32px;
-      color: rgb(187, 184, 184);
-      height: 32px;
-      width: 32px;
-  }
-  .layoutfull {
-      background: url('../../../assets/h5s/img/layout/fullscreen.png') #f2f2f2;
-      background-repeat: no-repeat;
-      background-size: 32px 32px;
-      color: #000;
-      height: 32px;
-      width: 32px;
-  }
-  .layoutfull:hover {
-      background: url('../../../assets/h5s/img/layout/fullscreen.png') #7a7878;
-      background-size: 32px 32px;
-      color: rgb(187, 184, 184);
-      height: 32px;
-      width: 32px;
   }
   .inner {
     position: right;

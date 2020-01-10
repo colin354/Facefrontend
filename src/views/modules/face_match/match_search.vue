@@ -282,7 +282,6 @@ export default {
         sources: [
           {
             type: "video/mp4",
-            //src: "http://221.231.13.230:8888/media/test_video/jwc.mp4"
             src:""
           }
         ],

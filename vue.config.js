@@ -14,19 +14,39 @@ let publicPath = '/'
 
 module.exports = {
   configureWebpack: {
-    plugins: [
-      new webpack.ProvidePlugin({
-        $: "jquery",
-        jQuery:"jquery",
-        "windows.jQuery":"jquery"
-      })
-    ]
-    },
+    plugins: [
+      new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery:"jquery",
+        "windows.jQuery":"jquery"
+      })
+    ]
+  },
   publicPath, // 根据你的实际情况更改这里
+  // pages: {
+  //   index: {
+  //     entry: 'src/main.js',
+  //     template: 'public/index.html',
+  //     filename: 'index',
+  //     title: 'index'
+  //   },
+  //   dataV: {
+  //     entry: 'src/pages/dataV/main.js',
+  //     template: 'src/pages/dataV/dataV.html',
+  //     filename: 'dataV',
+  //     title: 'dataV'
+  //   }
+  // },
   assetsDir: 'static',
   lintOnSave: false,
   devServer: {
-    publicPath // 和 publicPath 保持一致,
+    publicPath// 和 publicPath 保持一致,
+    // historyApiFallback: {
+    //   verbose: true,
+    //   rewrites: [
+    //     { from: /^\/dataV\/.*$/, to: 'src/pages/dataV/dataV' }
+    //   ]
+    // }
   },
   css: {
     loaderOptions: {

@@ -1,74 +1,74 @@
 <template>
-<d2-container>
-        <!-- Video -->
-        <div class="row">
-            <!-- Device tree -->
-            <div class="col-sm-3">
-                <div class="zdg">
-                    <!-- 模糊查询搜查 -->
-                    <el-input
-                        placeholder="输入关键字进行过滤"
-                        v-model="filterText">
-                    </el-input>                   
-                    <el-tree
-                        :data="data"
-                        accordion
-                        node-key="id"
-                        :filter-node-method="filterNode"
-                        ref="tree"
-                        highlight-current
-                        @node-click="handleNodeClick"
-                        :props="defaultProps">
-                        <span slot-scope="{ node, data }">
-                            <i :class="data.iconclass" style="color:rgb(142, 132, 132);"></i>
-                            <span style="padding-left: 4px;">{{data.label}}</span>
-                        </span>
-                    </el-tree>
-                    <div class="container-fluid">
-                        <button class="right-side-toggle waves-effect waves-light btn-info btn-circle pull-right m-l-20"><i class="ti-settings text-white"></i></button>
-                    </div> 
-                </div>
-            </div>
-
-            <!-- Video 1 4 9 16 -->
-            <div class="col-sm-9" id="videoPanel">
-                <div name='flex' class="videoColor" v-for="r in rows" :key="r">
-                    <div calss="videoflexitem" style="flex:1; border:1px solid black;" name="flex" v-for="c in cols" @contextmenu.prevent="stopVideo($event)" @click="videoClick(r,c,$event)" :key="c">
-                    <v-liveplayer v-bind:id="'h'+r+c" :h5id="'h'+r+c" :h5videoid="'hvideo'+r+c"></v-liveplayer>
-                    </div>
-                </div>
-                <div class="btn-group blocks">
-                    <button type="button" class="btn btn-default layout1x1 waves-effect" data-row="1|1" @click="changePanel($event)">
-                        </button>
-                    <button type="button" class="btn btn-default layout2x2 waves-effect" data-row="2|2" @click="changePanel($event)">
-                        </button>
-                    <button type="button" class="hidden-xs btn btn-default layout3x3 waves-effect" data-row="3|3" @click="changePanel($event)">
-                        </button>
-                    <button type="button" class="hidden-xs btn btn-default layout4x4 waves-effect" data-row="4|4" @click="changePanel($event)">
-                        </button>
-                    <button type="button" class="btn btn-default layoutfull waves-effect" @click="panelFullScreen($event)"> </button>
-                </div>
-            </div>
-        </div><!-- Video -->
-        <div class="right-sidebar">
-            <div class="slimscrollright">
-                <div class="rpanel-title"> {{$t("message.live.setting")}} <span><i class="ti-close right-side-toggle"></i></span> </div>
-                <div class="r-panel-body">
-                    <ul  class="m-t-20">
-                        <li><b>{{$t("message.live.protocol")}}: {{proto}}</b></li>
-                        <div class="row">
-                            <div class="col-lg-12 col-sm-12 col-xs-12">
-                                <button class="btn btn-block btn-success" @click="changeWS($event)">WEBSOCKET</button>
-                            </div>
-                            <div class="col-lg-12 col-sm-12 col-xs-12">
-                                <button class="btn btn-block btn-info"  @click="changeRTC($event)">WEBRTC</button>
-                            </div>
-                        </div>
-                    </ul>
-                </div>
+<div >
+    <!-- Video -->
+    <div class="row">
+        <!-- Device tree -->
+        <div class="col-sm-3">
+            <div class="zdg">
+                <!-- 模糊查询搜查 -->
+                <el-input
+                    placeholder="输入关键字进行过滤"
+                    v-model="filterText">
+                </el-input>                   
+                <el-tree
+                    :data="data"
+                    accordion
+                    node-key="id"
+                    :filter-node-method="filterNode"
+                    ref="tree"
+                    highlight-current
+                    @node-click="handleNodeClick"
+                    :props="defaultProps">
+                    <span slot-scope="{ node, data }">
+                        <i :class="data.iconclass" style="color:rgb(142, 132, 132);"></i>
+                        <span style="padding-left: 4px;">{{data.label}}</span>
+                    </span>
+                </el-tree>
+                <div class="container-fluid">
+                    <button class="right-side-toggle waves-effect waves-light btn-info btn-circle pull-right m-l-20"><i class="ti-settings text-white"></i></button>
+                </div> 
             </div>
         </div>
-</d2-container>
+
+        <!-- Video 1 4 9 16 -->
+        <div class="col-sm-9" id="videoPanel">
+            <div name='flex' class="videoColor" v-for="r in rows" :key="r">
+                <div calss="videoflexitem" style="flex:1; border:1px solid black;" name="flex" v-for="c in cols" @contextmenu.prevent="stopVideo($event)" @click="videoClick(r,c,$event)" :key="c">
+                <v-liveplayer v-bind:id="'h'+r+c" :h5id="'h'+r+c" :h5videoid="'hvideo'+r+c"></v-liveplayer>
+                </div>
+            </div>
+            <div class="btn-group blocks">
+                <button type="button" class="btn btn-default layout1x1 waves-effect" data-row="1|1" @click="changePanel($event)">
+                    </button>
+                <button type="button" class="btn btn-default layout2x2 waves-effect" data-row="2|2" @click="changePanel($event)">
+                    </button>
+                <button type="button" class="hidden-xs btn btn-default layout3x3 waves-effect" data-row="3|3" @click="changePanel($event)">
+                    </button>
+                <button type="button" class="hidden-xs btn btn-default layout4x4 waves-effect" data-row="4|4" @click="changePanel($event)">
+                    </button>
+                <button type="button" class="btn btn-default layoutfull waves-effect" @click="panelFullScreen($event)"> </button>
+            </div>
+        </div>
+    </div><!-- Video -->
+    <div class="right-sidebar">
+        <div class="slimscrollright">
+            <div class="rpanel-title"> {{$t("message.live.setting")}} <span><i class="ti-close right-side-toggle"></i></span> </div>
+            <div class="r-panel-body">
+                <ul  class="m-t-20">
+                    <li><b>{{$t("message.live.protocol")}}: {{proto}}</b></li>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-xs-12">
+                            <button class="btn btn-block btn-success" @click="changeWS($event)">WEBSOCKET</button>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-xs-12">
+                            <button class="btn btn-block btn-info"  @click="changeRTC($event)">WEBRTC</button>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 </template>
 
 <script>
@@ -100,10 +100,10 @@ import 'patternfly-bootstrap-treeview/dist/bootstrap-treeview.min.css'
 import 'patternfly-bootstrap-treeview/dist/bootstrap-treeview.min.js'
 import Liveplayer from '@/components/widgets/liveplayer'
 export default {
-    name: "liveview",
+    name: 'liveview',
     components: {
-        'v-liveplayer': Liveplayer
-    },  
+    'v-liveplayer': Liveplayer
+    },
     data() {
         return {
             //过滤文字

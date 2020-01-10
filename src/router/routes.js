@@ -81,6 +81,43 @@ const frameIn = [
       //   component: _import('modules/face/face'),
       //   meta: {
       //     auth: true,
+      //     title: '人脸库管理'
+      //   }
+      // },
+      // 新建人脸库
+      // {
+      //   path: 'stranger-list',
+      //   name: 'stranger-list',
+      //   component: _import('modules/face/stranger'),
+      //   meta: {
+      //     auth: true,
+      //     title: '陌生人脸库管理'
+      //   }
+      // },
+      // {
+      //   path: 'user',
+      //   name: 'user',
+      //   component: _import('modules/sys/user'),
+      //   meta: {
+      //     auth: true,
+      //     title: '用户管理'
+      //   }
+      // },
+      // {
+      //   path: 'overview',
+      //   name: 'overview',
+      //   component: _import('modules/sys/overview'),
+      //   meta: {
+      //     auth: true,
+      //     title: '小区概览'
+      //   }
+      // },
+      // {
+      //   path: 'face-list',
+      //   name: 'face-list',
+      //   component: _import('modules/face/face'),
+      //   meta: {
+      //     auth: true,
       //     title: '人口数据库'
       //   }
       // },
@@ -121,12 +158,21 @@ const frameIn = [
       //   }
       // },
       // {
+      //   path: 'camera-list',
+      //   name: 'camera-list',
+      //   component: _import('modules/stream/camera_stream'),
+      //   meta: {
+      //     auth: true,
+      //     title: '历史监控查询'
+      //   }
+      // },
+      // {
       //   path: 'stream-list',
       //   name: 'stream-list',
       //   component: _import('modules/stream/stream'),
       //   meta: {
       //     auth: true,
-      //     title: '历史监控查询'
+      //     title: '监控记录查询'
       //   }
       // },
       // {
@@ -144,7 +190,7 @@ const frameIn = [
       //   component: _import('modules/stream/liveview'),
       //   meta: {
       //     auth: true,
-      //     title: '实时监控显示'
+      //     title: '实时监控管理'
       //   }
       // },
       // {
@@ -154,6 +200,15 @@ const frameIn = [
       //   meta: {
       //     auth: true,
       //     title: '地图布控显示'
+      //   }
+      // },
+      // {
+      //   path: 'video_map_list',
+      //   name: 'video_map_list',
+      //   component: _import('modules/stream/video_map_list'),
+      //   meta: {
+      //     auth: true,
+      //     title: '实时视频显示'
       //   }
       // },
       // {
@@ -180,7 +235,7 @@ const frameIn = [
       //   component: _import('modules/face_match/structured_video'),
       //   meta: {
       //     auth: true,
-      //     title: ' 视频结构化中心'
+      //     title: ' 视频结构化展示'
       //   }
       // },
       // {
@@ -298,7 +353,7 @@ const frameIn = [
       //   component: _import('modules/sys/whitelist-database'),
       //   meta: {
       //     auth: true,
-      //     title: '车辆数据库'
+      //     title: '白名单数据库管理'
       //   }
       // },
       // {
@@ -307,9 +362,9 @@ const frameIn = [
       //   component: _import('modules/sys/camera-database'),
       //   meta: {
       //     auth: true,
-      //     title: '归档视频'
+      //     title: '归档视频管理'
       //   }
-      // },      
+      // },
       // {
       //   path: 'realTime',
       //   name: 'realTime',
@@ -334,7 +389,7 @@ const frameIn = [
       //   component: _import('modules/face/camera-detect'),
       //   meta: {
       //     auth: true,
-      //     title: '摄像头数据库'
+      //     title: '摄像头管理'
       //   }
       // },
       // {
@@ -345,7 +400,7 @@ const frameIn = [
       //     auth: true,
       //     title: '检测运维'
       //   }
-      // },      
+      // },
       // {
       //   path: 'wea-analyse',
       //   name: 'wea-analyse',
@@ -390,7 +445,7 @@ const frameIn = [
       //     auth: true,
       //     title: '社保数据分析'
       //   }
-      // },      
+      // },
       // {
       //   path: 'camera-analyse',
       //   name: 'camera-analyse',
@@ -408,7 +463,7 @@ const frameIn = [
       //     auth: true,
       //     title: '周数据分析'
       //   }
-      // }, 
+      // }
     ]
   },
   // frame
@@ -437,6 +492,28 @@ const errorPage = [
   }
 ]
 
+/**
+ * 大屏页面
+ */
+const screenPage = [
+  {
+    path: '/screen',
+    name: 'screen',
+    component: _import('system/screen')
+  }
+]
+
+/**
+ * 大屏页面
+ */
+const screenDataPage = [
+  {
+    path: '/screenData',
+    name: 'screenData',
+    component: _import('system/screenData')
+  }
+]
+
 // 导出需要显示菜单的
 export const frameInRoutes = frameIn
 
@@ -444,5 +521,7 @@ export const frameInRoutes = frameIn
 export default [
   ...frameIn,
   ...frameOut,
-  ...errorPage
+  ...errorPage,
+  ...screenPage,
+  ...screenDataPage
 ]

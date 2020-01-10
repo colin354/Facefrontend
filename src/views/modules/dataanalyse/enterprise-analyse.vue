@@ -13,17 +13,17 @@
       border
       @sort-change="dataListSortChangeHandle"
       style="width: 100%;">
-      <el-table-column prop="requestUri" :label="$t('logError.requestUri')" header-align="center" align="center"/>
-      <el-table-column prop="requestMethod" :label="$t('logError.requestMethod')" header-align="center" align="center"/>
-      <el-table-column prop="requestParams" :label="$t('logError.requestParams')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
-      <el-table-column prop="ip" :label="$t('logError.ip')" header-align="center" align="center"/>
-      <el-table-column prop="userAgent" :label="$t('logError.userAgent')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
-      <el-table-column prop="createDate" :label="$t('logError.createDate')" sortable="custom" header-align="center" align="center" width="180"/>
-      <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
-        <template slot-scope="scope">
-          <el-button type="text" size="mini" @click="infoHandle(scope.row.errorInfo)">{{ $t('logError.errorInfo') }}</el-button>
-        </template>
-      </el-table-column>
+      <el-table-column prop="requestUri" :label="$t('enterprise.id')" header-align="center" align="center"/>
+      <el-table-column prop="requestMethod" :label="$t('enterprise.tysh')" header-align="center" align="center"/>
+      <el-table-column prop="requestParams" :label="$t('enterprise.fddb')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
+      <el-table-column prop="ip" :label="$t('enterprise.jyzt')" header-align="center" align="center"/>
+      <el-table-column prop="userAgent" :label="$t('enterprise.czzb')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
+      <el-table-column prop="createDate" :label="$t('enterprise.gslx')" header-align="center" align="center" width="180"/>
+      <el-table-column prop="ip" :label="$t('enterprise.clrq')" sortable="custom" fixed="right" header-align="center" align="center"/>
+      <el-table-column prop="ip" :label="$t('enterprise.sshy')" fixed="right" header-align="center" align="center"/>
+      <el-table-column prop="ip" :label="$t('enterprise.rygm')" fixed="right" header-align="center" align="center"/>
+      <el-table-column prop="ip" :label="$t('enterprise.addr')" fixed="right" header-align="center" align="center"/>
+
     </el-table>
     <!--以下是写死的表格数据,为了验证导出功能及水印设置是否有效-->
     <!-- <el-table

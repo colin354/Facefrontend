@@ -468,17 +468,26 @@ t.message.live.protocol = '协议'
 t.message.live.mainstream = '主码流'
 t.message.live.substream = '子码流'
 
-t.person ={}
+t.person = {}
 t.person.name = '姓名'
 t.person.picture = '图片'
 t.person.color = '颜色'
 t.person.rgb = 'rgb'
 
-t.camera ={}
-t.camera.name ='摄像头名称'
+t.camera = {}
+t.camera.id = '序号'
+t.camera.name = '摄像头名称'
 t.camera.location = '位置'
 t.camera.lat = '纬度'
 t.camera.lon = '经度'
+t.camera.warning = '预警事件编号'
+
+t.camera_stream = {}
+t.camera_stream.id = '序号'
+t.camera_stream.cameraId = '监控ID'
+t.camera_stream.start_time = '起始时间'
+t.camera_stream.end_time = '结束时间'
+t.camera_stream.time = '时长'
 
 t.warning = {}
 t.warning.start = '启动'
@@ -505,4 +514,55 @@ t.wea.householders_wea_month = '本月水电气表读数'
 t.wea.householders_wea_history = '历史平均水电气表读数'
 t.wea.householders_warning = '异常指数'
 t.wea.operation = '操作'
+
+t.data = {}
+t.data.index = '温馨提示: 后续还会继续加功能，请关注我github更新...'
+t.data.dheader = '数据监控大屏'
+t.data.dright_messege = '最新消息'
+t.data.content_map = '盐都区管辖地图'
+t.data.dleft = {}
+t.data.dleft.device_info = '预警部署终端占比情况'
+t.data.dleft.device_list = '终端列表'
+t.data.dright = {}
+t.data.dright.warning_info = '陌生人抓拍'
+t.data.dright.warning_target = '目标人物'
+t.data.dright.message_pOne = '号机预警'
+t.data.dright.message_pTwo = ''
+t.data.content = {}
+t.data.content.warning_num = '预警总数'
+t.data.content.target_people_num = '抓拍总数'
+t.data.content.camera_num = '终端接入数'
+
+t.ss = {}
+t.ss.id = '序号'
+t.ss.name = '姓名'
+t.ss.id_card = '身份证'
+t.ss.ss_card = '社保登记编码'
+t.ss.jfjs = '缴费基数'
+t.ss.jfbs = '缴费标识'
+t.ss.cbzt = '参保状态'
+t.ss.tbdw = '填报单位'
+t.ss.xzbj = '险种标志'
+t.ss.cbrq = '参保日期'
+
+t.enterprise = {}
+t.enterprise.id = '序号'
+t.enterprise.name = '企业名称'
+t.enterprise.tysh = '统一社会信用代码'
+t.enterprise.fddb = '法定代表人'
+t.enterprise.jyzt = '经营状态'
+t.enterprise.czzb = '注册资本'
+t.enterprise.gslx = '公司类型'
+t.enterprise.clrq = '成立日期'
+t.enterprise.sshy = '所属行业'
+t.enterprise.rygm = '人员规模'
+t.enterprise.addr = '地址'
+
+t.stranger = {}
+t.stranger.id = '序号'
+t.stranger.faceid = '陌生人id'
+t.stranger.img = '陌生人图片'
+t.stranger.c_gender = '性别'
+t.stranger.c_age = '年龄'
+
 export default t
