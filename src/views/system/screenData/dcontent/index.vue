@@ -104,7 +104,7 @@ export default {
   },
   methods: {
     initMap () {
-      var map = new AMap.Map('map',{
+      var map = new AMap.Map('map', {
         zoom: 13,
         center:[120.076904, 33.32407],
         mapStyle: 'amap://styles/darkblue'

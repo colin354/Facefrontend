@@ -22,6 +22,15 @@ const frameIn = [
         },
         component: _import('system/index')
       },
+      {
+        path: 'church_index',
+        name: 'church_index',
+        meta: {
+          title: '教堂',
+          auth: true
+        },
+        component: _import('system/index/church_index')
+      },      
       // 演示页面
       {
         path: 'page1',

@@ -27,7 +27,7 @@
               accordion
               @node-click="handleNodeClick">
             </el-tree>
-          </el-card>        
+          </el-card>
         </div>
       </el-col>
     </el-row>
@@ -196,6 +196,7 @@ export default {
           position: val.streamlng[i],
           events: {
             init (o) {
+              // self.center = [o.lnglat.lng,o.lnglat.lat];
               self.markerRefs.push(o)
             },
             click (e) {

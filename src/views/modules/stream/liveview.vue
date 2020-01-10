@@ -26,7 +26,7 @@
                 </el-tree>
                 <div class="container-fluid">
                     <button class="right-side-toggle waves-effect waves-light btn-info btn-circle pull-right m-l-20"><i class="ti-settings text-white"></i></button>
-                </div> 
+                </div>
             </div>
         </div>
 
@@ -92,7 +92,7 @@ import '@/assets/plugins/bower_components/styleswitcher/jQuery.style.switcher'
 import '@/assets/material/js/custom.min.js'
 import '@/assets/adapter.js'
 import '@/assets/h5splayer.js'
-import {H5siOS,H5sPlayerCreate} from '@/assets/h5splayerhelper.js'
+import { H5siOS, H5sPlayerCreate } from '@/assets/h5splayerhelper.js'
 import qs from 'qs'
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
@@ -102,12 +102,12 @@ import Liveplayer from '@/components/widgets/liveplayer'
 export default {
     name: 'liveview',
     components: {
-    'v-liveplayer': Liveplayer
+        'v-liveplayer': Liveplayer
     },
     data() {
         return {
             //过滤文字
-            filterText:"",
+            filterText: '',
             rows: 2,
             cols: 2,
             selectCol: 1,
@@ -125,20 +125,20 @@ export default {
         };
     },
     computed:{
-        count(){
+        count() {
             return this.$store.state.rtc;
         }
     },
-    mounted() {
+    mounted () {
         this.updateUI();
         this.loadDevice();
         this.loadtest();
         this.NumberDevice();
-        this.$root.bus.$emit('liveplayproto',this.proto);
+        this.$root.bus.$emit('liveplayproto', this.proto);
     },
     methods: {
         //树形节点点击
-        handleNodeClick(data, checked, indeterminate){
+        handleNodeClick(data, checked, indeterminate) {
             console.log(data.token);
             console.log(data.streamprofile);
             let _this =this;
@@ -168,25 +168,25 @@ export default {
                 $('.h5video').prop("controls", true);
             }
 
-            $(".right-side-toggle").on("click", function () {
-                $(".right-sidebar").slideDown(50).toggleClass("shw-rside");
-                $(".fxhdr").on("click", function () {
-                    body.toggleClass("fix-header"); /* Fix Header JS */
-                });
-                $(".fxsdr").on("click", function () {
-                    body.toggleClass("fix-sidebar"); /* Fix Sidebar JS */
-                });
+            $('.right-side-toggle').on("click", function () {
+                $('.right-sidebar').slideDown(50).toggleClass('shw-rside')
+                $('.fxhdr').on('click', function () {
+                    body.toggleClass('fix-header') /* Fix Header JS */
+                })
+                $('.fxsdr').on('click', function () {
+                    body.toggleClass('fix-sidebar') /* Fix Sidebar JS */
+                })
 
                 /* ===== Service Panel JS ===== */
-                var fxhdr = $('.fxhdr');
-                console.log(fxhdr);
+                var fxhdr = $('.fxhdr')
+                console.log(fxhdr)
 
                 if (body.hasClass("fix-header")) {
-                    fxhdr.attr('checked', true);
+                    fxhdr.attr('checked', true)
                 } else {
-                    fxhdr.attr('checked', false);
+                    fxhdr.attr('checked', false)
                 }
-            });
+            })
         },
         updateUIEnterFullScreen()
         {
@@ -201,13 +201,11 @@ export default {
             }
         },
         //测试机仓
-        loadtest(){
+        loadtest () {
             let _this =this;
             var root = process.env.VUE_APP_API_ROOT;
             var wsroot = process.env.VUE_APP_WS_HOST_ROOT;
-            console.log('-------')
-            console.log(process.env)
-            if (root == undefined){
+            if (root == undefined) {
                 root = window.location.protocol + '//' + window.location.host + window.location.pathname;
             }
             if (wsroot == undefined)
@@ -216,16 +214,15 @@ export default {
             }
 		    //url
             var url = root + "/api/v1/GetSrcWithoutDevice?session="+ this.$store.state.token;
-            console.log(url);
             this.$http.get(url).then(result=>{
-                if(result.status == 200){
+                if(result.status == 200) {
 					var data =  result.data;
                     var srcGroup = {children: []};
                     srcGroup.label=this.$t('message.live.camera');
                     srcGroup.iconclass="mdi mdi-view-sequential fa-fw";
-                    for(var i=0; i< data.src.length; i++){
+                    for(var i=0; i< data.src.length; i++) {
                         var item = data.src[i];
-                        if(item['nOriginalType'] == 'H5_CH_GB'){
+                        if(item['nOriginalType'] == 'H5_CH_GB') {
                             continue;
                         }else{
                             // 主副流
@@ -244,7 +241,8 @@ export default {
                                     token : item['strToken'],
                                     label : item['strName'],
                                     iconclass : 'mdi mdi-camcorder fa-fw',
-                                    children:node};
+                                    children:node
+                                    };
                             if(!item['bOnline'])
                                 newItem['iconclass'] = 'mdi mdi-camcorder-off fa-fw';
                             if(item['nType'] == 'H5_CLOUD')
@@ -261,7 +259,7 @@ export default {
             let _this =this;
             var root = process.env.VUE_APP_API_ROOT;
             var wsroot = process.env.VUE_APP_WS_HOST_ROOT;
-            if (root == undefined){
+            if (root == undefined) {
                 root = window.location.protocol + '//' + window.location.host + window.location.pathname;
             }
             if (wsroot == undefined)
@@ -269,18 +267,18 @@ export default {
                 wsroot = window.location.host;
             }
 		    //url
-		    var url = root + "/api/v1/GetDevice?session="+ this.$store.state.token;
+		    var url = root + "/api/v1/GetDevice?session="+ this.$store.state.token
 			  //重组
-            this.$http.get(url).then(result=>{
-                if(result.status == 200){
+            this.$http.get(url).then(result => {
+                if(result.status == 200) {
                     var srcData = [];
                     var data=result.data;
-                    for(var i = 0; i < data.dev.length; i++){
+                    for(var i = 0; i < data.dev.length; i++) {
                         var item=data.dev[i];
                         var srclevel=[];
-                        srclevel["strToken"]=item.strToken;
-                        srclevel["strName"]=item.strName;
-                        this.loadSrc(srclevel,srcData);
+                        srclevel['strToken']=item.strToken
+                        srclevel['strName']=item.strName
+                        this.loadSrc(srclevel, srcData)
                     }
                 }
             })
@@ -290,7 +288,7 @@ export default {
             let _this =this;
             var root = process.env.VUE_APP_API_ROOT;
             var wsroot = process.env.VUE_APP_WS_HOST_ROOT;
-            if (root == undefined){
+            if (root == undefined) {
                 root = window.location.protocol + '//' + window.location.host + window.location.pathname;
             }
             if (wsroot == undefined)
@@ -307,7 +305,7 @@ export default {
                     var srcGroup = {children: []};
                     srcGroup.label=srclevel.strName;
                     srcGroup.iconclass="mdi mdi-view-sequential fa-fw";
-                    for(var i=0; i< data.src.length; i++){
+                    for(var i=0; i< data.src.length; i++) {
                         var item = data.src[i];
                         // 主副流
                         var node=[{
@@ -325,7 +323,8 @@ export default {
                                 token : item['strToken'],
                                 label : item['strName'],
                                 iconclass : 'mdi mdi-camcorder fa-fw',
-                                children:node};
+                                children:node
+                                };
 
                         if(!item['bOnline'])
                             newItem['iconclass'] = 'mdi mdi-camcorder-off fa-fw';
@@ -346,7 +345,7 @@ export default {
             let _this =this;
             var root = process.env.VUE_APP_API_ROOT;
             var wsroot = process.env.VUE_APP_WS_HOST_ROOT;
-            if (root == undefined){
+            if (root == undefined) {
                 root = window.location.protocol + '//' + window.location.host + window.location.pathname;
             }
             if (wsroot == undefined)
@@ -357,10 +356,10 @@ export default {
             var url = root + "/api/v1/GetGbDevice?session="+ this.$store.state.token;
 			  //重组
             this.$http.get(url).then(result=>{
-                if(result.status == 200){
+                if(result.status == 200) {
                     var srcData = [];
                     var data=result.data;
-                    for(var i = 0; i < data.dev.length; i++){
+                    for(var i = 0; i < data.dev.length; i++) {
                         var item=data.dev[i];
                         var srclevel=[];
                         srclevel["strToken"]=item.strToken;
@@ -375,7 +374,7 @@ export default {
             let _this =this;
             var root = process.env.VUE_APP_API_ROOT;
             var wsroot = process.env.VUE_APP_WS_HOST_ROOT;
-            if (root == undefined){
+            if (root == undefined) {
                 root = window.location.protocol + '//' + window.location.host + window.location.pathname;
             }
             if (wsroot == undefined)
@@ -393,7 +392,7 @@ export default {
                     var srcGroup = {children: []};
                     srcGroup.label=srclevel.strName;
                     srcGroup.iconclass="mdi mdi-view-sequential fa-fw";
-                    for(var i=0; i< data.src.length; i++){
+                    for(var i=0; i< data.src.length; i++) {
                         var item = data.src[i];
                         // 主副流
                         var node=[{
@@ -521,7 +520,7 @@ export default {
                 //$('#videoPanel>div').eq(r - 1).children('div').eq(c - 1).children(".h5videowrapper").children(".h5video").style.opacity = "0.25";
             }
         },
-        stopVideo(event){
+        stopVideo(event) {
             return;
         },
         //模糊查询

@@ -64,7 +64,7 @@ export default {
       noMessege: false
     };
   },
-  created() {
+  created () {
     // this.getData(this.username)
   },
   methods: {

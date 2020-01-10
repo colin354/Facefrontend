@@ -24,7 +24,7 @@
               <el-table-column prop="id" :label="$t('camera_stream.id')" header-align="center" align="center" width="80"/>
               <el-table-column prop="cameraId" :label="$t('camera_stream.cameraId')" header-align="center" align="center" width="80"/>
               <el-table-column prop="startTime" :label="$t('camera_stream.start_time')" header-align="center" align="center" />
-              <el-table-column prop="streamtime" :label="$t('camera_stream.end_time')" header-align="center" align="center" />
+              <el-table-column prop="endTime" :label="$t('camera_stream.end_time')" header-align="center" align="center" />
               <el-table-column prop="streamTime" :label="$t('camera_stream.time')" header-align="center" align="center"/>
               <!-- <el-table-column prop="streamstatus" :label="$t('stream.status')" sortable="custom" header-align="center" align="center" width="80"/> -->
               <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
