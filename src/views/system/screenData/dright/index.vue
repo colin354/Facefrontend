@@ -23,7 +23,7 @@
             :nodata="$t('data.dright.index.noFollowing')"
             v-if="noFollowing"
           ></nodata>
-        </databox>        
+        </databox>
       </databox>
       <div class="messege">
         <databox
@@ -31,7 +31,38 @@
           :dheight="260"
           :icon="'account'"
         >
-          <message :data="messege"></message>
+          <!-- <message :data="messege"></message> -->
+          <myevent :data="messege"></myevent>
+          <!-- <el-table
+            size="mini"
+            :data="messege"
+            style="width: 100%"
+            :row-style="getRowClass"
+            :header-row-style="getRowClass"
+            :header-cell-style="getRowClass"
+            :cell-style="getRowClass"
+            height="200">
+            <el-table-column
+              prop="id"
+              label="id"
+              width="55">
+            </el-table-column>
+            <el-table-column
+              prop="warning_time"
+              label="预警时间"
+              width="155">
+            </el-table-column>
+            <el-table-column
+              prop="warning_camera_name"
+              label="检测摄像头"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="warning_message"
+              label="预警事件"
+              width="100">
+            </el-table-column>
+          </el-table> -->
           <nodata
             :nodata="$t('data.dright.index.messege')"
             v-if="noMessege"
@@ -45,16 +76,18 @@
 <script>
 import follower from './follower'
 import message from './message'
+import myevent from "../dcontent/myevent";
 import { cookieGet } from '@/common/cookie'
 export default {
   components: {
     follower,
-    message
+    message,
+    myevent
   },
   props: {
     username: String
   },
-  data() {
+  data () {
     return {
       followers: [],
       noFollowers: false,
@@ -68,10 +101,13 @@ export default {
     // this.getData(this.username)
   },
   methods: {
+    getRowClass ({ row, column, rowIndex, columnIndex }) {
+      return 'background-color: transparent'
+    },
     getData (username) {
       this.$axios.get(`/api/screenRight/warning?token=${cookieGet('token')}`)
         .then(response => {
-          console.log('--------')
+          console.log('-------aahhaa-------')
           console.log(response)
           let data3 = JSON.parse(JSON.stringify(response))
           if (data3.length < 1) {
@@ -108,4 +144,5 @@ export default {
     }
   }
 }
+
 </style>

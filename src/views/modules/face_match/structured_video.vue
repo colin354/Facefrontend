@@ -5,12 +5,13 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>视频列表</span>
-            <el-button style="float: right; padding: 3px 0" type="text">过滤</el-button>
+            <!-- <el-button style="float: right; padding: 3px 0" type="text">过滤</el-button> -->
           </div>
           <el-row>
               <el-input
-                placeholder="输入关键字进行过滤"
+                placeholder="输入关键字进行搜索"
                 v-model="filterText">
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
               </el-input>
               <el-tree
                 :data="streamList"
@@ -20,6 +21,9 @@
                 ref="tree"
                 @node-click="handleNodeClick"
                 >
+                  <!-- <span slot-scope="{ node, streamList }">
+                      <span style="padding-left: 4px;">{{streamList.label}}</span>
+                  </span> -->
               </el-tree>
           </el-row>
         </el-card>
@@ -61,11 +65,12 @@
         </el-row>
       </el-col>
       <el-col :span="5">
-        <el-row>
+        <!----隐藏行人重识别结果！！！！！！！！ -->
+        <!-- <el-row>
           <div class="grid-content bg-purple">
             <personIdentification :personarr="personarr"></personIdentification>
           </div>
-        </el-row>
+        </el-row> -->
 
         <el-row>
           <div class="grid-content bg-purple">
@@ -153,9 +158,35 @@ export default {
     }
   },  
   methods: {
-    filterNode (value, data) {
+    filterNode (value, data, node) {
       if (!value) return true
-      return data.label.indexOf(value) !== -1
+      if (data.label.indexOf(value) !== -1) {
+        return true
+      }
+      // 否则要去判断它是不是选中节点的子节点
+      return this.checkBelongToChooseNode(value, data, node)
+    },
+    checkBelongToChooseNode (value, data, node) {
+      const level = node.level
+      // 如果传入的节点本身就是一级节点就不用校验了
+      if (level === 1) {
+        return false
+      }
+      // 先取当前节点的父节点
+      let parentData = node.parent
+      // 遍历当前节点的父节点
+      let index = 0
+      while (index < level - 1) {
+      // 如果匹配到直接返回
+        if (parentData.data.label.indexOf(value) !== -1) {
+          return true
+        }
+        // 否则的话再往上一层做匹配
+        parentData = parentData.parent
+        index++
+      }
+      // 没匹配到返回false
+      return false
     },
     scrollInit () {
       this.BS = new BScroll(this.$refs.wrapper, {
@@ -179,8 +210,6 @@ export default {
       this.$axios.get(`/api/videoStruct/page?token=${cookieGet('token')}`,{params:{map_location:'GETLOCATION'}})
         .then(res => {
           this.streamList = res.streamList
-          console.log('666666666666')
-          console.log(res)
         })
         .catch(() => {
           console.log('error')
@@ -203,8 +232,11 @@ export default {
           this.playerOptions.custum = res.list
           this.matchnum = res.count
           this.info = res.info
-          console.log('33333333333333')
+          // for (let i = 0; i < this.info.length; i++) {
+          //   this.info.
+          // }
           console.log(this.info)
+          console.log('33333333333333')
         })
         .catch(error =>{
           console.log(error)

@@ -16,6 +16,7 @@
 </template>
 
 <style >
+
   .time {
     font-size: 13px;
     color: #999;

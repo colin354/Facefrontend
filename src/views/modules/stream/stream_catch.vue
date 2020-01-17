@@ -14,13 +14,16 @@
                 :position="marker.position" :events="marker.events" :icon="icon">
               </el-amap-marker>
             </el-amap>
-
           </el-card>
         </div>
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>摄像头列表</span>
+              <el-button style="float: right; padding: 3px 0" type="text" @click="handleClick">刷新</el-button>
+            </div>
             <el-tree
               :data="streamlist"
               :props="defaultProps"
@@ -36,17 +39,12 @@
       :close-on-click-modal="false"
       :close-on-press-escape="true"
       :fullscreen="false"
-      custom-class="customclass"
+      :title="title"
     >
-      <el-row :gutter="24">
-        <el-col :span="24">
-            <el-button @click="PlayVideo()">Play Video</el-button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <div class="grid-content bg-purple" height="200" width="200">
-              <v-liveplayer ref="myvideo" h5id='1' ></v-liveplayer>
-            </div>
-        </el-col>
-      </el-row>      
+            <!-- <el-button @click="PlayVideo()">Play Video</el-button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+        <v-liveplayer ref="myvideo" h5id='1' ></v-liveplayer>
+
     </el-dialog>
   </div>
 </template>
@@ -84,7 +82,7 @@ export default {
         map_location: 'GETLOCATION'
       },
       visible: false,
-      zoom: 18,
+      zoom: 12,
       center: [120.095098,33.301297],
       markers: [],
       windows: [],
@@ -99,6 +97,7 @@ export default {
       contentWidth: '',
       data: [],
       temp: '',
+      title: '',
       children: '',
       tempToken: '',
       events_map: {
@@ -106,10 +105,9 @@ export default {
           setTimeout(() => {
             console.log('map events!!!!!')
             console.log(self.markerRefs)
-            console.log(o)
             o.plugin(["AMap.MarkerClusterer"],function() {
               let cluster = new AMap.MarkerClusterer(o, self.markerRefs, {
-                gridSize: 80,
+                gridSize: 20,
                 renderCluserMarker: self._renderCluserMarker
               })
             })
@@ -120,7 +118,6 @@ export default {
       events: {
         init: (o) => {
           console.log('-------marker events-')
-          console.log(o)
           this.markerRefs.push(o)
         },
         'moveend': () => {
@@ -137,7 +134,6 @@ export default {
         defaultType: 0,
         events: {
           init (o) {
-            console.log(o);
           }
         }
       }]
@@ -153,15 +149,23 @@ export default {
     this.getIcon()
   },
   methods: {
+    handleClick () {
+      location.reload()
+    },
     getInfo () { // 本可以共用view-module.js中的get请求,但界面必须手动刷新才能发送get请求,所以在本组件重新写了get请求 
       this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`, { params: { map_location: 'GETLOCATION' } })
         .then(res => {
           console.log('-----mounted---res.list-')
           console.log(res)
-          this.temp = res.streamList[0].streamlng // 存放经纬度
-          this.children = res.streamList[0].children // 含有id、经纬度、token等信息
-          if (this.children) {
-            this.getWindow(this.children)
+          let streamList = res.streamList
+          this.markers = []
+          for (let j = 0; j < streamList.length; j++) {
+            this.temp = res.streamList[j].streamlng // 存放经纬度
+            console.log(this.temp)
+            this.children = res.streamList[j].children // 含有id、经纬度、token等信息
+            if (this.children) {
+              this.getWindow(this.children)
+            }
           }
         })
         .catch(() => {
@@ -186,25 +190,34 @@ export default {
     handleNodeClick (val) {
       console.log('----点击事件-----00------')
       console.log(val)
-      this.markerRefs = []
-      this.markers.length = 0
-      this.markers = []
-      // this.getSingleInfo()
       let self = this
-      for (let i = 0; i < val.streamlng.length; i++) {
-        this.markers.push({
-          position: val.streamlng[i],
-          events: {
-            init (o) {
-              // self.center = [o.lnglat.lng,o.lnglat.lat];
-              self.markerRefs.push(o)
-            },
-            click (e) {
-              self.visible = true
-              self.tempToken = val.token
+      self.markerRefs = []
+      self.markers.length = 0
+      self.markers = []
+      self.zoom = 16
+      // this.getSingleInfo()
+      if (val.children) {
+        self.center = val.streamlng[0]
+        this.getWindow(this.children)
+      } else {
+        for (let i = 0; i < val.streamlng.length; i++) {
+          self.center = val.streamlng[i]
+          self.markers.push({
+            position: val.streamlng[i],
+            events: {
+              init (o) {
+                // self.center = [o.lnglat.lng,o.lnglat.lat];
+                self.markerRefs.push(o)
+              },
+              click (e) {
+                self.title = val.label
+                self.visible = true
+                self.tempToken = val.token
+                self.PlayVideo(self.tempToken)
+              }
             }
-          }
-        })
+          })
+        }
       }
       // this.positions = val.streamlng
       this.reflash = !this.reflash
@@ -232,10 +245,11 @@ export default {
       context.marker.setOffset(new AMap.Pixel(-size/2,-size/2));
       context.marker.setContent(div)
     },
-    PlayVideo () {
-      if (this.tempToken) {
-        this.$refs.myvideo.PlayVideo(this.tempToken);
-      }
+    PlayVideo (token) {
+      this.$refs.myvideo.PlayVideo(token)
+      // if (this.tempToken) {
+      //   this.$refs.myvideo.PlayVideo(this.tempToken)
+      // }
     },
     // 设置摄像头图标,所有值都是原始值
     getIcon () {
@@ -256,24 +270,26 @@ export default {
     // 弹出窗口所在位置及内容
     getWindow (val) {
       console.log("getWindow中的   val")
-      console.log(val[0].token)
-      let markers = []
+      console.log(val)
+      // let markers = []
       let self = this
       for (let i = 0; i < this.temp.length; i++) {
-        markers.push({
+        this.markers.push({
           position: this.temp[i],
           events: {
             init (o) {
               self.markerRefs.push(o)
             },
             click (e) {
+              self.title = val[i].label
               self.visible = true
               self.tempToken = val[i].token
+              self.PlayVideo(self.tempToken)
             }
           }
         })
       }
-      this.markers = markers;
+      // this.markers = markers;
     },
 
     getMap() {

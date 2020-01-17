@@ -5,7 +5,7 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>摄像头列表</span>
-        <el-button style="float: right; padding: 3px 0" type="text" @click="handleClick">切换</el-button>
+        <el-button style="float: right; padding: 3px 0" type="text" @click="handleClick">刷新</el-button>
       </div>
       <el-row>
           <el-tree
@@ -63,6 +63,7 @@
           </div>
           <el-row>
             <el-table
+              size="mini"
               :data="warning_info"
               :row-class-name="tableRowClassName"
               style="width: 100%">
@@ -135,7 +136,7 @@ export default {
   data () {
     return {
       webSocket: null,
-      url: 'ws://221.231.13.230:9988/ws/chat/',
+      url: 'ws://221.231.13.230:8888/ws/chat/',
       imgs: [], //存放固定数目的照片
       streamList: [],
       warning_info: [],

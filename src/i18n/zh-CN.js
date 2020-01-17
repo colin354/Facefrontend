@@ -517,8 +517,8 @@ t.wea.operation = '操作'
 
 t.data = {}
 t.data.index = '温馨提示: 后续还会继续加功能，请关注我github更新...'
-t.data.dheader = '数据监控大屏'
-t.data.dright_messege = '最新消息'
+t.data.dheader = '盐龙街道派出所综合监控平台'
+t.data.dright_messege = '最新警情'
 t.data.content_map = '盐都区管辖地图'
 t.data.dleft = {}
 t.data.dleft.device_info = '预警部署终端占比情况'
@@ -532,6 +532,12 @@ t.data.content = {}
 t.data.content.warning_num = '预警总数'
 t.data.content.target_people_num = '抓拍总数'
 t.data.content.camera_num = '终端接入数'
+t.data.event = {}
+t.data.event.id = '序号'
+t.data.event.time = '预警时间'
+t.data.event.camera_id = '摄像头id'
+t.data.event.camera_name = '摄像头名称'
+t.data.event.message = '预警事件名称'
 
 t.ss = {}
 t.ss.id = '序号'

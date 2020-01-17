@@ -20,17 +20,16 @@
             </el-form-item>
             <el-form-item>
               <el-button type="info" @click="exportExcel()">{{ $t('export') }}</el-button>
-            </el-form-item>            
+            </el-form-item>
           </el-form>
           <div class="grid-content bg-purple">
             <el-table
               size="mini"
               v-loading="dataListLoading"
               :data="dataList"
-              border
               @selection-change="dataListSelectionChangeHandle"
               @sort-change="dataListSortChangeHandle"
-              style="width: 100%;">
+              >
               <el-table-column type="selection" header-align="center" align="center" width="50"/>
               <el-table-column prop="id" :label="$t('stranger.id')" header-align="center" align="center" width="80"/>
               <el-table-column prop="faceid" :label="$t('stranger.faceid')" header-align="center" align="center" width="150"/>
@@ -39,7 +38,7 @@
                   <img :src="scope.row.imgurl" width="60" height="60">
                 </template>
               </el-table-column>
-              <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
+              <el-table-column :label="$t('handle')" header-align="center" align="center" width="120">
                 <template slot-scope="scope">
                   <!-- <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)" icon="el-icon-edit" circle></el-button> -->
                   <el-button type="primary" size="mini" @click="deleteHandle(scope.row.id)" icon="el-icon-delete" circle></el-button>

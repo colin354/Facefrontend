@@ -3,20 +3,20 @@
     <table class="table">
       <thead>
         <tr>
-          <th class="col-md-2">{{ $t("data.myevent.table.time") }}</th>
-          <th class="col-md-2">{{ $t("data.myevent.table.type") }}</th>
-          <th class="col-md-4">{{ $t("data.myevent.table.repos") }}</th>
-          <th class="col-md-4">{{ $t("data.myevent.table.remarks") }}</th>
+          <!-- <th class="col-md-2">{{ $t("data.event.id") }}</th> -->
+          <th class="col-md-3">{{ $t("data.event.camera_name") }}</th>
+          <th class="col-md-5">{{ $t("data.event.time") }}</th>
+          <th class="col-md-4">{{ $t("data.event.message") }}</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(item, index) in getData" :key="index">
-          <td class="col-md-2">
-            {{ item.created_at.substring(0, 10) }}
+          <!-- <td class="col-md-2">{{ item.id }}</td> -->
+          <td class="col-md-3">{{ item.warning_camera_name }}</td>
+          <td class="col-md-5">
+            {{ item.warning_time.substring(0, 19) }}
           </td>
-          <td class="col-md-2">{{ item.type }}</td>
-          <td class="col-md-4">{{ item.repo.name }}</td>
-          <td class="col-md-4">{{ item.payload.commits }}</td>
+          <td class="col-md-4">{{ item.warning_message }}</td>
         </tr>
       </tbody>
     </table>
@@ -48,21 +48,22 @@ export default {
   width: 100%;
   height: 100%;
   padding: 15px;
-  overflow: hidden;
-  margin-top: -10px;
+  overflow-y: scroll;
+  margin-top: 1px;  
   .table {
-    table-layout: fixed;
+    table-layout: fixed;   
     tr {
       border: none;
       th {
-        font-size: 1.5rem;
+        font-size: 1rem;
         text-align: center;
         background: #053a98;
         color: #fffdef;
         border: 1px solid#0086B3;
       }
       td {
-        font-size: 1.4rem;
+        overflow-y:scroll;
+        font-size: 1rem;
         text-align: center;
         border: 1px solid#0086B3;
         color: #19d4ae;
@@ -77,5 +78,13 @@ export default {
       }
     }
   }
+// .table tbody {
+//     display:block;
+//     height:250px;
+//     width:900px;
+    
+//     text-align: center;
+// }
+
 }
 </style>

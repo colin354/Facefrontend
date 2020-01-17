@@ -7,9 +7,10 @@
             <div class="zdg">
                 <!-- 模糊查询搜查 -->
                 <el-input
-                    placeholder="输入关键字进行过滤"
+                    placeholder="输入关键字进行搜索"
                     v-model="filterText">
-                </el-input>                   
+                    <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                </el-input>
                 <el-tree
                     :data="data"
                     accordion

@@ -12,25 +12,28 @@
         </el-image>
       </el-col>
       <el-col :span="2" >
-        <span>行人</span>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <!-- <span>行人</span>
         <el-image :src=facematch.person_url fit="cover" style="display:block;width: 60%; height: 60%;">
           <div slot="error" class="image-slot">
             <i class="el-icon-picture-outline">无行人照片</i>
-          </div>          
-        </el-image>
-      </el-col>   
+          </div>
+        </el-image> -->
+      </el-col>
         <el-col :span="4" v-for="item in src" :key="item.time">
           <!-- <div class="imgblock"> -->
             <!-- <span>{{$t('check.threshold')}}:{{item.threshold}}</span> -->
             <span>{{item.time}}s</span>
-            <el-image :src="item.imgurl" fit="cover" style="display:block;width: 40%; height: 40%;">
+            <br/>
+            <!-- <el-image :src="item.imgurl" fit="cover" style="display:block;width: 40%; height: 40%;">
               <div slot="error" class="image-slot">
                 <i class="el-icon-picture-outline">点击mark点，查看视频截图图片</i>
               </div>
               <div slot="placeholder" class="image-slot">
                 加载中<span class="dot">...</span>
               </div>
-            </el-image>
+            </el-image> -->
+            <img style="width: 70px; height: 80px" :src="item.imgurl">
           <!-- </div> -->
       </el-col>
     </el-row>
@@ -118,6 +121,20 @@ export default {
 </script>
 
 <style lang="scss">
+  .el-slider__button-wrapper {
+    top: 0;
+    height: 0px;
+    .el-slider__button {
+      width: 4px;
+      height: 1px;
+      border-radius: 0;
+      background: #FFFFFF;
+      border: solid 2px #0068A5;
+    }
+  }
+  .el-slider__stop{
+        background-color: #FF2D2D;
+      }
   .el-row {
     margin-bottom: 20px;
     &:last-child {

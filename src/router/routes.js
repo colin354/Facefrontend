@@ -154,7 +154,7 @@ const frameIn = [
         component: _import('modules/stream/camera_stream'),
         meta: {
           auth: true,
-          title: '历史监控查询'
+          title: '监控管理'
         }
       },
       {
@@ -163,7 +163,7 @@ const frameIn = [
         component: _import('modules/stream/stream'),
         meta: {
           auth: true,
-          title: '监控记录查询'
+          title: '监控记录'
         }
       },
       {
@@ -199,7 +199,7 @@ const frameIn = [
         component: _import('modules/stream/video_map_list'),
         meta: {
           auth: true,
-          title: '实时视频显示'
+          title: '实时监控'
         }
       },
       {

@@ -14,25 +14,26 @@
         <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
       </el-form-item>
     </el-form>
-    <el-table
-      size="mini"
-      v-loading="dataListLoading"
-      :data="dataList"
-      border
-      @selection-change="dataListSelectionChangeHandle"
-      @sort-change="dataListSortChangeHandle"
-      style="width: 100%;">
-      <el-table-column type="selection" header-align="center" align="center" width="50"/>
-      <el-table-column prop="id" :label="$t('warning.id')" header-align="center" align="center" width="90"/>
-      <el-table-column prop="warning_level" :label="$t('warning.level')" header-align="center" align="center" width="120"/>
-      <el-table-column prop="warning_type" :label="$t('warning.type')" header-align="center" align="center" width="120"/>
-      <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
-        <template slot-scope="scope">
-          <el-button type="text" size="mini" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
-          <el-button type="text" size="mini" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <el-card>
+      <el-table
+        size="mini"
+        v-loading="dataListLoading"
+        :data="dataList"
+        @selection-change="dataListSelectionChangeHandle"
+        @sort-change="dataListSortChangeHandle"
+        >
+        <el-table-column type="selection" header-align="center" align="center" width="50"/>
+        <el-table-column prop="id" :label="$t('warning.id')" header-align="center" align="center" width="90"/>
+        <el-table-column prop="warning_level" :label="$t('warning.level')" header-align="center" align="center" width="120"/>
+        <el-table-column prop="warning_type" :label="$t('warning.type')" header-align="center" align="center" width="120"/>
+        <el-table-column :label="$t('handle')"  header-align="center" align="center" width="120">
+          <template slot-scope="scope">
+            <el-button type="text" size="mini" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
+            <el-button type="text" size="mini" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
     <!-- 弹窗, 部署流程文件 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
     <deploy v-if="deployVisible" ref="deploy" @refreshDataList="getDataList"/>

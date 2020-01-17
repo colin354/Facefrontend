@@ -62,9 +62,9 @@ export default {
   methods: {
     initMap () {
       var map = new AMap.Map('map',{
-        zoom: 13,
-        center:[120.076904, 33.32407],
-        mapStyle: 'amap://styles/darkblue'
+        zoom: 17,
+        center:[120.094829, 33.331663],
+        mapStyle: 'amap://styles/fresh'
       })
     },
     getData (username) {

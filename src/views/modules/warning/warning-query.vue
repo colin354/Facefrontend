@@ -23,6 +23,7 @@
       <el-table-column prop="id" :label="$t('warning.id')" header-align="center" align="center" width="50"/>
       <el-table-column prop="warning_time" :label="$t('warning.time')" header-align="center" align="center"/>
       <el-table-column prop="warning_camera_id" :label="$t('warning.cameraId')" header-align="center" align="center"/>
+      <el-table-column prop="warning_camera_name" :label="$t('warning.cameraId')" header-align="center" align="center"/>
       <el-table-column prop="warning_level" :label="$t('warning.level')" header-align="center" align="center"/>
       <el-table-column prop="warning_id" :label="$t('warning.warningId')" header-align="center" align="center"/>
       <el-table-column prop="warning_name" :label="$t('warning.name')" header-align="center" align="center" :show-overflow-tooltip="true" />
