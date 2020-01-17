@@ -42,7 +42,7 @@ export default {
       roleIdListDefault: [],
       dataForm: {
         id: '',
-        user_name: '',
+        username: '',
         deptId: '0',
         deptName: '',
         password: '',
@@ -132,6 +132,7 @@ export default {
             this.getInfo(this.dataForm.id)
           }else{
             //this.dataForm = {}
+            this.$refs['dataForm'].resetFields()
           }
         }).catch(() => {});
       })

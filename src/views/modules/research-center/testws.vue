@@ -136,7 +136,7 @@ export default {
   data () {
     return {
       webSocket: null,
-      url: 'ws://221.231.13.230:9988/ws/chat/',
+      url: 'ws://221.231.13.230:8815/ws/chat/',
       // url: 'ws://10.2.155.139:8888/ws/chat/',
       imgs: [], //存放固定数目的照片
       streamList: [],

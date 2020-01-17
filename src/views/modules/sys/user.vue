@@ -38,7 +38,7 @@
 
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
-    <!-- 对话框 -->
+    <!--维护角色 对话框 -->
       <el-dialog :visible.sync="userRoleDialogVisible" >
       <div slot="title">维护<el-tag>{{username}}</el-tag>角色</div>
         <el-table :data="roleInfo"  size="small" stripe highlight-current-row style="width: 100%;" >
@@ -177,7 +177,7 @@ export default {
         })
         .catch(() => {})
     },
-    modifyRoleUser(roleId,action){
+    modifyRoleUser(roleId,action){  //添加、移除角色
       console.log("lal--")
       console.log(this.user_id)
       console.log(roleId)
@@ -208,7 +208,8 @@ export default {
         this.roleInfo = res
         console.log("00000000")
       })
-      .catch(() => {})   
+      .catch(() => {})
+      this.getDataList()   
     },
   },
   

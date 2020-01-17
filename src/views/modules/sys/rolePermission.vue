@@ -78,7 +78,9 @@ export default {
       //   this.dialogVisible = false;
       // });
 
-      let checkedNodesId = this.$refs.tree.getCheckedKeys();
+      let allCheckedNodesId = this.$refs.tree.getCheckedKeys();
+      let halfCheckedNodesId = this.$refs.tree.getHalfCheckedKeys();
+      let checkedNodesId = allCheckedNodesId.concat(halfCheckedNodesId);
       console.log(checkedNodesId);
       let data = {role_id:this.role.id, menu_id:checkedNodesId};
       this.$axios.post(`/api/role-of-menu`,data).then((res)=>{ 

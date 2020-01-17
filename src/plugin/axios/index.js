@@ -147,7 +147,7 @@ service.interceptors.response.use(
   error => {
     if (error && error.response) {
       switch (error.response.status) {
-        case 400: error.message = '请求错误,用户名不存在'; break
+        case 400: error.message = '请求错误,用户名或密码错误'; break
         case 401: error.message = '未授权，请登录'; break
         case 403: error.message = '拒绝访问'; break
         case 404: error.message = `请求地址出错: ${error.response.config.url}`; break

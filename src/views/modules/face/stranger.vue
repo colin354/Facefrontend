@@ -74,6 +74,7 @@ import facegrid from './face-grid'
 
 export default {
   mixins: [ mixinViewModule ],
+  name:'stranger',
   data () {
     return {
       id: 0,//存放faceid,向face-match界面发送待查询人的faceid

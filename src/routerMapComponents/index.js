@@ -17,6 +17,7 @@ let componentMaps = {
     "watermark": () => import(/* webpackChunkName: "watermark" */'@/views/modules/face/watermark'),
     "camera": () => import(/* webpackChunkName: "camera" */'@/views/modules/face/camera'),
     "face-list": () => import(/* webpackChunkName: "face" */'@/views/modules/face/face'),
+    "stranger-list": () => import(/* webpackChunkName: "face" */'@/views/modules/face/stranger'),
 
     "face-match": () => import(/* webpackChunkName: "face-match" */'@/views/modules/face_match/face-match'),
     "match_search": () => import(/* webpackChunkName: "match_search" */'@/views/modules/face_match/match_search'),
