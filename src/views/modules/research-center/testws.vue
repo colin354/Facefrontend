@@ -27,27 +27,23 @@
       <el-row>
         <div class="grid-content bg-purple">
           <el-card class="box-card">
-            <!-- <el-image v-for="(img,index) in imgs" :key="index"
-              style="width: 100px; height: 100px"
-              :src="img">
-            </el-image> &nbsp; -->
             <img v-for="(img,index) in imgs" :key="index"
               style="width: 100px; height: 100px"
               :src="img">
             <br>
           </el-card>
-            <!-- <el-image v-for="(img,index) in imgs" :key="index"
-              style="width: 100px; height: 100px"
-              :src="img"
-              fit="fit">
-            </el-image> -->
-            <!-- <el-image
-              style="width: 100px; height: 100px"
-              :src="ws_data.imgurl"
-              fit="fit">
-            </el-image> -->
         </div>
       </el-row>
+      <el-row>
+        <div class="grid-content bg-purple">
+          <el-card class="box-card">
+            <img v-for="(plate_img,index) in plate_imgs" :key="index"
+              style="width: 100px; height: 60px"
+              :src="plate_img">
+            <br>
+          </el-card>
+        </div>
+      </el-row>      
   </el-col>
   <el-col :span="6">
     <el-row>
@@ -139,12 +135,14 @@ export default {
       // url: 'ws://221.231.13.230:8815/ws/chat/',
       url: 'ws://172.16.3.115:9988/ws/chat/',
       imgs: [], //存放固定数目的照片
+      plate_imgs: [],
       streamList: [],
       warning_info: [],
       defaultProps: {},
       ws_data: {
         text: '',
-        imgurl: ''
+        imgurl: '',
+        plate_url: ''
       },
       dataForm: {
         map_location: 'GETLOCATION'
@@ -191,26 +189,43 @@ export default {
     webSocketOnMessage (res) {
       // res就是后台实时传过来的数据
       console.log('this is for ----------')
-      console.log(this.ws_data.warning_info)
       let resData = JSON.parse(res.data)
-      console.log(resData.warning_info)
+      console.log(resData)
       this.ws_data.text = resData.num
       this.ws_data.imgurl = resData.imgurl
       this.ws_data.faceurl = resData.faceurl
-      if (Object.keys(resData.warning_info).length !== 0) {
-        this.ws_data.warning_info = resData.warning_info
-        if (this.warning_info.length >= 5) {
-          this.warning_info.shift() //删除数组第一个元素
-          this.warning_info.push(this.ws_data.warning_info) //向数组末尾添加一个元素
-        } else {
-          this.warning_info.push(this.ws_data.warning_info) //向数组末尾添加一个元素
+      this.ws_data.plate_url = resData.plate_url
+      console.log(this.ws_data.plate_url)
+      console.log('-----000000---')
+      if (resData.warning_info) {
+        if (Object.keys(resData.warning_info).length !== 0) {
+          this.ws_data.warning_info = resData.warning_info
+          if (this.warning_info.length >= 5) {
+            this.warning_info.shift() //删除数组第一个元素
+            this.warning_info.push(this.ws_data.warning_info) //向数组末尾添加一个元素
+          } else {
+            this.warning_info.push(this.ws_data.warning_info) //向数组末尾添加一个元素
+          }
         }
       }
-      if (this.imgs.length >= 8) {
-        this.imgs.shift() //删除数组第一个元素
-        this.imgs.push(this.ws_data.imgurl) //向数组末尾添加一个元素
-      } else {
-        this.imgs.push(this.ws_data.imgurl) //向数组末尾添加一个元素
+      console.log('-----1111111---')
+      if (this.ws_data.imgurl) {
+        if (this.imgs.length >= 8) {
+          this.imgs.shift() //删除数组第一个元素
+          this.imgs.push(this.ws_data.imgurl) //向数组末尾添加一个元素
+        } else {
+          this.imgs.push(this.ws_data.imgurl) //向数组末尾添加一个元素
+        }
+      }
+      console.log('-----222222---')
+      if (this.ws_data.plate_url) {
+        console.log('hhhhhhhas data!!!!!!!')
+        if (this.plate_imgs.length >= 8) {
+          this.plate_imgs.shift() //删除数组第一个元素
+          this.plate_imgs.push(this.ws_data.plate_url) //向数组末尾添加一个元素
+        } else {
+          this.plate_imgs.push(this.ws_data.plate_url) //向数组末尾添加一个元素
+        }
       }
     },
     // 关闭连接
@@ -272,6 +287,7 @@ export default {
         this.$axios.get(`/api/warningHistory?token=${cookieGet('token')}`, { params:{c_token: val.token }})
           .then(res => {
             this.imgs = []
+            this.plate_imgs = []
             this.warning_info = res.list
             console.log(this.warning_info)
           })
