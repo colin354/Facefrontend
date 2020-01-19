@@ -65,18 +65,18 @@ export default [
       { path: '/early-warning-type', title: '预警事件类型管理', icon: 'bell' }
     ]
   },
-  // {
-  //   title: '大数据分析',
-  //   icon: 'linode',
-  //   children: [
-  //     { path: '/people-analyse', title: '人口数据分析', icon: 'tint' },
-  //     { path: '/enterprise-analyse', title: '企业数据分析', icon: 'tint' },
-  //     { path: '/wea-analyse', title: '水电气数据分析', icon: 'tint' },
-  //     { path: '/express-analyse', title: '快递数据分析', icon: 'tint' },
-  //     { path: '/ss-analyse', title: '社保数据分析', icon: 'tint' },
-  //     { path: '/week-analyse', title: '周数据分析', icon: 'tint' }
-  //   ]
-  // },
+  {
+    title: '大数据分析',
+    icon: 'linode',
+    children: [
+      { path: '/people-analyse', title: '人口数据分析', icon: 'tint' },
+      { path: '/enterprise-analyse', title: '企业数据分析', icon: 'tint' },
+      { path: '/wea-analyse', title: '水电气数据分析', icon: 'tint' },
+      { path: '/express-analyse', title: '快递数据分析', icon: 'tint' },
+      { path: '/ss-analyse', title: '社保数据分析', icon: 'tint' },
+      { path: '/week-analyse', title: '周数据分析', icon: 'tint' }
+    ]
+  },
   demoFrame,
   {
     title: '系统管理',
