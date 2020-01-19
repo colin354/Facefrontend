@@ -35,9 +35,9 @@
                   <img v-else-if="weather_data_0.wea_img=='yujiaxue'" style="display:inline-block;width: 42px;height: 42px;" src="../../image/yahoo/yujiaxue.png" alt="">
                 <hr/>
               </div>
-              <div id="columnarChart_t" style="width:400%; height:260%;"></div>
+              <div id="columnarChart_t" style="width:100%; height:260%;"></div>
               <hr/>
-              <div id="barChart_t" style="width:400%; height:260%;"></div>         
+              <div id="barChart_t" style="width:100%; height:260%;"></div>         
               <!-- <div id="habbitChart_t" style="width:350%; height:260%;"></div> -->
             </div>
           </el-col>
