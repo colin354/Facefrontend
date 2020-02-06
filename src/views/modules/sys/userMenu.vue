@@ -1,87 +1,202 @@
 <template>
-  <d2-container class="mod-sys__user">
-    <el-form :inline="true" size="mini" :model="dataForm" @keyup.enter.native="getDataList()">
-      <el-form-item>
-        <el-input v-model="dataForm.username" :placeholder="$t('user.username')" clearable/>
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="getDataList()">{{ $t('query') }}</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
-      </el-form-item>
-    </el-form>
-    <el-table
-      size="mini"
-      v-loading="dataListLoading"
-      :data="dataList"
-      border
-      @selection-change="dataListSelectionChangeHandle"
-      @sort-change="dataListSortChangeHandle"
-      style="width: 100%;">
-      <el-table-column type="selection" header-align="center" align="center" width="50"/>
-      <el-table-column prop="username" :label="$t('user.username')" sortable="custom" header-align="center" align="center"/>
-      <el-table-column prop="deptName" :label="$t('user.deptName')" header-align="center" align="center"/>
-      <el-table-column prop="email" :label="$t('user.email')" header-align="center" align="center"/>
-      <el-table-column prop="mobile" :label="$t('user.mobile')" sortable="custom" header-align="center" align="center"/>
-      <el-table-column prop="status" :label="$t('user.status')" sortable="custom" header-align="center" align="center">
-        <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 0" size="mini" type="danger">{{ $t('user.status0') }}</el-tag>
-          <el-tag v-else size="mini" type="success">{{ $t('user.status1') }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="createDate" :label="$t('user.createDate')" sortable="custom" header-align="center" align="center" width="180"/>
-      <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
-        <template slot-scope="scope">
-          <el-button type="text" size="mini" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
-          <el-button type="text" size="mini" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- 弹窗, 新增 / 修改 -->
-    <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
-    <!-- 分页 -->
-    <el-pagination
-      slot="footer"
-      :current-page="page"
-      :page-sizes="[10, 20, 50, 100]"
-      :page-size="limit"
-      :total="total"
-      layout="total, sizes, prev, pager, next, jumper"
-      @size-change="pageSizeChangeHandle"
-      @current-change="pageCurrentChangeHandle">
-    </el-pagination>
-  </d2-container>
+  <div class="amap-page-container">
+    <el-amap
+      :plugin="plugin"
+      :amap-manager="amapManager"
+      :zoom="zoom"
+      :center="center"
+      vid="amapDemo"
+      ref="reds"
+      style="width:100vw;height:80vh"
+      :events="events"
+    ></el-amap>
+  </div>
 </template>
 
 <script>
-import mixinViewModule from '@/mixins/view-module'
-import AddOrUpdate from './user-add-or-update'
+import { AMapManager } from "vue-amap";
+let amapManager = new AMapManager();
+var map = amapManager.getMap();
 export default {
-  mixins: [ mixinViewModule ],
-  name: "userMenu",
-  data () {
+  data() {
+    let _obj = this;
     return {
-      mixinViewModuleOptions: {
-        getDataListURL: '/sys/user/page',
-        getDataListIsPage: true,
-        deleteURL: '/sys/user',
-        deleteIsBatch: true,
-        exportURL: '/sys/user/export'
-      },
-      dataForm: {
-        username: ''
+      amapManager,
+      center: [120.093585,33.313408],//盐城
+      // center:[116.303843, 39.983412],//北京
+      plugin: [
+        {
+          pName: "Scale",
+          events: {
+            init(instance) {
+              console.log(instance);
+            }
+          }
+        }
+      ],
+      zoom: 18,
+      events: {
+        init(o) {
+          _obj.createMap();
+        }
       }
-    }
+    };
   },
-  components: {
-    AddOrUpdate
+  created() {
+    // 配置
+  },
+  mounted() {},
+  methods: {
+    createMap() {　　　　
+      let o = amapManager.getMap();
+      var icon = new AMap.Icon({
+        // 图标尺寸
+        size: new AMap.Size(32, 46),
+        // 图标的取图地址
+        image:
+          "./image/backup.png",
+        // 图标所用图片大小
+        imageSize: new AMap.Size(32, 46)
+      });
+      // var labelContent = "<span>1</span>";
+      // var labelOffset = new AMap.Pixel(8, 7);
+      // var marker = new AMap.Marker({
+      //   icon: icon,
+      //   position: [116.303843, 39.983412],
+      //   offset: new AMap.Pixel(-10, -46),
+      //   title: 1,
+      //   text: 1,
+      //   label: {
+      //     content: labelContent,
+      //     offset: labelOffset
+      //   }
+      // });
+      // marker.setMap(o);
+      // var labelContent = "<span>2</span>";
+      // var labelOffset = new AMap.Pixel(8, 7);
+      // var marker2 = new AMap.Marker({
+      //   icon: icon,
+      //   anchor: "center", //设置锚点
+      //   position: [116.321354, 39.896436],
+      //   offset: new AMap.Pixel(-10, -28),
+      //   title: 2,
+      //   clickable: true,
+      //   bubble: true,
+      //   label: {
+      //     content: labelContent,
+      //     offset: labelOffset
+      //   }
+      // });
+      // marker2.setMap(o);
+
+
+      // 步行路线
+      AMap.service('AMap.Walking',function(){
+        //步行导航
+        var walking = new AMap.Walking({
+          map: o,
+          // panel: "panel"
+          hidMarkers:true,
+          isOutline: true,
+          // outlineColor: "red",
+        });
+         var path = [];
+         path.push({ lnglat: [120.093429,33.312951] }); //盐城起点
+        //  path.push({ lnglat: [120.094148,33.313323] }); //盐城途径
+         path.push({ lnglat: [120.095505,33.312745] }); //盐城终点
+         // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
+        // walking.search(path, function(status, result) {
+         walking.search([120.094153,33.313319],[120.095028,33.313592], function(status, result) {
+            if (status === 'complete') {
+                log.success('绘制步行路线完成')
+            } else {
+                log.error('步行路线数据查询失败' + result)
+            } 
+        });
+        //  walking.search([120.094148,33.313323],[120.095505,33.312745], function(status, result) {
+        //     if (status === 'complete') {
+        //         log.success('绘制步行路线完成')
+        //     } else {
+        //         log.error('步行路线数据查询失败' + result)
+        //     } 
+        // });
+      });
+      AMap.service('AMap.Walking',function(){
+        //步行导航
+        var walking = new AMap.Walking({
+          map: o,
+          // panel: "panel"
+          hidMarkers:true,
+          isOutline: true,
+          // outlineColor: "red",
+        });
+         var path = [];
+         path.push({ lnglat: [120.093429,33.312951] }); //盐城起点
+        //  path.push({ lnglat: [120.094148,33.313323] }); //盐城途径
+         path.push({ lnglat: [120.095505,33.312745] }); //盐城终点
+         // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
+        // walking.search(path, function(status, result) { 
+         walking.search([120.094121,33.312391],[120.096294,33.312897], function(status, result) {
+            if (status === 'complete') {
+                log.success('绘制步行路线完成')
+            } else {
+                log.error('步行路线数据查询失败' + result)
+            } 
+        });
+      });
+      // AMap.service('AMap.TruckDriving',function(){
+      //   var truckDriving = new AMap.TruckDriving({
+      //     map: o,
+      //     policy: 0, // 规划策略
+      //     size: 1, // 车型大小
+      //     width: 2.5, // 宽度
+      //     height: 2, // 高度
+      //     load: 1, // 载重
+      //     weight: 12, // 自重
+      //     axlesNum: 2, // 轴数
+      //     province: "京", // 车辆牌照省份
+      //     isOutline: true,
+      //     outlineColor: "#ffeeee",
+      //     outlineColor: "red",
+      //     hideMarkers: true
+      //   });
+      //   var path = [];
+      //   path.push({ lnglat: [120.093429,33.312951] }); //盐城起点
+      //   path.push({ lnglat: [120.0941,33.312404] }); //盐城途径
+      //   path.push({ lnglat: [120.095505,33.312745] }); //盐城终点
+      //   // path.push({ lnglat: [116.303843, 39.983412] }); //起点
+      //   // path.push({ lnglat: [116.321354, 39.896436] }); //途径
+      //   // path.push({ lnglat: [116.407012, 39.992093] }); //终点
+
+      //   truckDriving.search(path, function(status, result) {
+      //     if (status === "complete") {
+      //       console.log("获取货车规划数据成功");
+      //     } else {
+      //       console.log("获取货车规划数据失败：" + result);
+      //     }
+      //     // searchResult即是对应的驾车导航信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_DrivingResult
+      //   });
+      // });
+      
+      // AMap.event.addListener(marker, "click", function(e) {
+      //   debugger;
+      //   //得到的数据
+      // });
+      // AMap.event.addListener(marker2, "click", function(e) {
+      //   debugger;
+      //   //得到的数据
+      // });
+    }
   }
-}
+};
 </script>
+<style>
+.amap-marker-label {
+  border: 0px;
+  background: rgba(255, 255, 255, 0);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 550;
+  text-align: center;
+}
+</style>

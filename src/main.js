@@ -8,7 +8,8 @@ import d2Admin from '@/plugin/d2admin'
 import store from '@/store/index'
 // 多国语
 import i18n from '@/i18n'
-
+// import Blob from './excel/Blob'
+// import Export2Excel from './excel/export2Excel'
 // import 'jquery'
 // import 'jquery-ui'
 /* import ampleadmin */
@@ -64,7 +65,17 @@ Vue.use(Vuetify)
 
 VueAMap.initAMapApiLoader({
   key: 'e8d88ad5fce9142a64cf942e06a961bd',
-  plugin: ['AMap.MarkerClusterer', 'AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+  plugin: ['AMap.MarkerClusterer', 
+  'AMap.Autocomplete', 
+  'AMap.PlaceSearch', 
+  'AMap.Scale', 
+  'AMap.OverView', 
+  'AMap.ToolBar', 
+  'AMap.MapType',
+  'AMap.PolyEditor',
+  'AMap.CircleEditor',
+  'AMap.TruckDriving',
+  'AMap.Walking'],
   uiVersion: '1.0', // ui库版本，不配置不加载,
   v: '1.4.4' // 默认高德 sdk 版本为 1.4.4
 })
