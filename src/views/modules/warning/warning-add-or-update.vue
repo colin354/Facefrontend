@@ -34,17 +34,17 @@
 
       <el-form-item prop="warning_car_max" :label="$t('warning.car_max')">
         <el-input v-model="dataForm.warning_car_max" :placeholder="$t('warning.car_max')"/>        
-      </el-form-item>      
+      </el-form-item>
 
       <el-form-item prop="warning_target_people" :label="$t('warning.target_people')">
-        <target-people v-if="!dataForm.id" :person_id="target_people" @checked-person="checkedPerson" />
+        <target-people v-if="!dataForm.id" :disabled="people_disabled" :person_id="target_people" @checked-person="checkedPerson" />
         <target-people v-else-if="dataForm.id" :long="com_person" :person_id="target_people" @checked-person="checkedPerson"/>
       </el-form-item>
 
       <el-form-item prop="warning_target_car" :label="$t('warning.target_car')">
-        <target-car @checked-car="checkedCar"/>        
-      </el-form-item>   
-      
+        <target-car @checked-car="checkedCar"/>
+      </el-form-item>
+
       <el-form-item prop="warning_target_camera" label="摄像头节点">
         <target-camera v-if="!dataForm.id" :camera_id="target_camera" @checked-camera="checkedCamera"/>
         <target-camera v-else-if="dataForm.id" :long="com_camera" :camera_id="target_camera" @checked-camera="checkedCamera"/>
@@ -59,10 +59,10 @@
 </template>
 
 <script>
-import { debounce } from "lodash";
-import { cookieGet } from "@/common/cookie";
-import { getUUID } from "@/common/renren";
-import { isEmail, isMobile, isUsername} from "@/common/validate";
+import { debounce } from 'lodash'
+import { cookieGet } from '@/common/cookie'
+import { getUUID } from '@/common/renren'
+import { isEmail, isMobile, isUsername} from '@/common/validate'
 import TargetPeople from './components/target_people'
 import TargetCar from './components/target_car'
 import TargetCamera from './components/target_camera'
@@ -79,39 +79,48 @@ export default {
       cameraList: [],
       src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
       dataForm: {
-        id: "",
+        id: '',
         warning_level: 0,
-        warning_type_id: "",
-        warning_people_max:0,
-        warning_car_max:0,
-        warning_target_people:'',
-        warning_target_car:[],
-        warning_target_camera:''
+        warning_type_id: '',
+        warning_people_max: 0,
+        warning_car_max: 0,
+        warning_target_people: '',
+        warning_target_car: [],
+        warning_target_camera: ''
       },
-      com_person:false,
-      com_car:false,
-      com_camera:false,
-      warningType:[],
-      target_people:[],
-      target_camera:[]
-    };
+      people_disabled: false,
+      com_person: false,
+      com_car: false,
+      com_camera: false,
+      warningType: [],
+      target_people: [],
+      target_camera: []
+    }
   },
   computed: {
-    dataRule() {
+    dataRule () {
+      var validatePeopleMax = (rule, value, callback) => {
+        if (value !== '') {
+          this.people_disabled = true
+        } else {
+          this.people_disabled = false
+        }
+        callback()
+      }
       return {
-        warningLevel: [
+        warning_people_max: [
           {
-            required: true,
-            message: this.$t("validate.required"),
-            trigger: "blur"
+            validator: validatePeopleMax,
+            message: this.$t('validate.required'),
+            trigger: 'blur'
           }
-        ]    
+        ]
       }
     }
   },
   methods: {
     init() {
-      this.visible = true;
+      this.visible = true
       this.$nextTick(() => {
         this.$refs["dataForm"].resetFields()
         this.$refs["warningType"]=[]
@@ -126,16 +135,16 @@ export default {
       })
     },
     imgurl(img_uuid) {
-      this.dataForm.imgurl = img_uuid;
+      this.dataForm.imgurl = img_uuid
     },
     // 获取当前流信息列表
     getCameraList() {
       return this.$axios
         .get(`/sys/cameras?token=${cookieGet("token")}`)
         .then(res => {
-          this.cameraList = res;
+          this.cameraList = res
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     checkedPerson(person_id) {
       console.log('3333333333333')
@@ -157,9 +166,9 @@ export default {
       this.$axios
         .get(`/api/warningType?token=${cookieGet("token")}`)
         .then(res => {
-          this.warningType = res.list;
+          this.warningType = res.list
         })
-        .catch(() => {});      
+        .catch(() => {})      
     },    
     // 获取信息
     getInfo() {
@@ -172,7 +181,7 @@ export default {
           this.dataForm = {
             ...this.dataForm,
             ...res
-          };
+          }
           this.com_person = res.warning_target_people == null ? false : true
           this.com_camera = res.warning_target_camera == null ? false : true
           var target_people_int = []
@@ -188,7 +197,7 @@ export default {
         })
         .catch(() => {
           console.log('error!!!!!!')
-        });
+        })
     },
     handleClose(){
       console.log('ooooooclose')
@@ -200,7 +209,7 @@ export default {
       function() {
         this.$refs["dataForm"].validate(valid => {
           if (!valid) {
-            return false;
+            return false
           }
           this.$axios[!this.dataForm.id ? "post" : "put"](`/api/warningEvent?token=${cookieGet("token")}`,
             {
@@ -213,19 +222,19 @@ export default {
                 type: "success",
                 duration: 500,
                 onClose: () => {
-                  this.visible = false;
-                  this.$emit("refreshDataList");
+                  this.visible = false
+                  this.$emit("refreshDataList")
                 }
-              });
+              })
             })
-            .catch(() => {});
-        });
+            .catch(() => {})
+        })
       },
       1000,
       { leading: true, trailing: false }
     )
   }
-};
+}
 </script>
 
 <style lang="scss">

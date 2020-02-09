@@ -2,6 +2,7 @@
   <div class="d2-demo-article">
     <div class="d2-demo-article__control">
       <el-switch
+        :disabled="disabled"
         v-model="isLong"
         @change="handleChange"
         active-text="设置目标行人"
@@ -31,6 +32,11 @@ export default {
       type: Array,
       required: false,
       default: []
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data () {
@@ -38,58 +44,59 @@ export default {
       isLong: false,
       imgArray: [],
       imgList: [],
-      faceIds: [],
+      faceIds: []
     }
   },
   created () {
     this.isLong = this.long
+    this.disabled = false
   },
   mounted () {
   },
-  watch:{
-    person_id :{
-      handler(newVal,oldVal) {
+  watch: {
+    person_id: {
+      handler (newVal, oldVal) {
         this.faceIds = newVal
       }
     },
-    long(val) {
+    long (val) {
       this.isLong = this.long
-      if(this.long){
+      if (this.long) {
         this.handleChange(true)
       }
     }
   },
   computed: {
     person_ids: {
-      get: function(){
+      get: function () {
         this.faceIds = this.person_id
         return this.faceIds
       },
-      set: function(val){
+      set: function (val) {
         this.faceIds = val
       }
     }
   },
   methods: {
-    handleSelect(val){
-      if(val){
+    handleSelect (val) {
+      if (val) {
         this.$emit('checked-person',val)
       }
     },
-    handleChange(val){
-      if(val){
-      this.$axios.get(`/api/face/image?token=${cookieGet('token')}`)
-        .then(res => {
-          this.imgList = res.imgList
-          // this.faceIds = []
-        })
-        .catch(() => {
-          console.log("error")
-        })
-      }else{
+    handleChange (val) {
+      if (val) {
+        this.$axios.get(`/api/face/image?token=${cookieGet('token')}`)
+          .then(res => {
+            this.imgList = res.imgList
+            // this.faceIds = []
+          })
+          .catch(() => {
+            console.log('error')
+          })
+      } else {
         this.$emit('checked-person',null)
       }
-    },    
+    }
   }
 }
 </script>

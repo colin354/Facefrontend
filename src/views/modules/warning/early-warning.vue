@@ -6,7 +6,7 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">{{ $t('query') }}</el-button>
-      </el-form-item>      
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
       </el-form-item>
@@ -65,17 +65,16 @@ import mixinViewModule from '@/mixins/view-module'
 import AddOrUpdate from './warning-add-or-update'
 import Deploy from './process-deploy'
 import { cookieGet } from '@/common/cookie'
-import qs from 'qs'
 export default {
   mixins: [ mixinViewModule ],
-  name: "early-warning",
+  name: 'early-warning',
   data () {
     return {
       mixinViewModuleOptions: {
         getDataListURL: `/api/warningEvent?token=${cookieGet('token')}`,
         getDataListIsPage: true,
         deleteURL: `/api/warningEvent?token=${cookieGet('token')}`,
-        deleteIsBatch: true,
+        deleteIsBatch: true
       },
       dataForm: {
         processName: '',
@@ -91,23 +90,23 @@ export default {
   methods: {
     // 获取流程(xml/image)url地址
     startHandle (id) {
-      this.$axios.post(`/api/warningCtrl?token=${cookieGet('token')}`,{params:{id:id,start:true}})
+      this.$axios.post(`/api/warningCtrl?token=${cookieGet('token')}`, {params:{id: id,start:true}})
         .then(res => {
           this.getDataList()
         })
         .catch(() => {
-          console.log("error")
+          console.log('error')
         })
-      },
+    },
     stopHandle (id) {
-      this.$axios.post(`/api/warningCtrl?token=${cookieGet('token')}`,{params:{id:id,start:false}})
+      this.$axios.post(`/api/warningCtrl?token=${cookieGet('token')}`, {params:{id:id,start:false}})
         .then(res => {
           this.getDataList()
         })
         .catch(() => {
-          console.log("error")
+          console.log('error')
         })
-      },      
+    },
     // 部署流程文件
     deployHandle () {
       this.deployVisible = true

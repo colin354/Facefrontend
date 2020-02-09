@@ -23,20 +23,6 @@ module.exports = {
     ]
   },
   publicPath, // 根据你的实际情况更改这里
-  // pages: {
-  //   index: {
-  //     entry: 'src/main.js',
-  //     template: 'public/index.html',
-  //     filename: 'index',
-  //     title: 'index'
-  //   },
-  //   dataV: {
-  //     entry: 'src/pages/dataV/main.js',
-  //     template: 'src/pages/dataV/dataV.html',
-  //     filename: 'dataV',
-  //     title: 'dataV'
-  //   }
-  // },
   assetsDir: 'static',
   lintOnSave: false,
   devServer: {
@@ -142,6 +128,7 @@ module.exports = {
       .set('@api', resolve('src/api'))
     // 判断环境加入模拟数据
     const entry = config.entry('app')
+    config.entry.app = ['babel-polyfill', './src/main.js']
     if (process.env.VUE_APP_BUILD_MODE !== 'nomock') {
       entry
         .add('@/mock')

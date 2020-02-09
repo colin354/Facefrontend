@@ -97,44 +97,44 @@ router.beforeEach(async(to, from, next) => {
   // 关闭搜索面板
   store.commit('d2admin/search/set', false)
   const token = util.cookies.get('token')
-    if (whiteList.indexOf(to.path) === -1) {//不在白名单中
-      // 这里暂时将cookie里是否存有token作为验证是否登录的条件
-      // 请根据自身业务需要修改
-      if (token && token !== 'undefined') { //即已经成功登录
-        //拉取权限信息
-        if (!isFetchPermissionInfo) { //现在是未拉取权限信息
-          console.log("---此时未拉取信息------")
-          console.log(to.path)
-          await fetchPermissionInfo();//拉取完信息后,对拉取的路由部分进行特殊格式处理
-          isFetchPermissionInfo = true;
-          next(to.path, true)
-        } else { //若成功拉取了权限信息,则直接进入下一步即可
-          console.log("若成功拉取了权限信息,则直接进入下一步即可")
-          console.log(next())
-          next()
-        }
-      } else { //当前未登录,则登录
-        // 将当前预计打开的页面完整地址临时存储 登录后继续跳转
-        // 这个 cookie(redirect) 会在登录后自动删除
-        util.cookies.set('redirect', to.fullPath)
-        // 没有登录的时候跳转到登录界面
-        next({
-          name: 'login'
-        })
+  if (whiteList.indexOf(to.path) === -1) {//不在白名单中
+    // 这里暂时将cookie里是否存有token作为验证是否登录的条件
+    // 请根据自身业务需要修改
+    if (token && token !== 'undefined') { //即已经成功登录
+      //拉取权限信息
+      if (!isFetchPermissionInfo) { //现在是未拉取权限信息
+        console.log("---此时未拉取信息------")
+        console.log(to.path)
+        await fetchPermissionInfo();//拉取完信息后,对拉取的路由部分进行特殊格式处理
+        isFetchPermissionInfo = true;
+        next(to.path, true)
+      } else { //若成功拉取了权限信息,则直接进入下一步即可
+        console.log("若成功拉取了权限信息,则直接进入下一步即可")
+        console.log(next())
+        next()
       }
-    } else {//在白名单中
-      if (to.name === 'login') {
-        // 如果已经登录，则直接进入系统
-        if (token && token !== undefined) {
-          next(from.path, true);
-          NProgress.done()
-        } else {
-          next()
-        }
+    } else { //当前未登录,则登录
+      // 将当前预计打开的页面完整地址临时存储 登录后继续跳转
+      // 这个 cookie(redirect) 会在登录后自动删除
+      util.cookies.set('redirect', to.fullPath)
+      // 没有登录的时候跳转到登录界面
+      next({
+        name: 'login'
+      })
+    }
+  } else {//在白名单中
+    if (to.name === 'login') {
+      // 如果已经登录，则直接进入系统
+      if (token && token !== undefined) {
+        next(from.path, true);
+        NProgress.done()
       } else {
         next()
       }
+    } else {
+      next()
     }
+  }
 // router.beforeEach((to, from, next) => {
 //   // 进度条
 //   NProgress.start()
