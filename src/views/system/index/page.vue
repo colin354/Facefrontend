@@ -1,7 +1,47 @@
 <template>
     <d2-container>
       <el-row :gutter="18">
-        <el-col :span="18">
+        <el-col :span="5">
+          <el-row :gutter="18">
+            <div class="grid-content bg-purple">
+              <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                  <span>单位信息</span>
+                  <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
+                </div>
+                <el-row>
+                </el-row>
+              </el-card>
+            </div>
+          </el-row>
+          <el-row :gutter="18">
+            <div class="grid-content bg-purple">
+              <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                  <span>人口信息</span>
+                  <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
+                </div>
+                <el-row>
+                  <div id="columnarChart_t"></div>
+                </el-row>
+              </el-card>
+            </div>
+          </el-row>
+          <el-row :gutter="18">
+            <div class="grid-content bg-purple">
+              <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                  <span>监控信息</span>
+                  <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
+                </div>
+                <el-row>
+                </el-row>
+              </el-card>
+            </div>
+          </el-row>
+        </el-col>
+
+        <el-col :span="14">
           <el-row :gutter="18">
             <el-col>
               <div class="grid-content bg-purple">
@@ -13,8 +53,44 @@
           </el-row>
         </el-col>
 
-      <el-col :span="6">
-        <el-row :gutter="15">
+      <el-col :span="5">
+          <el-row :gutter="18">
+            <div class="grid-content bg-purple">
+              <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                  <span>警情信息</span>
+                  <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
+                </div>
+                <el-row>
+                </el-row>
+              </el-card>
+            </div>
+          </el-row>
+          <el-row :gutter="18">
+            <div class="grid-content bg-purple">
+              <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                  <span>警力信息</span>
+                  <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
+                </div>
+                <el-row>
+                </el-row>
+              </el-card>
+            </div>
+          </el-row>
+          <el-row :gutter="18">
+            <div class="grid-content bg-purple">
+              <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                  <span>综合分析</span>
+                  <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
+                </div>
+                <el-row>
+                </el-row>
+              </el-card>
+            </div>
+          </el-row>
+        <!-- <el-row :gutter="15">
           <el-col>
             <div style="width:100%; height:100%;">
               <div>
@@ -40,8 +116,8 @@
               <div id="habbitChart_t" style="width:100%; height:260%;"></div>
             </div>
           </el-col>
-        </el-row>
-      </el-col> 
+        </el-row> -->
+      </el-col>
     </el-row>
   </d2-container>
 </template>
@@ -75,20 +151,18 @@ export default {
       }
     }
   },
-  beforeCreate(){
-    console.log('beforecccccreate')
-    console.log(this)
+  beforeCreate () {
   },
-  beforeMount(){
+  beforeMount () {
     console.log('bbbbbbefor')
     console.log(this)
     // this.getWeather();
   },
-  created(){
+  created () {
     console.log('cccreated')
     console.log(this.weather_data)
   },
-  mounted(){
+  mounted () {
     this.initMap();
     this.barChart();
     this.columnarChart();
@@ -97,7 +171,7 @@ export default {
     console.log(this.weather_data)
 
   },
-  methods:{
+  methods: {
     initMap () {
       var map = new AMap.Map('container',{
         zoom: 13,
@@ -366,4 +440,30 @@ export default {
     height: 100%;
     width: 100%;
   }
+  .el-row {
+    margin-bottom: 20px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }
+  .bg-purple {
+    background: #d3dce6;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+  }
+  .row-bg {
+    padding: 10px 0;
+    background-color: #f9fafc;
+  }  
 </style>

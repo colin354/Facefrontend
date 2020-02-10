@@ -43,7 +43,7 @@
             <br>
           </el-card>
         </div>
-      </el-row>      
+      </el-row>
   </el-col>
   <el-col :span="6">
     <el-row>
@@ -449,7 +449,6 @@ export default {
   .el-carousel__item:nth-child(2n) {
     background-color: #99a9bf;
   }
-  
   .el-carousel__item:nth-child(2n+1) {
     background-color: #d3dce6;
   }
