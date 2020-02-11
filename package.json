@@ -17,6 +17,7 @@
     "clipboard-polyfill": "^2.8.6",
     "core-js": "^2.6.11",
     "dayjs": "^1.8.17",
+    "dom-to-image": "^2.6.0",
     "echarts": "^4.5.0",
     "element-ui": "^2.13.0",
     "file-saver": "^2.0.2",
@@ -57,7 +58,7 @@
     "vue-video-player": "^5.0.2",
     "vuetify": "^1.5.21",
     "vuex": "^3.1.2",
-    "xlsx": "^0.15.2"
+    "xlsx": "^0.15.4"
   },
   "devDependencies": {
     "@kazupon/vue-i18n-loader": "^0.3.0",

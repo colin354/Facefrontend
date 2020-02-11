@@ -5,6 +5,7 @@ let componentMaps = {
     "layoutHeaderAside": layoutHeaderAside,
 
     //注意。。。注意。。。后端返回的component与下面的key值必须对应 
+    //如"face-list",""里面的,对应的是界面上地址栏里的信息
 
     "enterprise-analyse": () => import(/* webpackChunkName: "enterprise-analyse" */'@/views/modules/dataanalyse/enterprise-analyse'),
     "express-analyse": () => import(/* webpackChunkName: "express-analyse" */'@/views/modules/dataanalyse/express-analyse'),

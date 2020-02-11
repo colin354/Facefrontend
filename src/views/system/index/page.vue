@@ -1,7 +1,7 @@
 <template>
     <d2-container>
       <el-row :gutter="18">
-        <el-col :span="5">
+        <el-col :span="6">
           <el-row :gutter="18">
             <div class="grid-content bg-purple">
               <el-card class="box-card">
@@ -10,6 +10,9 @@
                   <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
                 </div>
                 <el-row>
+                  <div class="inner">
+                    <ve-line :data="line_chartData" v-bind="pubSetting"></ve-line>
+                  </div>
                 </el-row>
               </el-card>
             </div>
@@ -22,7 +25,9 @@
                   <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
                 </div>
                 <el-row>
-                  <div id="columnarChart_t"></div>
+                  <div class="inner">
+                    <ve-bar :data="chartData" v-bind="pubSetting"></ve-bar>
+                  </div>
                 </el-row>
               </el-card>
             </div>
@@ -35,25 +40,28 @@
                   <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
                 </div>
                 <el-row>
+                  <div class="inner">
+                    <ve-radar :data="pie_chartData" v-bind="pieSetting"></ve-radar>
+                  </div>
                 </el-row>
               </el-card>
             </div>
           </el-row>
         </el-col>
 
-        <el-col :span="14">
+        <el-col :span="12">
           <el-row :gutter="18">
             <el-col>
               <div class="grid-content bg-purple">
                 <el-card class="box-card-hei">
-                    <div id="container" style="height:700px;"></div>
+                  <div id="container" style="height:700px;"></div>
                 </el-card>
               </div>
             </el-col>
           </el-row>
         </el-col>
 
-      <el-col :span="5">
+      <el-col :span="6">
           <el-row :gutter="18">
             <div class="grid-content bg-purple">
               <el-card class="box-card">
@@ -124,18 +132,54 @@
 
 <script>
 import D2PageCover from './components/d2-page-cover'
-
+import list from '@/views/charts/list/_mixin/list.js'
 export default {
   name:'bottom',
   components:{
     D2PageCover,
   },
+  mixins: [
+    list
+  ],
   data () {
     return {
-      myChart:null,
-      myColumnarChart:null,
-      myHabbitChart:null,
-      weather_data:{city:''},
+      pie_chartData: {
+        columns: ['日期', '访问用户', '下单用户', '下单率'],
+        rows: [
+          { '日期': '1/1', '访问用户': 1393, '下单用户': 1093, '下单率': 0.32 },
+          { '日期': '1/2', '访问用户': 3530, '下单用户': 3230, '下单率': 0.26 },
+          { '日期': '1/3', '访问用户': 2923, '下单用户': 2623, '下单率': 0.76 },
+          { '日期': '1/4', '访问用户': 1723, '下单用户': 1423, '下单率': 0.49 },
+          { '日期': '1/5', '访问用户': 3792, '下单用户': 3492, '下单率': 0.323 },
+          { '日期': '1/6', '访问用户': 4593, '下单用户': 4293, '下单率': 0.78 }
+        ]
+      },
+      line_chartData: {
+        columns: ['日期', '访问用户', '下单用户', '下单率'],
+        rows: [
+          { '日期': '1/1', '访问用户': 1393, '下单用户': 1093, '下单率': 0.32 },
+          { '日期': '1/2', '访问用户': 3530, '下单用户': 3230, '下单率': 0.26 },
+          { '日期': '1/3', '访问用户': 2923, '下单用户': 2623, '下单率': 0.76 },
+          { '日期': '1/4', '访问用户': 1723, '下单用户': 1423, '下单率': 0.49 },
+          { '日期': '1/5', '访问用户': 3792, '下单用户': 3492, '下单率': 0.323 },
+          { '日期': '1/6', '访问用户': 4593, '下单用户': 4293, '下单率': 0.78 }
+        ]
+      },
+      chartData: {
+        columns: ['日期', '访问用户', '下单用户', '下单率'],
+        rows: [
+          { '日期': '1/1', '访问用户': 1393, '下单用户': 1093, '下单率': 0.32 },
+          { '日期': '1/2', '访问用户': 3530, '下单用户': 3230, '下单率': 0.26 },
+          { '日期': '1/3', '访问用户': 2923, '下单用户': 2623, '下单率': 0.76 },
+          { '日期': '1/4', '访问用户': 1723, '下单用户': 1423, '下单率': 0.49 },
+          { '日期': '1/5', '访问用户': 3792, '下单用户': 3492, '下单率': 0.323 },
+          { '日期': '1/6', '访问用户': 4593, '下单用户': 4293, '下单率': 0.78 }
+        ]
+      },
+      myChart: null,
+      myColumnarChart: null,
+      myHabbitChart: null,
+      weather_data: { city: '' },
       weather_data_0:{
         air:'',
         air_level:'',
@@ -148,7 +192,8 @@ export default {
         win_speed:'',
         date:'',
         week:''
-      }
+      },
+      polygon: ['polygon0','polygon1','polygon2','polygon3','polygon4','polygon5']
     }
   },
   beforeCreate () {
@@ -175,6 +220,7 @@ export default {
     initMap () {
       var map = new AMap.Map('container',{
         zoom: 13,
+        resizeEnable: true,
         // center: [120.076145,33.333651],
         // center:[120.077784,33.325384],
         center:[120.076904,33.32407],
@@ -262,8 +308,10 @@ export default {
       console.log("---map----map----map");
       var path =[path0,path1,path2,path3,path4,path5]
       var color=["#4169E1",'#836FFF','#F7C885','#F8A1A1','#D1EEEE', '#5D478B']
+      // var polygon0,polygon1,polygon2,polygon3,polygon4,polygon5
+      // var polygon =[polygon0,polygon1,polygon2,polygon3,polygon4,polygon5]
       for(var i=0; i < 6 ;i++){
-        var polygon1 = new AMap.Polygon({
+            this.polygon[i] = new AMap.Polygon({
             map:map,
             path:path[i],
             strokeColor: color[i], //线条颜色
@@ -271,8 +319,47 @@ export default {
             strokeOpacity: 0.2,    //轮廓线透明度
             fillColor: color[i],   //多边形填充颜色
             fillOpacity: 0.9,      //多边形填充透明度
+            bubble:true
         })
-      }  
+      }
+      map.setFitView();
+      this.polygon[0].on('click',function(e){
+        var info = [];
+        info.push("<div><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
+        info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>高德软件</b>");
+        info.push("电话 : 010-84107000   邮编 : 100102");
+        info.push("地址 :北京市朝阳区望京阜荣街10号首开广场4层</div></div>");
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.100242,33.365627]);
+      })
+      this.polygon[1].on('click',function(e){
+        var info = [];
+        info.push("<div><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
+        info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>高德软件</b>");
+        info.push("电话 : 010-84107000   邮编 : 100102");
+        info.push("地址 :北京市朝阳区望京阜荣街10号首开广场4层</div></div>");
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, map.getCenter());
+      })      
+      this.polygon[0].on('mouseover', function(e){
+
+      });      
+    },
+    clickOn () {
+
+      // this.polygon.polygon0.on('click',showInfoP)
+      // polygon1.on('click',showInfoP)      
+    },
+    clickOff () {
+      polygon0.off('click',showInfoP)
+      polygon1.off('click',showInfoP) 
+    },
+    showInfoP () {
+      console.log('hhhhhhhh click this')
     },
     resizeHandle(){
       this.myChart.resize();
@@ -435,7 +522,10 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.inner {
+  height: 190px;
+}
   .amap-demo {
     height: 100%;
     width: 100%;
