@@ -54,7 +54,7 @@
             <el-col>
               <div class="grid-content bg-purple">
                 <el-card class="box-card-hei">
-                  <div id="container" style="height:700px;"></div>
+                  <div id="container" style="height:870px;"></div>
                 </el-card>
               </div>
             </el-col>
@@ -209,9 +209,6 @@ export default {
   },
   mounted () {
     this.initMap();
-    this.barChart();
-    this.columnarChart();
-    this.habbitChart();
     this.getWeather();
     console.log(this.weather_data)
 
@@ -221,8 +218,6 @@ export default {
       var map = new AMap.Map('container',{
         zoom: 13,
         resizeEnable: true,
-        // center: [120.076145,33.333651],
-        // center:[120.077784,33.325384],
         center:[120.076904,33.32407],
       });    
       var path0=[[120.100242,33.365627], [120.101427,33.364077], [120.098461,33.359363],[120.097109,33.356467],
@@ -323,40 +318,150 @@ export default {
         })
       }
       map.setFitView();
-      this.polygon[0].on('click',function(e){
+      //鼠标进入警务区polygon[0]后显示窗体
+      this.polygon[0].on('mouseover',function(e){
+        console.log("入入入入入！")
         var info = [];
         info.push("<div><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
         info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>高德软件</b>");
         info.push("电话 : 010-84107000   邮编 : 100102");
-        info.push("地址 :北京市朝阳区望京阜荣街10号首开广场4层</div></div>");
+        info.push("地址 :polygon[0]</div></div>");
         var infoWindow = new AMap.InfoWindow({
             content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
         })
-        infoWindow.open(map, [120.100242,33.365627]);
-      })
-      this.polygon[1].on('click',function(e){
+        infoWindow.open(map, [120.076525,33.351924]);
+      });
+      //鼠标移出警务区polygon[0]后关闭窗体
+      this.polygon[0].on('mouseout',function(e){
+        console.log("出出")
+        var info = [];
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.076525,33.351924]);
+      });
+      //鼠标进入警务区polygon[1]后显示窗体
+      this.polygon[1].on('mouseover',function(e){
+        console.log("入入入入入！")
         var info = [];
         info.push("<div><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
         info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>高德软件</b>");
         info.push("电话 : 010-84107000   邮编 : 100102");
-        info.push("地址 :北京市朝阳区望京阜荣街10号首开广场4层</div></div>");
+        info.push("地址 :polygon[1]</div></div>");
         var infoWindow = new AMap.InfoWindow({
             content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
         })
-        infoWindow.open(map, map.getCenter());
-      })      
-      this.polygon[0].on('mouseover', function(e){
-
-      });      
+        infoWindow.open(map, [120.09319,33.322264]);
+      });
+      //鼠标移出警务区polygon[1]后关闭窗体
+      this.polygon[1].on('mouseout',function(e){
+        console.log("出出")
+        var info = [];
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.09319,33.322264]);
+      });
+      //鼠标进入警务区polygon[2]后显示窗体
+      this.polygon[2].on('mouseover',function(e){
+        console.log("入入入入入！")
+        var info = [];
+        info.push("<div><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
+        info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>高德软件</b>");
+        info.push("电话 : 010-84107000   邮编 : 100102");
+        info.push("地址 :polygon[2]</div></div>");
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.094098,33.297648]);
+      });
+      //鼠标移出警务区polygon[2]后关闭窗体
+      this.polygon[2].on('mouseout',function(e){
+        console.log("出出")
+        var info = [];
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.094098,33.297648]);
+      });
+      //鼠标进入警务区polygon[3]后显示窗体
+      this.polygon[3].on('mouseover',function(e){
+        console.log("入入入入入！")
+        var info = [];
+        info.push("<div><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
+        info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>高德软件</b>");
+        info.push("电话 : 010-84107000   邮编 : 100102");
+        info.push("地址 :polygon[3]</div></div>");
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.058032,33.296882]);
+      });
+      //鼠标移出警务区polygon[3]后关闭窗体
+      this.polygon[3].on('mouseout',function(e){
+        console.log("出出")
+        var info = [];
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.058032,33.296882]);
+      });
+      //鼠标进入警务区polygon[4]后显示窗体
+      this.polygon[4].on('mouseover',function(e){
+        console.log("入入入入入！")
+        var info = [];
+        info.push("<div><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
+        info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>高德软件</b>");
+        info.push("电话 : 010-84107000   邮编 : 100102");
+        info.push("地址 :polygon[4]</div></div>");
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.059861,33.321828]);
+      });
+      //鼠标移出警务区polygon[4]后关闭窗体
+      this.polygon[4].on('mouseout',function(e){
+        console.log("出出")
+        var info = [];
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.059861,33.321828]);
+      });
+      //鼠标进入警务区polygon[5]后显示窗体
+      this.polygon[5].on('mouseover',function(e){
+        console.log("入入入入入！")
+        var info = [];
+        info.push("<div><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
+        info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>高德软件</b>");
+        info.push("电话 : 010-84107000   邮编 : 100102");
+        info.push("地址 :polygon[5]</div></div>");
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.043135,33.317087]);
+      });
+      //鼠标移出警务区polygon[5]后关闭窗体
+      this.polygon[5].on('mouseout',function(e){
+        console.log("出出")
+        var info = [];
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.043135,33.317087]);
+      });
+                    
     },
+    
     clickOn () {
-
+      this.polygon[0].on('mouserover',showInfoOver)
+      this.polygon[0].on('mouseout',showInfoOut)
       // this.polygon.polygon0.on('click',showInfoP)
       // polygon1.on('click',showInfoP)      
     },
     clickOff () {
-      polygon0.off('click',showInfoP)
-      polygon1.off('click',showInfoP) 
+      polygon0.off('click',this.showInfoP)
+      polygon1.off('click',this.showInfoP) 
     },
     showInfoP () {
       console.log('hhhhhhhh click this')
@@ -378,154 +483,14 @@ export default {
           console.log("error")
         })
     },
-    barChart(){
-      this.myChart = this.$echarts.init(document.getElementById("barChart_t"))
-      this.myChart.setOption({
-          title: { text: "出租房屋" },
-          tooltip: {
-            trigger: 'item',
-            formatter: "{a}  <br/>  {b}:  {c} ({d}%)"
-          },
-          legend: {             
-              orient:'vertical', // orient:'horizontal', //'vertical'
-              x: '72%',
-              y: '36%',
-              data:['第一警务区','第二警务区','第三警务区','第四警务区','第五警务区','第六警务区']
-          },
-          series: [
-              {
-                name:'人群分类',
-                type:'pie',
-                radius: ['60%', '90%'],
-                center:['35%', '49%'], //调整饼图所在位置
-                avoidLabelOverlap: false,
-                label: {
-                    normal: {
-                        show: false,
-                        position: 'center'
-                    },
-                    emphasis: {
-                        show: true,
-                        textStyle: {
-                            fontSize: '30',
-                            fontWeight: 'bold'
-                        }
-                    }
-                },
-                labelLine: { normal: { show: false } },
-                data:[
-                    {value:506, name:'第一警务区',itemStyle:{color:'#87CEFF'}},
-                    {value:894, name:'第二警务区',itemStyle:{color:'#D1EEEE'}},
-                    {value:121, name:'第三警务区',itemStyle:{color:'#F7C885'}},
-                    {value:107, name:'第四警务区',itemStyle:{color:'#F8A1A1'}},
-                    {value:95, name:'第五警务区',itemStyle:{color:'#836FFF'}},
-                    {value:37, name:'第六警务区',itemStyle:{color:'#5D478B'}},]
-              }
-          ]
-        });
-      window.addEventListener("resize",this.resizeHandle)
-    },
-    columnarChart(){
-      this.myColumnarChart = this.$echarts.init(document.getElementById("columnarChart_t"));             
-      this.myColumnarChart.setOption({
-          title: { text: "企业分布" },
-          color: ['#87CEFF'],
-          tooltip : {
-              trigger: 'axis',
-              axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-                  type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-              }
-          },
-          grid: {
-              left: '3%',
-              right: '4%',
-              bottom: '3%',
-              containLabel: true
-          },
-          xAxis : [
-              {
-                  type : 'category',
-                  data : ['第一警务区','第二警务区','第三警务区','第四警务区','第五警务区','第六警务区'],
-                  axisTick: {
-                      alignWithLabel: true
-                  }
-              }
-          ],
-          yAxis : [
-              {
-                  type : 'value'
-              }
-          ],
-          series : [
-              {
-                  name:'直接访问',
-                  type:'bar',
-                  barWidth: '60%',
-                  data:[38, 71, 126, 17, 35, 43]
-              }
-          ]
-      });
-      window.addEventListener("resize",this.resizeHandle)
-    },
-    habbitChart(){
-        this.myHabbitChart = this.$echarts.init(document.getElementById("habbitChart_t"))
-        this.myHabbitChart.setOption({
-          title: { text: "常住人口" },
-          tooltip: {
-            trigger: 'item',
-            formatter: "{a}  <br/>  {b}:  {c} ({d}%)"
-          },
-          legend: {             
-              orient:'vertical', // orient:'horizontal', //'vertical'
-              x: '72%',
-              y: '36%',
-              data:['第一警务区','第二警务区','第三警务区','第四警务区','第五警务区','第六警务区']
-          },
-          series: [
-              {
-                name:'人群分类',
-                type:'pie',
-                radius: ['60%', '90%'],
-                center:['35%', '49%'], //调整饼图所在位置
-                avoidLabelOverlap: false,
-                label: {
-                    normal: {
-                        show: false,
-                        position: 'center'
-                    },
-                    emphasis: {
-                        show: true,
-                        textStyle: {
-                            fontSize: '30',
-                            fontWeight: 'bold'
-                        }
-                    }
-                },
-                labelLine: { normal: { show: false } },
-                data:[
-                    {value:10149, name:'第一警务区',itemStyle:{color:'#87CEFF'}},
-                    {value:2007, name:'第二警务区',itemStyle:{color:'#D1EEEE'}},
-                    {value:9683, name:'第三警务区',itemStyle:{color:'#F7C885'}},
-                    {value:4326, name:'第四警务区',itemStyle:{color:'#F8A1A1'}},
-                    {value:5833, name:'第五警务区',itemStyle:{color:'#836FFF'}},
-                    {value:3342, name:'第六警务区',itemStyle:{color:'#5D478B'}},]
-              }
-          ]
-        });
-      window.addEventListener("resize",this.resizeHandle)
-            
-    },
-    destroyed(){
-      window.removeEventListener("resize",this.resizeHandle)
-    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.inner {
-  height: 190px;
-}
+  .inner {
+    height: 190px;
+  }
   .amap-demo {
     height: 100%;
     width: 100%;
