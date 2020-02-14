@@ -209,7 +209,7 @@ export default {
   },
   mounted () {
     this.initMap();
-    this.getWeather();
+    // this.getWeather();
     console.log(this.weather_data)
 
   },

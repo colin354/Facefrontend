@@ -5,12 +5,22 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>视频列表</span>
-            <el-button style="float: right; padding: 3px 0" type="text">过滤</el-button>
+              <el-date-picker
+                v-model="value1"
+                @change="onChange"
+                type="date"
+                size="small"
+                value-format="yyyy-MM-dd"
+                placeholder="选择日期">
+              </el-date-picker>
           </div>
           <el-row>
               <el-input
                 placeholder="输入关键字进行过滤"
+                clearable
+                size="small"
                 v-model="filterText">
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
               </el-input>
               <el-tree
                 :data="streamList"
@@ -103,6 +113,7 @@ export default {
   },
   data () {
     return {
+      value1:'',
       filterText: '',
       BS: null,
       activeNames: ['1'],
@@ -153,9 +164,45 @@ export default {
     }
   },  
   methods: {
-    filterNode (value, data) {
+    onChange (val) {
+      console.log(val)
+      this.$axios.get(`/api/videoStruct/page?token=${cookieGet('token')}`,{params:{date:val}})
+        .then(res => {
+          this.streamList = res.streamList
+        })
+        .catch(() => {
+          console.log('error')
+        })
+    },    
+    filterNode (value, data, node) {
       if (!value) return true
-      return data.label.indexOf(value) !== -1
+      if (data.label.indexOf(value) !== -1) {
+        return true
+      }
+      // 否则要去判断它是不是选中节点的子节点
+      return this.checkBelongToChooseNode(value, data, node)
+    },
+    checkBelongToChooseNode (value, data, node) {
+      const level = node.level
+      // 如果传入的节点本身就是一级节点就不用校验了
+      if (level === 1) {
+        return false
+      }
+      // 先取当前节点的父节点
+      let parentData = node.parent
+      // 遍历当前节点的父节点
+      let index = 0
+      while (index < level - 1) {
+      // 如果匹配到直接返回
+        if (parentData.data.label.indexOf(value) !== -1) {
+          return true
+        }
+        // 否则的话再往上一层做匹配
+        parentData = parentData.parent
+        index++
+      }
+      // 没匹配到返回false
+      return false
     },
     scrollInit () {
       this.BS = new BScroll(this.$refs.wrapper, {
