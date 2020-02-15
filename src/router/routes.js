@@ -514,6 +514,14 @@ const screenDataPage = [
   }
 ]
 
+const screenIndex = [
+  {
+    path: '/screenIndex',
+    name: 'screenIndex',
+    component: _import('system/screenIndex')
+  }
+]
+
 // 导出需要显示菜单的
 export const frameInRoutes = frameIn
 
@@ -523,5 +531,6 @@ export default [
   ...frameOut,
   ...errorPage,
   ...screenPage,
+  ...screenIndex,
   ...screenDataPage
 ]

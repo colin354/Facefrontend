@@ -19,6 +19,7 @@ let componentMaps = {
     "camera": () => import(/* webpackChunkName: "camera" */'@/views/modules/face/camera'),
     "face-list": () => import(/* webpackChunkName: "face" */'@/views/modules/face/face'),
     "stranger-list": () => import(/* webpackChunkName: "face" */'@/views/modules/face/stranger'),
+    "plate-list": () => import(/* webpackChunkName: "plate" */'@/views/modules/face/plate'),
 
     "face-match": () => import(/* webpackChunkName: "face-match" */'@/views/modules/face_match/face-match'),
     "match_search": () => import(/* webpackChunkName: "match_search" */'@/views/modules/face_match/match_search'),
