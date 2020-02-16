@@ -23,7 +23,7 @@
           <d2-icon name="bars"/>
         </div>
         <!-- <d2-menu-header flex-box="1"/> -->
-        <img :src=`./img/top_logo_yl.png`>
+        <img :src="`./img/top_logo_yl.png`">
         <!-- 顶栏右侧 -->
         <div class="d2-header-right" flex-box="0">
           <!-- 如果你只想在开发环境显示这个按钮请添加 v-if="$env === 'development'" -->
