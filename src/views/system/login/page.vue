@@ -131,8 +131,8 @@ export default {
       ],
       // 表单
       formLogin: {
-        username: "test",
-        password: "123cpucpu",
+        username: "admin",
+        password: "ycadmin123",
         uuid: "",
         captcha: ""
       }

@@ -366,6 +366,24 @@ const frameIn = [
         }
       },
       {
+        path: 'housews',
+        name: 'housews',
+        component: _import('modules/research-center/housews'),
+        meta: {
+          auth: true,
+          title: '实时隔离预警'
+        }
+      },
+      {
+        path: 'history_query',
+        name: 'history_query',
+        component: _import('modules/research-center/history_query'),
+        meta: {
+          auth: true,
+          title: '隔离预警历史查询'
+        }
+      },  
+      {
         path: 'testws',
         name: 'testws',
         component: _import('modules/research-center/testws'),

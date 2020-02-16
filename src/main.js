@@ -62,18 +62,18 @@ Vue.use(VueAMap)
 Vue.use(Vuetify)
 // Vue.component('SplitPane', SplitPane)
 
-VueAMap.initAMapApiLoader({
-  key: 'e8d88ad5fce9142a64cf942e06a961bd',
-  plugin: ['AMap.MarkerClusterer', 'AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
-  uiVersion: '1.0', // ui库版本，不配置不加载,
-  v: '1.4.4' // 默认高德 sdk 版本为 1.4.4
-})
+// VueAMap.initAMapApiLoader({
+//   key: 'e8d88ad5fce9142a64cf942e06a961bd',
+//   plugin: ['AMap.MarkerClusterer', 'AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+//   uiVersion: '1.0', // ui库版本，不配置不加载,
+//   v: '1.4.4' // 默认高德 sdk 版本为 1.4.4
+// })
 
-lazyAMapApiLoaderInstance.load().then(() => {
-  // your code ...
-  localStorage.removeItem('_AMap_raster')
-  Vue.use(VueAMap)
-})
+// lazyAMapApiLoaderInstance.load().then(() => {
+//   // your code ...
+//   localStorage.removeItem('_AMap_raster')
+//   Vue.use(VueAMap)
+// })
 
 new Vue({
   router,

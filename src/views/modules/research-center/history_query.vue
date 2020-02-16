@@ -2,7 +2,7 @@
   <d2-container>
     <el-form :inline="true" size="mini" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.queryName" placeholder="摄像头位置" clearable/>
+        <el-input v-model="dataForm.queryName" :placeholder="$t('warning.type')" clearable/>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">{{ $t('query') }}</el-button>
@@ -21,18 +21,17 @@
       style="width: 100%;">
       <el-table-column type="selection" header-align="center" align="center" width="50"/>
       <el-table-column prop="id" :label="$t('warning.id')" header-align="center" align="center" width="50"/>
-      <el-table-column prop="cameraName" label="摄像头位置" header-align="center" align="center"/>
-      <el-table-column prop="datetime" label="行人出现时间" header-align="center" align="center"/>
-      <el-table-column prop="message" label="预警信息" header-align="center" align="center"/>
-      <el-table-column prop="imgurl" label="行人图片" header-align="center" align="center">
-        <template  slot-scope="scope">
-          <img :src="scope.row.imgurl" width="70" height="70">
-        </template>
-      </el-table-column>
-      <!-- <el-table-column prop="warning_message" :label="$t('warning.type')" header-align="center" align="center" :show-overflow-tooltip="true" /> -->
+      <el-table-column prop="warning_time" :label="$t('warning.time')" header-align="center" align="center"/>
+      <el-table-column prop="warning_camera_id" :label="$t('warning.cameraId')" header-align="center" align="center"/>
+      <el-table-column prop="warning_camera_name" :label="$t('warning.cameraId')" header-align="center" align="center"/>
+      <el-table-column prop="warning_level" :label="$t('warning.level')" header-align="center" align="center"/>
+      <el-table-column prop="warning_id" :label="$t('warning.warningId')" header-align="center" align="center"/>
+      <el-table-column prop="warning_name" :label="$t('warning.name')" header-align="center" align="center" :show-overflow-tooltip="true" />
+      <el-table-column prop="warning_message" :label="$t('warning.type')" header-align="center" align="center" :show-overflow-tooltip="true" />
       <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
         <template slot-scope="scope">
-          <!-- <el-button v-else type="text" size="mini" @click="playVideo(scope.row.id, scope.row.warning_video_url)">播放</el-button> -->
+          <el-button v-if="scope.row.suspended" type="text" size="mini" @click="activeHandle(scope.row.id)">{{ $t('process.active') }}</el-button>
+          <el-button v-else type="text" size="mini" @click="playVideo(scope.row.id, scope.row.warning_video_url)">播放</el-button>
           <el-button type="text" size="mini" @click="deleteHandle(scope.row.deploymentId)">{{ $t('delete') }}</el-button>
         </template>
       </el-table-column>
@@ -99,9 +98,9 @@ export default {
   data () {
     return {
       mixinViewModuleOptions: {
-        getDataListURL: `/sys/camera_pedestrian_ws?token=${cookieGet('token')}`,
+        getDataListURL: `/api/warningHistory?token=${cookieGet('token')}`,
         getDataListIsPage: true,
-        deleteURL: `/sys/camera_pedestrian_ws?token=${cookieGet('token')}`,
+        deleteURL: `/api/warningHistory?token=${cookieGet('token')}`,
         deleteIsBatch: true,
       },
       dataForm: {
