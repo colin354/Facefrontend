@@ -1,5 +1,8 @@
 <template>
   <d2-container>
+    <el-row>
+      <img class="top_logo" src="@/assets/images/top_logo_yl.png"> 
+    </el-row>
     <el-form :inline="true" size="mini" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
         <el-input v-model="dataForm.queryName" placeholder="摄像头位置" clearable/>
@@ -240,3 +243,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.top_logo {
+  height: 50%;
+  width: 100%;
+}
+</style>

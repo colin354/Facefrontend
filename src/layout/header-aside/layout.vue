@@ -22,8 +22,8 @@
         <div class="toggle-aside-btn" @click="handleToggleAside" flex-box="0">
           <d2-icon name="bars"/>
         </div>
-        <!-- <d2-menu-header flex-box="1"/> -->
-        <img :src="`./img/top_logo_yl.png`">
+        <d2-menu-header flex-box="1"/>
+        <!-- <img class="top_logo" src="./img/top_logo_yl.png"> -->
         <!-- 顶栏右侧 -->
         <div class="d2-header-right" flex-box="0">
           <!-- 如果你只想在开发环境显示这个按钮请添加 v-if="$env === 'development'" -->
@@ -39,7 +39,7 @@
       <!-- 下面 主体 -->
       <div class="d2-theme-container" flex-box="1" flex>
         <!-- 主体 侧边栏 -->
-        <div
+        <!-- <div
           flex-box="0"
           ref="aside"
           class="d2-theme-container-aside"
@@ -48,7 +48,7 @@
             opacity: this.searchActive ? 0.5 : 1
           }">
           <d2-menu-side/>
-        </div>
+        </div> -->
         <!-- 主体 -->
         <div class="d2-theme-container-main" flex-box="1" flex>
           <!-- 搜索 -->
@@ -180,4 +180,7 @@ export default {
 <style lang="scss">
 // 注册主题
 @import '~@/assets/style/theme/register.scss';
+.top_logo{
+  
+}
 </style>
