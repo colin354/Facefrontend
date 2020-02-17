@@ -153,6 +153,7 @@ import 'videojs-markers'
 import '@/views/modules/face_match/src/custom-theme.css'
 
 export default {
+  name: 'camera_stream',
   mixins: [ mixinViewModule ],
   data () {
     return {

@@ -28,15 +28,24 @@ let componentMaps = {
     "d2-doc": () => import(/* webpackChunkName: "d2-doc" */'@/views/modules/frame/d2-doc/'),
     "dataanalyse": () => import(/* webpackChunkName: "dataanalyse" */'@/views/modules/frame/dataanalyse'),
     "ggswgk": () => import(/* webpackChunkName: "ggswgk" */'@/views/modules/frame/ggswgk'),
-    "tianji": () => import(/* webpackChunkName: "tianji" */'@/views/modules/frame/tianji/'),
+    // "tianji": () => import(/* webpackChunkName: "tianji" */'@/views/modules/frame/tianji/'),
     "wuye": () => import(/* webpackChunkName: "wuye" */'@/views/modules/frame/wuye'),
+    
+    "frame-d2-doc": () => import(/* webpackChunkName: "frame-d2-doc" */'@/views/modules/out_frame/d2-doc'),
+    "frame-tianji": () => import(/* webpackChunkName: "frame-tianji" */'@/views/modules/out_frame/tianji'),
+    "frame-dataanalyse": () => import(/* webpackChunkName: "frame-dataanalyse" */'@/views/modules/out_frame/dataanalyse'),
+    "frame-ggswgk": () => import(/* webpackChunkName: "frame-ggswgk" */'@/views/modules/out_frame/ggswgk'),
+    "frame-wuye": () => import(/* webpackChunkName: "frame-wuye" */'@/views/modules/out_frame/wuye'),
+
 
     "testws": () => import(/* webpackChunkName: "testws" */'@/views/modules/research-center/testws'),
 
     "stream_catch": () => import(/* webpackChunkName: "stream_catch" */'@/views/modules/stream/stream_catch'),
-    "liveview": () => import(/* webpackChunkName: "liveview" */'@/views/modules/stream/liveview'),
-    "stream-list": () => import(/* webpackChunkName: "stream" */'@/views/modules/stream/stream'),
-    "real-video": () => import(/* webpackChunkName: "real-video" */'@/views/modules/stream/real-video'),
+    // "liveview": () => import(/* webpackChunkName: "liveview" */'@/views/modules/stream/liveview'),
+    // "stream-list": () => import(/* webpackChunkName: "stream" */'@/views/modules/stream/stream'),
+    // "real-video": () => import(/* webpackChunkName: "real-video" */'@/views/modules/stream/real-video'),
+    "video_map_list": () => import(/* webpackChunkName: "liveview" */'@/views/modules/stream/video_map_list'),
+    "camera_stream": () => import(/* webpackChunkName: "liveview" */'@/views/modules/stream/camera_stream'),
 
     "camera-database": () => import(/* webpackChunkName: "sensitive-database" */'@/views/modules/sys/camera-database'),
     "whitelist-database": () => import(/* webpackChunkName: "whitelist-database" */'@/views/modules/sys/whitelist-database'),

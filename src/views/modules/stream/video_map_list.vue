@@ -16,6 +16,7 @@
 import liveview from './liveview'
 import realvideo from './stream_catch'
 export default {
+  name: 'video_map_list',
   props: {
     long: {
       type: Boolean,
