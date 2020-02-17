@@ -1,6 +1,11 @@
 <template>
 <d2-container>
 <el-row :gutter="20">
+    <!-- <el-row :gutter="18">
+      <el-col :span="12" :offset="6">
+        <img class="top_logo" src="@/assets/images/top_logo_yl.png">
+      </el-col>
+    </el-row>   -->
     <el-row>
       <div class="grid-content bg-purple">
         <el-card class="box-card">
@@ -224,6 +229,10 @@ export default {
 </script>
 
 <style lang="scss">
+.top_logo {
+  height: 30%;
+  width: 100%;
+}
 .el-table .target-row {
   background: oldlace;
 }
