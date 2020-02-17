@@ -1,6 +1,17 @@
 <template>
     <d2-container>
       <el-row :gutter="18">
+        <el-col :span="12" :offset="6">
+            <img class="top_logo" src="./image/top_logo.png">
+            <a target="blank" href="http://221.231.13.230:8815/police/police_004/index.html">
+              <img
+                style="position: absolute; top: 0; right: 0; border: 0; width: 120px;"
+                src="./image/darkblue@2x.png"
+                alt="Fork me on GitHub">
+            </a>
+        </el-col>
+      </el-row>
+      <el-row :gutter="18">
         <el-col :span="6">
           <el-row :gutter="18">
             <div class="grid-content bg-purple">
@@ -70,6 +81,9 @@
                   <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
                 </div>
                 <el-row>
+                  <div class="inner">
+                    <ve-heatmap :data="heat_chartData" v-bind="pubSetting"></ve-heatmap>
+                  </div>                  
                 </el-row>
               </el-card>
             </div>
@@ -94,6 +108,9 @@
                   <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
                 </div>
                 <el-row>
+                  <div class="inner">
+                    <ve-histogram :data="his_chartData" v-bind="pubSetting"></ve-histogram>
+                  </div>
                 </el-row>
               </el-card>
             </div>
@@ -143,6 +160,37 @@ export default {
   ],
   data () {
     return {
+      his_extend: {
+        series: {
+          label: { show: true, position: 'top' }
+        }
+      },
+      his_chartData: {
+        columns: ['日期', '访问用户', '下单用户', '下单率'],
+        rows: [
+          { '日期': '1/1', '访问用户': 1393, '下单用户': 1093, '下单率': 0.32 },
+          { '日期': '1/2', '访问用户': 3530, '下单用户': 3230, '下单率': 0.26 },
+          { '日期': '1/3', '访问用户': 2923, '下单用户': 2623, '下单率': 0.76 },
+          { '日期': '1/4', '访问用户': 1723, '下单用户': 1423, '下单率': 0.49 },
+          { '日期': '1/5', '访问用户': 3792, '下单用户': 3492, '下单率': 0.323 },
+          { '日期': '1/6', '访问用户': 4593, '下单用户': 4293, '下单率': 0.78 }
+        ]
+      },      
+      heat_chartData: {
+        columns: ['时间', '地点', '人数'],
+        rows: [
+          { '时间': '星期一', '地点': '北京', '人数': 1000 },
+          { '时间': '星期二', '地点': '上海', '人数': 400 },
+          { '时间': '星期三', '地点': '杭州', '人数': 800 },
+          { '时间': '星期二', '地点': '深圳', '人数': 200 },
+          { '时间': '星期三', '地点': '长春', '人数': 100 },
+          { '时间': '星期五', '地点': '南京', '人数': 300 },
+          { '时间': '星期四', '地点': '江苏', '人数': 800 },
+          { '时间': '星期一', '地点': '北京', '人数': 700 },
+          { '时间': '星期三', '地点': '上海', '人数': 300 },
+          { '时间': '星期二', '地点': '杭州', '人数': 500 }
+        ]
+      },
       pie_chartData: {
         columns: ['日期', '访问用户', '下单用户', '下单率'],
         rows: [
@@ -488,8 +536,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .top_logo {
+    height: 50%;
+    width: 100%;
+  }
   .inner {
     height: 190px;
+    position: static;
+    top: 5px;
+    right:  5px;
+    bottom: 5px;
+    left: 5px;    
   }
   .amap-demo {
     height: 100%;

@@ -19,7 +19,7 @@ export default {
   methods: {
     handleClick () {
       let screenData = this.$router.resolve({
-        path: 'screenData',
+        path: 'screenIndex',
       })
       window.open(screenData.href,"_blank")
       // this.$router.push({
