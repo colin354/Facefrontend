@@ -1,13 +1,18 @@
 <template>
 <d2-container>
 <el-row :gutter="20">
-    <!-- <el-row :gutter="18">
-      <el-col :span="12" :offset="6">
-        <img class="top_logo" src="@/assets/images/top_logo_yl.png">
-      </el-col>
-    </el-row>   -->
+    <el-row :gutter="18">
+        <div class="grid-content bg-purple">
+          <el-card class="box-card">
+            <img v-for="(img,index) in imgs" :key="index"
+              style="width: 60px; height: 60px"
+              :src="img">
+            <br>
+          </el-card>
+        </div>
+    </el-row>  
     <el-row>
-      <el-col :span="18">
+      <el-col :span="24">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
@@ -45,7 +50,14 @@
                   prop="imgurl"
                   label="抓拍图像">
                     <template  slot-scope="scope">
-                      <img :src="scope.row.imgurl" width="70" height="70">
+                      <el-popover
+                        placement="right"
+                        title=""
+                        trigger="hover">
+                        <img :src="scope.row.imgurl" />
+                        <img slot="reference" :src="scope.row.imgurl" :alt="scope.row.imgurl" style="max-height: 60px;max-width: 60px">
+                      </el-popover>                      
+                      <!-- <img :src="scope.row.imgurl" width="70" height="70"> -->
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -57,14 +69,14 @@
           </el-card>
         </div>
       </el-col>
-      <el-col :span="6">
+      <!-- <el-col :span="6">
         <el-row>
           <div id="c1"></div>
         </el-row>
         <el-row>
           <div id="c2"></div>
         </el-row>
-      </el-col>
+      </el-col> -->
     </el-row>
 </el-row>
 </d2-container>
@@ -103,7 +115,7 @@ export default {
     this.initSocket('001')
   },
   mounted () {   
-    this.drawchart()
+    // this.drawchart()
     const e = document.createEvent('Event')
     e.initEvent('resize', true, true)
     window.dispatchEvent(e)    
@@ -154,6 +166,8 @@ export default {
       this.ws_data.faceurl = resData.faceurl
       if (Object.keys(resData).length !== 0) {
         this.ws_data.warning_info = resData
+        console.log('----mdd----')
+        console.log(this.ws_data.warning_info)
         if (this.warning_info.length >= 5) {
           this.warning_info.shift() //删除数组第一个元素
           this.warning_info.push(this.ws_data.warning_info) //向数组末尾添加一个元素
@@ -161,7 +175,7 @@ export default {
           this.warning_info.push(this.ws_data.warning_info) //向数组末尾添加一个元素
         }
       }
-      if (this.imgs.length >= 8) {
+      if (this.imgs.length >= 9) {
         this.imgs.shift() //删除数组第一个元素
         this.imgs.push(this.ws_data.imgurl) //向数组末尾添加一个元素
       } else {
@@ -184,6 +198,8 @@ export default {
     },
     tableRowClassName ({row, rowIndex}) {
       console.log(row.color)
+      if (rowIndex === 4)
+        return 'new-row'      
       if (row.color === 0) {
         console.log('=====0')
         return ''
@@ -194,6 +210,7 @@ export default {
         console.log('=====2')
         return 'stranger-row'
       }
+
       return ''
     },
     drawpointchart () {
@@ -350,6 +367,10 @@ export default {
 
 .el-table .stranger-row {
   background: #f54f4f3d;
+}
+
+.el-table .new-row {
+  background: #110df13d;
 }
 
 .bg{

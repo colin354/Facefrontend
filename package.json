@@ -38,6 +38,7 @@
     "text-loader": "0.0.1",
     "ua-parser-js": "^0.7.19",
     "v-charts": "^1.19.0",
+    "v-viewer": "^1.5.1",
     "videojs-markers": "^1.0.1",
     "videojs-notations": "0.0.4",
     "videojs-playlist": "^4.3.1",

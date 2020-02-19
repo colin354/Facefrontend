@@ -28,20 +28,19 @@
           <el-table-column prop="message" label="预警信息" header-align="center" align="center"/>
           <el-table-column prop="imgurl" label="行人图片" header-align="center" align="center">
             <template  slot-scope="scope">
-              <el-popover
+              <!-- <el-popover
                 placement="right"
                 title=""
                 trigger="hover">
                 <img :src="scope.row.imgurl"/>
-                <img slot="reference" :src="scope.row.imgurl" :alt="scope.row.imgurl" style="max-height: 50px;max-width: 130px">
-              </el-popover>
-
-              <!-- <img :src="scope.row.imgurl" width="70" height="70"> -->
+                <img slot="reference" :src="scope.row.imgurl" :alt="scope.row.imgurl" style="max-height: 60px;max-width: 60px">
+              </el-popover> -->
+              <img :src="scope.row.imgurl" width="70" height="70" @click="openDialog(scope.row.imgurl)">
               <!-- <div class="demo-image__preview">
                 <el-image 
                   style="width: 70; height: 70"
                   :src="scope.row.imgurl" 
-                  :preview-src-list="scope.row.imgurl">
+                  :preview-src-list="[scope.row.imgurl]">
                 </el-image>          
               </div>     -->
             </template>
@@ -93,36 +92,17 @@
 
     
     <el-dialog
-      :visible.sync="video_visible"
-      title="视频播放"
-      :close-on-click-modal="false"
-      :close-on-press-escape="false"
+      :visible.sync="dialogTableVisible"
+      title="图片预览"
+      width="30%"
     >
-      <el-row>
-        <el-col :span="24">
-          <div class="grid-content bg-purple">
-            <video-player
-              class="vjs-default-skin"
-              ref="videoPlayer"
-              :options="playerOptions"
-              :playsinline="true"
-              customEventName="customstatechangedeventname"
-              @play="onPlayerPlay($event)"
-              @pause="onPlayerPause($event)"
-              @ended="onPlayerEnded($event)"
-              @waiting="onPlayerWaiting($event)"
-              @playing="onPlayerPlaying($event)"
-              @loadeddata="onPlayerLoadeddata($event)"
-              @timeupdate="onPlayerTimeupdate($event)"
-              @canplay="onPlayerCanplay($event)"
-              @canplaythrough="onPlayerCanplaythrough($event)"
-              @statechanged="playerStateChanged($event)"
-              @ready="playerReadied"
-            ></video-player>                
-          </div>
-        </el-col>
-      </el-row>
-
+      <div class="demo-image__preview">
+        <!-- <img :src="bigimgurl" width="150" height="300"> -->
+        <el-image 
+          style="width: 130; height: 200"
+          :src="bigimgurl">
+        </el-image>
+      </div>    
     </el-dialog>
 
     <!-- 分页 -->
@@ -167,7 +147,8 @@ export default {
         key: ''
       },
       numberData: 12,
-      video_visible: false,
+      bigimgurl: '',
+      dialogTableVisible: false,
       playerOptions: {
         // videojs options
         loop: true,
@@ -191,6 +172,11 @@ export default {
     videoPlayer
   },
   methods: {
+    openDialog (val){
+      this.dialogTableVisible = true;
+      this.bigimgurl = val
+      console.log(val)
+    },
     // 获取流程(xml/image)url地址
     getResourceURL (id, name) {
       var params = qs.stringify({
