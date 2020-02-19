@@ -28,7 +28,22 @@
           <el-table-column prop="message" label="预警信息" header-align="center" align="center"/>
           <el-table-column prop="imgurl" label="行人图片" header-align="center" align="center">
             <template  slot-scope="scope">
-              <img v-image-preview :src="scope.row.imgurl" width="70" height="70">
+              <el-popover
+                placement="right"
+                title=""
+                trigger="hover">
+                <img :src="scope.row.imgurl"/>
+                <img slot="reference" :src="scope.row.imgurl" :alt="scope.row.imgurl" style="max-height: 50px;max-width: 130px">
+              </el-popover>
+
+              <!-- <img :src="scope.row.imgurl" width="70" height="70"> -->
+              <!-- <div class="demo-image__preview">
+                <el-image 
+                  style="width: 70; height: 70"
+                  :src="scope.row.imgurl" 
+                  :preview-src-list="scope.row.imgurl">
+                </el-image>          
+              </div>     -->
             </template>
           </el-table-column>
           <!-- <el-table-column prop="warning_message" :label="$t('warning.type')" header-align="center" align="center" :show-overflow-tooltip="true" /> -->
