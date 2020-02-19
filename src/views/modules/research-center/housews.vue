@@ -7,54 +7,64 @@
       </el-col>
     </el-row>   -->
     <el-row>
-      <div class="grid-content bg-purple">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span>实时抓拍预警</span>
-            <el-button style="float: right; padding: 3px 0" type="text" >
-              <router-link :to="{name:'index'}">
-                更多
-              </router-link>
-            </el-button>
-          </div>
-          <el-row>
-            <el-table
-              size="mini"
-              :data="warning_info"
-              :row-class-name="tableRowClassName"
-              style="width: 100%">
-              <el-table-column
-                prop="cameraName"
-                label="预警探头">
-              </el-table-column>              
-              <el-table-column
-                prop="datetime"
-                label="时间">
-              </el-table-column>
-              <el-table-column
-                prop="color"
-                label="级别">
-                <template slot-scope="scope">
-                  <el-tag
-                    :type="scope.row.color === 3 ? 'danger' : 'primary'"
-                    disable-transitions>{{scope.row.color}}</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column
-                prop="imgurl"
-                label="抓拍图像">
-                  <template  slot-scope="scope">
-                    <img :src="scope.row.imgurl" width="70" height="70">
+      <el-col :span="18">
+        <div class="grid-content bg-purple">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>实时抓拍预警</span>
+              <el-button style="float: right; padding: 3px 0" type="text" >
+                <router-link :to="{name:'index'}">
+                  更多
+                </router-link>
+              </el-button>
+            </div>
+            <el-row>
+              <el-table
+                size="mini"
+                :data="warning_info"
+                :row-class-name="tableRowClassName"
+                style="width: 100%">
+                <el-table-column
+                  prop="cameraName"
+                  label="预警探头">
+                </el-table-column>              
+                <el-table-column
+                  prop="datetime"
+                  label="时间">
+                </el-table-column>
+                <el-table-column
+                  prop="color"
+                  label="级别">
+                  <template slot-scope="scope">
+                    <el-tag
+                      :type="scope.row.color === 3 ? 'danger' : 'primary'"
+                      disable-transitions>{{scope.row.color}}</el-tag>
                   </template>
-              </el-table-column>
-              <el-table-column
-                prop="message"
-                label="预警信息">
-              </el-table-column>
-            </el-table>
-          </el-row>
-        </el-card>
-      </div>
+                </el-table-column>
+                <el-table-column
+                  prop="imgurl"
+                  label="抓拍图像">
+                    <template  slot-scope="scope">
+                      <img :src="scope.row.imgurl" width="70" height="70">
+                    </template>
+                </el-table-column>
+                <el-table-column
+                  prop="message"
+                  label="预警信息">
+                </el-table-column>
+              </el-table>
+            </el-row>
+          </el-card>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <el-row>
+          <div id="c1"></div>
+        </el-row>
+        <el-row>
+          <div id="c2"></div>
+        </el-row>
+      </el-col>
     </el-row>
 </el-row>
 </d2-container>
@@ -66,6 +76,7 @@ import { cookieGet } from '@/common/cookie'
 import Liveplayer from '@/components/videoplayer/liveplayer';
 import '@/assets/h5splayer.js'
 import { H5siOS,H5sPlayerCreate } from '@/assets/h5splayerhelper.js'
+import G2 from '@antv/g2'
 export default {
   // mixins: [ mixinViewModule ],
   components: {
@@ -91,7 +102,12 @@ export default {
   created () {
     this.initSocket('001')
   },
-  mounted () {     //本可以共用view-module.js中的get请求,但界面必须手动刷新才能发送get请求,所以在本组件重新写了get请求
+  mounted () {   
+    this.drawchart()
+    const e = document.createEvent('Event')
+    e.initEvent('resize', true, true)
+    window.dispatchEvent(e)    
+    //本可以共用view-module.js中的get请求,但界面必须手动刷新才能发送get请求,所以在本组件重新写了get请求
     this.$axios.get(`/sys/camera_pedestrian_ws?token=${cookieGet('token')}`, { params:{ map_location:'GETLOCATION' } })
       .then(res => {
         this.streamList = res.streamList
@@ -103,6 +119,7 @@ export default {
         console.log('error')
       })
   },
+
   destroyed () {
     this.webSocket.close()
   },
@@ -179,6 +196,100 @@ export default {
       }
       return ''
     },
+    drawpointchart () {
+      const data = [
+        { genre: 'Sports', sold: 275 },
+        { genre: 'Strategy', sold: 115 },
+        { genre: 'Action', sold: 120 },
+        { genre: 'Shooter', sold: 350 },
+        { genre: 'Other', sold: 150 },
+      ]; // G2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象。
+      // Step 1: 创建 Chart 对象
+      const chart = new G2.Chart({
+        container: 'c1', // 指定图表容器 ID
+        forceFit: true, // 图表跟随图表容器宽度变化
+        height: 250, // 指定图表高度
+      });
+      console.log('-----chaaart-----')
+      console.log(chart)
+
+      // Step 2: 载入数据源
+      chart.source(data);
+      // Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
+      chart
+        .interval()
+        .position('genre*sold')
+        .color('genre');
+      // Step 4: 渲染图表
+      chart.render();
+    },
+    drawchart () {
+      const { Global } = G2;
+      const colorMap = {
+        Asia: Global.colors[0],
+        Americas: Global.colors[1],
+        Europe: Global.colors[2],
+        Oceania: Global.colors[3]
+      };
+
+      this.$http.get('https:/antv-g2.gitee.io/zh/examples/data/bubble.json')
+        // .then(res => JSON.parse(res))
+        .then(res => {
+          console.log('----ddate----')
+          console.log(res)
+          const data = res
+          const chart = new G2.Chart({
+            container: 'c1',
+            forceFit: true,
+            height: 500
+          });
+          chart.source(data);
+        // 为各个字段设置别名
+          chart.scale({
+            LifeExpectancy: {
+              alias: '人均寿命（年）'
+            },
+            Population: {
+              type: 'pow',
+              alias: '人口总数'
+            },
+            GDP: {
+              alias: '人均国内生产总值($)'
+            },
+            Country: {
+              alias: '国家/地区'
+            }
+          });
+          chart.axis('GDP', {
+            label: {
+              formatter(value) {
+                return (value / 1000).toFixed(0) + 'k';
+              } // 格式化坐标轴的显示
+            }
+          });
+          chart.tooltip({
+            showTitle: false // 不显示默认标题
+          });
+          chart.legend('Population', false); // 该图表默认会生成多个图例，设置不展示 Population 和 Country 两个维度的图例
+          chart.point().position('GDP*LifeExpectancy')
+          .size('Population', [ 4, 65 ])
+          .color('continent', val => {
+            return colorMap[val];
+          })
+          .shape('circle')
+          .tooltip('Country*Population*GDP*LifeExpectancy')
+          .style('continent', {
+            lineWidth: 1,
+            strokeOpacity: 1,
+            fillOpacity: 0.3,
+            opacity: 0.65,
+            stroke: val => {
+              return colorMap[val];
+            }
+          });
+          chart.render();
+        });
+    },    
     handleClick () {
       // location.reload()
       if (this.webSocket) {
