@@ -138,8 +138,8 @@ export default {
     }
   },
   created () {
-    // let self = this
-    // this.initMap()
+    let self = this
+    this.initMap()
     console.log("------我的弧度-------")
     this.initPage()
   },
@@ -209,37 +209,42 @@ export default {
         center: [120.095913, 33.302156],
         zoom: 18
       },
-      _this = this,
       AMapUI.loadUI(['misc/PathSimplifier'], (PathSimplifier) => {
         if (!PathSimplifier.supportCanvas) {
           alert('当前环境不支持 Canvas！');
           return;
         }
-        // 步行路线
-        AMap.service('AMap.Walking',function(){
-          //步行导航
-          var walking = new AMap.Walking({
-            map: _this.map,
-            // panel: "panel"
-            hidMarkers:true,
+        for(var i=0 ; i<this.temp.length; i++){
+          // console.log("------外层for----")
+          // console.log(this.temp[i].location)
+          // console.log(this.temp[i].color)
+          var tempColor = this.temp[i].color  //同一个i值即同一个faceid,同一个人,用同一种颜色;不同的i值用不同的颜色
+          var bezierCurve = new AMap.BezierCurve({
+            path: this.temp[i].location,
+            showDir: true,
+            dirColor:'white',
             isOutline: true,
-            // outlineColor: "red",
-
-          });
-          var path = [];
-          path.push({ lnglat: [120.093429,33.312951] }); //盐城起点
-          //  path.push({ lnglat: [120.094148,33.313323] }); //盐城途径
-          path.push({ lnglat: [120.095505,33.312745] }); //盐城终点
-          // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
-          // walking.search(path, function(status, result) {
-          walking.search([120.094153,33.313319],[120.095028,33.313592], function(status, result) {
-              if (status === 'complete') {
-                  log.success('绘制步行路线完成')
-              } else {
-                  log.error('步行路线数据查询失败' + result)
-              } 
-          });
-        });                                                      
+            outlineColor: "transparent",
+            borderWeight: 3,
+            strokeColor: tempColor, //线颜色
+            strokeOpacity: 1, //线透明度
+            strokeWeight: 5, //线宽
+            // 线样式还支持 'dashed'
+            strokeStyle: "solid", //线样式
+            // strokeStyle是dashed时有效
+            strokeDasharray: [10, 10],
+            lineJoin: 'round',
+            lineCap: 'round',
+            zIndex: 50,
+            dirArrowStyle:{
+              stepSpace: 8,  //stepSpace: {number} 箭头排布的间隔，单位像素
+              width: 3
+            }
+          })
+          bezierCurve.setMap(this.map)
+          // 缩放地图到合适的视野级别
+          this.map.setFitView([ bezierCurve ])
+        }                                                       
       })
       )
     }
