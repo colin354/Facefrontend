@@ -28,7 +28,7 @@
           <el-table-column prop="message" label="预警信息" header-align="center" align="center"/>
           <el-table-column prop="imgurl" label="行人图片" header-align="center" align="center">
             <template  slot-scope="scope">
-              <img :src="scope.row.imgurl" width="70" height="70">
+              <img v-image-preview :src="scope.row.imgurl" width="70" height="70">
             </template>
           </el-table-column>
           <!-- <el-table-column prop="warning_message" :label="$t('warning.type')" header-align="center" align="center" :show-overflow-tooltip="true" /> -->

@@ -34,6 +34,8 @@ import SplitPane from 'vue-splitpane'
 import VCharts from 'v-charts'
 import VueAMap from 'vue-amap'
 import { lazyAMapApiLoaderInstance } from 'vue-amap'
+import VueDirectiveImagePreviewer from 'vue-directive-image-previewer'
+import 'vue-directive-image-previewer/dist/assets/style.css'
 // import watermark from '../src/assets/waterMark.js'
 // import 'vuetify/dist/vuetify.min.css'
 const bus = new Vue()
@@ -56,6 +58,7 @@ Vue.prototype.EVENT = event
 Vue.prototype.$http = axios
 Vue.prototype.$http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 // 核心插件
+Vue.use(VueDirectiveImagePreviewer) 
 Vue.use(d2Admin)
 Vue.use(VCharts)
 Vue.use(VueAMap)
