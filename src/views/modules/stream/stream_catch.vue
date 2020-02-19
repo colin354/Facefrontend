@@ -104,9 +104,6 @@ export default {
       events_map: {
         init: (o) => {
           setTimeout(() => {
-            console.log('map events!!!!!')
-            console.log(self.markerRefs)
-            console.log(o)
             o.plugin(["AMap.MarkerClusterer"],function() {
               let cluster = new AMap.MarkerClusterer(o, self.markerRefs, {
                 gridSize: 80,
@@ -119,8 +116,6 @@ export default {
       },
       events: {
         init: (o) => {
-          console.log('-------marker events-')
-          console.log(o)
           this.markerRefs.push(o)
         },
         'moveend': () => {
@@ -156,8 +151,6 @@ export default {
     getInfo () { // 本可以共用view-module.js中的get请求,但界面必须手动刷新才能发送get请求,所以在本组件重新写了get请求 
       this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`, { params: { map_location: 'GETLOCATION' } })
         .then(res => {
-          console.log('-----mounted---res.list-')
-          console.log(res)
           this.temp = res.streamList[0].streamlng // 存放经纬度
           this.children = res.streamList[0].children // 含有id、经纬度、token等信息
           if (this.children) {

@@ -37,7 +37,17 @@
                 <el-card class="box-card-hei">
                   <div class="amap-page-container">
                     <!-- {{this.temp}} -->
-                      <div id="amap-show" class="amap-demo"></div>
+                    <el-amap
+                      :plugin="plugin"
+                      :amap-manager="amapManager"
+                      :zoom="zoom"
+                      :center="center"
+                      vid="amapDemo"
+                      ref="reds"
+                      style="width:100vw;height:80vh"
+                      :events="events"
+                    ></el-amap>                    
+                      <!-- <div id="amap-show" class="amap-demo"></div> -->
                   </div>
                 </el-card>
               </div>
@@ -86,14 +96,35 @@ import faceimg from './face-img'
 import facelist from './face-list'
 import { constants } from 'crypto'
 import mixinViewModule from '@/mixins/view-module'
+import { AMapManager } from "vue-amap";
+let amapManager = new AMapManager();
 // NPM 方式
-import { lazyAMapApiLoaderInstance } from 'vue-amap';
 // import carUrl from '../../assets/images/carame.png'
 export default {
   name: "multiline",
   // mixins: [ mixinViewModule ],
   data () {
+    let _obj = this;
     return {
+      amapManager,
+      center: [120.093585,33.313408],//盐城
+      plugin: [
+        {
+          pName: "Scale",
+          events: {
+            init(instance) {
+              console.log(instance);
+            }
+          }
+        }
+      ],
+      zoom: 18,
+      events: {
+        init(o) {
+          _obj.initMap();
+          
+        }
+      },      
       showA:false,
       markers:[],
       //日期选项
@@ -138,26 +169,38 @@ export default {
     }
   },
   created () {
-    // let self = this
     // this.initMap()
-    console.log("------我的弧度-------")
-    this.initPage()
+    // this.initPage()
   },
   methods:{  
     initMap () {
-      lazyAMapApiLoaderInstance.load().then(() => {
-        this.map = new AMap.Map('amap-show', {
-          // center: [114.037939,22.627198],//自带
-          // center: [120.09465,33.313217],  //盐城
-          // center: [120.094163,33.313109],//汇文公馆
-          center:[120.095913, 33.302156],
-          zoom: 18
-        })
-      })
+      let o = amapManager.getMap();
+
+      // 步行路线
+      AMap.service('AMap.Walking',function(){
+        //步行导航
+        var walking = new AMap.Walking({
+          map: o,
+          // panel: "panel"
+          hidMarkers:true,
+          isOutline: true,
+          // outlineColor: "red",
+        });
+         var path = [];
+
+         walking.search([120.094153,33.313319],[120.095028,33.313592], function(status, result) {
+            if (status === 'complete') {
+                log.success('绘制步行路线完成')
+            } else {
+                log.error('步行路线数据查询失败' + result)
+            } 
+        });
+      });
     },
+
     createTrackMap () {
       this.initPage()
-      this.addMarker()
+      // this.addMarker()
     },
     addMarker () {//画轨迹的同时,添加摄像头图标
       let self = this
@@ -205,42 +248,47 @@ export default {
     },
     //画多条轨迹
     initPage () {
-      this.map = new AMap.Map('amap-show', {
-        center: [120.095913, 33.302156],
-        zoom: 18
-      },
-      _this = this,
+      let o = amapManager.getMap();
       AMapUI.loadUI(['misc/PathSimplifier'], (PathSimplifier) => {
         if (!PathSimplifier.supportCanvas) {
           alert('当前环境不支持 Canvas！');
           return;
         }
         // 步行路线
+
+        
+
         AMap.service('AMap.Walking',function(){
           //步行导航
-          var walking = new AMap.Walking({
-            map: _this.map,
-            // panel: "panel"
-            hidMarkers:true,
-            isOutline: true,
-            // outlineColor: "red",
-
-          });
-          var path = [];
-          path.push({ lnglat: [120.093429,33.312951] }); //盐城起点
-          //  path.push({ lnglat: [120.094148,33.313323] }); //盐城途径
-          path.push({ lnglat: [120.095505,33.312745] }); //盐城终点
-          // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
-          // walking.search(path, function(status, result) {
-          walking.search([120.094153,33.313319],[120.095028,33.313592], function(status, result) {
-              if (status === 'complete') {
-                  log.success('绘制步行路线完成')
-              } else {
-                  log.error('步行路线数据查询失败' + result)
-              } 
-          });
+          let path0 = {faceid:'1001',start:[120.093429,33.312951],end:[120.095505,33.312745]};
+          let path1 = {start:[120.093529,33.312551],end:[120.095605,33.312645]};
+          let path2 = {start:[120.093729,33.312751],end:[120.095805,33.312845]};   
+          let path = [path0,path1,path2] 
+          let walk = ['walk0','walk1','walk2']
+          console.log(path)
+          for(let i=0; i < 6 ;i++){
+            // console.log('----path---i------'+i)
+            // console.log(path[i])
+            // console.log(path[i].start)
+            // console.log(path[i].end)
+            walk[i] = new AMap.Walking({
+              map: o,
+              // panel: "panel"
+              hidMarkers:true,
+              isOutline: true,
+              // outlineColor: "red",
+            });
+            walk[i].search((path[i]).start,(path[i]).end, function(status, result) {
+                if (status === 'complete') {
+                    log.success('绘制步行路线完成')
+                } else {
+                    log.error('步行路线数据查询失败' + result)
+                } 
+            });  
+          }
+      
         });                                                      
-      })
+      }
       )
     }
   }
