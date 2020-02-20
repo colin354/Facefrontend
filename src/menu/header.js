@@ -8,6 +8,14 @@ export default [
   { title: '实时隔离预警',
     icon: 'camera',
     path: '/housews'
+  },
+  { title: '入住人员信息',
+    icon: 'camera',
+    path: '/person_info'
+  },
+  { title: '人员出入记录',
+    icon: 'camera',
+    path: '/person_inout_info'
   },  
   // {
   //   title: '人像卡口',

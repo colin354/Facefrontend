@@ -375,6 +375,24 @@ const frameIn = [
         }
       },
       {
+        path: 'person_info',
+        name: 'person_info',
+        component: _import('modules/research-center/person_info'),
+        meta: {
+          auth: true,
+          title: '入住人员信息'
+        }
+      },
+      {
+        path: 'person_inout_info',
+        name: 'person_inout_info',
+        component: _import('modules/research-center/person_inout_info'),
+        meta: {
+          auth: true,
+          title: '人员出入记录'
+        }
+      },            
+      {
         path: 'history_query',
         name: 'history_query',
         component: _import('modules/research-center/history_query'),
