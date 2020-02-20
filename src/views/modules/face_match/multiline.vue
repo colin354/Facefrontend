@@ -249,47 +249,34 @@ export default {
     //画多条轨迹
     initPage () {
       let o = amapManager.getMap();
-      AMapUI.loadUI(['misc/PathSimplifier'], (PathSimplifier) => {
-        if (!PathSimplifier.supportCanvas) {
-          alert('当前环境不支持 Canvas！');
-          return;
-        }
-        // 步行路线
-
-        
-
-        AMap.service('AMap.Walking',function(){
-          //步行导航
-          let path0 = {faceid:'1001',start:[120.093429,33.312951],end:[120.095505,33.312745]};
-          let path1 = {start:[120.093529,33.312551],end:[120.095605,33.312645]};
-          let path2 = {start:[120.093729,33.312751],end:[120.095805,33.312845]};   
-          let path = [path0,path1,path2] 
-          let walk = ['walk0','walk1','walk2']
-          console.log(path)
-          for(let i=0; i < 6 ;i++){
-            // console.log('----path---i------'+i)
-            // console.log(path[i])
-            // console.log(path[i].start)
-            // console.log(path[i].end)
-            walk[i] = new AMap.Walking({
-              map: o,
-              // panel: "panel"
-              hidMarkers:true,
-              isOutline: true,
-              // outlineColor: "red",
-            });
-            walk[i].search((path[i]).start,(path[i]).end, function(status, result) {
-                if (status === 'complete') {
-                    log.success('绘制步行路线完成')
-                } else {
-                    log.error('步行路线数据查询失败' + result)
-                } 
-            });  
-          }
-      
-        });                                                      
-      }
-      )
+      // 步行路线
+      //步行导航
+      let path0 = {faceid:'1001',start:[120.093429,33.312951],end:[120.095505,33.312745]};
+      let path1 = {start:[120.093529,33.312551],end:[120.095605,33.312645]};
+      let path2 = {start:[120.093729,33.312751],end:[120.095805,33.312845]};   
+      let path = [path0,path1,path2] 
+      let walk = ['walk0','walk1','walk2']
+      console.log(path)
+      for(let i=0; i < 6 ;i++){
+        // console.log('----path---i------'+i)
+        // console.log(path[i])
+        // console.log(path[i].start)
+        // console.log(path[i].end)
+        walk[i] = new AMap.Walking({
+          map: o,
+          // panel: "panel"
+          hidMarkers:true,
+          isOutline: true,
+          // outlineColor: "red",
+        });
+        walk[i].search((path[i]).start,(path[i]).end, function(status, result) {
+            if (status === 'complete') {
+                log.success('绘制步行路线完成')
+            } else {
+                log.error('步行路线数据查询失败' + result)
+            } 
+        });  
+      }                                                    
     }
   }
 }
