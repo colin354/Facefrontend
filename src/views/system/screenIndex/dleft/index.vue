@@ -2,43 +2,13 @@
   <div class="right-content">
     <div class="top-box">
       <div class="messege">
-        <databox
-          :title="$t('data.dright_messege')"
-          :dheight="260"
-          :icon="'account'"
-        >
-          <message :data="messege"></message>
-          <nodata
-            :nodata="$t('data.dright.index.messege')"
-            v-if="noMessege"
-          ></nodata>
-        </databox>
+        <topLeft :message="topMessage" :noMessage="topNoMessage"></topLeft>
       </div>
       <div class="messege">
-        <databox
-          :title="$t('data.dright_messege')"
-          :dheight="260"
-          :icon="'account'"
-        >
-          <message :data="messege"></message>
-          <nodata
-            :nodata="$t('data.dright.index.messege')"
-            v-if="noMessege"
-          ></nodata>
-        </databox>
+        <middle-left></middle-left>
       </div>
       <div class="messege">
-        <databox
-          :title="$t('data.dright_messege')"
-          :dheight="260"
-          :icon="'account'"
-        >
-          <message :data="messege"></message>
-          <nodata
-            :nodata="$t('data.dright.index.messege')"
-            v-if="noMessege"
-          ></nodata>
-        </databox>
+        <bottom-left></bottom-left>
       </div>            
     </div>
   </div>
@@ -48,10 +18,17 @@
 import follower from './follower'
 import message from './message'
 import { cookieGet } from '@/common/cookie'
+import topLeft from './top-left'
+import middleLeft from './middle-left'
+import bottomLeft from './bottom-left'
+
 export default {
   components: {
     follower,
-    message
+    message,
+    topLeft,
+    middleLeft,
+    bottomLeft
   },
   props: {
     username: String
@@ -63,7 +40,13 @@ export default {
       following: [],
       noFollowing: false,
       messege: [],
-      noMessege: false
+      noMessege: false,
+      topMessage:[],
+      topNoMessage:false,
+      middleMessage:[],
+      middleNoMessage:false,
+      bottomMessage:[],
+      bottomNoMessage:false,
     };
   },
   created() {
@@ -75,11 +58,12 @@ export default {
         .then(response => {
           console.log('--------')
           console.log(response)
+          this.messege = "lala"
           let data3 = JSON.parse(JSON.stringify(response))
           if (data3.length < 1) {
-            this.noMessege = true
+            this.noMessege = false
           } else {
-            this.messege = data3.list
+            this.messege = "data3.list"
             this.followers = data3.target
             this.following = data3.strange
           }
