@@ -9,14 +9,26 @@ export default [
     icon: 'camera',
     path: '/housews'
   },
-  { title: '入住人员信息',
+  { title: '隔离预警历史信息',
     icon: 'camera',
-    path: '/person_info'
-  },
-  { title: '人员出入记录',
-    icon: 'camera',
-    path: '/person_inout_info'
+    path: '/personhistory'
   },  
+  // { title: '小区楼栋信息',
+  //   icon: 'camera',
+  //   path: '/house_info'
+  // },
+  // { title: '房间信息',
+  //   icon: 'camera',
+  //   path: '/room_info'
+  // },    
+  // { title: '入住人员信息',
+  //   icon: 'camera',
+  //   path: '/person_info'
+  // },
+  // { title: '人员出入记录',
+  //   icon: 'camera',
+  //   path: '/person_inout_info'
+  // },  
   // {
   //   title: '人像卡口',
   //   icon: 'folder-o',

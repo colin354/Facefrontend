@@ -366,12 +366,39 @@ const frameIn = [
         }
       },
       {
+        path: 'personhistory',
+        name: 'personhistory',
+        component: _import('modules/research-center/personhistory'),
+        meta: {
+          auth: true,
+          title: '隔离预警历史信息'
+        }
+      },      
+      {
         path: 'housews',
         name: 'housews',
         component: _import('modules/research-center/housews'),
         meta: {
           auth: true,
           title: '实时隔离预警'
+        }
+      },
+      {
+        path: 'house_info',
+        name: 'house_info',
+        component: _import('modules/research-center/house_info'),
+        meta: {
+          auth: true,
+          title: '小区楼栋信息'
+        }
+      },
+      {
+        path: 'room_info',
+        name: 'room_info',
+        component: _import('modules/research-center/room_info'),
+        meta: {
+          auth: true,
+          title: '房间信息'
         }
       },
       {
@@ -382,7 +409,7 @@ const frameIn = [
           auth: true,
           title: '入住人员信息'
         }
-      },
+      },      
       {
         path: 'person_inout_info',
         name: 'person_inout_info',

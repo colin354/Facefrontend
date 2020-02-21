@@ -30,12 +30,14 @@
             @sort-change="dataListSortChangeHandle"
             style="width: 100%;">
             <el-table-column prop="id" label="序号" header-align="center" align="center"/>
-            <el-table-column prop="floor_name" label="楼栋号" sortable header-align="center" align="center"/>
-            <el-table-column prop="room_num" label="房间数" header-align="center" align="center"/>
-            <el-table-column prop="camera_status" label="监控级别" sortable="custom" header-align="center" align="center">
+            <el-table-column prop="room_floor" label="楼栋号" sortable header-align="center" align="center"/>
+            <el-table-column prop="crew_name" label="房间数" header-align="center" align="center"/>
+            <el-table-column prop="crew_come_from" label="部署探头数量" header-align="center" align="center">
+            </el-table-column>
+            <el-table-column prop="crew_sex" label="监控级别" sortable="custom" header-align="center" align="center">
               <template slot-scope="scope">
-                <el-tag v-if="scope.row.camera_status === 0" size="mini" type="success">一般</el-tag>
-                <el-tag v-else size="mini" type="danger">重点</el-tag>
+                <el-tag v-if="scope.row.crew_sex === 0" size="mini" type="danger">女</el-tag>
+                <el-tag v-else-if="scope.row.crew_sex === 1" size="mini" type="success">男</el-tag>
               </template>
             </el-table-column>
             <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
@@ -98,13 +100,13 @@
           <div class="grid-content bg-purple">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
-                <span>重点信息</span>
+                <span>今日统计</span>
                 <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
               </div>
               <el-row>
-                <h2><span>重点隔离单元：10号楼</span></h2>
+                <h2><span>入住人数：18</span></h2>
                 <br/>
-                <!-- <span>已布控摄像头：220个</span> -->
+                <span>解禁人数：20</span>
               </el-row>
             </el-card>
           </div>
@@ -157,19 +159,21 @@ export default {
     room_list (id) {
       this.$router.push({name: 'room_info',params:{ roomFloor: id}})
     },
-    tableRowClassName ({row, rowIndex}) {  
-      if (row.room_floor === '10') {
+    tableRowClassName ({row, rowIndex}) {
+      console.log(row.room_floor)    
+      if (row.room_floor === "10") {
+        console.log('=====10')
         return 'stranger-row'
       }
       return ''
     },
     drawchart () {
       const data = [
-        { genre: '1#楼', sold: 68 },
-        { genre: '6#楼', sold: 90 },
-        { genre: '10#楼', sold: 54 },
-        { genre: '11#楼', sold: 96 },
-        { genre: '16#楼', sold: 432 },
+        { genre: '安徽芜湖', sold: 275 },
+        { genre: '江苏盐都', sold: 115 },
+        { genre: '亭湖', sold: 120 },
+        { genre: '北京', sold: 350 },
+        { genre: '其他', sold: 150 },
       ]; // G2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象。
       // Step 1: 创建 Chart 对象
       const chart = new G2.Chart({
