@@ -37,17 +37,7 @@
                 <el-card class="box-card-hei">
                   <div class="amap-page-container">
                     <!-- {{this.temp}} -->
-                    <el-amap
-                      :plugin="plugin"
-                      :amap-manager="amapManager"
-                      :zoom="zoom"
-                      :center="center"
-                      vid="amapDemo"
-                      ref="reds"
-                      style="width:100vw;height:80vh"
-                      :events="events"
-                    ></el-amap>                    
-                      <!-- <div id="amap-show" class="amap-demo"></div> -->
+                      <div id="amap-show" class="amap-demo"></div>
                   </div>
                 </el-card>
               </div>
@@ -96,35 +86,14 @@ import faceimg from './face-img'
 import facelist from './face-list'
 import { constants } from 'crypto'
 import mixinViewModule from '@/mixins/view-module'
-import { AMapManager } from "vue-amap";
-let amapManager = new AMapManager();
 // NPM 方式
+import { lazyAMapApiLoaderInstance } from 'vue-amap';
 // import carUrl from '../../assets/images/carame.png'
 export default {
   name: "multiline",
   // mixins: [ mixinViewModule ],
   data () {
-    let _obj = this;
     return {
-      amapManager,
-      center: [120.093585,33.313408],//盐城
-      plugin: [
-        {
-          pName: "Scale",
-          events: {
-            init(instance) {
-              console.log(instance);
-            }
-          }
-        }
-      ],
-      zoom: 18,
-      events: {
-        init(o) {
-          _obj.initMap();
-          
-        }
-      },      
       showA:false,
       markers:[],
       //日期选项
@@ -169,38 +138,26 @@ export default {
     }
   },
   created () {
-    // this.initMap()
-    // this.initPage()
+    let self = this
+    this.initMap()
+    console.log("------我的弧度-------")
+    this.initPage()
   },
   methods:{  
     initMap () {
-      let o = amapManager.getMap();
-
-      // 步行路线
-      AMap.service('AMap.Walking',function(){
-        //步行导航
-        var walking = new AMap.Walking({
-          map: o,
-          // panel: "panel"
-          hidMarkers:true,
-          isOutline: true,
-          // outlineColor: "red",
-        });
-         var path = [];
-
-         walking.search([120.094153,33.313319],[120.095028,33.313592], function(status, result) {
-            if (status === 'complete') {
-                log.success('绘制步行路线完成')
-            } else {
-                log.error('步行路线数据查询失败' + result)
-            } 
-        });
-      });
+      lazyAMapApiLoaderInstance.load().then(() => {
+        this.map = new AMap.Map('amap-show', {
+          // center: [114.037939,22.627198],//自带
+          // center: [120.09465,33.313217],  //盐城
+          // center: [120.094163,33.313109],//汇文公馆
+          center:[120.095913, 33.302156],
+          zoom: 18
+        })
+      })
     },
-
     createTrackMap () {
       this.initPage()
-      // this.addMarker()
+      this.addMarker()
     },
     addMarker () {//画轨迹的同时,添加摄像头图标
       let self = this
@@ -248,35 +205,48 @@ export default {
     },
     //画多条轨迹
     initPage () {
-      let o = amapManager.getMap();
-      // 步行路线
-      //步行导航
-      let path0 = {faceid:'1001',start:[120.093429,33.312951],end:[120.095505,33.312745]};
-      let path1 = {start:[120.093529,33.312551],end:[120.095605,33.312645]};
-      let path2 = {start:[120.093729,33.312751],end:[120.095805,33.312845]};   
-      let path = [path0,path1,path2] 
-      let walk = ['walk0','walk1','walk2']
-      console.log(path)
-      for(let i=0; i < 6 ;i++){
-        // console.log('----path---i------'+i)
-        // console.log(path[i])
-        // console.log(path[i].start)
-        // console.log(path[i].end)
-        walk[i] = new AMap.Walking({
-          map: o,
-          // panel: "panel"
-          hidMarkers:true,
-          isOutline: true,
-          // outlineColor: "red",
-        });
-        walk[i].search((path[i]).start,(path[i]).end, function(status, result) {
-            if (status === 'complete') {
-                log.success('绘制步行路线完成')
-            } else {
-                log.error('步行路线数据查询失败' + result)
-            } 
-        });  
-      }                                                    
+      this.map = new AMap.Map('amap-show', {
+        center: [120.095913, 33.302156],
+        zoom: 18
+      },
+      AMapUI.loadUI(['misc/PathSimplifier'], (PathSimplifier) => {
+        if (!PathSimplifier.supportCanvas) {
+          alert('当前环境不支持 Canvas！');
+          return;
+        }
+        for(var i=0 ; i<this.temp.length; i++){
+          // console.log("------外层for----")
+          // console.log(this.temp[i].location)
+          // console.log(this.temp[i].color)
+          var tempColor = this.temp[i].color  //同一个i值即同一个faceid,同一个人,用同一种颜色;不同的i值用不同的颜色
+          var bezierCurve = new AMap.BezierCurve({
+            path: this.temp[i].location,
+            showDir: true,
+            dirColor:'white',
+            isOutline: true,
+            outlineColor: "transparent",
+            borderWeight: 3,
+            strokeColor: tempColor, //线颜色
+            strokeOpacity: 1, //线透明度
+            strokeWeight: 5, //线宽
+            // 线样式还支持 'dashed'
+            strokeStyle: "solid", //线样式
+            // strokeStyle是dashed时有效
+            strokeDasharray: [10, 10],
+            lineJoin: 'round',
+            lineCap: 'round',
+            zIndex: 50,
+            dirArrowStyle:{
+              stepSpace: 8,  //stepSpace: {number} 箭头排布的间隔，单位像素
+              width: 3
+            }
+          })
+          bezierCurve.setMap(this.map)
+          // 缩放地图到合适的视野级别
+          this.map.setFitView([ bezierCurve ])
+        }                                                       
+      })
+      )
     }
   }
 }

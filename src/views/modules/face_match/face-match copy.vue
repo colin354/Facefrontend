@@ -61,16 +61,7 @@
         <div class="grid-content bg-purple">
             <el-card class="box-card-hei">
               <div class="amap-page-container">
-                <el-amap
-                :plugin="plugin"
-                :amap-manager="amapManager"
-                :zoom="zoom"
-                :center="center"
-                vid="amapDemo"
-                ref="reds"
-                style="width:100vw;height:80vh"
-                :events="events"
-              ></el-amap>  
+                  <div id="amap-show" class="amap-demo"></div>
               </div>
             </el-card>
         </div>
@@ -134,8 +125,8 @@ import 'videojs-markers'
 import '@/views/modules/face_match/src/custom-theme.css'
 import faceimg from './face-img'
 import facecarsousel from './face-carsousel'
-import { AMapManager } from "vue-amap";
-let amapManager = new AMapManager();
+import { constants } from 'crypto'
+import { lazyAMapApiLoaderInstance } from 'vue-amap';
 // videojs.registerPlugin("markers", markers);
 export default {
   name: "face-match",
@@ -145,29 +136,9 @@ export default {
     facecarsousel
   },
   mixins: [ mixinViewModule ],
-  data() {    
+  data() {
     let id = this.$route.params.id;//存放face.vue界面传过来的faceid
-    let _obj = this;
     return {
-      amapManager,
-      center: [120.093585,33.313408],//盐城
-      plugin: [
-        {
-          pName: "Scale",
-          events: {
-            init(instance) {
-              console.log(instance);
-            }
-          }
-        }
-      ],
-      zoom: 18,
-      events: {
-        init(o) {
-          _obj.initMap();
-          
-        }
-      },      
       cameraMarkers:[],
       total: 0,
       showAllVisible: false,
@@ -211,9 +182,12 @@ export default {
     };
   },
   created(){ 
+    console.log("this is created!!--------------------facelist") 
+    console.log(this.facelist)
+     
   },
   mounted() {
-    // this.initMap()
+    this.initMap()
   },
   computed: {
     player() {
@@ -244,7 +218,13 @@ export default {
       this.initMap() //点击返回后,所有的轨迹应该消失
     },
     initMap(){
-      let o = amapManager.getMap();
+      lazyAMapApiLoaderInstance.load().then(() => {
+          this.map = new AMap.Map('amap-show', {
+              center:[120.095913,33.302156],
+              zoom: 18
+          })
+      });
+      this.showAllVisible = false
     },
     getDatas(user_id){//先发送get请求,     
       if(user_id){
@@ -279,36 +259,45 @@ export default {
     getDurationGPSData(){//再画出同一个人的多条轨迹   
     //画出一个人的轨迹
       this.showAllVisible = true
-      let o = amapManager.getMap();
-      let _this = this
-      AMapUI.loadUI(['misc/PathSimplifier'], (PathSimplifier) => {
-          if (!PathSimplifier.supportCanvas) {
-              alert('当前环境不支持 Canvas！');
-              return;
-          }
-      AMap.service('AMap.Walking',function(){
-        //步行导航
-        var walking = new AMap.Walking({
-          map: o,
-          // panel: "panel"
-          hidMarkers:true,
-          isOutline: true,
-          // outlineColor: "red",
-        });
-        console.log('colin:----llllocation----')
-        console.log(_this.getLocations)
-        var path = [];
-
-        walking.search(_this.getLocations[0].start,_this.getLocations[0].end, function(status, result) {
-            if (status === 'complete') {
-                log.success('绘制步行路线完成')
-            } else {
-                log.error('步行路线数据查询失败' + result)
-            } 
-        });
-      });
-      })
-      // this.addMarker()  //地图上显示轨迹的同时,显示摄像头图标
+      this.map = new AMap.Map('amap-show', {
+                      // center: [120.094163,33.313109],  //汇文公馆
+                      center:[120.095913,33.302156],
+                      zoom: 18
+                  },
+          AMapUI.loadUI(['misc/PathSimplifier'], (PathSimplifier) => {
+              if (!PathSimplifier.supportCanvas) {
+                  alert('当前环境不支持 Canvas！');
+                  return;
+              }
+              //同一个i值即同一个faceid,同一个人,用同一种颜色;不同的i值用不同的颜色
+                var bezierCurve = new AMap.BezierCurve({
+                    path: this.getLocations,
+                    showDir: true,
+                    dirColor:'white',
+                    isOutline: true,
+                    outlineColor: "transparent",
+                    borderWeight: 3,
+                    strokeColor: 'blue', //线颜色
+                    strokeOpacity: 1,//线透明度
+                    strokeWeight: 5, //线宽
+                    // 线样式还支持 'dashed'
+                    strokeStyle: "solid", //线样式
+                    // strokeStyle是dashed时有效
+                    strokeDasharray: [10, 10],
+                    lineJoin: 'round',
+                    lineCap: 'round',
+                    zIndex: 50,
+                    dirArrowStyle:{
+                        stepSpace: 8,  //stepSpace: {number} 箭头排布的间隔，单位像素
+                        width: 3
+                    }                                   
+                })
+                bezierCurve.setMap(this.map)
+                // 缩放地图到合适的视野级别
+                this.map.setFitView([ bezierCurve ]) 
+          })
+      )
+      this.addMarker()  //地图上显示轨迹的同时,显示摄像头图标
     },
     //添加摄像头图标
     addMarker(){
@@ -344,7 +333,6 @@ export default {
     broadcast(fid,sid,url){
       this.visible = true
       console.log('----这是我要的数据----')
-      console.log(url)
       console.log(this.dataList) 
       // url = `${process.env.VUE_APP_API}/`+url
       //url = 'http://10.2.155.139:8888'+url
@@ -353,7 +341,6 @@ export default {
       .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:fid,streamid:sid}})
       .then(res => {
         console.log('播放---res')
-        console.log(res.list)
         this.playerOptions.custum = res.list
       })
       .catch(() => {});

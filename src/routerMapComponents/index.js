@@ -40,7 +40,9 @@ let componentMaps = {
 
 
     "testws": () => import(/* webpackChunkName: "testws" */'@/views/modules/research-center/testws'),
-
+    
+    "video_map_list": () => import(/* webpackChunkName: "video_map_list" */'@/views/modules/stream/video_map_list'),
+    "camera_stream": () => import(/* webpackChunkName: "camera_stream" */'@/views/modules/stream/camera_stream'),
     "stream_catch": () => import(/* webpackChunkName: "stream_catch" */'@/views/modules/stream/stream_catch'),
     // "liveview": () => import(/* webpackChunkName: "liveview" */'@/views/modules/stream/liveview'),
     // "stream-list": () => import(/* webpackChunkName: "stream" */'@/views/modules/stream/stream'),
