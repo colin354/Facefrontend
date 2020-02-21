@@ -19,6 +19,8 @@ export default {
       facelist: [],
       imgList: [],
       check_info: [],
+      people_num: 0,
+      photo_data: {},
       dataForm: {},               // 查询条件
       dataList: [],               // 数据列表
       order: '',                  // 排序，asc／desc
@@ -65,6 +67,8 @@ export default {
         this.check_info = this.mixinViewModuleOptions.getDataListIsPage ? res.check_info : []
         this.facelist = res.imgList ? res.imgList : []
         this.streamlist = res.streamList ? res.streamList : []
+        this.people_num = res.people_num ? res.people_num : 0
+        this.photo_data = res.photo_data ? res.photo_data : {}
         // console.log(res.check_info)
       }).catch(() => {
         // this.face_url = ''

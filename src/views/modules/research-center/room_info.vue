@@ -131,7 +131,7 @@
               <el-row>
                 <h2><span>总房间数：{{total}} 户</span></h2>
                 <br/>
-                <span>入住人数：208</span>
+                <span>入住人数：{{people_num}}</span>
               </el-row>
             </el-card>
           </div>
@@ -197,6 +197,10 @@ export default {
         })
     },
     drawchart () {
+      let _this = this
+      console.log('-----aaaa-----')
+      console.log(_this)
+      console.log(_this.photo_data)
       const data = [
         { item: '空闲', count: 40, percent: 0.4 },
         { item: '2人居住', count: 21, percent: 0.21 },
