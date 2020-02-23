@@ -4,23 +4,17 @@
       <el-col :span="18">    
       <div class="grid-content bg-purple">
         <el-card class="box-card">  
-          <el-form :inline="true" size="mini" :model="dataForm" @keyup.enter.native="getDataList()">
+          <!-- <el-form :inline="true" size="mini" :model="dataForm" @keyup.enter.native="getDataList()">
             <el-form-item>
               <el-input v-model="dataForm.queryName" placeholder="姓名" clearable/>
             </el-form-item>
-            <!-- <el-form-item>
-              <el-select v-model="dataForm.status" placeholder="性别" clearable>
-                <el-option label="女" :value="0"/>
-                <el-option label="男" :value="1"/>
-              </el-select>
-            </el-form-item> -->
             <el-form-item>
               <el-button @click="getDataList()">{{ $t('query') }}</el-button>
             </el-form-item>
             <el-form-item>
               <el-button type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
             </el-form-item>
-          </el-form>
+          </el-form> -->
           <el-table
             size="mini"
             v-loading="dataListLoading"

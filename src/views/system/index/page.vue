@@ -4,23 +4,17 @@
       <el-col :span="18">    
       <div class="grid-content bg-purple">
         <el-card class="box-card">  
-          <el-form :inline="true" size="mini" :model="dataForm" @keyup.enter.native="getDataList()">
+          <!-- <el-form :inline="true" size="mini" :model="dataForm" @keyup.enter.native="getDataList()">
             <el-form-item>
               <el-input v-model="dataForm.queryName" placeholder="姓名" clearable/>
             </el-form-item>
-            <!-- <el-form-item>
-              <el-select v-model="dataForm.status" placeholder="性别" clearable>
-                <el-option label="女" :value="0"/>
-                <el-option label="男" :value="1"/>
-              </el-select>
-            </el-form-item> -->
             <el-form-item>
               <el-button @click="getDataList()">{{ $t('query') }}</el-button>
             </el-form-item>
             <el-form-item>
               <el-button type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
             </el-form-item>
-          </el-form>
+          </el-form> -->
           <el-table
             size="mini"
             v-loading="dataListLoading"
@@ -102,7 +96,11 @@
                 <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
               </div>
               <el-row>
-                <h2><span>重点隔离单元：10号楼</span></h2>
+                <h4><span>总楼栋数 ：{{total}}栋</span></h4>
+                <h4><span>总户数 ：{{room_num}}户</span></h4>
+                <h4><span>总房间数 ：{{suite_num}}间</span></h4>
+                <h4><span>总人数 ：{{people_num}}人</span></h4>
+                <h4><span>重点楼栋 ：<el-tag type="danger">10号楼</el-tag></span></h4>
                 <br/>
                 <!-- <span>已布控摄像头：220个</span> -->
               </el-row>

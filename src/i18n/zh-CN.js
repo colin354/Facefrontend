@@ -425,6 +425,8 @@ t.user.roleIdList = '角色配置'
 t.user.validate = {}
 t.user.validate.comfirmPassword = '确认密码与密码输入不一致'
 t.user.face = '人脸头像'
+t.user.floor = '楼号'
+t.user.room = '房号'
 
 t.face = {}
 t.face.name = '姓名'

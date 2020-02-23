@@ -4,24 +4,18 @@
       <el-col :span="18">    
       <div class="grid-content bg-purple">
         <el-card class="box-card">  
-          <el-form :inline="true" size="mini" :model="dataForm" @keyup.enter.native="getDataList()">
+          <!-- <el-form :inline="true" size="mini" :model="dataForm" @keyup.enter.native="getDataList()">
             <el-form-item>
               <el-input v-model="dataForm.queryName" placeholder="姓名" clearable/>
             </el-form-item>
-            <!-- <el-form-item>
-              <el-select v-model="dataForm.status" :placeholder="$t('logLogin.status')" clearable>
-                <el-option :label="$t('logLogin.status0')" :value="0"/>
-                <el-option :label="$t('logLogin.status1')" :value="1"/>
-                <el-option :label="$t('logLogin.status2')" :value="2"/>
-              </el-select>
-            </el-form-item> -->
             <el-form-item>
               <el-button @click="getDataList()">{{ $t('query') }}</el-button>
             </el-form-item>
             <el-form-item>
               <el-button type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
             </el-form-item>
-          </el-form>
+          </el-form> -->
+
           <el-table
             size="mini"
             v-loading="dataListLoading"
@@ -62,11 +56,15 @@
               <el-tag v-else-if="scope.row.people_sex === 1" size="mini" type="success">男</el-tag>
             </template>
           </el-table-column>
-          <el-table-column v-if="dataForm.roomFloor === '10'" prop="people_wtemp" label="体温" header-align="center" align="center"/>
-          <el-table-column prop="people_come_from" label="来源地" header-align="center" align="center"/>
+          <el-table-column v-if="dataForm.roomFloor === '10'" prop="people_wtemp" label="体温" header-align="center" align="center">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.people_wtemp === 0" size="mini" type="success">正常</el-tag>
+            </template>          
+          </el-table-column>
+          <!-- <el-table-column prop="people_come_from" label="来源地" header-align="center" align="center"/> -->
           <el-table-column prop="people_unit" label="单位" header-align="center" align="center"/>
           <el-table-column prop="people_check_in" label="进住时间" sortable header-align="center" align="center"/>
-          <el-table-column prop="people_check_out" label="解禁时间" sortable header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
+          <el-table-column prop="people_check_out" label="解禁时间" sortable header-align="center" align="center"/>
         </el-table>
 
       </el-dialog>
@@ -129,15 +127,15 @@
                 <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
               </div>
               <el-row>
-                <h2><span>总房间数：{{total}} 户</span></h2>
-                <br/>
-                <span>入住人数：{{people_num}}</span>
+                <h4><span>总户数：{{total}} 户</span></h4>
+                <h4><span>总房间数：{{suite_num}}间</span></h4>
+                <h4><span>入住人数：{{people_num}}人</span></h4>
               </el-row>
             </el-card>
           </div>
         </el-row>
         <el-row>
-          <div id="room_info"></div>
+          <div id="room_info" ></div>
         </el-row>        
       </el-col>
     </el-row>
@@ -165,6 +163,20 @@ export default {
     dnumber
   },
   mounted () { 
+    console.log('mountttttt')
+    // var id = this.$route.params.roomFloor
+    // console.log(id)
+      // this.$axios.get(`/api/quarroom?token=${cookieGet('token')}`, { params: { roomFloor: id } })
+      //   .then(res => {        
+      //     // console.log(res.list)
+      //     // this.inout_dataList = res.list
+      //   })
+      //   .catch(() => {
+      //     console.log('error')
+      //   })
+  },
+  updated (){
+    console.log('aaaaaftermount')
     this.drawchart()
   },
   data () {
@@ -196,11 +208,24 @@ export default {
           console.log('error')
         })
     },
+
     drawchart () {
-      let _this = this
-      console.log('-----aaaa-----')
-      console.log(_this)
-      console.log(_this.photo_data)
+
+      // var data1 = this.photo_data
+      // const data = []
+      // var str_data =""
+      // for(var i=0;i<data1.length;i++)
+      // {
+      //   if(data1[i][0] === 0){
+      //     str_data = "空闲"
+      //   }else{
+      //     str_data = (data1[i][0]).toString()+"人居住"
+      //   }
+
+      //   var d = {item: str_data, count: data1[i][1],percent:parseFloat((data1[i][1]/this.total).toFixed(2))}
+      //   data.push(d)
+      // };
+      // console.log(data)
       const data = [
         { item: '空闲', count: 40, percent: 0.4 },
         { item: '2人居住', count: 21, percent: 0.21 },

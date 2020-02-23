@@ -175,15 +175,15 @@ const frameIn = [
           title: '监控布控显示'
         }
       },
-      {
-        path: 'liveview',
-        name: 'liveview',
-        component: _import('modules/stream/liveview'),
-        meta: {
-          auth: true,
-          title: '实时监控管理'
-        }
-      },
+      // {
+      //   path: 'liveview',
+      //   name: 'liveview',
+      //   component: _import('modules/stream/liveview'),
+      //   meta: {
+      //     auth: true,
+      //     title: '实时监控管理'
+      //   }
+      // },
       {
         path: 'real-video',
         name: 'real-video',
@@ -373,7 +373,16 @@ const frameIn = [
           auth: true,
           title: '隔离预警历史信息'
         }
-      },      
+      }, 
+      {
+        path: 'person_add',
+        name: 'person_add',
+        component: _import('modules/research-center/person_add'),
+        meta: {
+          auth: true,
+          title: '人员录入'
+        }
+      },     
       {
         path: 'housews',
         name: 'housews',

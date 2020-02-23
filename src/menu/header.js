@@ -10,8 +10,12 @@ export default [
     path: '/housews'
   },
   { title: '隔离预警历史信息',
-    icon: 'camera',
+    icon: 'bell',
     path: '/personhistory'
+  },  
+  { title: '人员录入',
+    icon: 'user',
+    path: '/person_add'
   },  
   // { title: '小区楼栋信息',
   //   icon: 'camera',

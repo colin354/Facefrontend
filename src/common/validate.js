@@ -23,6 +23,21 @@ export function isPhone (s) {
 }
 
 /**
+ * 楼层
+ * @param {*} s
+ */
+export function isFloor (s) {
+  return /^[0-9]{0,2}$/.test(s)
+}
+
+/**
+ * 楼层
+ * @param {*} s
+ */
+export function isRoom (s) {
+  return /^[0-9]{0,4}$/.test(s)
+}
+/**
  * URL地址
  * @param {*} s
  */
