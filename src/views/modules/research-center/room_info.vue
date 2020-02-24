@@ -135,6 +135,12 @@
           </div>
         </el-row>
         <el-row>
+          <g2-pie type="pie" :axis-name="{ name: '房屋状态', value: '值' }"
+          :data="data_pie"  :label-option="{ show: true, offset: 20 }"
+          >
+          </g2-pie>
+        </el-row> 
+        <el-row>
           <div id="room_info" ></div>
         </el-row>        
       </el-col>
@@ -193,6 +199,11 @@ export default {
         status: '',
         roomFloor: roomFloor,
       },
+      data_pie: [
+        { name: '空闲', value: 40 }, 
+        { name: '2人居住', value: 21 }, 
+        { name: '4人居住', value: 17 }
+      ],
       inout_dataList: []
     }
   },
