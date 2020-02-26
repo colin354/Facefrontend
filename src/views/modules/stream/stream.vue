@@ -69,7 +69,7 @@
       </el-row>
     </el-dialog>
 
-        <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
+    <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
     </el-row>
     <!-- 分页 -->
     <el-pagination

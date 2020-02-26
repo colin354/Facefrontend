@@ -26,7 +26,7 @@
             <el-table-column prop="id" label="序号" header-align="center" align="center"/>
             <el-table-column prop="floor_name" label="楼栋号" sortable header-align="center" align="center"/>
             <el-table-column prop="room_num" label="房间数" header-align="center" align="center"/>
-            <el-table-column prop="camera_status" label="监控级别" sortable="custom" header-align="center" align="center">
+            <el-table-column prop="camera_status" label="监控级别" sortable header-align="center" align="center">
               <template slot-scope="scope">
                 <el-tag v-if="scope.row.camera_status === 0" size="mini" type="success">一般</el-tag>
                 <el-tag v-else size="mini" type="danger">重点</el-tag>
@@ -92,7 +92,7 @@
           <div class="grid-content bg-purple">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
-                <span>重点信息</span>
+                <span>信息概览</span>
                 <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
               </div>
               <el-row>
@@ -100,7 +100,10 @@
                 <h4><span>总户数 ：{{room_num}}户</span></h4>
                 <h4><span>总房间数 ：{{suite_num}}间</span></h4>
                 <h4><span>总人数 ：{{people_num}}人</span></h4>
-                <h4><span>重点楼栋 ：<el-tag type="danger">10号楼</el-tag></span></h4>
+                <h4>
+                  <span>重点楼栋 ：<el-tag type="danger">9号楼</el-tag>&nbsp;&nbsp;<el-tag type="danger">10号楼</el-tag> 
+                  </span>
+                </h4>
                 <br/>
                 <!-- <span>已布控摄像头：220个</span> -->
               </el-row>
@@ -156,6 +159,9 @@ export default {
       this.$router.push({name: 'room_info',params:{ roomFloor: id}})
     },
     tableRowClassName ({row, rowIndex}) {  
+      if (row.room_floor === '9') {
+        return 'stranger-row'
+      }
       if (row.room_floor === '10') {
         return 'stranger-row'
       }

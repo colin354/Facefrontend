@@ -8,38 +8,65 @@
             <el-form-item>
               <el-input v-model="dataForm.queryName" placeholder="姓名" clearable/>
             </el-form-item>
-            <!-- <el-form-item>
-              <el-select v-model="dataForm.status" placeholder="性别" clearable>
-                <el-option label="女" :value="0"/>
-                <el-option label="男" :value="1"/>
+            <el-form-item>
+              <el-select v-model="dataForm.status" placeholder="人员状态" clearable>
+                <el-option label="入住" :value="1"/>
+                <el-option label="离开" :value="0"/>
               </el-select>
-            </el-form-item> -->
-            <el-form-item>
-              <el-button @click="getDataList()">{{ $t('query') }}</el-button>
             </el-form-item>
             <el-form-item>
+              <el-button @click="queryHandle()">{{ $t('query') }}</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
+            </el-form-item>
+            <!-- <el-form-item>
               <el-button type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
-            </el-form-item>
+            </el-form-item> -->
           </el-form>
           <el-table
             size="mini"
             v-loading="dataListLoading"
             :data="dataList"
             border
+            @selection-change="dataListSelectionChangeHandle"
             @sort-change="dataListSortChangeHandle"
             style="width: 100%;">
-            <el-table-column prop="crew_room" label="房间号" sortable header-align="center" align="center"/>
-            <el-table-column prop="crew_name" label="姓名" header-align="center" align="center"/>
-            <el-table-column prop="crew_come_from" label="来源地" header-align="center" align="center">
-            </el-table-column>
-            <el-table-column prop="crew_sex" label="性别" sortable="custom" header-align="center" align="center">
+            <el-table-column type="selection" header-align="center" align="center" width="50"/>
+            <el-table-column prop="id" label="序号" header-align="center" align="center" width="80"/>
+            <el-table-column label="房间信息" header-align="center" align="center">
               <template slot-scope="scope">
-                <el-tag v-if="scope.row.crew_sex === 0" size="mini" type="danger">女</el-tag>
-                <el-tag v-else-if="scope.row.crew_sex === 1" size="mini" type="success">男</el-tag>
+                {{scope.row.people_room_floor}}#{{scope.row.people_room_num}}
               </template>
             </el-table-column>
-            <el-table-column prop="crew_check_in" label="进住时间" sortable header-align="center" align="center"/>
-            <el-table-column prop="crew_check_out" label="解禁时间" sortable header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
+            <el-table-column prop="people_name" label="姓名" header-align="center" align="center"/>
+            <el-table-column prop="people_sex" label="性别" sortable header-align="center" align="center" width="80">
+              <template slot-scope="scope">
+                <el-tag v-if="scope.row.people_sex === 0" size="mini" type="danger">女</el-tag>
+                <el-tag v-else-if="scope.row.people_sex === 1" size="mini" type="success">男</el-tag>
+                <el-tag v-else size="mini" type="info">未录入</el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column prop="people_unit" label="单位" header-align="center" align="center"/>
+            <el-table-column prop="people_check_in" label="进住时间" sortable header-align="center" align="center"/>
+            <el-table-column prop="people_check_out" label="解禁时间" sortable header-align="center" align="center"/>
+            <el-table-column prop="people_status" label="入住状态" sortable header-align="center" align="center">
+              <template slot-scope="scope">
+                <el-tag v-if="scope.row.people_status === 0" size="mini" type="warning">{{scope.row.people_leave_time}}日离开</el-tag>
+                <el-tag v-else-if="scope.row.people_status === 1" size="mini" type="primary">入住中</el-tag>
+              </template>
+            </el-table-column>
+            <!-- <el-table-column prop="people_leave_time" label="离开时间" sortable header-align="center" align="center"/> -->
+            <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
+              <template slot-scope="scope">
+                <el-button type="text" size="mini" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+                <el-button type="text" size="mini" :disabled="scope.row.people_status == 0 ? true : false" @click="leaveHandle(scope.row.id)">离开</el-button>
+                <el-button type="text" size="mini" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
+              </template>
+            </el-table-column>
           </el-table>
         </el-card>
       </div>
@@ -63,7 +90,6 @@
                 >
                 </dnumber>                
               </div>
-
               <div class="right">
                 <div class="content">
                   <dnumber
@@ -95,21 +121,20 @@
           <div class="grid-content bg-purple">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
-                <span>今日统计</span>
+                <span>入住统计</span>
                 <el-button style="float: right; padding: 3px 0" type="text">更多</el-button>
               </div>
               <el-row>
-                <h2><span>入住人数：18</span></h2>
-                <br/>
-                <span>解禁人数：20</span>
+                <g2-line :is-smooth="true" :padding="['auto', 100]" :height="250"
+                :data="photo_data"
+                :axis-name="{name:'年份', value:'GDP(亿美元)', type:'国家'}">
+                </g2-line>  
               </el-row>
             </el-card>
           </div>
         </el-row>
-        <el-row>
-          <div id="c1"></div>
-        </el-row>
       </el-col>
+      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
     </el-row>
     <!-- 分页 -->
     <el-pagination
@@ -129,55 +154,45 @@
 import mixinViewModule from '@/mixins/view-module'
 import { cookieGet } from '@/common/cookie'
 import dnumber from "./components/dnumber"
+import AddOrUpdate from './person-add-or-update'
 export default {
   mixins: [ mixinViewModule ],
   components: {
-    dnumber
+    dnumber,
+    AddOrUpdate
   },
   mounted () { 
-    this.drawchart()
+    // this.drawchart()
   },
   data () {
     return {
       mixinViewModuleOptions: {
-        getDataListURL: `/api/plotcrew?token=${cookieGet('token')}`,
+        getDataListURL: `/api/quarpeople?token=${cookieGet('token')}`,
         getDataListIsPage: true,
-        exportURL: `/api/plotcrew/export?token=${cookieGet('token')}`
+        deleteURL: `/api/quarpeople?token=${cookieGet('token')}`,
+        deleteIsBatch: true,
+        exportURL: `/api/quarpeople/export?token=${cookieGet('token')}`
       },
       dataForm: {
+        id: '',
         queryName: '',
         status: ''
       }
     }
   },
-  methods: {
-    drawchart () {
-      const data = [
-        { genre: '安徽芜湖', sold: 275 },
-        { genre: '江苏盐都', sold: 115 },
-        { genre: '亭湖', sold: 120 },
-        { genre: '北京', sold: 350 },
-        { genre: '其他', sold: 150 },
-      ]; // G2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象。
-      // Step 1: 创建 Chart 对象
-      const chart = new G2.Chart({
-        container: 'c1', // 指定图表容器 ID
-        forceFit: true, // 图表跟随图表容器宽度变化
-        height: 250, // 指定图表高度
-      });
-      console.log('-----chaaart-----')
-      console.log(chart)
-
-      // Step 2: 载入数据源
-      chart.source(data);
-      // Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
-      chart
-        .interval()
-        .position('genre*sold')
-        .color('genre');
-      // Step 4: 渲染图表
-      chart.render();
-    }    
+  methods: { 
+    queryHandle () {
+      this.page = 1
+      this.getDataList()
+    },
+    leaveHandle (id){
+      this.$axios
+        .put(`/api/quarpeople?token=${cookieGet("token")}`,{id:id,leave:'1'})
+        .then(res => {
+          this.getDataList()
+        })
+        .catch(() => {});      
+    }
   }
 }
 </script>

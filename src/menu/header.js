@@ -12,7 +12,11 @@ export default [
   { title: '隔离预警历史信息',
     icon: 'bell',
     path: '/personhistory'
-  },  
+  }, 
+  { title: '人员信息记录',
+    icon: 'users',
+    path: '/person_info'
+  }, 
   { title: '人员录入',
     icon: 'user',
     path: '/person_add'
@@ -25,10 +29,6 @@ export default [
   //   icon: 'camera',
   //   path: '/room_info'
   // },    
-  // { title: '入住人员信息',
-  //   icon: 'camera',
-  //   path: '/person_info'
-  // },
   // { title: '人员出入记录',
   //   icon: 'camera',
   //   path: '/person_inout_info'

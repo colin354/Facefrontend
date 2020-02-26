@@ -238,9 +238,9 @@ export default {
       })
 
       // 销毁实例
-      this.$once('hook:beforeDestroy', function () {
-        this.chart.destroy()
-      })
+      // this.$once('hook:beforeDestroy', function () {
+      //   this.chart.destroy()
+      // })
     }
   },
   created () {

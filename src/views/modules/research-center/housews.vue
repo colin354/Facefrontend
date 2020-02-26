@@ -97,7 +97,8 @@ export default {
   data () {
     return {
       webSocket: null,
-      url: 'ws://172.16.3.115:9988/ws/chat/',
+      // url: 'ws://172.16.3.115:9988/ws/chat/',
+      url: 'ws://192.168.10.7:8888/ws/chat/',
       imgs: [], //存放固定数目的照片
       streamList: [],
       warning_info: [],

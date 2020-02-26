@@ -13,6 +13,17 @@ export function errorCreate (msg) {
   throw error
 }
 
+// 创建一个提示
+export function msgCreate (msg) {
+  const error = new Error(msg)
+  Message({
+    message: msg,
+    type: 'error',
+    duration: 5 * 1000
+  })
+  throw error
+}
+
 // 记录和显示错误
 function errorLog (error) {
   // 添加到日志
@@ -118,6 +129,12 @@ service.interceptors.response.use(
         case '1':
           // [ 示例 ] code === 0 代表没有错误
           return dataAxios
+        case '888888':
+          msgCreate(`${dataAxios.msg}`)
+          break
+        case '-1':
+          msgCreate(`${dataAxios.msg}`)
+          break
         case '999999':
           return dataAxios.data
         case 'xxx':

@@ -32,15 +32,15 @@
               <el-input v-model="dataForm.people_phone_num" placeholder="电话"/>
             </el-form-item>
 
-            <el-form-item prop="room_floor" label="楼号">
-              <el-input v-model="dataForm.room_floor" placeholder="楼号"/>
+            <el-form-item prop="people_room_floor" label="楼号">
+              <el-input v-model="dataForm.people_room_floor" placeholder="楼号"/>
             </el-form-item>
 
-            <el-form-item prop="room_num" label="房号">
-              <el-input v-model="dataForm.room_num" placeholder="房号"/>
+            <el-form-item prop="people_room_num" label="房号">
+              <el-input v-model="dataForm.people_room_num" placeholder="房号"/>
             </el-form-item>
 
-            <el-form-item label="入住时间">
+            <el-form-item label="入住时间" required>
               <el-col :span="11">
                 <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="dataForm.people_check_in" style="width: 100%;"></el-date-picker>
               </el-col>
@@ -64,7 +64,6 @@ import { cookieGet } from "@/common/cookie";
 import { isMobile, isUsername, isFloor, isRoom} from "@/common/validate";
 export default {
   mounted () { 
-    
   },
   data () {
     return {
@@ -73,8 +72,8 @@ export default {
         people_sex: '',
         people_unit: '',
         people_phone_num: '',
-        room_floor:'',
-        room_num:'',
+        people_room_floor:'',
+        people_room_num:'',
         people_check_in:'',
         people_wtemp: 0
       }
@@ -139,7 +138,7 @@ export default {
           },
           { validator: validateMobile, trigger: "blur" }
         ],
-        room_floor: [
+        people_room_floor: [
           {
             required: true,
             message: this.$t("validate.required"),
@@ -147,7 +146,7 @@ export default {
           },
           { validator: validateFloor, trigger: "blur" }
         ],
-        room_num: [
+        people_room_num: [
           {
             required: true,
             message: this.$t("validate.required"),

@@ -48,12 +48,18 @@
           border
           @sort-change="dataListSortChangeHandle"
           style="width: 100%;">
-          <el-table-column prop="people_room" label="房间号" header-align="center" align="center"/>
+          <!-- <el-table-column prop="people_room_num" label="房间号" header-align="center" align="center"/> -->
+          <el-table-column label="房间信息" header-align="center" align="center">
+            <template slot-scope="scope">
+              {{scope.row.people_room_floor}}#{{scope.row.people_room_num}}
+            </template>
+          </el-table-column>
           <el-table-column prop="people_name" label="姓名" header-align="center" align="center"/>
           <el-table-column prop="people_sex" label="性别" header-align="center" align="center">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.people_sex === 0" size="mini" type="danger">女</el-tag>
               <el-tag v-else-if="scope.row.people_sex === 1" size="mini" type="success">男</el-tag>
+              <el-tag v-else size="mini" type="info">未录入</el-tag>
             </template>
           </el-table-column>
           <el-table-column v-if="dataForm.roomFloor === '10'" prop="people_wtemp" label="体温" header-align="center" align="center">
@@ -136,13 +142,13 @@
         </el-row>
         <el-row>
           <g2-pie type="pie" :axis-name="{ name: '房屋状态', value: '值' }"
-          :data="data_pie"  :label-option="{ show: true, offset: 20 }"
+          :data="photo_data"  :label-option="{ show: true, offset: -20 }"
           >
           </g2-pie>
         </el-row> 
-        <el-row>
+        <!-- <el-row>
           <div id="room_info" ></div>
-        </el-row>        
+        </el-row>         -->
       </el-col>
     </el-row>
     <!-- 分页 -->
@@ -183,7 +189,7 @@ export default {
   },
   updated (){
     console.log('aaaaaftermount')
-    this.drawchart()
+    // this.drawchart()
   },
   data () {
     let roomFloor = this.$route.params.roomFloor;

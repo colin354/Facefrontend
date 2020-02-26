@@ -416,7 +416,7 @@ const frameIn = [
         component: _import('modules/research-center/person_info'),
         meta: {
           auth: true,
-          title: '入住人员信息'
+          title: '人员信息记录'
         }
       },      
       {
