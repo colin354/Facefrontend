@@ -2,6 +2,26 @@
   <d2-container>
     <el-row :gutter="20">
       <el-col :span="6">
+        <el-row :gutter='20'>
+          <el-col>
+            <div class="grid-content bg-purple">
+              <el-card class="box-card">
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;起止时间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <el-button type="primary" @click="" size="mini">
+                  查询</el-button>               
+                <el-date-picker
+                    v-model="value1"
+                    type="datetimerange"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+                  </el-date-picker>                    
+              </el-card>
+            </div>
+          </el-col>
+        </el-row>
         <el-row :gutter="20">
           <el-col>
             <div class="grid-content bg-purple">
@@ -10,7 +30,7 @@
                   <el-form-item>
                     <el-button @click="showAll()" v-if="showAllVisible">返回</el-button>
                   </el-form-item>
-                </el-form>
+                </el-form>               
                 <el-carousel :interval="4000" type="card" height="150px">
                   <el-carousel-item v-for="(item, index) in facelist" :key="index">
                     <!-- 默认显示全部图片时,用的是user_id -->
@@ -23,7 +43,6 @@
                       <span @click="getDatas(item.userid_id)">id:{{item.userid_id}}</span>
                       <img :src="item.imgurl" style="width:100%" @click="getDatas(item.userid_id)">
                     </el-card>
-
                   </el-carousel-item>
                 </el-carousel>
               </el-card>
@@ -36,7 +55,7 @@
             <div class="grid-content bg-purple">
               <el-card class="box-card">
                 <el-table
-                  height="460"
+                  height="340"
                   size="mini"
                   :data="dataList.slice((page-1)*limit,page*limit)"
                   border
@@ -186,6 +205,7 @@ export default {
       dataForm: {
         faceid:id
       },
+      value1:'',
       playerOptions: {
         // videojs options
         loop: true,
@@ -209,11 +229,6 @@ export default {
         ]
       }
     };
-  },
-  created(){ 
-  },
-  mounted() {
-    // this.initMap()
   },
   computed: {
     player() {
@@ -267,7 +282,8 @@ export default {
           console.log(this.facelist)
           console.log("data-----list")
           console.log(this.dataList)
-          this.getDurationGPSData()
+          this.getDurationGPSData() //超哥所用方法有虚线
+          // this.getWalk()//超哥链接所用方法
         })
         .catch(error =>{
             console.log(error)
@@ -275,8 +291,35 @@ export default {
       }
       this.showId = false
     },
+    getWalk(){//2月21日测试高德是否可以使用
+      console.log("---超哥链接----")
+      this.showAllVisible = true
+      AMap.service('AMap.Walking',function(){
+        //步行导航
+        var walking = new AMap.Walking({
+          map: amapManager.getMap(),
+          hidMarkers:true,
+          isOutline: true,
+          outlineColor: "red",
+        });
+         var path = [];
+         path.push([120.094726,33.300456]); //盐城起点
+         path.push([120.09484,33.302021]);//盐城途径点
+         path.push([120.096347,33.300165]); //盐城终点
+        walking.search(path[0],path[2], function(status, result) {
+            if (status === 'complete') {
+                console.log("---看看做什么---")
+                console.log(result)
+                console.log("---看看做什么---")
+                log.success('绘制步行路线完成')
+            } else {
+                log.error('步行路线数据查询失败' + result)
+            } 
+        });
+      });
+    },
     //高德地图
-    getDurationGPSData(){//再画出同一个人的多条轨迹   
+    getDurationGPSData(){//再画出同一个人的多条轨迹,超哥所用方法有虚线  
     //画出一个人的轨迹
       this.showAllVisible = true
       let o = amapManager.getMap();
@@ -290,15 +333,14 @@ export default {
         //步行导航
         var walking = new AMap.Walking({
           map: o,
-          // panel: "panel"
+          panel:"panel",
           hidMarkers:true,
           isOutline: true,
-          // outlineColor: "red",
+          outlineColor: "red",
         });
         console.log('colin:----llllocation----')
         console.log(_this.getLocations)
         var path = [];
-
         walking.search(_this.getLocations[0].start,_this.getLocations[0].end, function(status, result) {
             if (status === 'complete') {
                 log.success('绘制步行路线完成')
