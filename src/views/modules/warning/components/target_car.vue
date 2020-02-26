@@ -9,10 +9,25 @@
     </div>
     <div v-show="isLong" style="height:150px; overflow:auto">
       <el-checkbox-group v-model="carIds" @change="handleSelect">
-        <el-checkbox v-for="image in imgList" :label="image.userid_id" :key="image.userid_id" >
-          <el-image :src="image.imgurl" style="width: 100px; height: 100px"></el-image>
+        <el-checkbox v-for="plate in plateList" :label="plate.plate_id" :key="plate.id" >
+
         </el-checkbox>
       </el-checkbox-group>
+      <el-pagination
+        small
+        layout="prev, pager, next"
+        :total="50">
+      </el-pagination>
+    <!-- <el-pagination
+      slot="footer"
+      :current-page="page"
+      :page-sizes="[10, 20, 50, 100]"
+      :page-size="limit"
+      :total="total"
+      layout="total, sizes, prev, pager, next, jumper"
+      @size-change="pageSizeChangeHandle"
+      @current-change="pageCurrentChangeHandle">
+    </el-pagination> -->
     </div>
   </div>
 </template>
@@ -35,7 +50,7 @@ export default {
       sourceLong,
       sourceShort,
       isLong: false,
-      imgList: [],
+      plateList: [],
       imgArray: [],
       carIds: []
     }
@@ -51,9 +66,9 @@ export default {
     },    
     handleChange(val){
       if(val){
-      this.$axios.get(`/api/face/image?token=${cookieGet('token')}`)
+      this.$axios.get(`/sys/plate?token=${cookieGet('token')}`)
         .then(res => {
-          this.imgList = res.imgList
+          this.plateList = res.list
           this.carIds = []
           console.log(this.carIds)
         })
