@@ -139,8 +139,7 @@ export default {
         { value: '选项2', label: '人脸' }
       ],
       value: '',
-      paths:[],
-      route_list:{},
+      list:{},
       dataList:[]
     }
   },
@@ -157,11 +156,9 @@ export default {
         });
       });
     },
-
     createTrackMap () {
       this.initPage() //画多条轨迹,超哥所用,此时为了验证不同颜色,先暂时不用
       // this.addMarker() //添加摄像头图标
-      // this.multiTracks()  //陆,验证不同颜色轨迹
     },
     addMarker () {//画轨迹的同时,添加摄像头图标
       let self = this
@@ -196,44 +193,33 @@ export default {
         // this.$axios.get("sys/check").then(res=> {
         console.log("------------res-----")
         console.log(res)
-        this.route_list = []  //存放轨迹的经纬度
+        this.list = []  //存放轨迹的经纬度
         this.dataList = []
         this.markers = [] //存放摄像头经纬度
-        this.route_list = res.list
+        this.list = res.list
         this.markers = res.Markers
         this.dataList = res.list
-        console.log(this.route_list)
-        console.log(this.route_list.length)
-        console.log("看内部")
-        for(var i = 0; i < this.route_list.length ; i++){
-          this.paths = this.route_list[i].location
-        }
-        console.log(this.paths)
-        // console.log(this.route_list[0].color)
-        // console.log(this.route_list[1].location[0].start)
-        // console.log(this.route_list[1].location.length)                  
-        console.log('可以正常打印不-------')
+        console.log(this.list)
+        console.log(this.list.length)
+        console.log("看内部")                 
       }).catch(error => {
         console.log(error)
       })
     },
     
-    //画多条轨迹,超哥所用
+    //画多条轨迹,步行导航路线
     initPage () {
       let self = this
       let o = amapManager.getMap();
-      //步行导航路线
-      // let path0 = {faceid:'1001',start:[120.093471,33.313968],end:[120.094233,33.313744],color:'#668B8B'};
-      // let path1 = {faceid:'1001',start:[120.092715,33.313246],end:[120.093632,33.313515],color:'#8B4789'};
-      // let path2 = {faceid:'1000',start:[120.093729,33.312751],end:[120.095805,33.312845],color:'#912CEE'};   
-      // let path = [path0,path1,path2] 
-      // self.paths = [path0,path1,path2]
-      let walk = ['walk0','walk1','walk2']
-      for(let h = 0; h < self.route_list.length ; h++){ //list的长度代表faceid即人的数量
-        for(let i=0; i < self.paths.length ;i++){ //后台返回location,代表一个人的轨迹,location长度为1只有一条轨迹,否则有多条轨迹
+      let walk = ['walk0','walk1','walk2','walk3','walk4','walk5','walk6','walk7','walk8','walk9']
+      for(let h = 0; h < self.list.length ; h++){ //list的长度代表faceid即人的数量,即是两个人的轨迹
+        for(let i = 1; i < self.list[h].location.length; i++){ //后台返回location,代表一个人的轨迹,location长度为1只有一条轨迹,否则有多条轨迹
           walk[i] = new AMap.Walking({});
-          walk[i].search(self.paths[i].start,self.paths[i].end, function(status, result) {
+          walk[i].search(self.list[h].location[i]['start'],self.list[h].location[i]['end'], function(status, result) {
               if (status === 'complete') {
+                console.log("status----status---")
+                console.log(status)
+                console.log(result)
                 if (result.routes && result.routes.length) {
                     var path = []
                     for (var a = 0, l = result.routes[0].steps.length; a < l; a++) {
@@ -242,14 +228,23 @@ export default {
                           path.push(step.path[j])
                         }
                     }
+                    //起点、终点固定显示,途经点用红色点显示
+                    var a = 'http://webapi.amap.com/theme/v1.3/markers/n/mark_r.png'
+                    var b = 'http://webapi.amap.com/theme/v1.3/markers/n/mark_r.png'
+                    if (i===1){
+                      a = 'https://webapi.amap.com/theme/v1.3/markers/n/start.png'
+                    }
+                    if(i === self.list[h].location.length-1){
+                      b = 'https://webapi.amap.com/theme/v1.3/markers/n/end.png'
+                    }
                     var startMarker = new AMap.Marker({
                         position: path[0],
-                        icon: 'https://webapi.amap.com/theme/v1.3/markers/n/start.png',
-                        map: o
+                        icon: a,
+                        map: o,
                     })                 
                     var endMarker = new AMap.Marker({
                         position: path[path.length - 1],
-                        icon: 'https://webapi.amap.com/theme/v1.3/markers/n/end.png',
+                        icon: b,
                         map: o
                     })
                     var routeLine = new AMap.Polyline({
@@ -258,7 +253,7 @@ export default {
                         outlineColor: '#ffeeee',
                         borderWeight: 4,
                         strokeWeight: 8,
-                        strokeColor: self.paths.color, //路线颜色
+                        strokeColor: self.list[h].location[0]['color'], //路线颜色
                         lineJoin: 'round',
                         showDir: true,  //高德地图上的箭头
                         dirArrowStyle:{
@@ -277,7 +272,7 @@ export default {
           });  
         }
       }                                                    
-    }
+    },
   }
 }
 </script>
