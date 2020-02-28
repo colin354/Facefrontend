@@ -68,7 +68,8 @@ export default {
         win_speed:'',
         date:'',
         week:''
-      }
+      },
+      polygon: ['polygon0','polygon1','polygon2','polygon3','polygon4','polygon5'],
     }
   },
   beforeCreate(){
@@ -94,6 +95,7 @@ export default {
   },
   methods:{
     initMap () {
+      let self = this
       var map = new AMap.Map('container',{
         zoom: 13,
         // center: [120.076145,33.333651],
@@ -184,7 +186,7 @@ export default {
       var path =[path0,path1,path2,path3,path4,path5]
       var color=["#4169E1",'#836FFF','#F7C885','#F8A1A1','#D1EEEE', '#5D478B']
       for(var i=0; i < 6 ;i++){
-        var polygon1 = new AMap.Polygon({
+        this.polygon[i] = new AMap.Polygon({
             map:map,
             path:path[i],
             strokeColor: color[i], //线条颜色
@@ -193,7 +195,140 @@ export default {
             fillColor: color[i],   //多边形填充颜色
             fillOpacity: 0.9,      //多边形填充透明度
         })
-      }  
+      }
+      map.setFitView();
+      //鼠标进入警务区polygon[0]后显示窗体
+      this.polygon[0].on('mouseover',function(e){
+        console.log("入入入入入！")
+        var info = [];
+        info.push("<div><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
+        info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>高德软件</b>");
+        info.push("电话 : 010-84107000   邮编 : 100102");
+        info.push("地址 :polygon[0]</div></div>");
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.076525,33.351924]);
+      });
+      //鼠标移出警务区polygon[0]后关闭窗体
+      self.polygon[0].on('mouseout',function(e){
+        console.log("出出")
+        var info = [];
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.076525,33.351924]);
+      });
+      //鼠标进入警务区polygon[1]后显示窗体
+      this.polygon[1].on('mouseover',function(e){
+        console.log("入入入入入！")
+        var info = [];
+        info.push("<div><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
+        info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>高德软件</b>");
+        info.push("电话 : 010-84107000   邮编 : 100102");
+        info.push("地址 :polygon[1]</div></div>");
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.09319,33.322264]);
+      });
+      //鼠标移出警务区polygon[1]后关闭窗体
+      this.polygon[1].on('mouseout',function(e){
+        console.log("出出")
+        var info = [];
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.09319,33.322264]);
+      });
+      //鼠标进入警务区polygon[2]后显示窗体
+      this.polygon[2].on('mouseover',function(e){
+        console.log("入入入入入！")
+        var info = [];
+        info.push("<div><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
+        info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>高德软件</b>");
+        info.push("电话 : 010-84107000   邮编 : 100102");
+        info.push("地址 :polygon[2]</div></div>");
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.094098,33.297648]);
+      });
+      //鼠标移出警务区polygon[2]后关闭窗体
+      this.polygon[2].on('mouseout',function(e){
+        console.log("出出")
+        var info = [];
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map,[120.094098,33.297648]);
+      });
+      //鼠标进入警务区polygon[3]后显示窗体
+      this.polygon[3].on('mouseover',function(e){
+        console.log("入入入入入！")
+        var info = [];
+        info.push("<div><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
+        info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>高德软件</b>");
+        info.push("电话 : 010-84107000   邮编 : 100102");
+        info.push("地址 :polygon[3]</div></div>");
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.058032,33.296882]);
+      });
+      //鼠标移出警务区polygon[3]后关闭窗体
+      this.polygon[3].on('mouseout',function(e){
+        console.log("出出")
+        var info = [];
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.058032,33.296882]);
+      });
+      //鼠标进入警务区polygon[4]后显示窗体
+      this.polygon[4].on('mouseover',function(e){
+        console.log("入入入入入！")
+        var info = [];
+        info.push("<div><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
+        info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>高德软件</b>");
+        info.push("电话 : 010-84107000   邮编 : 100102");
+        info.push("地址 :polygon[4]</div></div>");
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.059861,33.321828]);
+      });
+      //鼠标移出警务区polygon[4]后关闭窗体
+      this.polygon[4].on('mouseout',function(e){
+        console.log("出出")
+        var info = [];
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.059861,33.321828]);
+      });
+      //鼠标进入警务区polygon[5]后显示窗体
+      this.polygon[5].on('mouseover',function(e){
+        console.log("入入入入入！")
+        var info = [];
+        info.push("<div><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
+        info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>高德软件</b>");
+        info.push("电话 : 010-84107000   邮编 : 100102");
+        info.push("地址 :polygon[5]</div></div>");
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.043135,33.317087]);
+      });
+      //鼠标移出警务区polygon[5]后关闭窗体
+      this.polygon[5].on('mouseout',function(e){
+        console.log("出出")
+        var info = [];
+        var infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        })
+        infoWindow.open(map, [120.043135,33.317087]);
+      });  
     },
     resizeHandle(){
       this.myChart.resize();

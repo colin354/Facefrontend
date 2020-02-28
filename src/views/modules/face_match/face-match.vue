@@ -9,15 +9,16 @@
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;起止时间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <el-button type="primary" @click="" size="mini">
+                <el-button type="primary" @click="getPersonInfo()" size="mini">
                   查询</el-button>               
                 <el-date-picker
                     v-model="value1"
                     type="datetimerange"
                     range-separator="至"
                     start-placeholder="开始日期"
-                    end-placeholder="结束日期">
-                  </el-date-picker>                    
+                    end-placeholder="结束日期"
+                    value-format="yyyy-MM-dd HH:mm:ss">
+                </el-date-picker>                    
               </el-card>
             </div>
           </el-col>
@@ -26,25 +27,37 @@
           <el-col>
             <div class="grid-content bg-purple">
               <el-card class="box-card">
-                <el-form :inline="true" size="mini" :model="dataForm" @submit.native.prevent>
-                  <el-form-item>
-                    <el-button @click="showAll()" v-if="showAllVisible">返回</el-button>
-                  </el-form-item>
-                </el-form>               
-                <el-carousel :interval="4000" type="card" height="150px">
-                  <el-carousel-item v-for="(item, index) in facelist" :key="index">
-                    <!-- 默认显示全部图片时,用的是user_id -->
-                    <el-card v-if="showId" :body-style="{ padding: '0px'}" >
-                      <span @click="getDatas(item.user_id)">id:{{item.user_id}}</span>
-                      <img :src="item.imgurl" style="width:100%" @click="getDatas(item.user_id)">
-                    </el-card>
-                    <!-- 点击单独一张图片,有了查询结果及轨迹后,此时用的是userid_id -->
-                    <el-card v-else="showId" :body-style="{ padding: '0px'}" >
-                      <span @click="getDatas(item.userid_id)">id:{{item.userid_id}}</span>
-                      <img :src="item.imgurl" style="width:100%" @click="getDatas(item.userid_id)">
-                    </el-card>
-                  </el-carousel-item>
-                </el-carousel>
+                 
+                <el-table
+                  height="340"
+                  size="mini"
+                  :data="recordList"
+                  border
+                  v-infinite-scroll="loadMore"
+                  infinite-scroll-disabled="loading"
+                  infinite-scroll-distance="1"
+                  style="width: 100%">
+                  <el-table-column prop="facename" :label="$t('person.name')" header-align="center" align="center" width="80"/>
+                  
+                  <el-table-column prop="faceimgurl" :label="$t('person.picture')" header-align="center" align="center" width="140">
+                    <template  slot-scope="scope">
+                      <img :src="scope.row.faceimgurl" width="70" height="70">
+                    </template>
+                  </el-table-column>
+
+                  <el-table-column prop="color" :label="$t('person.color')" fixed="right" header-align="center" align="center"> 
+                    <template  slot-scope="scope">
+                      <el-color-picker v-model="scope.row.color"></el-color-picker>
+                    </template>
+                  </el-table-column>
+
+                  <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
+                    <template slot-scope="scope">
+                      <el-button type="primary" size="mini" @click="allRecord(scope.row.faceid,scope.row.color)" icon="el-icon-video-play" circle>轨迹</el-button>
+                    </template>
+                  </el-table-column>
+                </el-table>
+
               </el-card>
             </div>
           </el-col>
@@ -155,6 +168,7 @@ import faceimg from './face-img'
 import facecarsousel from './face-carsousel'
 import { AMapManager } from "vue-amap";
 let amapManager = new AMapManager();
+let o = amapManager.getMap();
 // videojs.registerPlugin("markers", markers);
 export default {
   name: "face-match",
@@ -168,6 +182,7 @@ export default {
     let id = this.$route.params.id;//存放face.vue界面传过来的faceid
     let _obj = this;
     return {
+      loading:false,
       amapManager,
       center: [120.093585,33.313408],//盐城
       plugin: [
@@ -184,9 +199,9 @@ export default {
       events: {
         init(o) {
           _obj.initMap();
-          
         }
-      },      
+      },
+      recordList:[],      
       cameraMarkers:[],
       total: 0,
       showAllVisible: false,
@@ -236,6 +251,37 @@ export default {
     }
   }, 
   methods: {
+    loadMore(){//表格滑动效果
+      this.loading = true
+    },
+    allRecord(singleFaceid,singleColor){ //轨迹,显示视频信息的同时,画出轨迹
+      this.dataList = []
+      this.getLocations = []
+      this.$axios.get("/api/check",{params:{faceid:singleFaceid}}).then(res=> {
+        console.log("查看轨迹888888888---start")
+        console.log(res)
+        this.dataList = res.list  //传数据给第三块表格信息
+        this.getLocations = res.location
+        console.log(this.getLocations)
+        console.log(this.getLocations.length)
+        console.log("查看轨迹88888888888----end")
+        //画轨迹单人
+        this.getSingleTrack(singleColor)
+      }).catch(error =>{
+          console.log(error)
+      });
+      
+    },
+    getPersonInfo(){//根据时间筛选符合条件的
+      this.$axios.get("/api/person_record",{params:{startTime:this.value1[0],endTime:this.value1[1]}}).then(res=> {
+        console.log("点击查询0000008")
+        console.log(res)
+        this.recordList = res.list
+        console.log(this.recordList)
+      }).catch(error =>{
+          console.log(error)
+      })
+    },
     showAll(){
       console.log("----showALl---")      
       var url = `/api/check?token=${cookieGet('token')}`
@@ -260,6 +306,14 @@ export default {
     },
     initMap(){
       let o = amapManager.getMap();
+      AMap.service('AMap.Walking',function(){
+        //步行导航
+        var walking = new AMap.Walking({
+          map: o,
+          hidMarkers:true,
+          isOutline: true,
+        });
+      });
     },
     getDatas(user_id){//先发送get请求,     
       if(user_id){
@@ -268,22 +322,14 @@ export default {
         .then(res=> {
           console.log("---0000000000------------+++++++++")
           console.log(res)
-          this.dataList = []
-          this.getLocations = []
+          // this.dataList = []
           this.facelist = []
           this.cameraMarkers = []
-          // this.total = res.count
           this.total = res.list.length
-          this.dataList = res.list
-          this.getLocations = res.location //存放轨迹的经纬度信息
           this.facelist = res.imgList //存放人脸图片相关信息
           this.cameraMarkers = res.Markers
           console.log("===getDatas=====getDatas===========")
           console.log(this.facelist)
-          console.log("data-----list")
-          console.log(this.dataList)
-          this.getDurationGPSData() //超哥所用方法有虚线
-          // this.getWalk()//超哥链接所用方法
         })
         .catch(error =>{
             console.log(error)
@@ -291,67 +337,62 @@ export default {
       }
       this.showId = false
     },
-    getWalk(){//2月21日测试高德是否可以使用
-      console.log("---超哥链接----")
-      this.showAllVisible = true
-      AMap.service('AMap.Walking',function(){
-        //步行导航
-        var walking = new AMap.Walking({
-          map: amapManager.getMap(),
-          hidMarkers:true,
-          isOutline: true,
-          outlineColor: "red",
-        });
-         var path = [];
-         path.push([120.094726,33.300456]); //盐城起点
-         path.push([120.09484,33.302021]);//盐城途径点
-         path.push([120.096347,33.300165]); //盐城终点
-        walking.search(path[0],path[2], function(status, result) {
-            if (status === 'complete') {
-                console.log("---看看做什么---")
-                console.log(result)
-                console.log("---看看做什么---")
-                log.success('绘制步行路线完成')
-            } else {
-                log.error('步行路线数据查询失败' + result)
-            } 
-        });
-      });
-    },
     //高德地图
-    getDurationGPSData(){//再画出同一个人的多条轨迹,超哥所用方法有虚线  
-    //画出一个人的轨迹
-      this.showAllVisible = true
+    getSingleTrack(getColor){    //画出一个人的轨迹 
       let o = amapManager.getMap();
-      let _this = this
-      AMapUI.loadUI(['misc/PathSimplifier'], (PathSimplifier) => {
-          if (!PathSimplifier.supportCanvas) {
-              alert('当前环境不支持 Canvas！');
-              return;
+      o.clearMap()
+      let self = this
+      let walk = ['walk0','walk1','walk2','walk3','walk4','walk5','walk6','walk7','walk8','walk9']
+      AMap.service('AMap.Walking',function(){ 
+         for(var i = 0; i < self.getLocations.length ; i++){
+          walk[i]= new AMap.Walking({ });                
+          walk[i].search(self.getLocations[i].start,self.getLocations[i].end, function(status, result) {
+              if (status === 'complete') {
+                if (result.routes && result.routes.length) {
+                    var path = []
+                    for (var a = 0, l = result.routes[0].steps.length; a < l; a++) {
+                        var step = result.routes[0].steps[a]
+                        for (var j = 0, n = step.path.length; j < n; j++) {
+                          path.push(step.path[j])
+                        }
+                    }
+                    var startMarker = new AMap.Marker({
+                        position:  path[0],
+                        icon: 'https://webapi.amap.com/theme/v1.3/markers/n/start.png',
+                        map: o
+                    })                 
+                    var endMarker = new AMap.Marker({
+                        position:  path[path.length - 1],
+                        icon: 'https://webapi.amap.com/theme/v1.3/markers/n/end.png',
+                        map: o
+                    })
+                    var routeLine = new AMap.Polyline({
+                        path: path,
+                        isOutline: true,
+                        outlineColor: '#ffeeee',
+                        borderWeight: 4,
+                        strokeWeight: 8,
+                        strokeColor: getColor, //路线颜色
+                        lineJoin: 'round',
+                        showDir: true,  //高德地图上的箭头
+                        dirArrowStyle:{
+                          stepSpace: 8,  //stepSpace: {number} 箭头排布的间隔，单位像素
+                          width: 3
+                        }                             
+                    })  
+                    routeLine.setMap(o)
+
+                  log.success('绘制步行路线完成')
+                }
+                  log.success('绘制步行路线完成')
+              } else {
+                  log.error('步行路线数据查询失败' + result)
+              } 
+          });
           }
-      AMap.service('AMap.Walking',function(){
-        //步行导航
-        var walking = new AMap.Walking({
-          map: o,
-          panel:"panel",
-          hidMarkers:true,
-          isOutline: true,
-          outlineColor: "red",
         });
-        console.log('colin:----llllocation----')
-        console.log(_this.getLocations)
-        var path = [];
-        walking.search(_this.getLocations[0].start,_this.getLocations[0].end, function(status, result) {
-            if (status === 'complete') {
-                log.success('绘制步行路线完成')
-            } else {
-                log.error('步行路线数据查询失败' + result)
-            } 
-        });
-      });
-      })
-      // this.addMarker()  //地图上显示轨迹的同时,显示摄像头图标
     },
+
     //添加摄像头图标
     addMarker(){
       let self = this
