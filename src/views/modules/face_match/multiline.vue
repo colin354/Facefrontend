@@ -37,7 +37,6 @@
               <div class="grid-content bg-purple">
                 <el-card class="box-card-hei">
                   <div class="amap-page-container">
-                    <!-- {{this.temp}} -->
                     <el-amap
                       :plugin="plugin"
                       :amap-manager="amapManager"
@@ -48,7 +47,6 @@
                       style="width:100vw;height:80vh"
                       :events="events"
                     ></el-amap>                    
-                      <!-- <div id="amap-show" class="amap-demo"></div> -->
                   </div>
                 </el-card>
               </div>
@@ -65,6 +63,9 @@
                   height="640"
                   size="mini"
                   :data="dataList"
+                  v-infinite-scroll="loadMore"
+                  infinite-scroll-disabled="loading"
+                  infinite-scroll-distance="1"
                   border
                   style="width: 100%">
                   <el-table-column prop="facename" :label="$t('person.name')" header-align="center" align="center" width="80"/>
@@ -108,6 +109,7 @@ export default {
   data () {
     let _obj = this;
     return {
+      loading:false,
       amapManager,
       center: [120.093585,33.313408],//盐城
       plugin: [
@@ -143,7 +145,10 @@ export default {
       dataList:[]
     }
   },
-  methods:{  
+  methods:{
+    loadMore(){//表格滑动效果
+      this.loading = true
+    },  
     initMap () {
       let o = amapManager.getMap();
       // 步行路线
@@ -156,61 +161,10 @@ export default {
         });
       });
     },
-    createTrackMap () {
-      this.initPage() //画多条轨迹,超哥所用,此时为了验证不同颜色,先暂时不用
-      // this.addMarker() //添加摄像头图标
-    },
-    addMarker () {//画轨迹的同时,添加摄像头图标
-      let self = this
-      var startIcon = new AMap.Icon({ //摄像头图标
-        // 图标尺寸
-        size: new AMap.Size(25, 34),
-        // 图标的取图地址
-        image: '', //此处修改摄像头图标
-        // 图标所用图片大小
-        imageSize: new AMap.Size(20, 20),
-        // 图标取图偏移量
-        imageOffset: new AMap.Pixel(-1, -1)
-      })
-      if (this.markers) {
-        for (var i=0; i < this.markers.length; i++){
-          var viaMarker1 = new AMap.Marker({
-            position:new AMap.LngLat(self.markers[i][0], self.markers[i][1]),
-            icon: startIcon,
-            offset:new AMap.Pixel(-10, -10)
-          })
-          this.map.add([viaMarker1])
-        }
-      }
-    },
-    findTrackData () {
-      this.showA = true //地图轨迹按钮显示
-      this.getDurationGPSData(); //发送get请求
-    },
-    //点击“查询”,发送get请求           
-    getDurationGPSData () {
-      this.$axios.get("sys/check",{params:{startTime:this.value1[0],endTime:this.value1[1]}}).then(res=> {
-        // this.$axios.get("sys/check").then(res=> {
-        console.log("------------res-----")
-        console.log(res)
-        this.list = []  //存放轨迹的经纬度
-        this.dataList = []
-        this.markers = [] //存放摄像头经纬度
-        this.list = res.list
-        this.markers = res.Markers
-        this.dataList = res.list
-        console.log(this.list)
-        console.log(this.list.length)
-        console.log("看内部")                 
-      }).catch(error => {
-        console.log(error)
-      })
-    },
-    
-    //画多条轨迹,步行导航路线
-    initPage () {
+    createTrackMap () { //画多条轨迹,步行导航路线
       let self = this
       let o = amapManager.getMap();
+      o.clearMap()
       let walk = ['walk0','walk1','walk2','walk3','walk4','walk5','walk6','walk7','walk8','walk9']
       for(let h = 0; h < self.list.length ; h++){ //list的长度代表faceid即人的数量,即是两个人的轨迹
         for(let i = 1; i < self.list[h].location.length; i++){ //后台返回location,代表一个人的轨迹,location长度为1只有一条轨迹,否则有多条轨迹
@@ -271,7 +225,45 @@ export default {
               } 
           });  
         }
-      }                                                    
+      } 
+    },
+    addMarker () {//画轨迹的同时,添加摄像头图标
+      let self = this
+      var startIcon = new AMap.Icon({ //摄像头图标
+        size: new AMap.Size(25, 34), // 图标尺寸
+        image: '', //此处修改摄像头图标      // 图标的取图地址
+        imageSize: new AMap.Size(20, 20),  // 图标所用图片大小
+        imageOffset: new AMap.Pixel(-1, -1)         // 图标取图偏移量
+      })
+      if (this.markers) {
+        for (var i=0; i < this.markers.length; i++){
+          var viaMarker1 = new AMap.Marker({
+            position:new AMap.LngLat(self.markers[i][0], self.markers[i][1]),
+            icon: startIcon,
+            offset:new AMap.Pixel(-10, -10)
+          })
+          this.map.add([viaMarker1])
+        }
+      }
+    },
+    findTrackData () { //点击'查询'按钮,发送get请求
+      this.$axios.get("sys/check",{params:{startTime:this.value1[0],endTime:this.value1[1]}}).then(res=> {
+        console.log("------------res-----")
+        console.log(res)
+        this.list = []  //存放轨迹的经纬度
+        this.dataList = []
+        this.markers = [] //存放摄像头经纬度
+        this.list = res.list
+        this.markers = res.Markers
+        this.dataList = res.list
+        console.log("showA------showA")
+        console.log(this.dataList.length)
+        if(!this.dataList.length){this.showA = false}else{this.showA = true } //地图轨迹按钮显示             
+      }).catch(error => {
+        console.log(error)
+      });
+      let o = amapManager.getMap();
+      o.clearMap()
     },
   }
 }

@@ -72,8 +72,6 @@
                   size="mini"
                   :data="dataList.slice((page-1)*limit,page*limit)"
                   border
-                  @selection-change="dataListSelectionChangeHandle"
-                  @sort-change="dataListSortChangeHandle"
                   style="width: 100%;">
                   <el-table-column prop="facename" :label="$t('face.name')" header-align="center" align="center" width="50"/>
                   <el-table-column prop="streamname" :label="$t('stream.videoname')" header-align="center" align="center" width="160"/>
@@ -158,7 +156,7 @@
 import "video.js/dist/video-js.css";
 import { videoPlayer } from "vue-video-player";
 import { cookieGet } from '@/common/cookie'
-import mixinViewModule from '@/mixins/view-module'
+// import mixinViewModule from '@/mixins/view-module'
 // import videojs from "video.js"
 import 'videojs-hotkeys'
 import "@/views/modules/face_match/src/videojs.markers.css"
@@ -177,7 +175,7 @@ export default {
     faceimg,
     facecarsousel
   },
-  mixins: [ mixinViewModule ],
+  // mixins: [ mixinViewModule ],
   data() {    
     let id = this.$route.params.id;//存放face.vue界面传过来的faceid
     let _obj = this;
@@ -204,19 +202,14 @@ export default {
       recordList:[],      
       cameraMarkers:[],
       total: 0,
-      showAllVisible: false,
       showId:true,
       getLocations:[],
       dataList:[],
       visible: false,
       facelist: [],
       imgarr: [],
-      mixinViewModuleOptions: {
-        getDataListURL: `/api/check?token=${cookieGet('token')}`,
-        getDataListIsPage: true,
-        deleteURL: `/api/check?token=${cookieGet('token')}`,
-        deleteIsBatch: true
-      },
+      page:1,
+      limit:10,
       dataForm: {
         faceid:id
       },
@@ -258,14 +251,8 @@ export default {
       this.dataList = []
       this.getLocations = []
       this.$axios.get("/api/check",{params:{faceid:singleFaceid}}).then(res=> {
-        console.log("查看轨迹888888888---start")
-        console.log(res)
         this.dataList = res.list  //传数据给第三块表格信息
         this.getLocations = res.location
-        console.log(this.getLocations)
-        console.log(this.getLocations.length)
-        console.log("查看轨迹88888888888----end")
-        //画轨迹单人
         this.getSingleTrack(singleColor)
       }).catch(error =>{
           console.log(error)
@@ -273,41 +260,18 @@ export default {
       
     },
     getPersonInfo(){//根据时间筛选符合条件的
+      let o = amapManager.getMap();
+      o.clearMap()
+      this.dataList=[]
       this.$axios.get("/api/person_record",{params:{startTime:this.value1[0],endTime:this.value1[1]}}).then(res=> {
-        console.log("点击查询0000008")
-        console.log(res)
         this.recordList = res.list
-        console.log(this.recordList)
       }).catch(error =>{
           console.log(error)
       })
     },
-    showAll(){
-      console.log("----showALl---")      
-      var url = `/api/check?token=${cookieGet('token')}`
-        this.$axios.get(url)
-        .then(res=> {
-          console.log("---0000000000------------+++++++++")
-          console.log(res)
-          // this.total = res.count
-          this.total = res.list.length
-          this.dataList = res.list        
-          this.facelist = []
-          this.dataList = []
-          this.facelist = res.imgList //存放人脸图片相关信息          
-          this.dataList = res.list          
-          console.log("===================")
-        })
-        .catch(error =>{
-            console.log(error)
-        })
-      this.showId = true
-      this.initMap() //点击返回后,所有的轨迹应该消失
-    },
     initMap(){
       let o = amapManager.getMap();
-      AMap.service('AMap.Walking',function(){
-        //步行导航
+      AMap.service('AMap.Walking',function(){  //步行导航
         var walking = new AMap.Walking({
           map: o,
           hidMarkers:true,
@@ -315,30 +279,8 @@ export default {
         });
       });
     },
-    getDatas(user_id){//先发送get请求,     
-      if(user_id){
-        var url = `/api/check?token=${cookieGet('token')}` + '&faceid=' + user_id
-        this.$axios.get(url)
-        .then(res=> {
-          console.log("---0000000000------------+++++++++")
-          console.log(res)
-          // this.dataList = []
-          this.facelist = []
-          this.cameraMarkers = []
-          this.total = res.list.length
-          this.facelist = res.imgList //存放人脸图片相关信息
-          this.cameraMarkers = res.Markers
-          console.log("===getDatas=====getDatas===========")
-          console.log(this.facelist)
-        })
-        .catch(error =>{
-            console.log(error)
-        })
-      }
-      this.showId = false
-    },
-    //高德地图
-    getSingleTrack(getColor){    //画出一个人的轨迹 
+    //高德地图,画出一个人的轨迹
+    getSingleTrack(getColor){    
       let o = amapManager.getMap();
       o.clearMap()
       let self = this
@@ -392,7 +334,6 @@ export default {
           }
         });
     },
-
     //添加摄像头图标
     addMarker(){
       let self = this
@@ -419,6 +360,7 @@ export default {
     },
     // 分页, 每页条数
     pageChangeHandle (val) {
+      this.limit = val
     },
     // 分页, 当前页
     pCurrentChangeHandle (val) {
@@ -426,14 +368,10 @@ export default {
     },
     broadcast(fid,sid,url){
       this.visible = true
-      console.log('----这是我要的数据----')
-      console.log(url)
-      console.log(this.dataList) 
       // url = `${process.env.VUE_APP_API}/`+url
       //url = 'http://10.2.155.139:8888'+url
       this.playerOptions.sources[0].src = url
-      this.$axios
-      .get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:fid,streamid:sid}})
+      this.$axios.get(`/api/check?token=${cookieGet('token')}`,{params:{faceid:fid,streamid:sid}})
       .then(res => {
         console.log('播放---res')
         console.log(res.list)
