@@ -565,4 +565,10 @@ t.stranger.img = '陌生人图片'
 t.stranger.c_gender = '性别'
 t.stranger.c_age = '年龄'
 
+t.plate = {}
+t.plate.id = '序号'
+t.plate.plate_id = '车牌号'
+t.plate.plate_url = '车牌图片'
+
+
 export default t

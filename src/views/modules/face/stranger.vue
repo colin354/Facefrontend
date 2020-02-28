@@ -2,7 +2,7 @@
   <d2-container>
     <el-row :gutter="20">
       <!-- 左侧列表展示 -->
-      <el-col >
+      <el-col :span="12">
         <el-card class="box-card">
           <el-form :inline="true" size="mini" :model="dataForm" @submit.native.prevent>
             <el-form-item>

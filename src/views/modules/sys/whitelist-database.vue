@@ -1,36 +1,62 @@
 <template>
-  <d2-container class="mod-sys__log-error">
-    <el-form :inline="true" size="mini" :model="dataForm" @keyup.enter.native="getDataList()">
-      <el-form-item>
-        <el-button type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="exportAll()"> 导出所有 </el-button>
-      </el-form-item>
-    </el-form>
-    <el-table
-      size="mini"
-      ref="table"
-      v-loading="dataListLoading"
-      :data="dataList"
-      :row-key="getRowKeys"
-      border
-      type="selection"
-      @sort-change="dataListSortChangeHandle"
-      style="width: 100%;">
-      <el-table-column type="selection" :reserve-selection="true" :selectable="checkSelectable" header-align="center" align="center" width="50"/>
-      <el-table-column prop="requestUri" :label="$t('logError.requestUri')" header-align="center" align="center"/>
-      <el-table-column prop="requestMethod" :label="$t('logError.requestMethod')" header-align="center" align="center"/>
-      <el-table-column prop="requestParams" :label="$t('logError.requestParams')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
-      <el-table-column prop="ip" :label="$t('logError.ip')" header-align="center" align="center"/>
-      <el-table-column prop="userAgent" :label="$t('logError.userAgent')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
-      <el-table-column prop="createDate" :label="$t('logError.createDate')" sortable="custom" header-align="center" align="center" width="180"/>
-      <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
-        <template slot-scope="scope">
-          <el-button type="text" size="mini" @click="infoHandle(scope.row.errorInfo)">{{ $t('logError.errorInfo') }}</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+  <d2-container>
+    <el-row :gutter="20">
+      <!-- 左侧列表展示 -->
+      <el-col >
+        <el-card class="box-card">
+          <el-form :inline="true" size="mini" :model="dataForm" @submit.native.prevent>
+            <el-form-item>
+              <el-input v-model="dataForm.username" :placeholder="$t('face.name')" 
+              @keyup.enter.native="getDataList()" clearable/>
+            </el-form-item>
+            <!-- <el-form-item>
+              <el-button @click="getDataList()">{{ $t('query') }}</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary">{{ $t('add') }}</el-button>
+            </el-form-item> -->
+            <el-form-item>
+              <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="info" @click="exportExcel()">{{ $t('export') }}</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="exportAll()"> 导出所有 </el-button>
+            </el-form-item>            
+          </el-form>
+          <div class="grid-content bg-purple">
+            <el-table
+              size="mini"
+              ref="table"
+              v-loading="dataListLoading"
+              :data="dataList"
+              :row-key="getRowKeys"
+              type="selection"
+              border
+              @selection-change="dataListSelectionChangeHandle"
+              @sort-change="dataListSortChangeHandle"
+              style="width: 100%;">
+              <el-table-column type="selection" :reserve-selection="true" :selectable="checkSelectable" header-align="center" align="center" width="50"/>
+              <el-table-column prop="id" :label="$t('plate.id')" header-align="center" align="center" width="80"/>
+              <el-table-column prop="plate_id" :label="$t('plate.plate_id')" header-align="center" align="center" width="150"/>
+              <el-table-column prop="plate_url" :label="$t('plate.plate_url')"  header-align="center" align="center" width="150">
+                <template  slot-scope="scope">
+                  <img :src="scope.row.imgurl" width="60" height="60">
+                </template>
+              </el-table-column>
+              <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
+                <template slot-scope="scope">
+                  <!-- <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)" icon="el-icon-edit" circle></el-button> -->
+                  <el-button type="primary" size="mini" @click="deleteHandle(scope.row.id)" icon="el-icon-delete" circle></el-button>
+                  <!-- <el-button type="primary" size="mini" @click="getImgs(scope.row.id,scope.row.imgurls)" icon="el-icon-picture-outline-round" circle></el-button> -->
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
     <!-- 分页 -->
     <el-pagination
       slot="footer"
@@ -41,25 +67,35 @@
       layout="total, sizes, prev, pager, next, jumper"
       @size-change="pageSizeChangeHandle"
       @current-change="pageCurrentChangeHandle">
-    </el-pagination>
+    </el-pagination>    
   </d2-container>
 </template>
 
 <script>
 import mixinViewModule from '@/mixins/view-module'
+import { cookieGet } from '@/common/cookie'
+
 export default {
   mixins: [ mixinViewModule ],
-  name: "whitelist-database",
+  name:'whitelist-database',
   data () {
     return {
+      id: 0,//存放faceid,向face-match界面发送待查询人的faceid
+      imgs:[],
+      imgList:[],
+      // imgs:[this.dataList.imgurls],
       mixinViewModuleOptions: {
-        getDataListURL: '/sys/log/error/page',
+        getDataListURL: `/sys/plate?token=${cookieGet('token')}`,
         getDataListIsPage: true,
-        exportURL: '/sys/log/error/export'
+        deleteURL: `/sys/plate?token=${cookieGet('token')}`,
+        deleteIsBatch: true
+      },
+      dataForm: {
+        username: ''
       },
       allCheck: false,
       multipleSelection: [],
-      allSelect:[],
+      allSelect:[]
     }
   },
   watch: {
@@ -78,6 +114,11 @@ export default {
     },
   },
   methods: {
+    getImgs(id,imgurls){
+      this.imgs = []
+      this.imgs = imgurls
+      this.id = id  //通过图片按钮获得了faceid,传给本组件自定义的id
+    },
     getRowKeys (row) {
       return row.id;
     },
@@ -151,20 +192,68 @@ export default {
     formatJson(filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => v[j]))
     },
-    // 异常信息
-    infoHandle (info) {
-      this.$alert(info, this.$t('logError.errorInfo'), {
-        customClass: 'mod-sys__log-error-view-info'
-      })
-    }
   }
 }
 </script>
 
-<style lang="scss">
-.mod-sys__log-error {
-  &-view-info {
-    width: 80%;
+<style lang="scss" scoped>
+  .inner {
+    position: right;
+    top: 20px;
+    right:  20px;
+    bottom: 20px;
+    left: 20px;
+  }  
+  .text {
+    font-size: 14px;
   }
-}
+  .item {
+    padding: 18px 0;
+  }
+  .el-row {
+    margin-bottom: 20px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }
+  .bg-purple {
+    background: #d3dce6;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+  }
+  .row-bg {
+    padding: 10px 0;
+    background-color: #f9fafc;
+  }
+  .el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 200px;
+    margin: 0;
+  }
+
+  .el-carousel__item img {
+    height: 400px;
+    width: 400px
+  }
+
+  .el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+  }
+  
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
+  }
 </style>

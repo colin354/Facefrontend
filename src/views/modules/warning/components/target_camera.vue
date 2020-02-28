@@ -42,15 +42,11 @@ export default {
     camera_id :{
       handler(newVal,oldVal) {
         this.$refs.tree.setCheckedKeys([]);
-        console.log('cccccccpperson___wwwwwwach')
-        console.log(newVal)
-        console.log(oldVal)
       }
     },
     long(val) {
       this.isLong = this.long
       if(this.long){
-        console.log('hahahaha-----------')
         this.handleChange(true)
       }
     }
@@ -87,8 +83,6 @@ export default {
       if(val){
       this.$axios.get(`/sys/stream/page?token=${cookieGet('token')}`,{params:{map_location:'GETLOCATION'}})
         .then(res => {
-          console.log('rrrreereerererere1111111')
-          console.log(res)
           this.streamList = res.streamList
         })
         .catch(() => {

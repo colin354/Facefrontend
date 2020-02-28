@@ -2,11 +2,11 @@
   <d2-container>
     <el-row :gutter="20">
       <!-- 左侧列表展示 -->
-      <el-col >
+      <el-col :span="12">
         <el-card class="box-card">
           <el-form :inline="true" size="mini" :model="dataForm" @submit.native.prevent>
             <el-form-item>
-              <el-input v-model="dataForm.username" :placeholder="$t('face.name')" 
+              <el-input v-model="dataForm.username" :placeholder="$t('plate.plate_id')" 
               @keyup.enter.native="getDataList()" clearable/>
             </el-form-item>
             <!-- <el-form-item>
@@ -38,11 +38,11 @@
               @sort-change="dataListSortChangeHandle"
               style="width: 100%;">
               <el-table-column type="selection" :reserve-selection="true" :selectable="checkSelectable" header-align="center" align="center" width="50"/>
-              <el-table-column prop="id" :label="$t('stranger.id')" header-align="center" align="center" width="80"/>
-              <el-table-column prop="faceid" :label="$t('stranger.faceid')" header-align="center" align="center" width="150"/>
-              <el-table-column prop="imgurl" :label="$t('stranger.img')"  header-align="center" align="center" width="150">
+              <el-table-column prop="id" :label="$t('plate.id')" header-align="center" align="center" width="80"/>
+              <el-table-column prop="plate_id" :label="$t('plate.plate_id')" header-align="center" align="center" width="150"/>
+              <el-table-column prop="plate_url" :label="$t('plate.plate_url')"  header-align="center" align="center" width="150">
                 <template  slot-scope="scope">
-                  <img :src="scope.row.imgurl" width="60" height="60">
+                  <img :src="scope.row.plate_url" width="90" height="60">
                 </template>
               </el-table-column>
               <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center">
@@ -55,8 +55,7 @@
             </el-table>
           </div>
         </el-card>
-      </el-col>    
-      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
+      </el-col>
     </el-row>
     <!-- 分页 -->
     <el-pagination
@@ -74,9 +73,7 @@
 
 <script>
 import mixinViewModule from '@/mixins/view-module'
-import AddOrUpdate from './face-add-or-update'
 import { cookieGet } from '@/common/cookie'
-import facegrid from './face-grid'
 
 export default {
   mixins: [ mixinViewModule ],
@@ -88,9 +85,9 @@ export default {
       imgList:[],
       // imgs:[this.dataList.imgurls],
       mixinViewModuleOptions: {
-        getDataListURL: `/sys/stranger?token=${cookieGet('token')}`,
+        getDataListURL: `/sys/plate?token=${cookieGet('token')}`,
         getDataListIsPage: true,
-        deleteURL: `/sys/stranger?token=${cookieGet('token')}`,
+        deleteURL: `/sys/plate?token=${cookieGet('token')}`,
         deleteIsBatch: true
       },
       dataForm: {
@@ -100,10 +97,6 @@ export default {
       multipleSelection: [],
       allSelect:[]
     }
-  },
-  components: {
-    facegrid,
-    AddOrUpdate
   },
   watch: {
     //分页全选-监听数据变化

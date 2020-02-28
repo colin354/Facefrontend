@@ -37,17 +37,18 @@
       </el-form-item>
 
       <el-form-item prop="warning_target_people" :label="$t('warning.target_people')">
-        <target-people v-if="!dataForm.id" :disabled="people_disabled" :person_id="target_people" @checked-person="checkedPerson" />
-        <target-people v-else-if="dataForm.id" :long="com_person" :person_id="target_people" @checked-person="checkedPerson"/>
+        <target-people v-if="visible" :long="com_person" :disabled="people_disabled" :person_id="target_people" @checked-person="checkedPerson" />
+        <!-- <target-people v-else-if="dataForm.id" :long="com_person" :person_id="target_people" @checked-person="checkedPerson"/> -->
       </el-form-item>
 
       <el-form-item prop="warning_target_car" :label="$t('warning.target_car')">
-        <target-car @checked-car="checkedCar"/>
+        <target-car v-if="visible" :long="com_car" :disabled="plate_disabled" :plate_id="target_car" @checked-car="checkedCar" />
+        <!-- <target-car v-else-if="dataForm.id" :long="com_car" :plate_id="target_car" @checked-car="checkedCar"/> -->
       </el-form-item>
 
       <el-form-item prop="warning_target_camera" label="摄像头节点">
-        <target-camera v-if="!dataForm.id" :camera_id="target_camera" @checked-camera="checkedCamera"/>
-        <target-camera v-else-if="dataForm.id" :long="com_camera" :camera_id="target_camera" @checked-camera="checkedCamera"/>
+        <target-camera v-if="visible" :long="com_camera" :camera_id="target_camera" @checked-camera="checkedCamera"/>
+        <!-- <target-camera v-else-if="dataForm.id" :long="com_camera" :camera_id="target_camera" @checked-camera="checkedCamera"/> -->
       </el-form-item>
 
     </el-form>
@@ -81,31 +82,41 @@ export default {
         id: '',
         warning_level: 0,
         warning_type_id: '',
-        warning_people_max: 0,
-        warning_car_max: 0,
+        warning_people_max: '0',
+        warning_car_max: '0',
         warning_target_people: '',
-        warning_target_car: [],
+        warning_target_car: '',
         warning_target_camera: ''
       },
       people_disabled: false,
+      plate_disabled: false,
       com_person: false,
       com_car: false,
       com_camera: false,
       warningType: [],
       target_people: [],
+      target_car: [],
       target_camera: []
     }
   },
   computed: {
     dataRule () {
       var validatePeopleMax = (rule, value, callback) => {
-        if (value !== '') {
+        if (value !== '0') {
           this.people_disabled = true
         } else {
           this.people_disabled = false
         }
         callback()
-      }
+      };
+      var validateCarMax = (rule, value, callback) => {
+        if (value !== '0') {
+          this.plate_disabled = true
+        } else {
+          this.plate_disabled = false
+        }
+        callback()
+      }      
       return {
         warning_people_max: [
           {
@@ -113,12 +124,20 @@ export default {
             message: this.$t('validate.required'),
             trigger: 'blur'
           }
-        ]
+        ],
+        warning_car_max: [
+          {
+            validator: validateCarMax,
+            message: this.$t('validate.required'),
+            trigger: 'blur'
+          }
+        ],
       }
     }
   },
   methods: {
     init() {
+      console.log('this is init--------->')
       this.visible = true
       this.$nextTick(() => {
         this.$refs["dataForm"].resetFields()
@@ -127,9 +146,10 @@ export default {
         if (this.dataForm.id) {//若是修改,则走此句
           this.getInfo()
         }else{
-          this.dataForm = {
-            // streamstatus:"0"
-          }//若是新增,则走此句       
+          this.$refs["dataForm"].resetFields()
+          // this.dataForm = {
+          //   // streamstatus:"0"
+          // }//若是新增,则走此句       
         }
       })
     },
@@ -146,15 +166,15 @@ export default {
         .catch(() => {})
     },
     checkedPerson(person_id) {
-      console.log('3333333333333')
-      console.log(person_id)
       if(person_id){
         this.dataForm.warning_target_people = person_id.join('.')
       }
     },
 
     checkedCar(car_id) {
-      this.dataForm.warning_target_car = car_id
+      if(car_id){
+        this.dataForm.warning_target_car = car_id.join('.')
+      }      
     },
     checkedCamera(camera_id) {
       if(camera_id){
@@ -174,33 +194,42 @@ export default {
       this.$axios
         .get(`/api/warningEvent?token=${cookieGet("token")}`,{params:{id:this.dataForm.id}})
         .then(res => {
-          // this.warningType = res.warning_type
-          console.log('11111111110---00099')
-          console.log(res)
           this.dataForm = {
             ...this.dataForm,
             ...res
           }
+
           this.com_person = res.warning_target_people == null ? false : true
+          this.com_car = res.warning_target_car == null ? false : true
           this.com_camera = res.warning_target_camera == null ? false : true
+
           var target_people_int = []
+          var target_car_int = []
           var target_camera_int = []
           if(this.com_person){
             target_people_int = (res.warning_target_people.split(".")).map(function(data){return +data})
+          }
+          if(this.com_car){
+            target_car_int = (res.warning_target_car.split(".")).map(function(data){return +data})
           }
           if(this.com_camera){
             target_camera_int = (res.warning_target_camera.split(".")).map(function(data){return +data})
           }
           this.target_people = target_people_int
+          this.target_car = target_car_int
           this.target_camera = target_camera_int
+
         })
         .catch(() => {
           console.log('error!!!!!!')
         })
     },
     handleClose(){
-      console.log('ooooooclose')
+      this.com_person = false
+      this.com_car = false
+      this.com_camera = false
       this.target_people = []
+      this.target_car = []
       this.target_camera = []
     },    
     // 表单提交

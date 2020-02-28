@@ -14,6 +14,14 @@
           <el-image :src="image.imgurl" style="width: 100px; height: 100px"></el-image>
         </el-checkbox>
       </el-checkbox-group>
+      <!-- <el-pagination
+        small
+        slot="footer"
+        layout="prev, pager, next"
+        :total="total"
+        @current-change="pageCurrentChangeHandle"
+        >
+      </el-pagination> -->
     </div>
   </div>
 </template>
