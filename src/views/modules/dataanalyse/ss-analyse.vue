@@ -39,13 +39,14 @@
 
 <script>
 import mixinViewModule from '@/mixins/view-module'
+import { cookieGet } from '@/common/cookie'
 export default {
   mixins: [ mixinViewModule ],
   name:'ss-analyse',
   data () {
     return {
       mixinViewModuleOptions: {
-        getDataListURL: '/sys/log/error/page',
+        getDataListURL: `/sys/log/error/page?token=${cookieGet('token')}`,
         getDataListIsPage: true,
         exportURL: '/sys/log/error/export'
       }

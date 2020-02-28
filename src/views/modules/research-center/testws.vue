@@ -50,7 +50,7 @@
       <div class="grid-content bg-purple">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>人脸检测结果</span>
+            <span>实时预警信息</span>
             <el-button style="float: right; padding: 3px 0" type="text">
               <router-link :to="{name:'warning-query'}">
                 更多
@@ -99,7 +99,7 @@
       </div>
     </el-row>
 
-    <el-row>
+    <!-- <el-row>
       <div class="grid-content bg-purple">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
@@ -111,7 +111,7 @@
           </el-row>
         </el-card>
       </div>
-    </el-row>
+    </el-row> -->
   </el-col>
 </el-row>
 </d2-container>
@@ -289,6 +289,7 @@ export default {
             this.imgs = []
             this.plate_imgs = []
             this.warning_info = res.list
+            console.log('===========》》》handle')
             console.log(this.warning_info)
           })
           .catch(() => {
