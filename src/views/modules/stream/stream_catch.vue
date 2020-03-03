@@ -104,7 +104,7 @@ export default {
         init: (o) => {
           setTimeout(() => {
             console.log('map events!!!!!')
-            console.log(self.markerRefs)
+            console.log(this.markerRefs)
             o.plugin(["AMap.MarkerClusterer"],function() {
               let cluster = new AMap.MarkerClusterer(o, self.markerRefs, {
                 gridSize: 20,
@@ -191,10 +191,12 @@ export default {
       console.log('----点击事件-----00------')
       console.log(val)
       let __this = this
+      console.log(__this.markerRefs)
       __this.markerRefs = []
       __this.markers.length = 0
       __this.markers = []
       __this.zoom = 16
+      console.log(val.children)
       // this.getSingleInfo()
       if (val.children) {
         __this.center = val.streamlng[0]
@@ -207,6 +209,8 @@ export default {
             position: val.streamlng[i],
             events: {
               init (o) {
+                console.log('eeeeevent!!!!')
+                console.log(o)
                 // self.center = [o.lnglat.lng,o.lnglat.lat];
                 __this.markerRefs.push(o)
               },
