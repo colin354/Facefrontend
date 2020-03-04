@@ -5,10 +5,14 @@ export default [
     icon: 'home',
     path: '/index'
   },
-  { title: '实时隔离预警',
+  { title: '视频广场',
     icon: 'camera',
-    path: '/housews'
-  },  
+    path: '/video_plaze'
+  },
+  { title: '资源配置',
+    icon: 'support',
+    path: '/device'
+  },    
   // {
   //   title: '人像卡口',
   //   icon: 'folder-o',

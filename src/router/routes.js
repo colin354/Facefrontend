@@ -176,12 +176,21 @@ const frameIn = [
         }
       },
       {
-        path: 'liveview',
-        name: 'liveview',
-        component: _import('modules/stream/liveview'),
+        path: 'video_plaze',
+        name: 'video_plaze',
+        component: _import('modules/camera/video_plaze'),
         meta: {
           auth: true,
-          title: '实时监控管理'
+          title: '视频广场'
+        }
+      },
+      {
+        path: 'device',
+        name: 'device',
+        component: _import('modules/camera/device'),
+        meta: {
+          auth: true,
+          title: '资源配置'
         }
       },
       {

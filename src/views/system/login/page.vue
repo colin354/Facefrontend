@@ -131,8 +131,8 @@ export default {
       ],
       // 表单
       formLogin: {
-        username: "admin",
-        password: "ycadmin123",
+        username: "test",
+        password: "123cpucpu",
         uuid: "",
         captcha: ""
       }
@@ -168,9 +168,11 @@ export default {
      * @description 刷新 uuid
      */
     updateUUID() {
-        this.$axios.get("/captcha/code")
+        // this.$axios.get("/captcha/code")
+        this.$axios.get("/api/captcha")
             .then(res=> {
-              //console.log(res.image_url);
+              console.log('********************')
+              console.log(res.image_url);
               this.formLogin.uuid = res;
               console.log('********************')
             })

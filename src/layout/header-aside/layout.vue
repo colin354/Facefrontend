@@ -19,9 +19,9 @@
           <img v-if="asideCollapse" :src="`${$baseUrl}image/theme/${themeActiveSetting.name}/logo/icon-only.png`">
           <img v-else :src="`${$baseUrl}image/theme/${themeActiveSetting.name}/logo/all.png`">
         </div>
-        <!-- <div class="toggle-aside-btn" @click="handleToggleAside" flex-box="0">
+        <div class="toggle-aside-btn" @click="handleToggleAside" flex-box="0">
           <d2-icon name="bars"/>
-        </div> -->
+        </div>
         <d2-menu-header flex-box="1"/>
         <!-- <img class="top_logo" src="./img/top_logo_yl.png"> -->
         <!-- 顶栏右侧 -->
@@ -116,7 +116,7 @@ export default {
   data () {
     return {
       // [侧边栏宽度] 正常状态
-      asideWidth: '350px',
+      asideWidth: '200px',
       // [侧边栏宽度] 折叠状态
       asideWidthCollapse: '65px'
     }
