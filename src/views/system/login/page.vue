@@ -52,6 +52,14 @@
                   </el-input>
                 </el-form-item>
                 <el-button size="default" @click="submit" type="primary" class="button-login">登录</el-button>
+                  <p class="page-login--options" flex="main:justify cross:center">
+                    <span>
+                      <router-link :to="{path:'forgetPassword'}"><d2-icon name="question-circle"/>忘记密码</router-link>
+                    </span>
+                    <router-link :to="{path:'register'}"> 
+                      <span>注册用户</span>
+                    </router-link>
+                  </p>
               </el-form>
             </el-card>
             <!-- <p class="page-login--options" flex="main:justify cross:center">
