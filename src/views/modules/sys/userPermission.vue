@@ -82,6 +82,7 @@ import mixinViewModule from '@/mixins/view-module'
 import AddOrUpdate from './permission-add-or-update'
 import roleUser from "./roleUser"
 import rolePermission from "./rolePermission";
+import { cookieGet } from '@/common/cookie'
 
 export default {
   mixins: [ mixinViewModule ],
@@ -89,7 +90,7 @@ export default {
   data () {
     return {
       mixinViewModuleOptions: {
-        getDataListURL: '/api/role', //默认加载当前权限列表
+        getDataListURL: `/api/role?token=${cookieGet('token')}`, //默认加载当前权限列表
         getDataListIsPage: true,
         deleteURL: '/api/role',
         deleteIsBatch: true,
@@ -97,7 +98,7 @@ export default {
       dataForm: {
         username: ''
       },
-      searchForm: {},
+      searchForm: { },
       loading: false,
       tableData: [],
       multipleSelection: [],

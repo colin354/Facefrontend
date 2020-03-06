@@ -66,6 +66,7 @@ export default {
         this.facelist = res.imgList ? res.imgList : []
         this.streamlist = res.streamList ? res.streamList : []
         console.log("0000------res.faceList")
+        console.log(res)
         // console.log(res)
         console.log("---")
         // console.log(res.check_info)

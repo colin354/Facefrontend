@@ -109,9 +109,9 @@ export default {
   data () {
     return {
       mixinViewModuleOptions: {
-        getDataListURL: '/api/sys/user',
+        getDataListURL: `/api/sys/user?token=${cookieGet('token')}`,
         getDataListIsPage: true,
-        deleteURL: '/api/sys/user',
+        deleteURL: `/api/sys/user?token=${cookieGet('token')}`,
         deleteIsBatch: true,
       },
       // dialogVisible: false,
