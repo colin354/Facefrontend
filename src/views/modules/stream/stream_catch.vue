@@ -164,7 +164,7 @@ export default {
             console.log(this.temp)
             this.children = res.streamList[j].children // 含有id、经纬度、token等信息
             if (this.children) {
-              this.getWindow(this.children)
+              this.getWindow(this.children,this.temp)
             }
           }
         })
@@ -191,16 +191,19 @@ export default {
       console.log('----点击事件-----00------')
       console.log(val)
       let __this = this
+      console.log('----点击事件-----11------')
       console.log(__this.markerRefs)
       __this.markerRefs = []
       __this.markers.length = 0
       __this.markers = []
       __this.zoom = 16
+      console.log('----点击事件-----22------')
+      console.log(__this.markerRefs)
       console.log(val.children)
       // this.getSingleInfo()
       if (val.children) {
         __this.center = val.streamlng[0]
-        __this.getWindow(val.children)
+        __this.getWindow(val.children,val.streamlng)
         console.log("get window!!!!")
       } else {
         for (let i = 0; i < val.streamlng.length; i++) {
@@ -273,15 +276,21 @@ export default {
     },
 
     // 弹出窗口所在位置及内容
-    getWindow (val) {
-      console.log("getWindow中的   val")
+    getWindow (val,lnglat) {
+      console.log("getWindow中的   val---0")
       console.log(val)
+      console.log(lnglat)
       
       let self = this
+      self.markerRefs = []
+      console.log("getWindow中的   val---1")
+      console.log(self.markers)
+      console.log(self.temp)
+      self.markers = []
       
-      for (let i = 0; i < self.temp.length; i++) {
+      for (let i = 0; i < lnglat.length; i++) {
         self.markers.push({
-          position: self.temp[i],
+          position: lnglat[i],
           events: {
             init (o) {
               self.markerRefs.push(o)

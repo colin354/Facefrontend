@@ -29,7 +29,7 @@
               <el-card class="box-card">
                  
                 <el-table
-                  height="340"
+                  height="280"
                   size="mini"
                   :data="recordList"
                   border
@@ -68,7 +68,7 @@
             <div class="grid-content bg-purple">
               <el-card class="box-card">
                 <el-table
-                  height="340"
+                  height="300"
                   size="mini"
                   :data="dataList.slice((page-1)*limit,page*limit)"
                   border
