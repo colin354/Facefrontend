@@ -5,6 +5,14 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>视频列表</span>
+              <el-date-picker
+                v-model="value1"
+                @change="onChange"
+                type="date"
+                size="small"
+                value-format="yyyy-MM-dd"
+                placeholder="选择日期">
+              </el-date-picker>
             <!-- <el-button style="float: right; padding: 3px 0" type="text">过滤</el-button> -->
           </div>
           <el-row>
@@ -108,6 +116,7 @@ export default {
   },
   data () {
     return {
+      value1:'',
       filterText: '',
       BS: null,
       activeNames: ['1'],
@@ -158,6 +167,16 @@ export default {
     }
   },  
   methods: {
+    onChange (val) {
+      console.log(val)
+      this.$axios.get(`/api/videoStruct/page?token=${cookieGet('token')}`,{params:{date:val}})
+        .then(res => {
+          this.streamList = res.streamList
+        })
+        .catch(() => {
+          console.log('error')
+        })
+    },  
     filterNode (value, data, node) {
       if (!value) return true
       if (data.label.indexOf(value) !== -1) {
