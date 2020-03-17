@@ -247,6 +247,9 @@ export default {
       }
     },
     findTrackData () { //点击'查询'按钮,发送get请求
+      console.log("查询----")
+      console.log(this.value1[0])
+      console.log(this.value1[1])
       this.$axios.get("sys/check",{params:{startTime:this.value1[0],endTime:this.value1[1]}}).then(res=> {
         console.log("------------res-----")
         console.log(res)

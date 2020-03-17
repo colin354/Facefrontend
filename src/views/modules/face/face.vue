@@ -34,7 +34,7 @@
               :row-key="getRowKeys"
               border
               type="selection"
-              @selection-change="handleSelectionChange"
+              @selection-change="dataListSelectionChangeHandle"
               @sort-change="dataListSortChangeHandle"
               style="width: 100%;">
               <el-table-column type="selection" :reserve-selection="true" :selectable="checkSelectable" header-align="center" align="center" width="50"/>
@@ -101,7 +101,8 @@ export default {
         getDataListURL: `/api/face?token=${cookieGet('token')}`,
         getDataListIsPage: true,
         deleteURL: `/api/face?token=${cookieGet('token')}`,
-        deleteIsBatch: true
+        deleteIsBatch: true,
+        deleteIsBatchKey:'id',
       },
       dataForm: {
         username: ''
@@ -149,6 +150,8 @@ export default {
     },
     //导出所有
     exportAll(){
+      console.log("导出所有-----")
+      console.log(this.dataListSelections)
       if(this.dataList){
         this.$axios.get(`/api/face?token=${cookieGet('token')}`,{params:{export:"export"}})
         .then(res=> {
@@ -175,20 +178,20 @@ export default {
     },
     //导出部分按钮
     exportHandle(){
-      if(this.multipleSelection.length){
+      if(this.dataListSelections.length){
         this.$confirm('确定下载列表文件?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.excelData = this.multipleSelection //你要导出的数据list。
+            this.excelData = this.dataListSelections //你要导出的数据list。
             this.export2Excel()
           }).catch(() => {
             console.log("error")
           });
       }
       else{
-        console.log(this.multipleSelection.length)
+        console.log(this.dataListSelections.length)
         alert("请选择需要导出的内容！")
       } 
     },

@@ -12,13 +12,16 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="getDataList()">{{ $t('query') }}</el-button>
+        <el-button @click="getStatus()">{{ $t('query') }}</el-button>
       </el-form-item>
       <el-form-item>
         <el-button type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="exportAll()"> 导出所有 </el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -29,7 +32,7 @@
       :row-key="getRowKeys"
       border
       type="selection"
-      @selection-change="handleSelectionChange"
+      @selection-change="dataListSelectionChangeHandle"
       @sort-change="dataListSortChangeHandle"
       style="width: 100%;">
       <el-table-column type="selection" :reserve-selection="true" :selectable="checkSelectable" header-align="center" align="center" width="50"/>
@@ -72,7 +75,9 @@ export default {
       mixinViewModuleOptions: {
         getDataListURL: `/sys/log/login/page?token=${cookieGet('token')}`,
         getDataListIsPage: true,
-        exportURL: `/sys/log/login/export?token=${cookieGet('token')}`
+        exportURL:`/sys/log/login/export?token=${cookieGet('token')}`,
+        deleteURL: `/sys/log/login/page?token=${cookieGet('token')}`,
+        deleteIsBatch: true,
       },
       dataForm: {
         creatorName: '',
@@ -99,6 +104,23 @@ export default {
     },
   },
   methods:{
+    getStatus(){ //查询按钮,失败、成功、账户被锁定
+      if(this.dataForm.status===0 || this.dataForm.status===1 || this.dataForm.status===2){
+        this.$axios.get(`/sys/log/login/page?token=${cookieGet('token')}`,
+        {params:{login_status:this.dataForm.status,page:this.page,limit:this.limit,total:this.total}})
+        .then(res=> {
+          console.log("---0000000000------------+++++++++")
+          console.log(res)
+          this.dataList = res.list
+          this.total = res.count
+        })
+        .catch(error =>{
+          console.log(error)
+        });
+      }else{
+        this.getDataList()
+      }
+    },
     getRowKeys (row) {
       return row.id;
     },

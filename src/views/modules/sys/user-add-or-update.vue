@@ -32,6 +32,8 @@
 <script>
 import { debounce } from 'lodash'
 import { isEmail, isMobile } from '@/common/validate'
+import { cookieGet } from "@/common/cookie";
+
 export default {
   data () {
     return {
@@ -122,34 +124,26 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].resetFields()
         this.roleIdListDefault = []
-        Promise.all([
-          // this.getDeptList(),
-          this.getRoleList()
-        ]).then(() => {
-          console.log("this.init中的内容")
-          if (this.dataForm.id) {
-            console.log(this.dataForm.id)
-            this.getInfo(this.dataForm.id)
-          }else{
-            //this.dataForm = {}
-            this.$refs['dataForm'].resetFields()
-          }
-        }).catch(() => {});
+        if (this.dataForm.id) {//若是修改,则走此句
+          console.log("id---------camera add --id")
+          console.log(this.dataForm.id)
+          this.getInfo(this.dataForm.id)
+        }else{
+          this.$refs['dataForm'].resetFields()//若是新增,则走此句
+        }
       })
     },
     // 获取信息
     getInfo(id) {
-      this.$axios.get(`/api/sys/user`)
+      console.log("获取信息")
+      this.$axios.get(`/api/sys/user/${id}?token=${cookieGet("token")}`)
         .then(res => {
           console.log("返回的是什么")
-          console.log(res.list)
-          for(var i=0 ; i < res.list.length ; i++){       
-            if(res.list[i].id == id){
-              this.dataForm = {
-                ...res.list[i]
-              }
-            }
-          }
+          console.log(res)
+          this.dataForm = {
+            ...this.dataForm,
+            ...res.list[0]
+          };
         })
         .catch(() => {});
     },
@@ -168,34 +162,6 @@ export default {
         console.log(this.roleList)
       }).catch(() => {})
     },
-    // 获取信息
-    // getInfo () {
-    //   this.$axios.get(`/sys/user/${this.dataForm.id}`).then(res => {
-    //     this.dataForm = {
-    //       ...this.dataForm,
-    //       ...res,
-    //       role_name: ''
-    //     }
-    //     this.$refs.deptListTree.setCurrentKey(this.dataForm.deptId)
-    //     // 角色配置, 区分是否为默认角色
-    //     for (var i = 0; i < res.role_name.length; i++) {
-    //       if (this.roleList.filter(item => item.id === res.role_name[i])[0]) {
-    //         this.dataForm.role_name.push(res.role_name[i])
-    //         continue
-    //       }
-    //       this.roleIdListDefault.push(res.role_name[i])
-    //     }
-    //     console.log("获取信息")
-    //     console.log(res)
-    //     console.log(this.roleIdListDefault)
-    //   }).catch(() => {})
-    // },
-    // 所属部门树, 选中
-    // deptListTreeCurrentChangeHandle (data, node) {
-    //   this.dataForm.deptId = data.id
-    //   this.dataForm.deptName = data.name
-    //   this.deptListVisible = false
-    // },
     // 表单提交
     dataFormSubmitHandle: debounce(function () {
       this.$refs['dataForm'].validate((valid) => {

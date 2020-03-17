@@ -116,6 +116,7 @@ export default {
     },
     // 删除
     deleteHandle (id) {
+      console.log("0000---")
       if (this.mixinViewModuleOptions.deleteIsBatch && !id && this.dataListSelections.length <= 0) {
         return this.$message({
           message: this.$t('prompt.deleteBatch'),

@@ -2,7 +2,7 @@
   <d2-container>
     <el-form :inline="true" size="mini" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-select v-model="dataForm.status" :placeholder="$t('logOperation.status')" clearable>
+        <el-select v-model="dataForm.operation_status" :placeholder="$t('logOperation.status')" clearable>
           <el-option :label="$t('logOperation.status0')" :value="0"/>
           <el-option :label="$t('logOperation.status1')" :value="1"/>
         </el-select>
@@ -16,6 +16,9 @@
       <el-form-item>
         <el-button type="primary" @click="exportAll()"> 导出所有 </el-button>
       </el-form-item>
+      <el-form-item>
+        <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
+      </el-form-item>
     </el-form>
     <el-table
       size="mini"
@@ -26,7 +29,7 @@
       border
       type="selection"
       @sort-change="dataListSortChangeHandle"
-      @selection-change="handleSelectionChange"
+      @selection-change="dataListSelectionChangeHandle"
       style="width: 100%;">
       <el-table-column type="selection" :reserve-selection="true" :selectable="checkSelectable" header-align="center" align="center" width="50"/>
       <el-table-column prop="id" label="id" width="50"/>     
@@ -36,9 +39,9 @@
       <el-table-column prop="operation_method" :label="$t('logOperation.requestMethod')" header-align="center" align="center" width="90"/>
       <el-table-column prop="operation_params" :label="$t('logOperation.requestParams')" header-align="center" align="center" width="90" :show-overflow-tooltip="true"/>
 
-      <el-table-column prop="status" :label="$t('logOperation.status')" sortable="custom" header-align="center" align="center" width="90">
+      <el-table-column prop="operation_status" :label="$t('logOperation.status')" sortable="custom" header-align="center" align="center" width="90">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 0" size="mini" type="danger">{{ $t('logOperation.status0') }}</el-tag>
+          <el-tag v-if="scope.row.operation_status === 0" size="mini" type="danger">{{ $t('logOperation.status0') }}</el-tag>
           <el-tag v-else size="mini" type="success">{{ $t('logOperation.status1') }}</el-tag>
         </template>
       </el-table-column>
@@ -71,10 +74,13 @@ export default {
       mixinViewModuleOptions: {
         getDataListURL: `/sys/log/operation/page?token=${cookieGet('token')}`,
         getDataListIsPage: true,
-        exportURL: `/sys/log/operation/export?token=${cookieGet('token')}`
+        exportURL: `/sys/log/operation/export?token=${cookieGet('token')}`,
+        deleteURL: `/sys/log/operation/page?token=${cookieGet('token')}`,
+        deleteIsBatch: true,
       },
       dataForm: {
-        status: '',
+        operation_status: '',
+        // status: '',
         // export: ''
       },
       allCheck: false,
@@ -137,20 +143,20 @@ export default {
     },
     //导出用户选择部分记录按钮
     exportHandle(){
-      if(this.multipleSelectionAll.length){
+      if(this.dataListSelections.length){
         this.$confirm('确定下载列表文件?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
           }).then(() => {
-            this.excelData = this.multipleSelectionAll//你要导出的数据list。
+            this.excelData = this.dataListSelections//你要导出的数据list。
             this.export2Excel()
           }).catch(() => {
             console.log("error")
         });
       }
       else{
-        console.log(this.multipleSelectionAll.length)
+        console.log(this.dataListSelections.length)
         alert("请选择需要导出的内容！")
       } 
     },

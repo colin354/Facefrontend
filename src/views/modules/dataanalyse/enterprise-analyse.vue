@@ -13,7 +13,7 @@
       border
       @sort-change="dataListSortChangeHandle"
       style="width: 100%;">
-      <el-table-column prop="requestUri" :label="$t('enterprise.id')" header-align="center" align="center"/>
+      <el-table-column prop="id" :label="$t('enterprise.id')" header-align="center" align="center"/>
       <el-table-column prop="requestMethod" :label="$t('enterprise.tysh')" header-align="center" align="center"/>
       <el-table-column prop="requestParams" :label="$t('enterprise.fddb')" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
       <el-table-column prop="ip" :label="$t('enterprise.jyzt')" header-align="center" align="center"/>
@@ -76,15 +76,16 @@
 
 <script>
 import mixinViewModule from '@/mixins/view-module'
+import { cookieGet } from '@/common/cookie'
 export default {
   mixins: [ mixinViewModule ],
   name:'enterprise-analyse',
   data () {
     return {
       mixinViewModuleOptions: {
-        getDataListURL: '/sys/log/error/page',
+        getDataListURL: `/sys/face?token=${cookieGet('token')}`,
         getDataListIsPage: true,
-        exportURL: '/sys/log/error/export'
+        exportURL:  `/sys/face?token=${cookieGet('token')}`,
       },
       // tableData: [{
       //       url: 'httpppppp',
