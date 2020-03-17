@@ -76,15 +76,16 @@
 
 <script>
 import mixinViewModule from '@/mixins/view-module'
+import { cookieGet } from '@/common/cookie'
 export default {
   mixins: [ mixinViewModule ],
   name:'enterprise-analyse',
   data () {
     return {
       mixinViewModuleOptions: {
-        getDataListURL: '/sys/log/error/page',
+        getDataListURL: `/sys/log/error/page?token=${cookieGet('token')}`,
         getDataListIsPage: true,
-        exportURL: '/sys/log/error/export'
+        exportURL: `/sys/log/error/page?token=${cookieGet('token')}`
       },
       // tableData: [{
       //       url: 'httpppppp',
